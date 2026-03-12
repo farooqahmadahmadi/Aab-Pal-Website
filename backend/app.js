@@ -53,6 +53,12 @@ app.use("/api/attendance-shifts", attendanceShiftRoutes);
 const empHiringRoutes = require("./routes/empHiringRoutes");
 app.use("/api/emp-hiring", empHiringRoutes);
 
+const empAttendanceRoutes = require("./routes/empAttendanceRoutes");
+app.use("/api/emp-attendance", empAttendanceRoutes);
+
+
+
+
 
 
 // ===== ERROR HANDLER =====
