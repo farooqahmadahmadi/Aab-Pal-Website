@@ -59,6 +59,9 @@ app.use("/api/emp-attendance", empAttendanceRoutes);
 const empAttendSummaryRoutes = require("./routes/empAttendSummaryRoutes");
 app.use("/api/emp-attend-summary", empAttendSummaryRoutes);
 
+const empSalaryPaymentRoutes = require("./routes/empSalaryPaymentRoutes");
+app.use("/api/emp-salary-payment", empSalaryPaymentRoutes);
+
 
 
 
