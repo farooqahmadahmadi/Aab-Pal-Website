@@ -62,7 +62,8 @@ app.use("/api/emp-attend-summary", empAttendSummaryRoutes);
 const empSalaryPaymentRoutes = require("./routes/empSalaryPaymentRoutes");
 app.use("/api/emp-salary-payment", empSalaryPaymentRoutes);
 
-
+const clientRoutes = require("./routes/clientRoutes");
+app.use("/api/clients", clientRoutes);
 
 
 // ===== ERROR HANDLER =====
