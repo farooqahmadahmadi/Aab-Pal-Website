@@ -1,0 +1,80 @@
+'use strict';
+
+module.exports = {
+
+  async up(queryInterface, Sequelize) {
+
+    await queryInterface.createTable('cash_transactions_info', {
+
+      transaction_id: {
+        type: Sequelize.BIGINT.UNSIGNED,
+        primaryKey: true,
+        autoIncrement: true
+      },
+
+      project_id: {
+        type: Sequelize.BIGINT.UNSIGNED,
+        references: {
+          model: 'project_info',
+          key: 'project_id'
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'RESTRICT'
+      },
+
+      reference_type: {
+        type: Sequelize.ENUM(
+          'expense',
+          'invoice',
+          'payment',
+          'manual'
+        )
+      },
+
+      reference_id: {
+        type: Sequelize.INTEGER
+      },
+
+      transaction_type: {
+        type: Sequelize.ENUM(
+          'income',
+          'expense'
+        )
+      },
+
+      amount: {
+        type: Sequelize.DECIMAL(12, 2)
+      },
+
+      transaction_description: {
+        type: Sequelize.STRING(255)
+      },
+
+      transaction_date: {
+        type: Sequelize.DATEONLY
+      },
+
+      is_deleted: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: false
+      },
+
+      created_at: {
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.NOW
+      },
+
+      updated_at: {
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.NOW
+      }
+
+    });
+
+  },
+
+  async down(queryInterface) {
+    await queryInterface.dropTable('cash_transactions_info');
+  }
+
+};

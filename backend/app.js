@@ -1,0 +1,64 @@
+require("dotenv").config();
+
+const express = require("express");
+const cors = require("cors");
+const helmet = require("helmet");
+const rateLimit = require("express-rate-limit");
+
+const app = express();
+
+// ===== SECURITY =====
+app.use(helmet());
+app.use(cors({ origin: process.env.FRONTEND_URL }));
+
+// ===== BODY PARSER =====
+app.use(express.json());
+
+// ===== RATE LIMIT =====
+const limiter = rateLimit({
+    windowMs: 15 * 60 * 1000,
+    max: 100
+});
+app.use(limiter);
+
+
+// ===== ROUTES =====
+const userRoutes = require("./routes/userRoutes");
+app.use("/api/users", userRoutes);
+
+const companyInfoRoutes = require("./routes/companyInfoRoutes");
+app.use("/api/company-info", companyInfoRoutes);
+
+const companyDocumentRoutes = require("./routes/companyDocumentRoutes");
+app.use("/api/company-documents", companyDocumentRoutes);
+
+const departmentInfoRoutes = require("./routes/departmentInfoRoutes");
+app.use("/api/departments", departmentInfoRoutes);
+
+const employeeInfoRoutes = require("./routes/employeeInfoRoutes");
+app.use("/api/employees", employeeInfoRoutes);
+
+const employeeDocumentsRoutes = require("./routes/employeeDocumentsRoutes");
+app.use("/api/employee-documents", employeeDocumentsRoutes);
+
+const employeeEducationalRoutes = require("./routes/employeeEducationalRoutes");
+app.use("/api/employee-education", employeeEducationalRoutes);
+
+const empSalaryRoutes = require("./routes/empSalaryRoutes");
+app.use("/api/employee-salary", empSalaryRoutes);
+
+const attendanceShiftRoutes = require("./routes/attendanceShiftRoutes");
+app.use("/api/attendance-shifts", attendanceShiftRoutes);
+
+const empHiringRoutes = require("./routes/empHiringRoutes");
+app.use("/api/emp-hiring", empHiringRoutes);
+
+
+
+// ===== ERROR HANDLER =====
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).json({ error: "Internal Server Error" });
+});
+
+module.exports = app;
