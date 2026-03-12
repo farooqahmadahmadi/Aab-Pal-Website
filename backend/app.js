@@ -56,7 +56,8 @@ app.use("/api/emp-hiring", empHiringRoutes);
 const empAttendanceRoutes = require("./routes/empAttendanceRoutes");
 app.use("/api/emp-attendance", empAttendanceRoutes);
 
-
+const empAttendSummaryRoutes = require("./routes/empAttendSummaryRoutes");
+app.use("/api/emp-attend-summary", empAttendSummaryRoutes);
 
 
 
