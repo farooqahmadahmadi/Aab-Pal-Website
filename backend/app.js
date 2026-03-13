@@ -98,6 +98,10 @@ app.use("/api/purchase-order-items", purchaseOrderItemsRoutes);
 const stockTransactionsRoutes = require("./routes/stockTransactionsRoutes");
 app.use("/api/stock-transactions", stockTransactionsRoutes);
 
+const contractRoutes = require("./routes/contractRoutes");
+app.use("/api/contracts", contractRoutes);
+
+
 
 
 
