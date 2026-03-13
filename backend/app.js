@@ -68,6 +68,9 @@ app.use("/api/clients", clientRoutes);
 const projectRoutes = require("./routes/projectRoutes");
 app.use("/api/projects", projectRoutes);
 
+const projectPhasesRoutes = require("./routes/projectPhasesRoutes");
+app.use("/api/project-phases", projectPhasesRoutes);
+
 
 
 
