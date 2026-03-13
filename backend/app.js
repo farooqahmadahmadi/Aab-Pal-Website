@@ -131,6 +131,11 @@ app.use("/api/payments", paymentsRoutes);
 const notificationsRoutes = require("./routes/notificationsRoutes");
 app.use("/api/notifications", notificationsRoutes);
 
+const systemLogsRoutes = require("./routes/systemLogsRoutes");
+app.use("/api/system-logs", systemLogsRoutes);
+
+
+
 
 
 
