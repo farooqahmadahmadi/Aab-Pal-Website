@@ -101,7 +101,8 @@ app.use("/api/stock-transactions", stockTransactionsRoutes);
 const contractRoutes = require("./routes/contractRoutes");
 app.use("/api/contracts", contractRoutes);
 
-
+const contractMilestonesRoutes = require("./routes/contractMilestonesRoutes");
+app.use("/api/contract-milestones", contractMilestonesRoutes);
 
 
 
