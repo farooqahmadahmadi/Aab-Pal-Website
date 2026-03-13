@@ -77,7 +77,8 @@ app.use("/api/project-documents", projectDocumentsRoutes);
 const equipmentRoutes = require("./routes/equipmentRoutes");
 app.use("/api/equipment", equipmentRoutes);
 
-
+const equipmentMaintenanceRoutes = require("./routes/equipmentMaintenanceRoutes");
+app.use("/api/equipment-maintenance", equipmentMaintenanceRoutes);
 
 
 
