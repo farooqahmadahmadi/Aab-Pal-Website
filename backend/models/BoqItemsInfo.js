@@ -24,17 +24,17 @@ const BoqItemsInfo = sequelize.define('BoqItemsInfo', {
     },
 
     item_quantity: {
-        type: DataTypes.DECIMAL(14,2),
+        type: DataTypes.DECIMAL(14, 2),
         defaultValue: 0,
         allowNull: false
     },
 
     unit_price: {
-        type: DataTypes.DECIMAL(14,2)
+        type: DataTypes.DECIMAL(14, 2)
     },
 
     total_amount: {
-        type: DataTypes.DECIMAL(14,2)
+        type: DataTypes.DECIMAL(14, 2)
     },
 
     is_deleted: {
