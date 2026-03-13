@@ -110,6 +110,10 @@ app.use("/api/boq-items", boqItemsRoutes);
 const tasksAssignmentRoutes = require("./routes/tasksAssignmentRoutes");
 app.use("/api/tasks", tasksAssignmentRoutes);
 
+const siteDailyReportsRoutes = require("./routes/siteDailyReportsRoutes");
+app.use("/api/site-reports", siteDailyReportsRoutes);
+
+
 
 
 
