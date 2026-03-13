@@ -122,7 +122,8 @@ app.use("/api/expenses", expensesRoutes);
 const invoicesRoutes = require("./routes/invoicesRoutes");
 app.use("/api/invoices", invoicesRoutes);
 
-
+const cashTransactionsRoutes = require("./routes/cashTransactionsRoutes");
+app.use("/api/cash-transactions", cashTransactionsRoutes);
 
 
 
