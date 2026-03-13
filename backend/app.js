@@ -128,6 +128,12 @@ app.use("/api/cash-transactions", cashTransactionsRoutes);
 const paymentsRoutes = require("./routes/paymentsRoutes");
 app.use("/api/payments", paymentsRoutes);
 
+const notificationsRoutes = require("./routes/notificationsRoutes");
+app.use("/api/notifications", notificationsRoutes);
+
+
+
+
 
 
 
