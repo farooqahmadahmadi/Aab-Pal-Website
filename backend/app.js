@@ -107,6 +107,9 @@ app.use("/api/contract-milestones", contractMilestonesRoutes);
 const boqItemsRoutes = require("./routes/boqItemsRoutes");
 app.use("/api/boq-items", boqItemsRoutes);
 
+const tasksAssignmentRoutes = require("./routes/tasksAssignmentRoutes");
+app.use("/api/tasks", tasksAssignmentRoutes);
+
 
 
 
