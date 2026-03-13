@@ -65,6 +65,12 @@ app.use("/api/emp-salary-payment", empSalaryPaymentRoutes);
 const clientRoutes = require("./routes/clientRoutes");
 app.use("/api/clients", clientRoutes);
 
+const projectRoutes = require("./routes/projectRoutes");
+app.use("/api/projects", projectRoutes);
+
+
+
+
 
 // ===== ERROR HANDLER =====
 app.use((err, req, res, next) => {
