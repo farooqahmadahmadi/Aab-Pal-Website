@@ -116,6 +116,10 @@ app.use("/api/site-reports", siteDailyReportsRoutes);
 const safetyIncidentsRoutes = require("./routes/safetyIncidentsRoutes");
 app.use("/api/safety-incidents", safetyIncidentsRoutes);
 
+const expensesRoutes = require("./routes/expensesRoutes");
+app.use("/api/expenses", expensesRoutes);
+
+
 
 
 
