@@ -113,7 +113,8 @@ app.use("/api/tasks", tasksAssignmentRoutes);
 const siteDailyReportsRoutes = require("./routes/siteDailyReportsRoutes");
 app.use("/api/site-reports", siteDailyReportsRoutes);
 
-
+const safetyIncidentsRoutes = require("./routes/safetyIncidentsRoutes");
+app.use("/api/safety-incidents", safetyIncidentsRoutes);
 
 
 
