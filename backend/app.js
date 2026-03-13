@@ -74,6 +74,10 @@ app.use("/api/project-phases", projectPhasesRoutes);
 const projectDocumentsRoutes = require("./routes/projectDocumentsRoutes");
 app.use("/api/project-documents", projectDocumentsRoutes);
 
+const equipmentRoutes = require("./routes/equipmentRoutes");
+app.use("/api/equipment", equipmentRoutes);
+
+
 
 
 
