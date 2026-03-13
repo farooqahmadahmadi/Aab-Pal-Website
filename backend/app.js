@@ -92,6 +92,11 @@ app.use("/api/materials", materialsRoutes);
 const purchaseOrdersRoutes = require("./routes/purchaseOrdersRoutes");
 app.use("/api/purchase-orders", purchaseOrdersRoutes);
 
+const purchaseOrderItemsRoutes = require("./routes/purchaseOrderItemsRoutes");
+app.use("/api/purchase-order-items", purchaseOrderItemsRoutes);
+
+
+
 
 
 
