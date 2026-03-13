@@ -95,6 +95,8 @@ app.use("/api/purchase-orders", purchaseOrdersRoutes);
 const purchaseOrderItemsRoutes = require("./routes/purchaseOrderItemsRoutes");
 app.use("/api/purchase-order-items", purchaseOrderItemsRoutes);
 
+const stockTransactionsRoutes = require("./routes/stockTransactionsRoutes");
+app.use("/api/stock-transactions", stockTransactionsRoutes);
 
 
 
