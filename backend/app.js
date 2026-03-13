@@ -119,6 +119,9 @@ app.use("/api/safety-incidents", safetyIncidentsRoutes);
 const expensesRoutes = require("./routes/expensesRoutes");
 app.use("/api/expenses", expensesRoutes);
 
+const invoicesRoutes = require("./routes/invoicesRoutes");
+app.use("/api/invoices", invoicesRoutes);
+
 
 
 
