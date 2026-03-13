@@ -80,6 +80,13 @@ app.use("/api/equipment", equipmentRoutes);
 const equipmentMaintenanceRoutes = require("./routes/equipmentMaintenanceRoutes");
 app.use("/api/equipment-maintenance", equipmentMaintenanceRoutes);
 
+const equipmentUsageRoutes = require("./routes/equipmentUsageRoutes");
+app.use("/api/equipment-usage", equipmentUsageRoutes);
+
+
+
+
+
 
 
 
