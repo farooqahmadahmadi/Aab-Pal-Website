@@ -31,6 +31,21 @@ module.exports = {
         type: Sequelize.TIME
       },
 
+      longitude: {
+        type: Sequelize.DECIMAL(10, 7),
+        allowNull: true
+      },
+
+      latitude: {
+        type: Sequelize.DECIMAL(10, 7),
+        allowNull: true
+      },
+
+      reduce: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: false
+      },
+
       created_at: {
         type: Sequelize.DATE
       },
@@ -43,7 +58,7 @@ module.exports = {
         type: Sequelize.BOOLEAN,
         defaultValue: false
       }
-
+      
     });
 
   },
