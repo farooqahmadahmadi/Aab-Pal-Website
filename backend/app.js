@@ -89,8 +89,8 @@ app.use("/api/suppliers", suppliersRoutes);
 const materialsRoutes = require("./routes/materialsRoutes");
 app.use("/api/materials", materialsRoutes);
 
-
-
+const purchaseOrdersRoutes = require("./routes/purchaseOrdersRoutes");
+app.use("/api/purchase-orders", purchaseOrdersRoutes);
 
 
 
