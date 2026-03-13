@@ -125,6 +125,8 @@ app.use("/api/invoices", invoicesRoutes);
 const cashTransactionsRoutes = require("./routes/cashTransactionsRoutes");
 app.use("/api/cash-transactions", cashTransactionsRoutes);
 
+const paymentsRoutes = require("./routes/paymentsRoutes");
+app.use("/api/payments", paymentsRoutes);
 
 
 
