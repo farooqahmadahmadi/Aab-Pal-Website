@@ -83,6 +83,9 @@ app.use("/api/equipment-maintenance", equipmentMaintenanceRoutes);
 const equipmentUsageRoutes = require("./routes/equipmentUsageRoutes");
 app.use("/api/equipment-usage", equipmentUsageRoutes);
 
+const suppliersRoutes = require("./routes/suppliersRoutes");
+app.use("/api/suppliers", suppliersRoutes);
+
 
 
 
