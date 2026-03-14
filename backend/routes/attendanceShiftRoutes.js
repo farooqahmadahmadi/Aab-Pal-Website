@@ -3,10 +3,41 @@ const router = express.Router();
 
 const attendanceShiftController = require("../controllers/attendanceShiftController");
 
-router.get("/", attendanceShiftController.getAllShifts);
-router.get("/:id", attendanceShiftController.getShiftById);
-router.post("/", attendanceShiftController.createShift);
-router.put("/:id", attendanceShiftController.updateShift);
-router.delete("/:id", attendanceShiftController.deleteShift);
+const role = require("../middlewares/roleMiddleware");
+
+// GET all shifts → Admin only
+router.get(
+    "/",
+    role("Admin"),
+    attendanceShiftController.getAllShifts
+);
+
+// GET shift by ID → Admin only
+router.get(
+    "/:id",
+    role("Admin"),
+    attendanceShiftController.getShiftById
+);
+
+// CREATE shift → Admin only
+router.post(
+    "/",
+    role("Admin"),
+    attendanceShiftController.createShift
+);
+
+// UPDATE shift → Admin + HR
+router.put(
+    "/:id",
+    role("Admin", "HR"),
+    attendanceShiftController.updateShift
+);
+
+// DELETE shift → Admin only
+router.delete(
+    "/:id",
+    role("Admin"),
+    attendanceShiftController.deleteShift
+);
 
 module.exports = router;
