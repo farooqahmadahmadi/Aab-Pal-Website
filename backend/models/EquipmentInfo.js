@@ -4,7 +4,6 @@ const sequelize = require("../config/db");
 const EquipmentInfo = sequelize.define(
     "EquipmentInfo",
     {
-
         equipment_id: {
             type: DataTypes.BIGINT.UNSIGNED,
             primaryKey: true,
