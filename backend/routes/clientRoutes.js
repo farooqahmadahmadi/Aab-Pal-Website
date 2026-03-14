@@ -13,7 +13,7 @@ const router = express.Router();
 const clientController = require("../controllers/clientController");
 const role = require("../middlewares/roleMiddleware");
 
-router.get("/", role("Admin", "Project Manager", "Client"), clientController.getAllClients);
+router.get("/", role("Admin", "Project Manager"), clientController.getAllClients);
 router.get("/:id", role("Admin", "Project Manager", "Client"), clientController.getClientById);
 router.post("/", role("Admin"), clientController.createClient);
 router.put("/:id", role("Admin"), clientController.updateClient);
