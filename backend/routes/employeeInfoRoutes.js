@@ -3,7 +3,7 @@ Admin - Full Access
 HR - Full Access
 Financial - No Access
 Project Manager - No Access
-Employee - View self  Access 
+Employee - View Access (Only their own record)
 Client - No Access
 */
 

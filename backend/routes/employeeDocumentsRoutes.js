@@ -3,7 +3,7 @@ Admin - Full Access
 HR - Full Access
 Financial - No Access
 Project Manager - No Access
-Employee - View Self Access
+Employee - View Access (Only their own records)
 Client - No Access
 const role = require("../middlewares/roleMiddleware");
 */
