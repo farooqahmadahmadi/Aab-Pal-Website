@@ -1,8 +1,16 @@
+/* Access Controls
+Admin - Full Access
+HR - View and Edit Access
+Financial - No Access
+Project Manager - No Access
+Employee - No Access 
+Client - No Access
+*/
+
 const express = require("express");
 const router = express.Router();
 
 const attendanceShiftController = require("../controllers/attendanceShiftController");
-
 const role = require("../middlewares/roleMiddleware");
 
 // GET all shifts → Admin only
