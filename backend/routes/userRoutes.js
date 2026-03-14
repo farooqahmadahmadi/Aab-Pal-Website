@@ -6,24 +6,39 @@ const usersController = require("../controllers/usersController");
 const auth = require("../middlewares/authMiddleware");
 const role = require("../middlewares/roleMiddleware");
 
+// GET all users → Admin only
 router.get(
-    "/users", auth, role("Admin"), usersController.getAllUsers
+    "/users",
+    role("Admin"),
+    usersController.getAllUsers
 );
 
+// GET user by ID → Admin + HR
 router.get(
-    "/users/:id", auth, usersController.getUserById
+    "/users/:id",
+    role("Admin", "HR"),
+    usersController.getUserById
 );
 
+// CREATE user → Admin only
 router.post(
-    "/users", auth, role("Admin"), usersController.createUser
+    "/users",
+    role("Admin"),
+    usersController.createUser
 );
 
+// UPDATE user → Admin + HR
 router.put(
-    "/users/:id", auth, usersController.updateUser
+    "/users/:id",
+    role("Admin", "HR"),
+    usersController.updateUser
 );
 
+// DELETE user → Admin only
 router.delete(
-    "/users/:id",auth,role("Admin"), usersController.deleteUser
+    "/users/:id",
+    role("Admin"),
+    usersController.deleteUser
 );
 
 module.exports = router;

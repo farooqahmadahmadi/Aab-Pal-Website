@@ -8,7 +8,7 @@ const role = require("../middlewares/roleMiddleware");
 // GET all shifts → Admin only
 router.get(
     "/",
-    role("Admin"),
+    role("Admin", "HR"),
     attendanceShiftController.getAllShifts
 );
 
