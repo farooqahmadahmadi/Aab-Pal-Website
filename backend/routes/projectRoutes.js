@@ -13,10 +13,10 @@ const router = express.Router();
 const projectController = require("../controllers/projectController");
 const role = require("../middlewares/roleMiddleware");
 
-router.get("/", role("Admin","Project Manager"), projectController.getAllProjects);
-router.get("/:id", role("Admin","Project Manager","Client"), projectController.getProjectById);
+router.get("/", role("Admin", "Project Manager"), projectController.getAllProjects);
+router.get("/:id", role("Admin", "Project Manager", "Client"), projectController.getProjectById);
 router.post("/", role("Admin"), projectController.createProject);
-router.put("/:id", role("Admin","Project Manager") projectController.updateProject);
-router.delete("/:id",  roel ("Admin"), projectController.deleteProject);
+router.put("/:id", role("Admin", "Project Manager") projectController.updateProject);
+router.delete("/:id", role("Admin"), projectController.deleteProject);
 
 module.exports = router;
