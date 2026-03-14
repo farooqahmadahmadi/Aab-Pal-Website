@@ -5,10 +5,15 @@ const cors = require("cors");
 const helmet = require("helmet");
 const rateLimit = require("express-rate-limit");
 
+/* -----------------------------------------------------------------------------
+Error Middleware */
+const errorMiddleware = require("./middlewares/errorMiddleware");
+
 const app = express();
 
 
-// ===== SECURITY =====
+/* -----------------------------------------------------------------------------
+SECURITY */
 const auth = require("./middlewares/authMiddleware");
 // Authentication middleware should be applied before all routes to protect them
 app.use(auth);
@@ -18,10 +23,13 @@ app.use(auth);
 app.use(helmet());
 app.use(cors({ origin: process.env.FRONTEND_URL }));
 
-// ===== BODY PARSER =====
+
+/* -----------------------------------------------------------------------------
+BODY PARSER */
 app.use(express.json());
 
-// ===== RATE LIMIT =====
+/* -----------------------------------------------------------------------------
+RATE LIMIT */
 const limiter = rateLimit({
     windowMs: 15 * 60 * 1000,
     max: 100
@@ -29,7 +37,9 @@ const limiter = rateLimit({
 app.use(limiter);
 
 
-// ===== ROUTES =====
+/* -----------------------------------------------------------------------------
+ROUTES */
+
 const userRoutes = require("./routes/userRoutes");
 app.use("/api/users", userRoutes);
 
@@ -142,14 +152,13 @@ const systemLogsRoutes = require("./routes/systemLogsRoutes");
 app.use("/api/system-logs", systemLogsRoutes);
 
 
+// Error Middleware
+app.use(errorMiddleware);
 
 
 
-
-
-
-
-// ===== ERROR HANDLER =====
+/* -----------------------------------------------------------------------------
+ERROR HANDLER */
 app.use((err, req, res, next) => {
     console.error(err.stack);
     res.status(500).json({ error: "Internal Server Error" });
