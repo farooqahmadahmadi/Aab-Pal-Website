@@ -3,7 +3,7 @@ Admin - Full Access
 HR - No Access
 Financial - No Access
 Project Manager - No Access
-Employee - No Access 
+Employee - No Access  
 Client - No Access
 */
 

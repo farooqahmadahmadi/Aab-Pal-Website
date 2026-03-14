@@ -1,12 +1,22 @@
+/* Access Controls
+Admin - Full Access
+HR - No Access
+Financial - No Access
+Project Manager - No Access
+Employee - No Access
+Client - No Access
+*/
+
 const express = require("express");
 const router = express.Router();
 
 const suppliersController = require("../controllers/suppliersController");
+const role = require("../middlewares/roleMiddleware");
 
-router.get("/", suppliersController.getAllSuppliers);
-router.get("/:id", suppliersController.getSupplierById);
-router.post("/", suppliersController.createSupplier);
-router.put("/:id", suppliersController.updateSupplier);
-router.delete("/:id", suppliersController.deleteSupplier);
+router.get("/", role("Admin"), suppliersController.getAllSuppliers);
+router.get("/:id", role("Admin"), suppliersController.getSupplierById);
+router.post("/", role("Admin"), suppliersController.createSupplier);
+router.put("/:id", role("Admin"), suppliersController.updateSupplier);
+router.delete("/:id", role("Admin"), suppliersController.deleteSupplier);
 
 module.exports = router;
