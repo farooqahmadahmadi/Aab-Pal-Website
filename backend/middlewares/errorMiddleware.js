@@ -1,6 +1,6 @@
 module.exports = (err, req, res, next) => {
 
-    console.error(err); // error log
+    console.error("Error:", err.message);
 
     const statusCode = res.statusCode && res.statusCode !== 200
         ? res.statusCode

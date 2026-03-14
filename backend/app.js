@@ -152,7 +152,7 @@ const systemLogsRoutes = require("./routes/systemLogsRoutes");
 app.use("/api/system-logs", systemLogsRoutes);
 
 
-// Error Middleware
+// Error middleware should be applied after all routes 
 app.use(errorMiddleware);
 
 
