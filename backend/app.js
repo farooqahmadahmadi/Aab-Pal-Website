@@ -152,11 +152,16 @@ app.use("/api/notifications", notificationsRoutes);
 const systemLogsRoutes = require("./routes/systemLogsRoutes");
 app.use("/api/system-logs", systemLogsRoutes);
 
+//file Upload Route
+const fileRoutes = require("./routes/fileRoutes");
+app.use("/api/files", fileRoutes);
+
 
 // Error Middleware
 // Error middleware should be applied after all routes 
 const errorMiddleware = require("./middlewares/errorMiddleware");
 app.use(errorMiddleware);
+
 
 
 
