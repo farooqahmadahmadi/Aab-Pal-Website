@@ -1,3 +1,4 @@
+// routes/notificationsRoutes.js
 /* Access Controls
 Admin - Full Access
 HR - Create, Read, Update Access
@@ -13,10 +14,15 @@ const router = express.Router();
 const notificationsController = require("../controllers/notificationsController");
 const role = require("../middlewares/roleMiddleware");
 
+// GET all notifications → Admin, HR, Financial, PM, Employee
 router.get("/", role("Admin", "HR", "Financial", "Project Manager", "Employee"), notificationsController.getAllNotifications);
+// GET notification by ID → Admin, HR, Financial, PM, Employee
 router.get("/:id", role("Admin", "HR", "Financial", "Project Manager", "Employee"), notificationsController.getNotificationById);
+// CREATE notification → Admin, HR, Financial, PM, Employee
 router.post("/", role("Admin", "HR", "Financial", "Project Manager", "Employee"), notificationsController.createNotification);
+// UPDATE notification → Admin, HR, Financial, PM, Employee
 router.put("/:id", role("Admin", "HR", "Financial", "Project Manager", "Employee"), notificationsController.updateNotification);
-router.delete("/:id", role("Admin"), notificationsController.deleteNotification);
+// DELETE notification → Admin only
+router.delete("/:id", role("Admin"),notificationsController.deleteNotification);
 
 module.exports = router;

@@ -18,11 +18,9 @@ const auth = require("./middlewares/authMiddleware");
 // Authentication middleware should be applied before all routes to protect them
 app.use(auth);
 
-
 //------------------
 app.use(helmet());
 app.use(cors({ origin: process.env.FRONTEND_URL }));
-
 
 /* -----------------------------------------------------------------------------
 BODY PARSER */
@@ -39,6 +37,10 @@ app.use(limiter);
 
 /* -----------------------------------------------------------------------------
 ROUTES */
+
+// Login APIS
+const authRoutes = require("./routes/authRoutes");
+app.use("/api/auth", authRoutes);
 
 const userRoutes = require("./routes/userRoutes");
 app.use("/api/users", userRoutes);
