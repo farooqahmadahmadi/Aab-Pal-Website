@@ -4,21 +4,20 @@ const express = require("express");
 const cors = require("cors");
 const helmet = require("helmet");
 const rateLimit = require("express-rate-limit");
-
-/* -----------------------------------------------------------------------------
-Error Middleware */
-const errorMiddleware = require("./middlewares/errorMiddleware");
-
 const app = express();
 
+/* -----------------------------------------------------------------------------
+Middlewares */
+// Aut Middleware
+const auth = require("./middlewares/authMiddleware");
+app.use(auth);
+
+// logMiddleware
+const logMiddleware = require("./middlewares/logMiddleware");
+app.use(logMiddleware);
 
 /* -----------------------------------------------------------------------------
 SECURITY */
-const auth = require("./middlewares/authMiddleware");
-// Authentication middleware should be applied before all routes to protect them
-app.use(auth);
-
-//------------------
 app.use(helmet());
 app.use(cors({ origin: process.env.FRONTEND_URL }));
 
@@ -154,7 +153,9 @@ const systemLogsRoutes = require("./routes/systemLogsRoutes");
 app.use("/api/system-logs", systemLogsRoutes);
 
 
+// Error Middleware
 // Error middleware should be applied after all routes 
+const errorMiddleware = require("./middlewares/errorMiddleware");
 app.use(errorMiddleware);
 
 
