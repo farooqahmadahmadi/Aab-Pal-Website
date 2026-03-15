@@ -11,6 +11,7 @@ exports.createLog = async ({
 }) => {
 
     try {
+
         const log = await SystemLogs.create({
             user_id,
             action,
@@ -19,7 +20,9 @@ exports.createLog = async ({
             old_value: old_value ? JSON.stringify(old_value) : null,
             new_value: new_value ? JSON.stringify(new_value) : null
         });
+
         return log;
+
     } catch (error) {
         console.error("Log Service Error:", error);
         throw error;
