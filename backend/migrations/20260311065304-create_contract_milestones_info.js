@@ -1,16 +1,12 @@
 'use strict';
-
 module.exports = {
   async up(queryInterface, Sequelize) {
-
     await queryInterface.createTable('contract_milestones_info', {
-
       milestone_id: {
         type: Sequelize.BIGINT.UNSIGNED,
         primaryKey: true,
         autoIncrement: true
       },
-
       contract_id: {
         type: Sequelize.BIGINT.UNSIGNED,
         allowNull: false,
@@ -21,49 +17,34 @@ module.exports = {
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE'
       },
-
       title: {
         type: Sequelize.STRING(255),
         allowNull: false
       },
-
       due_date: {
         type: Sequelize.DATEONLY
       },
-
       amount: {
         type: Sequelize.DECIMAL(14, 2)
       },
-
       status: {
-        type: Sequelize.ENUM(
-          'Pending',
-          'Completed',
-          'Delayed',
-          'Cancelled'
-        )
+        type: Sequelize.ENUM('Pending', 'Completed', 'Delayed', 'Cancelled')
       },
-
       created_at: {
         type: Sequelize.DATE,
         allowNull: false
       },
-
       updated_at: {
         type: Sequelize.DATE,
         allowNull: false
       },
-
       is_deleted: {
         type: Sequelize.BOOLEAN,
         defaultValue: false
       }
-
     });
-
   },
-
-  async down(queryInterface, Sequelize) {
+  async down(queryInterface) {
     await queryInterface.dropTable('contract_milestones_info');
   }
 };

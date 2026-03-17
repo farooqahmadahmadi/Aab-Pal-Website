@@ -34,13 +34,12 @@ const ClientInfo = sequelize.define(
             type: DataTypes.BOOLEAN,
             defaultValue: false
         }
-    },
-    {
-        tableName: "client_info",
-        timestamps: true,
-        createdAt: "created_at",
-        updatedAt: "updated_at"
-    }
+    }, {
+    tableName: "client_info",
+    timestamps: true,
+    createdAt: "created_at",
+    updatedAt: "updated_at"
+}
 );
 
 module.exports = ClientInfo;

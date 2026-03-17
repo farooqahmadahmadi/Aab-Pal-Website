@@ -6,6 +6,16 @@ const helmet = require("helmet");
 const rateLimit = require("express-rate-limit");
 const app = express();
 
+
+const userRoutes = require("./routes/userRoutes");
+app.use("/api/users", userRoutes);
+
+
+// Auth Routes
+const authRoutes = require("./routes/authRoutes");
+app.use("/api/auth", authRoutes);
+
+
 /* -----------------------------------------------------------------------------
 Middlewares */
 // Aut Middleware
@@ -37,12 +47,6 @@ app.use(limiter);
 /* -----------------------------------------------------------------------------
 ROUTES */
 
-// Login APIS
-const authRoutes = require("./routes/authRoutes");
-app.use("/api/auth", authRoutes);
-
-const userRoutes = require("./routes/userRoutes");
-app.use("/api/users", userRoutes);
 
 const companyInfoRoutes = require("./routes/companyInfoRoutes");
 app.use("/api/company-info", companyInfoRoutes);
