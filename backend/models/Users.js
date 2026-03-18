@@ -21,12 +21,16 @@ const Users = sequelize.define('Users', {
         type: DataTypes.STRING(255),
         allowNull: false
     },
+    employee_id: {
+        type: DataTypes.BIGINT.UNSIGNED,
+        allowNull: true
+    },
     client_id: {
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull: true
     },
     user_role: {
-        type: DataTypes.ENUM('Admin', 'HR', 'Financial', 'Project Manager', 'Employee', 'Client'),
+        type: DataTypes.ENUM('Admin', 'HR', 'Financial', 'Pm', 'Employee', 'Client'),
         allowNull: false
     },
     login_status: {

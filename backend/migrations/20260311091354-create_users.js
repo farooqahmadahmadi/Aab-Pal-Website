@@ -21,6 +21,16 @@ module.exports = {
         type: Sequelize.STRING(255),
         allowNull: false
       },
+       employee_id: {
+        type: Sequelize.BIGINT.UNSIGNED,
+        allowNull: true,
+        references: {
+          model: 'employee_info',
+          key: 'employee_id'
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'SET NULL'
+      },
       client_id: {
         type: Sequelize.BIGINT.UNSIGNED,
         allowNull: true,
@@ -32,7 +42,7 @@ module.exports = {
         onDelete: 'SET NULL'
       },
       user_role: {
-        type: Sequelize.ENUM('Admin', 'HR', 'Financial', 'Project Manager', 'Employee', 'Client'),
+        type: Sequelize.ENUM('Admin', 'HR', 'Financial', 'PM', 'Employee', 'Client'),
         allowNull: false
       },
       login_status: {

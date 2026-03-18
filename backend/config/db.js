@@ -1,18 +1,26 @@
-const mysql = require("mysql2/promise"); // promise-based for async/await
+const { Sequelize } = require("sequelize");
 require("dotenv").config();
 
-const db = mysql.createPool({
-  host: process.env.DB_HOST,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME,
-  waitForConnections: true,
-  connectionLimit: 10,
-  queueLimit: 0,
-});
+// Sequelize instance
+const sequelize = new Sequelize(
+  process.env.DB_NAME,     // Database name
+  process.env.DB_USER,     // Database user
+  process.env.DB_PASSWORD, // Database password
+  {
+    host: process.env.DB_HOST, // Database host
+    dialect: "mysql",           // MySQL
+    logging: false,             // Console logging off
+  }
+);
 
-db.getConnection()
-  .then(() => console.log("✅ Database Connected Successfully!"))
-  .catch((err) => console.error("❌ DB Connection Failed:", err.message));
+// Test connection
+(async () => {
+  try {
+    await sequelize.authenticate();
+    console.log("✅ Database Connected Successfully with Sequelize!");
+  } catch (err) {
+    console.error("❌ DB Connection Failed:", err.message);
+  }
+})();
 
-module.exports = db;
+module.exports = sequelize;

@@ -11,6 +11,7 @@ module.exports = {
           user_name: 'admin',
           user_email: 'farooqahmadahmadi1400@gmail.com',
           password_hash: hash,
+          employee_id: 1,
           user_role: 'Admin',
           is_active: true,
           created_at: new Date(),
