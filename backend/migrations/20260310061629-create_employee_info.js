@@ -38,10 +38,10 @@ module.exports = {
         unique: true
       },
       emp_permanent_address: {
-        type: Sequelize.TEXT
+        type: Sequelize.STRING(255)
       },
       emp_current_address: {
-        type: Sequelize.TEXT
+        type: Sequelize.STRING(255)
       },
       emp_bank_account: {
         type: Sequelize.STRING(50)

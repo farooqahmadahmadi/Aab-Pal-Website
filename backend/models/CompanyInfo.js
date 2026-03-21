@@ -27,7 +27,7 @@ const CompanyInfo = sequelize.define('CompanyInfo', {
     unique: true
   },
   company_address: {
-    type: DataTypes.TEXT
+    type: DataTypes.STRING(255)
   },
   company_logo_url: {
     type: DataTypes.STRING(255)

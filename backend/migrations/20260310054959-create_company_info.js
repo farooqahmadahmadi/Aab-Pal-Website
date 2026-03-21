@@ -30,7 +30,7 @@ module.exports = {
         unique: true
       },
       company_address: {
-        type: Sequelize.TEXT,
+        type: Sequelize.STRING(255),
         allowNull: true
       },
       company_logo_url: {

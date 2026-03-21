@@ -42,11 +42,11 @@ const EmployeeInfo = sequelize.define("EmployeeInfo", {
         allowNull: true,
     },
     emp_permanent_address: {
-        type: DataTypes.TEXT,
+        type: DataTypes.STRING(255),
         allowNull: true,
     },
     emp_current_address: {
-        type: DataTypes.TEXT,
+        type: DataTypes.STRING(255),
         allowNull: true,
     },
     emp_bank_account: {

@@ -35,3 +35,4 @@ const Payments = sequelize.define('payments_info', {
 
 });
 
+module.exports = Payments;

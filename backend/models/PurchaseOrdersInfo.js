@@ -1,7 +1,7 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../config/db");
 
-const PurchaseOrderInfo = sequelize.define('PurchaseOrdersInfo', {
+const PurchaseOrdersInfo = sequelize.define('PurchaseOrdersInfo', {
     po_id: {
         type: DataTypes.BIGINT.UNSIGNED,
         primaryKey: true,
@@ -33,4 +33,4 @@ const PurchaseOrderInfo = sequelize.define('PurchaseOrdersInfo', {
 
 });
 
-Model.exports = PurchaseOrderInfo;
+module.exports = PurchaseOrdersInfo;
