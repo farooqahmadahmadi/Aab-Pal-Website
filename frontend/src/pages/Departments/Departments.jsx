@@ -35,6 +35,7 @@ export default function Departments() {
     // ===== SEARCH =====
     useEffect(() => {
         const f = departments.filter(d =>
+            d.department_id?.toString().includes(search) ||
             d.department_name.toLowerCase().includes(search.toLowerCase())
         );
         setFiltered(f);
@@ -99,19 +100,19 @@ export default function Departments() {
                 <table className="w-full">
                     <thead className="bg-gray-200 text-sm">
                         <tr>
-                            <th className="p-3 text-left">ID</th>
-                            <th className="p-3 text-left">Name</th>
-                            <th className="p-3 text-left">Description</th>
-                            <th className="p-3 text-center">Actions</th>
+                            <th className="p-2 text-center">ID</th>
+                            <th className="p-2 text-left">Name</th>
+                            <th className="p-2 text-left">Description</th>
+                            <th className="p-2 text-center">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         {paginated.map(d => (
                             <tr key={d.department_id} className="border-t hover:bg-gray-50">
-                                <td className="p-3">{d.department_id}</td>
-                                <td className="p-3">{d.department_name}</td>
-                                <td className="p-3">{d.department_description}</td>
-                                <td className="p-3 flex justify-center gap-2">
+                                <td className="p-2 text-center">{d.department_id}</td>
+                                <td className="p-2">{d.department_name}</td>
+                                <td className="p-2">{d.department_description}</td>
+                                <td className="p-2 flex justify-center gap-2">
                                     <button
                                         onClick={() => { setEditData(d); setModalOpen(true); }}
                                         className="bg-yellow-500 px-2 py-1 text-white rounded"

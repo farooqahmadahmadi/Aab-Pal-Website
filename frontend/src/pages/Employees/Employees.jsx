@@ -33,6 +33,11 @@ export default function Employees() {
 
     useEffect(() => {
         const f = employees.filter(e =>
+            e.employee_id?.toString().includes(search) ||
+            e.emp_phone?.toString().includes(search) ||
+            e.emp_nid_number.toLowerCase().includes(search.toLowerCase()) ||
+            e.emp_gender.toLowerCase().includes(search.toLowerCase()) ||
+            e.emp_email.toLowerCase().includes(search.toLowerCase()) ||
             e.emp_full_name.toLowerCase().includes(search.toLowerCase())
         );
         setFiltered(f);
@@ -92,27 +97,27 @@ export default function Employees() {
                 <table className="w-full">
                     <thead className="bg-gray-200 text-sm">
                         <tr>
-                            <th className="p-3 text-left">ID</th>
-                            <th className="p-3 text-left">Full Name</th>
-                            <th className="p-3 text-left">Father Name</th>
-                            <th className="p-3 text-left">NID</th>
-                            <th className="p-3 text-left">Gender</th>
-                            <th className="p-3 text-left">Phone</th>
-                            <th className="p-3 text-left">Email</th>
-                            <th className="p-3 text-center">Actions</th>
+                            <th className="p-2 text-left">ID</th>
+                            <th className="p-2 text-left">Full Name</th>
+                            <th className="p-2 text-left">Father Name</th>
+                            <th className="p-2 text-left">NID</th>
+                            <th className="p-2 text-left">Gender</th>
+                            <th className="p-2 text-left">Phone</th>
+                            <th className="p-2 text-left">Email</th>
+                            <th className="p-2 text-center">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         {paginated.map(e => (
                             <tr key={e.employee_id} className="border-t hover:bg-gray-50">
-                                <td className="p-3">{e.employee_id}</td>
-                                <td className="p-3">{e.emp_full_name}</td>
-                                <td className="p-3">{e.emp_father_name}</td>
-                                <td className="p-3">{e.emp_nid_number}</td>
-                                <td className="p-3">{e.emp_gender}</td>
-                                <td className="p-3">{e.emp_phone}</td>
-                                <td className="p-3">{e.emp_email}</td>
-                                <td className="p-3 flex justify-center gap-2">
+                                <td className="p-2">{e.employee_id}</td>
+                                <td className="p-2">{e.emp_full_name}</td>
+                                <td className="p-2">{e.emp_father_name}</td>
+                                <td className="p-2">{e.emp_nid_number}</td>
+                                <td className="p-2">{e.emp_gender}</td>
+                                <td className="p-2">{e.emp_phone}</td>
+                                <td className="p-2">{e.emp_email}</td>
+                                <td className="p-2 flex justify-center gap-2">
                                     <button onClick={() => { setEditData(e); setModalOpen(true); }} className="bg-yellow-500 px-2 py-1 text-white rounded"><FaEdit /></button>
                                     <button onClick={() => setDeleteData(e)} className="bg-red-500 px-2 py-1 text-white rounded"><FaTrash /></button>
                                 </td>

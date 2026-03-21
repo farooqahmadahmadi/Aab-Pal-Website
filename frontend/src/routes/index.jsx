@@ -25,6 +25,7 @@ import CompanyDocuments from "../pages/Company/CompanyDocuments";
 import Departments from "../pages/Departments/Departments";
 import EmployeeInfo from "../pages/Employees/Employees";
 import EmployeeEdcational from "../pages/Employees/EmployeeEducation";
+import EmployeeDocuments from "../pages/Employees/EmployeeDocuments";
 
 export default function AppRoutes() {
     return (
@@ -78,6 +79,15 @@ export default function AppRoutes() {
                     <ProtectedRoute allowedRoles={["Admin"]}>
                         <AdminLayout>
                             <EmployeeEdcational />
+                        </AdminLayout>
+                    </ProtectedRoute>
+                } />
+
+                
+                <Route path="/admin/employees/employee-documents" element={
+                    <ProtectedRoute allowedRoles={["Admin"]}>
+                        <AdminLayout>
+                            <EmployeeDocuments />
                         </AdminLayout>
                     </ProtectedRoute>
                 } />

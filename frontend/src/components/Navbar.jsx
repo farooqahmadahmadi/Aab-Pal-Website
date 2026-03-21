@@ -44,7 +44,7 @@ export default function Navbar({ sidebarOpen, setSidebarOpen, role }) {
 
         {/* Title */}
         <div className="flex ml-6 items-center space-x-4">
-          <h1 className=" text-xl font-bold">{role} Panel</h1>
+          <h1 className=" text-xl font-bold text-black">{role} Panel</h1>
         </div>
 
         {/* Right side */}

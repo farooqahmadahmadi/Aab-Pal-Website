@@ -26,7 +26,7 @@ export default function Sidebar({ role }) {
         <>
             {/* Toggle button */}
             <div className="fixed top-0.5 left-0.5 z-50">
-                <div onClick={() => setSidebarOpen(!sidebarOpen)} className="p-1.5 bg-white text-gray-900 font-bold rounded  hover:bg-gray-100">
+                <div onClick={() => setSidebarOpen(!sidebarOpen)} className="p-1.5 bg-white text-black font-bold rounded  hover:bg-gray-100">
                     {sidebarOpen ? <FiMinimize2 size={20} /> : <FiMaximize2 size={20} />}
                 </div>
             </div>
@@ -37,16 +37,16 @@ export default function Sidebar({ role }) {
             )}
 
             {/* Sidebar */}
-            <div className={`fixed top-9 left-0 h-screen w-56 bg-gray-900 text-white p-4 z-40 transform transition-transform duration-700 shadow-lg ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}`}>
+            <div className={`fixed top-9 left-0 h-screen w-56 bg-black text-white p-4 z-40 transform transition-transform duration-700 shadow-lg ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}`}>
 
                 {role === "Admin" && (
                     <>
-                        <Link to="/admin/dashboard" className={`flex items-center mb-2 p-2 rounded hover:bg-gray-700 ${isActive("/admin/dashboard")}`}>
-                            <FiPieChart className="mr-2" /> Dashboard
+                        <Link to="/admin/dashboard" className={`flex items-center mb-2 p-2 rounded hover:bg-gray-900 text-yellow-400 ${isActive("/admin/dashboard")}`}>
+                            <FiPieChart className="mr-2 text-yellow-400" /> Dashboard
                         </Link>
                         <div>
-                            <div className="flex items-center justify-between cursor-pointer mb-2 p-2 rounded hover:bg-gray-800" onClick={() => toggleMenu("company")}>
-                                <div className="flex items-center"><FiHome className="mr-2" />Company</div>
+                            <div className="flex items-center justify-between cursor-pointer mb-2 p-2 rounded hover:bg-gray-900 text-yellow-400" onClick={() => toggleMenu("company")}>
+                                <div className="flex items-center"><FiHome className="mr-2 text-yellow-400" />Company</div>
                                 {openMenu["company"] ? <FiChevronUp /> : <FiChevronDown />}
                             </div>
                             <div className={`ml-6 flex flex-col transition-all duration-500 overflow-hidden ${openMenu["company"] ? "max-h-40" : "max-h-0"}`}>
@@ -57,20 +57,20 @@ export default function Sidebar({ role }) {
                         </div>
 
                         <div>
-                            <div className="flex items-center justify-between cursor-pointer mb-2 p-2 rounded hover:bg-gray-800" onClick={() => toggleMenu("hr")}>
-                                <div className="flex items-center"><FiUsers className="mr-2" />HR</div>
+                            <div className="flex items-center justify-between cursor-pointer mb-2 p-2 rounded hover:bg-gray-900 text-yellow-400" onClick={() => toggleMenu("hr")}>
+                                <div className="flex items-center"><FiUsers className="mr-2 text-yellow-400" />HR</div>
                                 {openMenu["hr"] ? <FiChevronUp /> : <FiChevronDown />}
                             </div>
                             <div className={`ml-6 flex flex-col transition-all duration-500 overflow-hidden ${openMenu["hr"] ? "max-h-40" : "max-h-0"}`}>
                                 <Link to="/admin/employees/employee-info" className="mb-2 hover:text-gray-300 text-sm">Employees</Link>
                                 <Link to="/admin/employees/employee-education-info" className="mb-2 hover:text-gray-300 text-sm">Employee Education</Link>
-                                <Link to="/admin/departments/departments-info" className="mb-2 hover:text-gray-300 text-sm">Departments</Link>
+                                <Link to="/admin/employees/employee-documents" className="mb-2 hover:text-gray-300 text-sm">Employee Documents</Link>
                             </div>
                         </div>
 
                         <div>
-                            <div className="flex items-center justify-between cursor-pointer mb-2 p-2 rounded hover:bg-gray-800" onClick={() => toggleMenu("users")}>
-                                <div className="flex items-center"><FiUsers className="mr-2" />Users</div>
+                            <div className="flex items-center justify-between cursor-pointer mb-2 p-2 rounded hover:bg-gray-900 text-yellow-400" onClick={() => toggleMenu("users")}>
+                                <div className="flex items-center"><FiUsers className="mr-2 text-yellow-400" />Users</div>
                                 {openMenu["users"] ? <FiChevronUp /> : <FiChevronDown />}
                             </div>
                             <div className={`ml-6 flex flex-col transition-all duration-500 overflow-hidden ${openMenu["users"] ? "max-h-40" : "max-h-0"}`}>
@@ -83,11 +83,11 @@ export default function Sidebar({ role }) {
 
                 {role === "HR" && (
                     <>
-                        <Link to="/hr/dashboard" className={`flex items-center mb-2 p-2 rounded hover:bg-gray-700 ${isActive("/hr/dashboard")}`}>
+                        <Link to="/hr/dashboard" className={`flex items-center mb-2 p-2 rounded hover:bg-gray-900 ${isActive("/hr/dashboard")}`}>
                             <FiPieChart className="mr-2" /> Dashboard
                         </Link>
                         <div>
-                            <div className="flex items-center justify-between cursor-pointer mb-2 p-2 rounded hover:bg-gray-800" onClick={() => toggleMenu("HR")}>
+                            <div className="flex items-center justify-between cursor-pointer mb-2 p-2 rounded hover:bg-gray-900" onClick={() => toggleMenu("HR")}>
                                 <div className="flex items-center"><FiUsers className="mr-2" /> HR</div>
                                 {openMenu["HR"] ? <FiChevronUp /> : <FiChevronDown />}
                             </div>
@@ -103,10 +103,10 @@ export default function Sidebar({ role }) {
                 {/* Financial */}
                 {role === "Financial" && (
                     <>
-                        <Link to="/financial/dashboard" className={`flex items-center mb-2 p-2 rounded hover:bg-gray-800 ${isActive("/financial/dashboard")}`}>
+                        <Link to="/financial/dashboard" className={`flex items-center mb-2 p-2 rounded hover:bg-gray-900 ${isActive("/financial/dashboard")}`}>
                             <FiHome className="mr-2" /> Dashboard
                         </Link>
-                        <Link to="/financial/reports" className={`flex items-center mb-2 p-2 rounded hover:bg-gray-800 ${isActive("/financial/reports")}`}>
+                        <Link to="/financial/reports" className={`flex items-center mb-2 p-2 rounded hover:bg-gray-900 ${isActive("/financial/reports")}`}>
                             <FiDollarSign className="mr-2" /> Reports
                         </Link>
                     </>
@@ -115,10 +115,10 @@ export default function Sidebar({ role }) {
                 {/* PM */}
                 {role === "PM" && (
                     <>
-                        <Link to="/pm/dashboard" className={`flex items-center mb-2 p-2 rounded hover:bg-gray-800 ${isActive("/pm/dashboard")}`}>
+                        <Link to="/pm/dashboard" className={`flex items-center mb-2 p-2 rounded hover:bg-gray-900 ${isActive("/pm/dashboard")}`}>
                             <FiHome className="mr-2" /> Dashboard
                         </Link>
-                        <Link to="/pm/projects" className={`flex items-center mb-2 p-2 rounded hover:bg-gray-800 ${isActive("/pm/projects")}`}>
+                        <Link to="/pm/projects" className={`flex items-center mb-2 p-2 rounded hover:bg-gray-900 ${isActive("/pm/projects")}`}>
                             <FiBriefcase className="mr-2" /> Projects
                         </Link>
                     </>
@@ -127,10 +127,10 @@ export default function Sidebar({ role }) {
                 {/* Employee */}
                 {role === "Employee" && (
                     <>
-                        <Link to="/employee/dashboard" className={`flex items-center mb-2 p-2 rounded hover:bg-gray-800 ${isActive("/employee/dashboard")}`}>
+                        <Link to="/employee/dashboard" className={`flex items-center mb-2 p-2 rounded hover:bg-gray-900 ${isActive("/employee/dashboard")}`}>
                             <FiHome className="mr-2" /> Dashboard
                         </Link>
-                        <Link to="/employee/tasks" className={`flex items-center mb-2 p-2 rounded hover:bg-gray-800 ${isActive("/employee/tasks")}`}>
+                        <Link to="/employee/tasks" className={`flex items-center mb-2 p-2 rounded hover:bg-gray-900 ${isActive("/employee/tasks")}`}>
                             <FiClipboard className="mr-2" /> Tasks
                         </Link>
                     </>
@@ -138,7 +138,7 @@ export default function Sidebar({ role }) {
 
                 {/* Client */}
                 {role === "Client" && (
-                    <Link to="/client/dashboard" className={`flex items-center mb-2 p-2 rounded hover:bg-gray-800 ${isActive("/client/dashboard")}`}>
+                    <Link to="/client/dashboard" className={`flex items-center mb-2 p-2 rounded hover:bg-gray-900 ${isActive("/client/dashboard")}`}>
                         <FiHome className="mr-2" /> Dashboard
                     </Link>
                 )}

@@ -87,7 +87,7 @@ export default function UserViewModal({ user, onClose, onRefresh }) {
               </button>
             )}
 
-            <button onClick={handleResetPassword} className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded flex items-center gap-2">
+            <button onClick={handleResetPassword} className="bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded flex items-center gap-2">
               <FaKey /> Reset Password
             </button>
           </div>
