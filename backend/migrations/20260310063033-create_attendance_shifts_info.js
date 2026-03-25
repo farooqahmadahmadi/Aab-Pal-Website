@@ -24,15 +24,15 @@ module.exports = {
       },
       longitude: {
         type: Sequelize.DECIMAL(10, 7),
-        allowNull: true
+        allowNull: false
       },
       latitude: {
         type: Sequelize.DECIMAL(10, 7),
-        allowNull: true
+        allowNull: false
       },
       reduce: {
-        type: Sequelize.BOOLEAN,
-        defaultValue: false
+        type: Sequelize.BIGINT.UNSIGNED,
+        defaultValue: 10
       },
       created_at: {
         type: Sequelize.DATE

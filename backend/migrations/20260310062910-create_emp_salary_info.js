@@ -14,6 +14,7 @@ module.exports = {
           model: 'employee_info',
           key: 'employee_id'
         },
+        onUpdate: 'CASCADE',
         onDelete: 'CASCADE'
       },
       base_salary: {
@@ -27,6 +28,10 @@ module.exports = {
       },
       effective_to: {
         type: Sequelize.DATEONLY
+      },
+      is_active: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: false
       },
       created_at: {
         type: Sequelize.DATE

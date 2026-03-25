@@ -3,7 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import API from "../services/api";
 import { FiBell, FiUser, FiLogOut } from "react-icons/fi";
-import UserChangePasswordModal from "../pages/Users/UserChangePasswordModal";
+import UserChangePasswordModal from "../components/Users/UserChangePasswordModal";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function Navbar({ sidebarOpen, setSidebarOpen, role }) {

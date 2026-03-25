@@ -8,10 +8,10 @@ import {
 
 import Toast from "../../components/common/Toast";
 import useToast from "../../hooks/useToast";
-import EmployeeEducationModal from "./EmployeeEducationModal";
+import EmployeeEducationModal from "../../components/Employees/EmployeeEducationModal";
 import Pagination from "../../components/common/Pagination";
 import SearchBar from "../../components/common/SearchBar";
-import { FaPlus, FaEdit, FaTrash } from "react-icons/fa";
+import { FaPlus } from "react-icons/fa";
 
 export default function EmployeeEducation() {
 
@@ -147,13 +147,13 @@ export default function EmployeeEducation() {
                                         onClick={() => { setEditData(r); setModalOpen(true); }}
                                         className="bg-yellow-500 px-2 py-1 text-white rounded"
                                     >
-                                        <FaEdit />
+                                        Edit
                                     </button>
                                     <button
                                         onClick={() => setDeleteData(r)}
                                         className="bg-red-500 px-2 py-1 text-white rounded"
                                     >
-                                        <FaTrash />
+                                        Delete
                                     </button>
                                 </td>
                             </tr>

@@ -61,10 +61,17 @@ export default function Sidebar({ role }) {
                                 <div className="flex items-center"><FiUsers className="mr-2 text-yellow-400" />HR</div>
                                 {openMenu["hr"] ? <FiChevronUp /> : <FiChevronDown />}
                             </div>
-                            <div className={`ml-6 flex flex-col transition-all duration-500 overflow-hidden ${openMenu["hr"] ? "max-h-40" : "max-h-0"}`}>
+                            <div className={`ml-6 flex flex-col transition-all duration-500 overflow-hidden ${openMenu["hr"] ? "max-h-full" : "max-h-0"}`}>
                                 <Link to="/admin/employees/employee-info" className="mb-2 hover:text-gray-300 text-sm">Employees</Link>
                                 <Link to="/admin/employees/employee-education-info" className="mb-2 hover:text-gray-300 text-sm">Employee Education</Link>
                                 <Link to="/admin/employees/employee-documents" className="mb-2 hover:text-gray-300 text-sm">Employee Documents</Link>
+                                <Link to="/admin/employees/employee-salary-info" className="mb-2 hover:text-gray-300 text-sm">Employee Salary</Link>
+                                <Link to="/admin/employees/attendance-shifts" className="mb-2 hover:text-gray-300 text-sm">Attendance Shifts</Link>
+                                <Link to="/admin/employees/employee-hiring-info" className="mb-2 hover:text-gray-300 text-sm">Employee Hiring</Link>
+                                <Link to="/admin/employees/employee-attendance-list" className="mb-2 hover:text-gray-300 text-sm">Employee Attendance List </Link>
+                                <Link to="/admin/employees/employee-attendance" className="mb-2 hover:text-gray-300 text-sm">Employee Attendance </Link>
+
+
                             </div>
                         </div>
 
@@ -94,7 +101,7 @@ export default function Sidebar({ role }) {
                             <div className={`ml-6 flex flex-col transition-all duration-500 overflow-hidden ${openMenu["HR"] ? "max-h-40" : "max-h-0"}`}>
                                 <Link to="/hr/employees/employee-info" className="mb-1 hover:text-gray-300">Employees</Link>
                                 <Link to="/hr/employees/list" className="mb-1 hover:text-gray-300">Employees List</Link>
-                                <Link to="/hr/employees/salary" className="mb-1 hover:text-gray-300">Employees Salary</Link>
+                                <Link to="/hr/employees/employee-attendance" className="mb-2 hover:text-gray-300 text-sm">Employee Attendance </Link>
                             </div>
                         </div>
                     </>

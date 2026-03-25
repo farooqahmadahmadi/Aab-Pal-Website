@@ -26,15 +26,15 @@ const AttendanceShiftsInfo = sequelize.define(
         },
         longitude: {
             type: DataTypes.DECIMAL(10, 7),
-            allowNull: true
+            allowNull: false
         },
         latitude: {
             type: DataTypes.DECIMAL(10, 7),
-            allowNull: true
+            allowNull: false
         },
         reduce: {
-            type: DataTypes.BOOLEAN,
-            defaultValue: false
+            type: DataTypes.BIGINT.UNSIGNED,
+            defaultValue: 10
         },
         is_deleted: {
             type: DataTypes.BOOLEAN,

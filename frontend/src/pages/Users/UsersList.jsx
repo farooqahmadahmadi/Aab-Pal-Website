@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { getUsers, deleteUser } from "../../services/userService";
-import UserViewModal from "./UserViewModal";
-import UserAddModal from "./UserAddModal";
+import UserViewModal from "../../components/Users/UserViewModal";
+import UserAddModal from "../../components/Users/UserAddModal";
 import Pagination from "../../components/common/Pagination";
 import SearchBar from "../../components/common/SearchBar";
 import Toast from "../../components/common/Toast";
@@ -22,7 +22,9 @@ export default function UsersList() {
 
     const fetchUsers = async () => {
         const res = await getUsers({
-            page, search, limit: 10
+            page,
+            search,
+            limit: 10
         });
         setUsers(res.data.users);
         setTotal(res.data.total);
@@ -55,7 +57,7 @@ export default function UsersList() {
         <div className="p-4">
             {/* ===== Top Bar ===== */}
             <div className="flex flex-col sm:flex-row justify-between items-center gap-3 mb-4">
-                <h2 className="text-xl font-bold">Users Management</h2>
+                <h2 className="text-xl font-bold">System Users Account Management</h2>
                 <div className="flex gap-2 w-full sm:w-auto">
                     <SearchBar value={search} onChange={setSearch} />
                     <button
@@ -68,7 +70,7 @@ export default function UsersList() {
             </div>
 
             {/* ===== Table ===== */}
-            <div className="overflow-x-auto bg-white shadow rounded-lg">
+            <div className="overflow-x-auto bg-white shadow rounded">
                 <table className="min-w-full">
                     <thead className="bg-gray-200 text-gray-700 text-sm">
                         <tr>
@@ -93,7 +95,7 @@ export default function UsersList() {
                                         {u.login_status}
                                     </span>
                                 </td>
-                                <td className="p-3 flex justify-center gap-2">
+                                <td className="p-2 flex justify-center gap-2">
                                     <button
                                         onClick={() => { setSelectedUser(u); setShowView(true); }}
                                         className="bg-yellow-500 hover:bg-yellow-600 text-white px-2 py-1 rounded text-sm"

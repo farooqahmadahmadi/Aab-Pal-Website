@@ -26,6 +26,11 @@ import Departments from "../pages/Departments/Departments";
 import EmployeeInfo from "../pages/Employees/Employees";
 import EmployeeEdcational from "../pages/Employees/EmployeeEducation";
 import EmployeeDocuments from "../pages/Employees/EmployeeDocuments";
+import EmployeeSalaryInfo from "../pages/Employees/EmployeeSalary";
+import AttendanceShifts from "../pages/Employees/AttendanceShifts";
+import EmployeeHiringInfo from "../pages/Employees/EmpHiringInfo";
+import EmployeeAttendanceList from "../pages/Employees/EmployeeAttendanceList";
+import EmployeeAttendance from "../pages/Employees/EmployeeAttendance";
 
 export default function AppRoutes() {
     return (
@@ -83,11 +88,51 @@ export default function AppRoutes() {
                     </ProtectedRoute>
                 } />
 
-                
+
                 <Route path="/admin/employees/employee-documents" element={
                     <ProtectedRoute allowedRoles={["Admin"]}>
                         <AdminLayout>
                             <EmployeeDocuments />
+                        </AdminLayout>
+                    </ProtectedRoute>
+                } />
+
+                <Route path="/admin/employees/employee-salary-info" element={
+                    <ProtectedRoute allowedRoles={["Admin"]}>
+                        <AdminLayout>
+                            <EmployeeSalaryInfo />
+                        </AdminLayout>
+                    </ProtectedRoute>
+                } />
+
+                <Route path="/admin/employees/attendance-shifts" element={
+                    <ProtectedRoute allowedRoles={["Admin"]}>
+                        <AdminLayout>
+                            <AttendanceShifts />
+                        </AdminLayout>
+                    </ProtectedRoute>
+                } />
+
+                <Route path="/admin/employees/employee-hiring-info" element={
+                    <ProtectedRoute allowedRoles={["Admin"]}>
+                        <AdminLayout>
+                            <EmployeeHiringInfo />
+                        </AdminLayout>
+                    </ProtectedRoute>
+                } />
+
+                <Route path="/admin/employees/employee-attendance-list" element={
+                    <ProtectedRoute allowedRoles={["Admin"]}>
+                        <AdminLayout>
+                            <EmployeeAttendanceList />
+                        </AdminLayout>
+                    </ProtectedRoute>
+                } />
+
+                <Route path="/admin/employees/employee-attendance" element={
+                    <ProtectedRoute allowedRoles={["Admin"]}>
+                        <AdminLayout>
+                            <EmployeeAttendance />
                         </AdminLayout>
                     </ProtectedRoute>
                 } />
@@ -116,6 +161,15 @@ export default function AppRoutes() {
                         </AdminLayout>
                     </ProtectedRoute>
                 } />
+
+                <Route path="/hr/employees/employee-attendance" element={
+                    <ProtectedRoute allowedRoles={["HR"]}>
+                        <AdminLayout>
+                            <EmployeeAttendance />
+                        </AdminLayout>
+                    </ProtectedRoute>
+                } />
+
 
                 {/* Financial */}
                 <Route path="/financial/dashboard" element={

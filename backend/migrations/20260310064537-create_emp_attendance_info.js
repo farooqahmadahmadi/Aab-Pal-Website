@@ -14,6 +14,7 @@ module.exports = {
           model: 'employee_info',
           key: 'employee_id'
         },
+        onUpdate: 'CASCADE',
         onDelete: 'CASCADE'
       },
       attendance_date: {

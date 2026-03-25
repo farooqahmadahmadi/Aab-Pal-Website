@@ -4,8 +4,8 @@ import Toast from "../../components/common/Toast";
 import useToast from "../../hooks/useToast";
 import SearchBar from "../../components/common/SearchBar";
 import Pagination from "../../components/common/Pagination";
-import EmployeeModal from "./EmployeeModal";
-import { FaPlus, FaEdit, FaTrash } from "react-icons/fa";
+import EmployeeModal from "../../components/Employees/EmployeeModal";
+import { FaPlus } from "react-icons/fa";
 
 export default function Employees() {
     const [employees, setEmployees] = useState([]);
@@ -118,8 +118,8 @@ export default function Employees() {
                                 <td className="p-2">{e.emp_phone}</td>
                                 <td className="p-2">{e.emp_email}</td>
                                 <td className="p-2 flex justify-center gap-2">
-                                    <button onClick={() => { setEditData(e); setModalOpen(true); }} className="bg-yellow-500 px-2 py-1 text-white rounded"><FaEdit /></button>
-                                    <button onClick={() => setDeleteData(e)} className="bg-red-500 px-2 py-1 text-white rounded"><FaTrash /></button>
+                                    <button onClick={() => { setEditData(e); setModalOpen(true); }} className="bg-yellow-500 px-2 py-1 text-white rounded">Edit</button>
+                                    <button onClick={() => setDeleteData(e)} className="bg-red-500 px-2 py-1 text-white rounded">Delete</button>
                                 </td>
                             </tr>
                         ))}

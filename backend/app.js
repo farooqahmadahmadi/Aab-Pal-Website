@@ -12,7 +12,10 @@ const departmentRoutes = require("./routes/departmentRoutes");
 const employeeRoutes = require("./routes/employeeRoutes");
 const employeeEducationRoutes = require("./routes/employeeEducationRoutes");
 const employeeDocumentsRoutes = require("./routes/employeeDocumentsRoutes");
-
+const employeeSalaryRoutes = require("./routes/employeeSalaryRoutes");
+const attendanceShiftsRoutes = require("./routes/attendanceShiftsInfoRoutes");
+const empHiringInfoRoutes = require("./routes/empHiringInfoRoutes");
+const attendanceRoutes = require("./routes/employeeAttendanceRoutes");
 
 const app = express();
 
@@ -43,6 +46,11 @@ app.use("/api/departments", departmentRoutes);
 app.use("/api/employees", employeeRoutes);
 app.use("/api/employee-educational-info", employeeEducationRoutes);
 app.use("/api/employee-documents", employeeDocumentsRoutes);
+app.use("/api/employee-salary", employeeSalaryRoutes);
+app.use("/api/attendance-shifts-info", attendanceShiftsRoutes);
+app.use("/api/emp-hiring-info", empHiringInfoRoutes);
+app.use("/api/employee-attendance", attendanceRoutes);
+
 
 // Error handler
 app.use((err, req, res, next) => {

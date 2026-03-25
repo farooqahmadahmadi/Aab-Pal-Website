@@ -32,7 +32,7 @@ const EmpHiringInfo = sequelize.define("EmpHiringInfo", {
         type: DataTypes.DATEONLY
     },
     current_status: {
-        type: DataTypes.STRING(50)
+        type: DataTypes.ENUM('Active', 'InActive','Other')
     },
     is_deleted: {
         type: DataTypes.BOOLEAN,

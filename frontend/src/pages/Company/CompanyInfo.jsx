@@ -16,7 +16,6 @@ export default function CompanyInfo() {
   const fetchData = async () => {
     try {
       const res = await API.get("/company");
-
       setData(res.data);
 
       if (res.data?.company_logo_url) {
@@ -24,7 +23,6 @@ export default function CompanyInfo() {
       } else {
         setLogoPreview(null);
       }
-
     } catch (err) {
       showToast("Failed to load company info", "error");
     }
@@ -46,8 +44,6 @@ export default function CompanyInfo() {
     if (!file) return;
 
     setData({ ...data, logoFile: file });
-
-    // 🔥 instant preview
     setLogoPreview(URL.createObjectURL(file));
   };
 
@@ -55,16 +51,11 @@ export default function CompanyInfo() {
   const handleSave = async () => {
     try {
       const formData = new FormData();
-
       Object.keys(data).forEach((key) => {
-        if (key !== "logoFile") {
-          formData.append(key, data[key]);
-        }
+        if (key !== "logoFile") formData.append(key, data[key]);
       });
 
-      if (data.logoFile) {
-        formData.append("logo", data.logoFile);
-      }
+      if (data.logoFile) formData.append("logo", data.logoFile);
 
       await API.put("/company", formData, {
         headers: { "Content-Type": "multipart/form-data" },
@@ -73,7 +64,6 @@ export default function CompanyInfo() {
       showToast("Company info updated successfully", "success");
       setEditMode(false);
       fetchData();
-
     } catch (err) {
       console.error(err);
       showToast("Failed to update company info", "error");
@@ -86,71 +76,117 @@ export default function CompanyInfo() {
         <div className="bg-white backdrop-blur-md shadow-xl rounded-2xl p-8 w-full max-w-2xl relative border">
 
           {/* Edit / Save */}
-          <div className="absolute top-4 right-4 ">
+          <div className="absolute top-3 right-3">
             {!editMode ? (
-              <button onClick={() => setEditMode(true)}
-                className="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded flex items-center gap-2">
-                <FaEdit /> Edit
+              <button
+                onClick={() => setEditMode(true)}
+                title="Edit"
+                className="bg-yellow-500 hover:bg-yellow-600 text-white px-2 py-2 rounded-full flex items-center gap-2"
+              >
+                <FaEdit />
               </button>
             ) : (
-              <button onClick={handleSave}
-                className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded flex items-center gap-2">
-                <FaSave /> Save
+              <button
+                onClick={handleSave}
+                title="Save"
+                className="bg-green-500 hover:bg-green-600 text-white px-2 py-2  rounded-full flex items-center gap-2"
+              >
+                <FaSave />
               </button>
             )}
           </div>
 
-          {/* ===== Logo ===== */}
+          {/* ===== Fancy Logo ===== */}
           <div className="flex justify-center mb-6">
-            <div className="relative group">
+            <div className="relative group w-48 h-48 rounded-full p-[5px]
+              bg-gradient-to-r from-red-400 via-orange-400 via-yellow-300 via-green-400 via-blue-400 via-indigo-400 via-purple-400 to-pink-400
+              animate-[gradientShift_12s_linear_infinite] 
+              animate-[spin_25s_linear_infinite]">
 
-              <img
-                src={logoPreview || "/default-logo.png"}   // 🔥 NO external URL
-                alt="Company Logo"
-                className="w-40 h-40 rounded-full object-cover border-4 border-gray-200 shadow-md"
-              />
+              <div className="w-full h-full rounded-full bg-white flex items-center justify-center overflow-hidden
+                animate-[pulse_3s_ease-in-out_infinite] scale-100 hover:scale-110 transition-transform duration-600">
 
-              {editMode && (
-                <label className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-40 rounded-full cursor-pointer opacity-0 group-hover:opacity-100 transition">
-                  <FaCamera className="text-white text-xl" />
-                  <input
-                    type="file"
-                    accept="image/*"
-                    onChange={handleLogoChange}
-                    className="hidden"
-                  />
-                </label>
-              )}
+                <img
+                  src={logoPreview || "/default-logo.png"}
+                  alt="Company Logo"
+                  className="w-44 h-44 rounded-full object-cover border-4 border-gray-100 shadow-lg"
+                />
 
+                {editMode && (
+                  <label className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-40 rounded-full cursor-pointer opacity-0 group-hover:opacity-100 transition">
+                    <FaCamera className="text-white text-xl" />
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleLogoChange}
+                      className="hidden"
+                    />
+                  </label>
+                )}
+
+              </div>
             </div>
           </div>
 
           {/* Title */}
-          <h2 className="text-2xl font-bold text-center mb-6">
-            Company Information
-          </h2>
+          <h2 className="text-2xl font-bold text-center mb-6">Company Information</h2>
 
           {/* Form */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+            <input
+              name="company_name"
+              value={data.company_name || ""}
+              onChange={handleChange}
+              disabled={!editMode}
+              placeholder="Company Name"
+              className="border p-3 rounded w-full"
+            />
 
-            <input name="company_name" value={data.company_name || ""} onChange={handleChange} disabled={!editMode} placeholder="Company Name" className="border p-3 rounded w-full" />
+            <input
+              name="license_number"
+              value={data.license_number || ""}
+              onChange={handleChange}
+              disabled={!editMode}
+              placeholder="License Number"
+              className="border p-3 rounded w-full"
+            />
 
-            <input name="license_number" value={data.license_number || ""} onChange={handleChange} disabled={!editMode} placeholder="License Number" className="border p-3 rounded w-full" />
-
-            <input type="date" name="license_expire_date"
+            <input
+              type="date"
+              name="license_expire_date"
               value={data.license_expire_date?.slice(0, 10) || ""}
               onChange={handleChange}
               disabled={!editMode}
-              className="border p-3 rounded w-full" />
+              className="border p-3 rounded w-full"
+            />
 
-            <input name="company_phone" value={data.company_phone || ""} onChange={handleChange} disabled={!editMode} placeholder="Phone" className="border p-3 rounded w-full" />
+            <input
+              name="company_phone"
+              value={data.company_phone || ""}
+              onChange={handleChange}
+              disabled={!editMode}
+              placeholder="Phone"
+              className="border p-3 rounded w-full"
+            />
 
-            <input name="company_email" value={data.company_email || ""} onChange={handleChange} disabled={!editMode} placeholder="Email" className="border p-3 rounded w-full col-span-2" />
+            <input
+              name="company_email"
+              value={data.company_email || ""}
+              onChange={handleChange}
+              disabled={!editMode}
+              placeholder="Email"
+              className="border p-3 rounded w-full col-span-2"
+            />
 
-            <input name="company_address" value={data.company_address || ""} onChange={handleChange} disabled={!editMode} placeholder="Address" className="border p-3 rounded w-full col-span-2" />
-
+            <input
+              name="company_address"
+              value={data.company_address || ""}
+              onChange={handleChange}
+              disabled={!editMode}
+              placeholder="Address"
+              className="border p-3 rounded w-full col-span-2"
+            />
           </div>
-
         </div>
       </div>
 

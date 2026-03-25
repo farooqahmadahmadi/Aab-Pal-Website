@@ -14,6 +14,7 @@ module.exports = {
           model: 'employee_info',
           key: 'employee_id'
         },
+        onUpdate: 'CASCADE',
         onDelete: 'CASCADE'
       },
       department_id: {
@@ -23,6 +24,7 @@ module.exports = {
           model: 'department_info',
           key: 'department_id'
         },
+        onUpdate: 'CASCADE',
         onDelete: 'CASCADE'
       },
       attendance_shift_id: {
@@ -32,7 +34,9 @@ module.exports = {
           model: 'attendance_shifts_info',
           key: 'attendance_shift_id'
         },
+        onUpdate: 'CASCADE',
         onDelete: 'CASCADE'
+
       },
       position: {
         type: Sequelize.STRING(50)
@@ -47,7 +51,7 @@ module.exports = {
         type: Sequelize.DATEONLY
       },
       current_status: {
-        type: Sequelize.STRING(50)
+        type: Sequelize.ENUM('Active', 'InActive', 'Other')
       },
       created_at: {
         type: Sequelize.DATE

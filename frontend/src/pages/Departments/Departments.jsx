@@ -4,7 +4,7 @@ import Toast from "../../components/common/Toast";
 import useToast from "../../hooks/useToast";
 import SearchBar from "../../components/common/SearchBar";
 import Pagination from "../../components/common/Pagination";
-import DepartmentModal from "./DepartmentModal";
+import DepartmentModal from "../../components/Departments/DepartmentModal";
 import { FaPlus, FaEdit, FaTrash } from "react-icons/fa";
 
 export default function Departments() {

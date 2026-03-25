@@ -96,7 +96,7 @@ export default function Login() {
             className=" min-h-screen flex items-center justify-center w-svw p-4 bg-cover"
             style={{ backgroundImage: `url(${loginBg})` }}
         >
-            <div className="absolute inset-0 bg-black bg-opacity-35 "></div>
+            <div className="absolute inset-0 bg-black bg-opacity-40 "></div>
 
             <div className="bg-white bg-opacity-10 border border-gray-500 backdrop-blur-sm rounded-xl shadow-2xl p-8 w-full max-w-md relative">
                 <h2 className="text-2xl font-bold mb-8 text-center text-white">Welcome! Let's Login</h2>

@@ -23,6 +23,10 @@ const EmpSalaryInfo = sequelize.define("EmpSalaryInfo", {
     effective_to: {
         type: DataTypes.DATEONLY
     },
+    is_active: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false
+    },
     is_deleted: {
         type: DataTypes.BOOLEAN,
         defaultValue: false

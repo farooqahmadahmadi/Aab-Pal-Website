@@ -11,8 +11,29 @@ const JWT_SECRET = process.env.JWT_SECRET || "supersecretkey";
 exports.login = async (req, res) => {
     try {
         const { user_email, password } = req.body;
+
+        // 🔥 get user from service
         const data = await loginUser(user_email, password);
-        res.json(data);
+
+        // 🔥 مهم: token rebuild with employee_id
+        const user = data.user;
+
+        const token = jwt.sign(
+            {
+                id: user.user_id,
+                employee_id: user.employee_id, // ✅ FIX
+                role: user.user_role
+            },
+            JWT_SECRET,
+            { expiresIn: "1d" }
+        );
+
+        res.json({
+            message: "Login successful",
+            token,
+            user
+        });
+
     } catch (err) {
         console.error(err);
         res.status(400).json({ message: err.message });
@@ -22,7 +43,7 @@ exports.login = async (req, res) => {
 // ---------------- LOGOUT ----------------
 exports.logout = async (req, res) => {
     try {
-        const userId = req.user.id;
+        const userId = req.user.user_id; // ✅ fix id
         await logoutUser(userId);
         res.json({ message: "Logged out successfully" });
     } catch (err) {
@@ -56,7 +77,7 @@ exports.forgotPassword = async (req, res) => {
             to: user_email,
             subject: "Password Reset Request",
             html: `<p>Hello ${user.user_name},</p>
-                   <p>Click the link below to reset your password. The link will expire in 10 minutes.</p>
+                   <p>Click the link below to reset your password.</p>
                    <a href="${resetLink}" target="_blank">${resetLink}</a>`
         });
 
@@ -82,6 +103,7 @@ exports.resetPassword = async (req, res) => {
 
         const hash = await bcrypt.hash(new_password, 10);
         await user.update({ password_hash: hash });
+
         res.json({ message: "Password has been reset successfully!" });
 
     } catch (err) {
@@ -93,7 +115,8 @@ exports.resetPassword = async (req, res) => {
 // ---------------- CHANGE PASSWORD ----------------
 exports.changePassword = async (req, res) => {
     try {
-        const userId = req.user.id;
+        const userId = req.user.user_id;
+
         const { old_password, new_password } = req.body;
 
         if (!old_password || !new_password) {
@@ -114,6 +137,34 @@ exports.changePassword = async (req, res) => {
     } catch (err) {
         console.error(err);
         res.status(500).json({ message: "Failed to change password" });
+    }
+};
+
+// ---------------- USERS CRUD ----------------
+exports.getUsers = async (req, res) => {
+    try {
+        const { page = 1, limit = 10, search = "", sortField = "user_name", sortOrder = "ASC" } = req.query;
+        const offset = (page - 1) * limit;
+
+        const users = await Users.findAndCountAll({
+            where: {
+                [Op.or]: [
+                    { user_name: { [Op.like]: `%${search}%` } },
+                    { user_email: { [Op.like]: `%${search}%` } },
+                    { user_role: { [Op.like]: `%${search}%` } },
+                    { login_status: { [Op.like]: `%${search}%` } },
+                ]
+            },
+            order: [[sortField, sortOrder]],
+            limit: parseInt(limit),
+            offset: parseInt(offset),
+        });
+
+        res.json({ total: users.count, users: users.rows });
+
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: "Failed to fetch users" });
     }
 };
 
