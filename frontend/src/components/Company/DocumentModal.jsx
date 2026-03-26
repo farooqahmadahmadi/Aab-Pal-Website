@@ -73,15 +73,13 @@ export default function DocumentModal({ isOpen, onClose, onSubmit, initialData }
                         </div>
                     </label>
                     <div className="flex justify-end gap-2 mt-2">
-                        <button
-                            type="button"
+                        <button type="button" className="bg-gray-400 hover:bg-gray-500 text-white px-4 py-2 rounded"
                             onClick={onClose}
-                            className="bg-gray-300 px-4 py-2 rounded"
                         >
                             Cancel
                         </button>
-                        <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded">
-                            {initialData ? "Update" : "Add"}
+                        <button type="submit" className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded">
+                            {initialData ? "Update" : "Save"}
                         </button>
                     </div>
                 </form>

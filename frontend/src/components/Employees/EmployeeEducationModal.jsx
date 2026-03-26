@@ -120,7 +120,7 @@ export default function EmployeeEducationModal({ isOpen, onClose, onSubmit, init
 
             <button
               type="submit"
-              className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded"
+              className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded"
             >
               {initialData ? "Update" : "Save"}
             </button>

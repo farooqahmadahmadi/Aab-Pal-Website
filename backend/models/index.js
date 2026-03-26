@@ -6,7 +6,7 @@ const EmployeeEducationalInfo = require('./EmployeeEducationalInfo');
 const EmpSalaryInfo = require('./EmpSalaryInfo');
 const EmpHiringInfo = require('./EmpHiringInfo');
 const EmpAttendanceInfo = require('./EmpAttendanceInfo');
-const EmpAttendSummaryInfo = require('./EmpAttendSummaryInfo');
+// const EmpAttendSummaryInfo = require('./EmpAttendSummaryInfo');
 const AttendanceShiftsInfo = require('./AttendanceShiftsInfo');
 const DepartmentInfo = require('./DepartmentInfo');
 const EmpSalaryPaymentInfo = require('./EmpSalaryPaymentInfo');
@@ -66,8 +66,8 @@ EmployeeInfo.hasMany(EmpAttendanceInfo, { foreignKey: 'employee_id' });
 EmpAttendanceInfo.belongsTo(EmployeeInfo, { foreignKey: 'employee_id' });
 
 // Employee to Attendance Summary Info
-EmployeeInfo.hasMany(EmpAttendSummaryInfo, { foreignKey: 'employee_id' });
-EmpAttendSummaryInfo.belongsTo(EmployeeInfo, { foreignKey: 'employee_id' });
+// EmployeeInfo.hasMany(EmpAttendSummaryInfo, { foreignKey: 'employee_id' });
+// EmpAttendSummaryInfo.belongsTo(EmployeeInfo, { foreignKey: 'employee_id' });
 
 // AttendanceShift to Hiring Info
 AttendanceShiftsInfo.hasMany(EmpHiringInfo, { foreignKey: 'attendance_shift_id' });
@@ -82,8 +82,8 @@ EmpSalaryInfo.hasMany(EmpSalaryPaymentInfo, { foreignKey: 'employee_salary_id' }
 EmpSalaryPaymentInfo.belongsTo(EmpSalaryInfo, { foreignKey: 'employee_salary_id' });
 
 // Attendance Summary to Payment Info
-EmpAttendSummaryInfo.hasMany(EmpSalaryPaymentInfo, { foreignKey: 'attend_summary_id' });
-EmpSalaryPaymentInfo.belongsTo(EmpAttendSummaryInfo, { foreignKey: 'attend_summary_id' });
+// EmpAttendSummaryInfo.hasMany(EmpSalaryPaymentInfo, { foreignKey: 'attend_summary_id' });
+// EmpSalaryPaymentInfo.belongsTo(EmpAttendSummaryInfo, { foreignKey: 'attend_summary_id' });
 
 
 /* 03 -----------------------------------------------------------------------------

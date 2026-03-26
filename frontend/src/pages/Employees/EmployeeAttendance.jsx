@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { checkIn, checkOut, getAttendance } from "../../services/employeeAttendanceService";
+import { checkIn, checkOut, getTodayAttendance } from "../../services/employeeAttendanceService";
 import Toast from "../../components/common/Toast";
 import attendanceImage from '../../assets/images/attendance-bg.jpg';
 
@@ -10,43 +10,39 @@ export default function EmployeeAttendance() {
     const [shiftInfo, setShiftInfo] = useState(null);
     const [toastMsg, setToastMsg] = useState(null);
 
+    // Get current location
     const getLocation = () =>
         new Promise((resolve, reject) => {
             navigator.geolocation.getCurrentPosition(
-                pos =>
-                    resolve({
-                        latitude: pos.coords.latitude,
-                        longitude: pos.coords.longitude
-                    }),
+                pos => resolve({ latitude: pos.coords.latitude, longitude: pos.coords.longitude }),
                 err => reject(err)
             );
         });
 
+    // Fetch today's attendance for logged-in user
     const fetchToday = async () => {
-        const res = await getAttendance();
-        const today = new Date().toISOString().slice(0, 10);
-        const record = res.data.find(r => r.attendance_date === today);
-        setAttendance(record || null);
-        if (record?.shift) setShiftInfo(record.shift);
+        try {
+            const res = await getTodayAttendance();
+            setAttendance(res.data || null);
+            if (res.data?.shift) setShiftInfo(res.data.shift);
+        } catch (err) {
+            console.error(err);
+            setToastMsg({ type: "error", message: "Failed to fetch attendance" });
+        }
     };
 
-    useEffect(() => { fetchToday(); }, []);
+    useEffect(() => {
+        fetchToday();
+    }, []);
 
-    // Timer
+    // Timer for ongoing work
     useEffect(() => {
         let interval;
         if (attendance?.check_in_time && !attendance?.check_out_time) {
             interval = setInterval(() => {
                 const now = new Date();
                 const [h, m, s] = attendance.check_in_time.split(":");
-                const start = new Date(
-                    now.getFullYear(),
-                    now.getMonth(),
-                    now.getDate(),
-                    parseInt(h),
-                    parseInt(m),
-                    parseInt(s)
-                );
+                const start = new Date(now.getFullYear(), now.getMonth(), now.getDate(), parseInt(h), parseInt(m), parseInt(s));
                 const diff = now - start;
                 const hours = String(Math.floor(diff / 3600000)).padStart(2, "0");
                 const minutes = String(Math.floor((diff % 3600000) / 60000)).padStart(2, "0");
@@ -57,6 +53,7 @@ export default function EmployeeAttendance() {
         return () => clearInterval(interval);
     }, [attendance]);
 
+    // Check-in / Check-out handlers
     const handleCheckIn = async () => {
         try {
             setLoading(true);
@@ -87,7 +84,7 @@ export default function EmployeeAttendance() {
 
     // Shift logic
     const isCheckInEnabled = () => {
-        if (!shiftInfo) return true;
+        if (!shiftInfo) return !attendance?.check_in_time;
         const now = new Date();
         const [startH, startM] = shiftInfo.check_in_start.split(":").map(Number);
         const [endH, endM] = shiftInfo.check_in_end.split(":").map(Number);
@@ -97,7 +94,7 @@ export default function EmployeeAttendance() {
     };
 
     const isCheckOutEnabled = () => {
-        if (!shiftInfo) return true;
+        if (!shiftInfo) return attendance?.check_in_time && !attendance?.check_out_time;
         const now = new Date();
         const [startH, startM] = shiftInfo.check_out_start.split(":").map(Number);
         const [endH, endM] = shiftInfo.check_out_end.split(":").map(Number);
@@ -111,8 +108,6 @@ export default function EmployeeAttendance() {
             {toastMsg && <Toast type={toastMsg.type} message={toastMsg.message} onClose={() => setToastMsg(null)} />}
 
             <div className="relative w-96 bg-white rounded-xl shadow-xl overflow-hidden text-center">
-
-                {/* Animated and Styled Top Image */}
                 <div className="overflow-hidden relative">
                     <img
                         src={attendanceImage}
@@ -124,32 +119,21 @@ export default function EmployeeAttendance() {
                 <div className="p-6 space-y-4">
                     <h2 className="text-2xl font-bold text-gray-800">Attendance Checker</h2>
 
-                    {/* Shift Info */}
                     {shiftInfo && (
                         <p className="text-gray-500 text-sm">
                             Shift: {shiftInfo.check_in_start} - {shiftInfo.check_out_end}
                         </p>
                     )}
 
-                    {/* User Check-in/out times */}
                     <div className="flex justify-between font-semibold">
-                        {attendance?.check_in_time && (
-                            <p className="text-green-600 text-sm">
-                                Checked in at: {attendance.check_in_time}
-                            </p>
-                        )}
-                        {attendance?.check_out_time && (
-                            <p className="text-red-500 text-sm">
-                                Checked out at: {attendance.check_out_time}
-                            </p>
-                        )}
+                        {attendance?.check_in_time && <p className="text-green-600 text-sm">Checked in at: {attendance.check_in_time}</p>}
+                        {attendance?.check_out_time && <p className="text-red-500 text-sm">Checked out at: {attendance.check_out_time}</p>}
                     </div>
-                    {/* Timer */}
+
                     {attendance?.check_in_time && !attendance?.check_out_time && (
                         <p className="text-blue-600 font-semibold text-lg">{timer}</p>
                     )}
 
-                    {/* Buttons with Tooltip */}
                     <div className="relative">
                         <button
                             onClick={handleCheckIn}
@@ -176,7 +160,7 @@ export default function EmployeeAttendance() {
                 {`
                 @keyframes slow-scale {
                     0% { transform: scale(1) translateY(0px); }
-                    50% { transform: scale(1.05) translateY(-5px); }
+                    50% { transform: scale(1.08) translateY(-5px); }
                     100% { transform: scale(1) translateY(0px); }
                 }
                 .animate-slow-scale {

@@ -1,3 +1,3 @@
 export default function EmployeeDashboard() {
-  return <h1>Employee Dashboard</h1>;
+  return <h2 className="text-xl font-bold text-center">Employee Dashboard</h2>;
 }

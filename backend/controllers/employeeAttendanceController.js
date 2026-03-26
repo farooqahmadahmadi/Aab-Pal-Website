@@ -207,4 +207,40 @@ exports.deleteAttendance = async (req, res) => {
 };
 
 
+// ===== GET MY ATTENDANCE (USER ONLY) =====
+exports.getMyAttendance = async (req, res) => {
+    try {
+        const employee_id = req.user.employee_id;
 
+        const data = await EmpAttendance.findAll({
+            where: {
+                is_deleted: false,
+                employee_id: employee_id
+            },
+            order: [["created_at", "DESC"]]
+        });
+
+        res.json(data);
+
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: "Fetch failed" });
+    }
+};
+
+// ===== GET TODAY FOR LOGGED-IN USER =====
+exports.getTodayAttendance = async (req, res) => {
+    try {
+        const employee_id = req.user.employee_id;
+        const today = new Date().toISOString().slice(0, 10);
+
+        const record = await EmpAttendance.findOne({
+            where: { employee_id, attendance_date: today }
+        });
+
+        res.json(record || null);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: "Fetch failed" });
+    }
+};

@@ -1,3 +1,3 @@
 export default function AdminDashboard() {
-  return <h1>Admin Dashboard</h1>;
+  return <h2 className="text-xl font-bold text-center">Admin Dashboard</h2>;
 }

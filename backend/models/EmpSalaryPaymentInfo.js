@@ -11,24 +11,27 @@ const EmpSalaryPaymentInfo = sequelize.define("EmpSalaryPaymentInfo", {
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull: false
     },
-    attend_summary_id: {
-        type: DataTypes.BIGINT.UNSIGNED,
-        allowNull: false
+    salary_month: {
+        type: DataTypes.STRING(7)
     },
     salary_bonus: {
-        type: DataTypes.DECIMAL(10, 2)
+        type: DataTypes.DECIMAL(10, 2),
+        defaultValue: 0
     },
     salary_deduction: {
-        type: DataTypes.DECIMAL(10, 2)
+        type: DataTypes.DECIMAL(10, 2),
+        defaultValue: 0
     },
     paid_amount: {
-        type: DataTypes.DECIMAL(10, 2)
+        type: DataTypes.DECIMAL(10, 2),
+        defaultValue: 0
     },
     payment_date: {
         type: DataTypes.DATEONLY
     },
     payment_status: {
-        type: DataTypes.STRING(50)
+        type: DataTypes.ENUM('Pending', 'Paid', 'Failed','Other'),
+        defaultValue: 'Pending'
     },
     is_deleted: {
         type: DataTypes.BOOLEAN,

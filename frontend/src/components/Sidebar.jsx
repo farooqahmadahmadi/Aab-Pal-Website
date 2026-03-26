@@ -1,12 +1,22 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { FiHome, FiUsers, FiClipboard, FiDollarSign, FiBriefcase, FiChevronDown, FiChevronUp, FiMaximize2, FiMinimize2, FiBarChart, FiBarChart2, FiPieChart, } from "react-icons/fi";
+import {
+    FiHome, FiUsers, FiPieChart, FiSettings,
+    FiArrowLeftCircle,
+    FiArrowRightCircle,
+    FiDollarSign,
+    FiTruck,
+    FiBox,
+    FiShoppingBag,
+    FiClipboard,
+} from "react-icons/fi";
 
 export default function Sidebar({ role }) {
     const location = useLocation();
-    const [openMenu, setOpenMenu] = useState({});
-    const [sidebarOpen, setSidebarOpen] = useState(true);
+    const sidebarRef = useRef();
     const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+    const [sidebarOpen, setSidebarOpen] = useState(true);
+    const [popupMenu, setPopupMenu] = useState(null);
 
     useEffect(() => {
         const handleResize = () => setWindowWidth(window.innerWidth);
@@ -17,140 +27,200 @@ export default function Sidebar({ role }) {
     useEffect(() => {
         if (windowWidth < 768) setSidebarOpen(false);
         else setSidebarOpen(true);
+        setPopupMenu(null);
     }, [windowWidth]);
 
-    const toggleMenu = (menu) => setOpenMenu(prev => ({ ...prev, [menu]: !prev[menu] }));
-    const isActive = (path) => location.pathname === path ? "bg-gray-800" : "";
+    useEffect(() => {
+        const handleClickOutside = (e) => {
+            if (sidebarRef.current && !sidebarRef.current.contains(e.target)) {
+                setPopupMenu(null);
+            }
+        };
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => document.removeEventListener("mousedown", handleClickOutside);
+    }, []);
+
+    const togglePopup = (menu) => setPopupMenu(prev => (prev === menu ? null : menu));
+    const isActiveParent = (item) => {
+        if (!item.submenu) return location.pathname === item.path;
+        return item.submenu.some(sub => sub.path === location.pathname);
+    };
+
+    const menuItems = {
+        Admin: [
+            { name: "Dashboard", path: "/admin/dashboard", icon: <FiPieChart /> },
+            {
+                name: "Company", icon: <FiHome />, submenu: [
+                    { name: "Company Info", path: "/admin/company/company-info" },
+                    { name: "Company Documents", path: "/admin/company/company-documents" },
+                    { name: "Departments", path: "/admin/departments/departments-info" },
+                ]
+            },
+            {
+                name: "HR", icon: <FiUsers />, submenu: [
+                    { name: "Employees", path: "/admin/employees/employee-info" },
+                    { name: "Employee Education", path: "/admin/employees/employee-education-info" },
+                    { name: "Employee Documents", path: "/admin/employees/employee-documents" },
+                    { name: "Employee Salary", path: "/admin/employees/employee-salary-info" },
+                    { name: "Attendance Shifts", path: "/admin/employees/attendance-shifts" },
+                    { name: "Employee Hiring", path: "/admin/employees/employee-hiring-info" },
+                    { name: "Employee Attendance List", path: "/admin/employees/employee-attendance-list" },
+                    { name: "Attendance Checker", path: "/admin/employees/employee-attendance" },
+                    { name: "Salary Payment", path: "/admin/employees/employee-salary-payment" },
+                ]
+            },
+            {
+                name: "Projects", icon: <FiBox />, submenu: [
+                    { name: "Projects", path: "/admin/users/user-list" },
+                ]
+            },
+            {
+                name: "Financial", icon: <FiDollarSign />, submenu: [
+                    { name: "Expenses", path: "/admin/users/user-list" },
+                ]
+            },
+            {
+                name: "Inventory", icon: <FiShoppingBag />, submenu: [
+                    { name: "Stock", path: "/admin/users/user-list" },
+                ]
+            },
+            {
+                name: "Equipments", icon: <FiTruck />, submenu: [
+                    { name: "Machinery", path: "/admin/users/user-list" },
+                ]
+            },
+            {
+                name: "Reports", icon: <FiClipboard />, submenu: [
+                    { name: "Machinery", path: "/admin/users/user-list" },
+                ]
+            },
+            {
+                name: "System", icon: <FiSettings />, submenu: [
+                    { name: "User Accounts", path: "/admin/users/user-list" },
+                    { name: "Notifications", path: "/admin/users/user-list" },
+                    { name: "System Backup", path: "/admin/users/user-list" },
+
+                ]
+            }
+        ],
+
+        HR: [
+            { name: "Dashboard", path: "/hr/dashboard", icon: <FiPieChart /> },
+            {
+                name: "HR", icon: <FiUsers />, submenu: [
+                    { name: "Employees", path: "/hr/employees/employee-info" },
+                    { name: "Attendance Checker", path: "/hr/employees/employee-attendance" },
+
+                ]
+            }
+        ],
+
+        PM: [
+            { name: "Dashboard", path: "/pm/dashboard", icon: <FiPieChart /> },
+            {
+                name: "Projects", icon: <FiUsers />, submenu: [
+                    { name: "Employees", path: "/hr/employees/employee-info" },
+                    { name: "Attendance Checker", path: "/hr/employees/employee-attendance" },
+
+                ]
+            }
+        ]
+    };
+
+    const renderMenu = (items) => items.map((item, idx) => {
+        const activeParent = isActiveParent(item);
+
+        if (!item.submenu) {
+            return (
+                <Link
+                    key={idx}
+                    to={item.path}
+                    className={`flex items-center justify-center mb-2 p-2 rounded hover:bg-gray-900 transition-all duration-300
+            ${activeParent ? "bg-gray-900 font-semibold shadow-md" : ""}`}
+                >
+                    <span className="text-xl relative">
+                        {item.icon}
+                        {!sidebarOpen && (
+                            <span className="absolute left-16 top-1/2 -translate-y-1/2 bg-gray-900 text-white text-xs px-3 py-1 rounded shadow-lg opacity-0 group-hover:opacity-100 transition-all duration-300 whitespace-nowrap z-50">
+                                {item.name}
+                            </span>
+                        )}
+                    </span>
+                </Link>
+            );
+        }
+
+        return (
+            <div key={idx} className="relative group">
+                <div
+                    className={`flex items-center justify-center mb-3 p-2  rounded hover:bg-gray-900 transition-all duration-300 cursor-pointer
+            ${activeParent ? "bg-gray-900 font-semibold shadow-md" : ""}`}
+                    onClick={() => togglePopup(item.name)}
+                >
+                    <span className="text-xl relative">
+                        {item.icon}
+                        {!sidebarOpen && (
+                            <span className="absolute left-16 top-1/2 -translate-y-1/2 bg-gray-900 text-white text-xs px-3 py-1 rounded shadow-lg opacity-0 group-hover:opacity-100 transition-all duration-300 whitespace-nowrap z-50">
+                                {item.name}
+                            </span>
+                        )}
+                    </span>
+                </div>
+
+                {/* Sub menu */}
+                {popupMenu === item.name && (
+                    <div className="absolute top-0 left-full ml-1.5 w-52 text-sm bg-black rounded shadow-lg py-2 z-50 transition-transform duration-300 transform scale-95 opacity-0 animate-popup">
+                        {item.submenu.map((sub, subIdx) => (
+                            <Link
+                                key={subIdx}
+                                to={sub.path}
+                                className="flex items-center px-3 py-2 rounded text-white hover:bg-gray-900 transition-all duration-300"
+                                onClick={() => {
+                                    setPopupMenu(null);
+                                    if (windowWidth < 768) setSidebarOpen(false);
+                                }}
+                            >
+                                <span>{sub.name}</span>
+                            </Link>
+                        ))}
+                    </div>
+                )}
+            </div>
+        );
+    });
 
     return (
         <>
-            {/* Toggle button */}
-            <div className="fixed top-0.5 left-0.5 z-50">
-                <div onClick={() => setSidebarOpen(!sidebarOpen)} className="p-1.5 bg-white text-black font-bold rounded  hover:bg-gray-100">
-                    {sidebarOpen ? <FiMinimize2 size={20} /> : <FiMaximize2 size={20} />}
+            <div className=" fixed top-1.5 left-1.5 z-50">
+                <div
+                    onClick={() => setSidebarOpen(prev => !prev)}
+                    className="p-1 bg-white text-black font-bold rounded-full hover:bg-gray-200 transition-all duration-300 cursor-pointer"
+                >
+                    {sidebarOpen ? <FiArrowLeftCircle size={20} color="green" /> : <FiArrowRightCircle size={20} />}
                 </div>
             </div>
 
-            {/* Mobile overlay */}
             {sidebarOpen && windowWidth < 768 && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 z-30" onClick={() => setSidebarOpen(false)} />
             )}
 
-            {/* Sidebar */}
-            <div className={`fixed top-9 left-0 h-screen w-56 bg-black text-white p-4 z-40 transform transition-transform duration-700 shadow-lg ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}`}>
-
-                {role === "Admin" && (
-                    <>
-                        <Link to="/admin/dashboard" className={`flex items-center mb-2 p-2 rounded hover:bg-gray-900 text-yellow-400 ${isActive("/admin/dashboard")}`}>
-                            <FiPieChart className="mr-2 text-yellow-400" /> Dashboard
-                        </Link>
-                        <div>
-                            <div className="flex items-center justify-between cursor-pointer mb-2 p-2 rounded hover:bg-gray-900 text-yellow-400" onClick={() => toggleMenu("company")}>
-                                <div className="flex items-center"><FiHome className="mr-2 text-yellow-400" />Company</div>
-                                {openMenu["company"] ? <FiChevronUp /> : <FiChevronDown />}
-                            </div>
-                            <div className={`ml-6 flex flex-col transition-all duration-500 overflow-hidden ${openMenu["company"] ? "max-h-40" : "max-h-0"}`}>
-                                <Link to="/admin/company/company-info" className="mb-2 hover:text-gray-300 text-sm">Company Info</Link>
-                                <Link to="/admin/company/company-documents" className="mb-2 hover:text-gray-300 text-sm">Company Documents</Link>
-                                <Link to="/admin/departments/departments-info" className="mb-2 hover:text-gray-300 text-sm">Departments</Link>
-                            </div>
-                        </div>
-
-                        <div>
-                            <div className="flex items-center justify-between cursor-pointer mb-2 p-2 rounded hover:bg-gray-900 text-yellow-400" onClick={() => toggleMenu("hr")}>
-                                <div className="flex items-center"><FiUsers className="mr-2 text-yellow-400" />HR</div>
-                                {openMenu["hr"] ? <FiChevronUp /> : <FiChevronDown />}
-                            </div>
-                            <div className={`ml-6 flex flex-col transition-all duration-500 overflow-hidden ${openMenu["hr"] ? "max-h-full" : "max-h-0"}`}>
-                                <Link to="/admin/employees/employee-info" className="mb-2 hover:text-gray-300 text-sm">Employees</Link>
-                                <Link to="/admin/employees/employee-education-info" className="mb-2 hover:text-gray-300 text-sm">Employee Education</Link>
-                                <Link to="/admin/employees/employee-documents" className="mb-2 hover:text-gray-300 text-sm">Employee Documents</Link>
-                                <Link to="/admin/employees/employee-salary-info" className="mb-2 hover:text-gray-300 text-sm">Employee Salary</Link>
-                                <Link to="/admin/employees/attendance-shifts" className="mb-2 hover:text-gray-300 text-sm">Attendance Shifts</Link>
-                                <Link to="/admin/employees/employee-hiring-info" className="mb-2 hover:text-gray-300 text-sm">Employee Hiring</Link>
-                                <Link to="/admin/employees/employee-attendance-list" className="mb-2 hover:text-gray-300 text-sm">Employee Attendance List </Link>
-                                <Link to="/admin/employees/employee-attendance" className="mb-2 hover:text-gray-300 text-sm">Employee Attendance </Link>
-
-
-                            </div>
-                        </div>
-
-                        <div>
-                            <div className="flex items-center justify-between cursor-pointer mb-2 p-2 rounded hover:bg-gray-900 text-yellow-400" onClick={() => toggleMenu("users")}>
-                                <div className="flex items-center"><FiUsers className="mr-2 text-yellow-400" />Users</div>
-                                {openMenu["users"] ? <FiChevronUp /> : <FiChevronDown />}
-                            </div>
-                            <div className={`ml-6 flex flex-col transition-all duration-500 overflow-hidden ${openMenu["users"] ? "max-h-40" : "max-h-0"}`}>
-                                <Link to="/admin/users/user-list" className="mb-2 hover:text-gray-300 text-sm">Users List</Link>
-                            </div>
-                        </div>
-
-                    </>
-                )}
-
-                {role === "HR" && (
-                    <>
-                        <Link to="/hr/dashboard" className={`flex items-center mb-2 p-2 rounded hover:bg-gray-900 ${isActive("/hr/dashboard")}`}>
-                            <FiPieChart className="mr-2" /> Dashboard
-                        </Link>
-                        <div>
-                            <div className="flex items-center justify-between cursor-pointer mb-2 p-2 rounded hover:bg-gray-900" onClick={() => toggleMenu("HR")}>
-                                <div className="flex items-center"><FiUsers className="mr-2" /> HR</div>
-                                {openMenu["HR"] ? <FiChevronUp /> : <FiChevronDown />}
-                            </div>
-                            <div className={`ml-6 flex flex-col transition-all duration-500 overflow-hidden ${openMenu["HR"] ? "max-h-40" : "max-h-0"}`}>
-                                <Link to="/hr/employees/employee-info" className="mb-1 hover:text-gray-300">Employees</Link>
-                                <Link to="/hr/employees/list" className="mb-1 hover:text-gray-300">Employees List</Link>
-                                <Link to="/hr/employees/employee-attendance" className="mb-2 hover:text-gray-300 text-sm">Employee Attendance </Link>
-                            </div>
-                        </div>
-                    </>
-                )}
-
-                {/* Financial */}
-                {role === "Financial" && (
-                    <>
-                        <Link to="/financial/dashboard" className={`flex items-center mb-2 p-2 rounded hover:bg-gray-900 ${isActive("/financial/dashboard")}`}>
-                            <FiHome className="mr-2" /> Dashboard
-                        </Link>
-                        <Link to="/financial/reports" className={`flex items-center mb-2 p-2 rounded hover:bg-gray-900 ${isActive("/financial/reports")}`}>
-                            <FiDollarSign className="mr-2" /> Reports
-                        </Link>
-                    </>
-                )}
-
-                {/* PM */}
-                {role === "PM" && (
-                    <>
-                        <Link to="/pm/dashboard" className={`flex items-center mb-2 p-2 rounded hover:bg-gray-900 ${isActive("/pm/dashboard")}`}>
-                            <FiHome className="mr-2" /> Dashboard
-                        </Link>
-                        <Link to="/pm/projects" className={`flex items-center mb-2 p-2 rounded hover:bg-gray-900 ${isActive("/pm/projects")}`}>
-                            <FiBriefcase className="mr-2" /> Projects
-                        </Link>
-                    </>
-                )}
-
-                {/* Employee */}
-                {role === "Employee" && (
-                    <>
-                        <Link to="/employee/dashboard" className={`flex items-center mb-2 p-2 rounded hover:bg-gray-900 ${isActive("/employee/dashboard")}`}>
-                            <FiHome className="mr-2" /> Dashboard
-                        </Link>
-                        <Link to="/employee/tasks" className={`flex items-center mb-2 p-2 rounded hover:bg-gray-900 ${isActive("/employee/tasks")}`}>
-                            <FiClipboard className="mr-2" /> Tasks
-                        </Link>
-                    </>
-                )}
-
-                {/* Client */}
-                {role === "Client" && (
-                    <Link to="/client/dashboard" className={`flex items-center mb-2 p-2 rounded hover:bg-gray-900 ${isActive("/client/dashboard")}`}>
-                        <FiHome className="mr-2" /> Dashboard
-                    </Link>
-                )}
-
+            <div
+                ref={sidebarRef}
+                className={`fixed top-0 left-0 h-screen  w-12 bg-black text-white z-40 transform shadow-lg transition-all duration-500 ease-in-out
+          ${sidebarOpen ? "translate-x-0 w-20" : "-translate-x-full w-20"}`}
+            >
+                <div className="p-4 mt-16 flex flex-col items-center">
+                    {menuItems[role] && renderMenu(menuItems[role])}
+                </div>
             </div>
+
+            <style>{`
+        @keyframes popup {
+          0% { opacity: 0; transform: scale(0.95) translateX(-10px); }
+          100% { opacity: 1; transform: scale(1) translateX(0); }
+        }
+        .animate-popup { animation: popup 0.25s forwards; }
+      `}</style>
         </>
     );
 }

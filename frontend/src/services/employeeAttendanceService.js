@@ -1,8 +1,12 @@
 import API from "./api";
 
-// ===== GET ALL =====
+// ===== GET ALL (for admin/list) =====
 export const getAttendance = () =>
     API.get("/employee-attendance");
+
+// ===== GET TODAY FOR LOGGED-IN USER =====
+export const getTodayAttendance = () =>
+    API.get("/employee-attendance/me");
 
 // ===== CHECK IN =====
 export const checkIn = (data) =>

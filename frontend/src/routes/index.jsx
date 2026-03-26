@@ -31,6 +31,7 @@ import AttendanceShifts from "../pages/Employees/AttendanceShifts";
 import EmployeeHiringInfo from "../pages/Employees/EmpHiringInfo";
 import EmployeeAttendanceList from "../pages/Employees/EmployeeAttendanceList";
 import EmployeeAttendance from "../pages/Employees/EmployeeAttendance";
+import EmpSalaryPayment from "../pages/Employees/EmpSalaryPayment";
 
 export default function AppRoutes() {
     return (
@@ -133,6 +134,15 @@ export default function AppRoutes() {
                     <ProtectedRoute allowedRoles={["Admin"]}>
                         <AdminLayout>
                             <EmployeeAttendance />
+                        </AdminLayout>
+                    </ProtectedRoute>
+                } />
+
+                
+                <Route path="/admin/employees/employee-salary-payment" element={
+                    <ProtectedRoute allowedRoles={["Admin"]}>
+                        <AdminLayout>
+                            <EmpSalaryPayment />
                         </AdminLayout>
                     </ProtectedRoute>
                 } />
