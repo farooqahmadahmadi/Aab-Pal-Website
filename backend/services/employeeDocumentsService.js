@@ -59,7 +59,3 @@ exports.hardDeleteDocument = async (id) => {
     if (!doc) throw new Error("Document not found");
     return await doc.destroy();
 };
-
-
-
-

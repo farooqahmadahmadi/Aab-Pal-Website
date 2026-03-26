@@ -40,5 +40,22 @@ const employeeDocStorage = multer.diskStorage({
 });
 const upload = multer({ storage: employeeDocStorage });
 
+
+// ===== Client Documents =====
+const clientDir = path.join(__dirname, "../uploads/documents/client");
+if (!fs.existsSync(clientDir)) fs.mkdirSync(clientDir, { recursive: true });
+
+const clientStorage = multer.diskStorage({
+  destination: (req, file, cb) => cb(null, clientDir),
+  filename: (req, file, cb) => {
+    const unique = Date.now() + "-" + Math.round(Math.random() * 1e9);
+    const ext = path.extname(file.originalname);
+    cb(null, "client-" + unique + ext);
+  },
+});
+
+const uploadClient = multer({ storage: clientStorage });
+
+
 // ===== Export all uploads =====
-module.exports = { uploadLogo, uploadDoc, upload };
+module.exports = { uploadLogo, uploadDoc, upload, uploadClient };

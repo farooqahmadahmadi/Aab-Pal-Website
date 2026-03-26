@@ -71,7 +71,7 @@ export default function UsersList() {
 
             {/* ===== Table ===== */}
             <div className="overflow-x-auto bg-white shadow rounded">
-                <table className="min-w-full">
+                <table className="min-w-full text-sm">
                     <thead className="bg-gray-200 text-gray-700 text-sm">
                         <tr>
                             <th className="p-2 text-left">ID</th>
@@ -87,7 +87,7 @@ export default function UsersList() {
                             <tr key={u.user_id} className="border-t hover:bg-gray-50 transition">
                                 <td className="p-2">{u.user_id}</td>
                                 <td className="p-2">{u.user_name}</td>
-                                <td className="p-2"><a href="https://www.gmail.com/" target="-blank">{u.user_email}</a> </td>
+                                <td className="p-2"><a href="mailto:">{u.user_email}</a> </td>
                                 <td className="p-2">{u.user_role}</td>
                                 <td className="p-2">
                                     <span className={`px-2 py-1 rounded-full text-xs font-semibold

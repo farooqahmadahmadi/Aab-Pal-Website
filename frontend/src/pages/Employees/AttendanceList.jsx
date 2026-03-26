@@ -31,7 +31,7 @@ export default function AttendanceList() {
         <div className="p-6">
             <SearchBar value={search} onChange={setSearch} />
 
-            <table className="w-full mt-4">
+            <table className="w-full mt-4 text-sm">
                 <thead>
                     <tr>
                         <th>ID</th>

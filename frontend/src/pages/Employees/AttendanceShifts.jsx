@@ -90,7 +90,7 @@ export default function AttendanceShifts() {
             </div>
 
             <div className="bg-white shadow rounded-lg overflow-x-auto">
-                <table className="w-full text-left">
+                <table className="w-full text-left text-sm">
                     <thead className="bg-gray-200 text-sm">
                         <tr>
                             <th className="p-2">ID</th>

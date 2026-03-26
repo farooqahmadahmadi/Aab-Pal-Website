@@ -151,8 +151,9 @@ const EmpSalaryPaymentModal = ({ isOpen, onClose, onSave, payment, allPayments =
     <>
       <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
         <div className="bg-white p-6 rounded shadow-lg w-96">
-          <h2 className="text-xl mb-4">
-            {payment ? "Update Payment" : "Add Payment"}
+          <h2 className="text-lg font-bold mb-4">
+            {payment ? "Update " : "Add "}
+            Payment
           </h2>
 
           <form onSubmit={handleSubmit} className="flex flex-col gap-3">
@@ -208,8 +209,8 @@ const EmpSalaryPaymentModal = ({ isOpen, onClose, onSave, payment, allPayments =
             </select>
 
             <div className="flex justify-end gap-2 mt-2">
-              <button type="button" onClick={onClose} className="px-4 py-2 bg-gray-400 text-white rounded">Cancel</button>
-              <button type="submit" className="px-4 py-2 bg-green-500 text-white rounded">Save</button>
+              <button type="button" onClick={onClose} className="px-4 py-2 bg-gray-400 hover:bg-gray-500 text-white rounded">Cancel</button>
+              <button type="submit" className="px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded">Save</button>
             </div>
 
           </form>

@@ -71,7 +71,7 @@ export default function Sidebar({ role }) {
             },
             {
                 name: "Projects", icon: <FiBox />, submenu: [
-                    { name: "Projects", path: "/admin/users/user-list" },
+                    { name: "Clients", path: "/admin/clients/clients-info" },
                 ]
             },
             {
@@ -169,7 +169,7 @@ export default function Sidebar({ role }) {
 
                 {/* Sub menu */}
                 {popupMenu === item.name && (
-                    <div className="absolute top-0 left-full ml-1.5 w-52 text-sm bg-black rounded shadow-lg py-2 z-50 transition-transform duration-300 transform scale-95 opacity-0 animate-popup">
+                    <div className="absolute top-0 left-full ml-1 w-52 text-sm bg-black rounded shadow-lg py-2 z-50 transition-transform duration-300 transform scale-95 opacity-0 animate-popup">
                         {item.submenu.map((sub, subIdx) => (
                             <Link
                                 key={subIdx}
@@ -206,7 +206,7 @@ export default function Sidebar({ role }) {
 
             <div
                 ref={sidebarRef}
-                className={`fixed top-0 left-0 h-screen  w-12 bg-black text-white z-40 transform shadow-lg transition-all duration-500 ease-in-out
+                className={`fixed top-0 left-0 h-screen  w-11 bg-black text-white z-40 transform shadow-lg transition-all duration-500 ease-in-out
           ${sidebarOpen ? "translate-x-0 w-20" : "-translate-x-full w-20"}`}
             >
                 <div className="p-4 mt-16 flex flex-col items-center">

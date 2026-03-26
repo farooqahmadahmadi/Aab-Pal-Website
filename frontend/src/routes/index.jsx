@@ -20,9 +20,12 @@ import ClientDashboard from "../pages/Dashboards/ClientDashboard";
 
 // Imported Pages
 import UsersList from "../pages/Users/UsersList";
+
 import CompanyInfo from "../pages/Company/CompanyInfo";
 import CompanyDocuments from "../pages/Company/CompanyDocuments";
+
 import Departments from "../pages/Departments/Departments";
+
 import EmployeeInfo from "../pages/Employees/Employees";
 import EmployeeEdcational from "../pages/Employees/EmployeeEducation";
 import EmployeeDocuments from "../pages/Employees/EmployeeDocuments";
@@ -32,6 +35,8 @@ import EmployeeHiringInfo from "../pages/Employees/EmpHiringInfo";
 import EmployeeAttendanceList from "../pages/Employees/EmployeeAttendanceList";
 import EmployeeAttendance from "../pages/Employees/EmployeeAttendance";
 import EmpSalaryPayment from "../pages/Employees/EmpSalaryPayment";
+
+import ClientInfo from "../pages/Client/ClientInfo";
 
 export default function AppRoutes() {
     return (
@@ -143,6 +148,14 @@ export default function AppRoutes() {
                     <ProtectedRoute allowedRoles={["Admin"]}>
                         <AdminLayout>
                             <EmpSalaryPayment />
+                        </AdminLayout>
+                    </ProtectedRoute>
+                } />
+
+                <Route path="/admin/clients/clients-info" element={
+                    <ProtectedRoute allowedRoles={["Admin"]}>
+                        <AdminLayout>
+                            <ClientInfo />
                         </AdminLayout>
                     </ProtectedRoute>
                 } />

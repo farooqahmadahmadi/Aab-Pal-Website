@@ -1,9 +1,9 @@
-const EmpHiringInfo = require("../models/EmpHiringInfo");
+const EmpHiringInfoService = require("../services/empHiringInfoService");
 
 // ===== GET ALL =====
 exports.getAllHiring = async (req, res) => {
     try {
-        const data = await EmpHiringInfo.findAll({ where: { is_deleted: false } });
+        const data = await EmpHiringInfoService.getAll();
         res.json(data);
     } catch (err) {
         console.error(err);
@@ -14,8 +14,9 @@ exports.getAllHiring = async (req, res) => {
 // ===== GET SINGLE =====
 exports.getHiringById = async (req, res) => {
     try {
-        const hiring = await EmpHiringInfo.findByPk(req.params.id);
+        const hiring = await EmpHiringInfoService.getById(req.params.id);
         if (!hiring) return res.status(404).json({ message: "Not found" });
+
         res.json(hiring);
     } catch (err) {
         console.error(err);
@@ -26,7 +27,7 @@ exports.getHiringById = async (req, res) => {
 // ===== CREATE =====
 exports.addHiring = async (req, res) => {
     try {
-        const newHiring = await EmpHiringInfo.create(req.body);
+        const newHiring = await EmpHiringInfoService.create(req.body);
         res.status(201).json(newHiring);
     } catch (err) {
         console.error(err);
@@ -37,10 +38,9 @@ exports.addHiring = async (req, res) => {
 // ===== UPDATE =====
 exports.updateHiring = async (req, res) => {
     try {
-        const hiring = await EmpHiringInfo.findByPk(req.params.id);
+        const hiring = await EmpHiringInfoService.update(req.params.id, req.body);
         if (!hiring) return res.status(404).json({ message: "Not found" });
 
-        await hiring.update(req.body);
         res.json(hiring);
     } catch (err) {
         console.error(err);
@@ -48,13 +48,12 @@ exports.updateHiring = async (req, res) => {
     }
 };
 
-// ===== DELETE (SOFT) =====
+// ===== DELETE =====
 exports.deleteHiring = async (req, res) => {
     try {
-        const hiring = await EmpHiringInfo.findByPk(req.params.id);
-        if (!hiring) return res.status(404).json({ message: "Not found" });
+        const deleted = await EmpHiringInfoService.delete(req.params.id);
+        if (!deleted) return res.status(404).json({ message: "Not found" });
 
-        await hiring.update({ is_deleted: true });
         res.json({ message: "Deleted successfully" });
     } catch (err) {
         console.error(err);

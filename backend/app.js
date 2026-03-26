@@ -17,7 +17,7 @@ const attendanceShiftsRoutes = require("./routes/attendanceShiftsInfoRoutes");
 const empHiringInfoRoutes = require("./routes/empHiringInfoRoutes");
 const attendanceRoutes = require("./routes/employeeAttendanceRoutes");
 const empSalaryPaymentRoutes = require("./routes/empSalaryPaymentRoutes");
-
+const clientRoutes = require("./routes/clientInfoRoutes");
 
 
 const app = express();
@@ -54,7 +54,7 @@ app.use("/api/attendance-shifts-info", attendanceShiftsRoutes);
 app.use("/api/emp-hiring-info", empHiringInfoRoutes);
 app.use("/api/employee-attendance", attendanceRoutes);
 app.use("/api/payments", empSalaryPaymentRoutes);
-
+app.use("/api/client-info", clientRoutes);
 
 // Error handler
 app.use((err, req, res, next) => {

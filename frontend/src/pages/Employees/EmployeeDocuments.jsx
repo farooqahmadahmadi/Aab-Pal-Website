@@ -144,7 +144,7 @@ export default function EmployeeDocuments() {
 
             {/* ===== TABLE ===== */}
             <div className="bg-white shadow rounded-lg overflow-x-auto">
-                <table className="w-full">
+                <table className="w-full text-sm">
                     <thead className="bg-gray-200 text-sm">
                         <tr>
                             <th className="p-2">ID</th>

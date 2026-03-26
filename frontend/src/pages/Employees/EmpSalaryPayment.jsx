@@ -111,21 +111,21 @@ const EmpSalaryPayment = () => {
   const getStatusBadge = (status) => {
     const base = "px-2 py-1 rounded text-xs font-semibold";
     switch (status) {
-      case "Paid": return <span className={`${base} bg-green-100 text-green-700`}>Paid</span>;
-      case "Pending": return <span className={`${base} bg-yellow-100 text-yellow-700`}>Pending</span>;
-      case "Failed": return <span className={`${base} bg-red-100 text-red-700`}>Failed</span>;
-      case "Other": return <span className={`${base} bg-gray-300 text-gray-700`}>Other</span>;
-      default: return <span className={`${base} bg-gray-100 text-gray-600`}>Unknown</span>;
+      case "Paid": return <span className={`${base} rounded-full bg-green-100 text-green-700`}>Paid</span>;
+      case "Pending": return <span className={`${base} rounded-full bg-yellow-100 text-yellow-700`}>Pending</span>;
+      case "Failed": return <span className={`${base} rounded-full bg-red-100 text-red-700`}>Failed</span>;
+      case "Other": return <span className={`${base} rounded-full bg-gray-300 text-gray-700`}>Other</span>;
+      default: return <span className={`${base} rounded-full bg-gray-100 text-gray-600`}>Unknown</span>;
     }
   };
 
   const getBadge = (amount, type) => {
     const base = "px-2 py-1 rounded text-xs font-semibold";
-    if (!amount || parseFloat(amount) === 0) return <span className={`${base} bg-gray-100 text-gray-600`}>{amount || 0}</span>;
-    if (type === "bonus") return <span className={`${base} bg-green-100 text-green-700`}>{amount}</span>;
-    if (type === "deduction") return <span className={`${base} bg-red-100 text-red-700`}>{amount}</span>;
-    if (type === "paid") return <span className={`${base} bg-blue-100 text-blue-700`}>{amount}</span>;
-    return <span className={`${base} bg-gray-100 text-gray-600`}>{amount}</span>;
+    if (!amount || parseFloat(amount) === 0) return <span className={`${base} rounded-full bg-gray-100 text-gray-600`}>{amount || 0}</span>;
+    if (type === "bonus") return <span className={`${base} rounded-full bg-green-100 text-green-700`}>{amount}</span>;
+    if (type === "deduction") return <span className={`${base} rounded-full bg-red-100 text-red-700`}>{amount}</span>;
+    if (type === "paid") return <span className={`${base} rounded-full bg-blue-100 text-blue-700`}>{amount}</span>;
+    return <span className={`${base} rounded-full bg-gray-100 text-gray-600`}>{amount}</span>;
   };
 
   return (
@@ -144,17 +144,17 @@ const EmpSalaryPayment = () => {
       </div>
 
       <div className="bg-white shadow rounded overflow-x-auto">
-        <table className="min-w-full text-center">
+        <table className="min-w-full text-center text-sm">
           <thead className="bg-gray-200 text-sm">
             <tr>
               <th className="p-2">ID</th>
-              <th className="p-2">Employee Salary ID</th>
+              <th className="p-2">Salary ID</th>
               <th className="p-2">Employee ID</th>
               <th className="p-2">Month</th>
               <th className="p-2">Bonus</th>
               <th className="p-2">Deduction</th>
               <th className="p-2">Paid Amount</th>
-              <th className="p-2">Date</th>
+              <th className="p-2">Payment Date</th>
               <th className="p-2">Status</th>
               <th className="p-2">Actions</th>
             </tr>

@@ -5,7 +5,7 @@ import useToast from "../../hooks/useToast";
 import SearchBar from "../../components/common/SearchBar";
 import Pagination from "../../components/common/Pagination";
 import EmployeeModal from "../../components/Employees/EmployeeModal";
-import { FaPlus } from "react-icons/fa";
+import { FaPhone, FaPlus, FaWhatsapp } from "react-icons/fa";
 
 export default function Employees() {
     const [employees, setEmployees] = useState([]);
@@ -94,7 +94,7 @@ export default function Employees() {
 
             {/* Table */}
             <div className="bg-white shadow rounded overflow-x-auto">
-                <table className="w-full">
+                <table className="w-full text-sm">
                     <thead className="bg-gray-200 text-sm">
                         <tr>
                             <th className="p-2 text-left">ID</th>
@@ -115,8 +115,8 @@ export default function Employees() {
                                 <td className="p-2">{e.emp_father_name}</td>
                                 <td className="p-2">{e.emp_nid_number}</td>
                                 <td className="p-2">{e.emp_gender}</td>
-                                <td className="p-2">{e.emp_phone}</td>
-                                <td className="p-2">{e.emp_email}</td>
+                                <td className="p-2 flex">{e.emp_phone}</td>
+                                <td className="p-2"><a href="mailto:"> {e.emp_email}</a></td>
                                 <td className="p-2 flex justify-center gap-2">
                                     <button onClick={() => { setEditData(e); setModalOpen(true); }} className="bg-yellow-500 px-2 py-1 text-white rounded">Edit</button>
                                     <button onClick={() => setDeleteData(e)} className="bg-red-500 px-2 py-1 text-white rounded">Delete</button>
