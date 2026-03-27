@@ -37,6 +37,9 @@ import EmployeeAttendance from "../pages/Employees/EmployeeAttendance";
 import EmpSalaryPayment from "../pages/Employees/EmpSalaryPayment";
 
 import ClientInfo from "../pages/Client/ClientInfo";
+import ProjectInfo from "../pages/Project/ProjectInfo";
+
+
 
 export default function AppRoutes() {
     return (
@@ -143,7 +146,7 @@ export default function AppRoutes() {
                     </ProtectedRoute>
                 } />
 
-                
+
                 <Route path="/admin/employees/employee-salary-payment" element={
                     <ProtectedRoute allowedRoles={["Admin"]}>
                         <AdminLayout>
@@ -156,6 +159,14 @@ export default function AppRoutes() {
                     <ProtectedRoute allowedRoles={["Admin"]}>
                         <AdminLayout>
                             <ClientInfo />
+                        </AdminLayout>
+                    </ProtectedRoute>
+                } />
+
+                <Route path="/admin/projects/project-info" element={
+                    <ProtectedRoute allowedRoles={["Admin"]}>
+                        <AdminLayout>
+                            <ProjectInfo />
                         </AdminLayout>
                     </ProtectedRoute>
                 } />

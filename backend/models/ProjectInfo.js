@@ -12,13 +12,18 @@ const ProjectInfo = sequelize.define("ProjectInfo", {
         allowNull: false
     },
     project_type: {
-        type: DataTypes.STRING(50)
+        type: DataTypes.ENUM('Residential', 'Commercial', 'Industrial', 'Other')
     },
     project_name: {
         type: DataTypes.STRING(255)
     },
-    project_location: {
-        type: DataTypes.GEOMETRY('POINT')
+    longitude: {
+        type: DataTypes.DECIMAL(10, 7),
+        allowNull: true
+    },
+    latitude: {
+        type: DataTypes.DECIMAL(10, 7),
+        allowNull: true
     },
     project_address: {
         type: DataTypes.STRING(255)
@@ -33,7 +38,7 @@ const ProjectInfo = sequelize.define("ProjectInfo", {
         type: DataTypes.DECIMAL(15, 2)
     },
     project_status: {
-        type: DataTypes.STRING(50)
+        type: DataTypes.ENUM('Planed', 'InProgress', 'Completed', 'OnHold', 'Failed', 'Other')
     },
     employee_id: { // Project Manager - Foreign Key to EmployeeInfo
         type: DataTypes.BIGINT.UNSIGNED,

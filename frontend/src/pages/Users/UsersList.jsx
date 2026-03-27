@@ -70,9 +70,9 @@ export default function UsersList() {
             </div>
 
             {/* ===== Table ===== */}
-            <div className="overflow-x-auto bg-white shadow rounded">
+            <div className="bg-white shadow rounded-lg overflow-x-auto">
                 <table className="min-w-full text-sm">
-                    <thead className="bg-gray-200 text-gray-700 text-sm">
+                    <thead className="bg-gray-200 text-sm">
                         <tr>
                             <th className="p-2 text-left">ID</th>
                             <th className="p-2 text-left">Name</th>

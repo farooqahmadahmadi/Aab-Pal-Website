@@ -17,13 +17,18 @@ module.exports = {
         onDelete: 'CASCADE'
       },
       project_type: {
-        type: Sequelize.STRING(50)
+        type: Sequelize.ENUM('Residential', 'Commercial', 'Industrial', 'Other')
       },
       project_name: {
         type: Sequelize.STRING(255)
       },
-      project_location: {
-        type: Sequelize.GEOMETRY('POINT')
+      longitude: {
+        type: Sequelize.DECIMAL(10, 7),
+        allowNull: false
+      },
+      latitude: {
+        type: Sequelize.DECIMAL(10, 7),
+        allowNull: false
       },
       project_address: {
         type: Sequelize.STRING(255)
@@ -38,7 +43,7 @@ module.exports = {
         type: Sequelize.DECIMAL(15, 2)
       },
       project_status: {
-        type: Sequelize.STRING(50)
+        type: Sequelize.ENUM('Planed', 'InProgress', 'Completed', 'OnHold', 'Failed', 'Other')
       },
       employee_id: { // Project Manager - Foreign Key to EmployeeInfo
         type: Sequelize.BIGINT.UNSIGNED,
