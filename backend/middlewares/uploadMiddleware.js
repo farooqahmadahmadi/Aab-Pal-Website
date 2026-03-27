@@ -57,5 +57,20 @@ const clientStorage = multer.diskStorage({
 const uploadClient = multer({ storage: clientStorage });
 
 
+// ===== Project Documents folder =====
+const projectDocDir = path.join(__dirname, "../uploads/documents/projects");
+if (!fs.existsSync(projectDocDir)) fs.mkdirSync(projectDocDir, { recursive: true });
+
+const projectDocStorage = multer.diskStorage({
+  destination: (req, file, cb) => cb(null, projectDocDir),
+  filename: (req, file, cb) => {
+    const timestamp = Date.now();
+    const ext = path.extname(file.originalname);
+    cb(null, `doc-${timestamp}${ext}`);
+  },
+});
+const uploadProjectDoc = multer({ storage: projectDocStorage });
+
+
 // ===== Export all uploads =====
-module.exports = { uploadLogo, uploadDoc, upload, uploadClient };
+module.exports = { uploadLogo, uploadDoc, upload, uploadClient,uploadProjectDoc };

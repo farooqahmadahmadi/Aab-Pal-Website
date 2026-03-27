@@ -39,6 +39,7 @@ import EmpSalaryPayment from "../pages/Employees/EmpSalaryPayment";
 import ClientInfo from "../pages/Client/ClientInfo";
 import ProjectInfo from "../pages/Project/ProjectInfo";
 import ProjectPhasesInfo from "../pages/Project/ProjectPhases";
+import ProjectDocuments from "../pages/Project/ProjectDocuments";
 
 
 export default function AppRoutes() {
@@ -178,6 +179,15 @@ export default function AppRoutes() {
                         </AdminLayout>
                     </ProtectedRoute>
                 } />
+
+                <Route path="/admin/projects/project-documents" element={
+                    <ProtectedRoute allowedRoles={["Admin"]}>
+                        <AdminLayout>
+                            <ProjectDocuments />
+                        </AdminLayout>
+                    </ProtectedRoute>
+                } />
+                
                 <Route path="/admin/users/user-list" element={
                     <ProtectedRoute allowedRoles={["Admin"]}>
                         <AdminLayout>
@@ -185,6 +195,7 @@ export default function AppRoutes() {
                         </AdminLayout>
                     </ProtectedRoute>
                 } />
+
 
                 {/* HR */}
                 <Route path="/hr/dashboard" element={

@@ -1,24 +1,24 @@
 import React, { useState, useEffect } from "react";
 import { FaPlus } from "react-icons/fa";
 
-export default function EmployeeDocumentModal({ isOpen, onClose, onSubmit, initialData }) {
+export default function ProjectDocumentModal({ isOpen, onClose, onSubmit, initialData }) {
     const [formData, setFormData] = useState({
-        employee_id: "",
-        doc_name: "",
-        doc_description: "",
+        project_id: "",
+        document_name: "",
+        document_description: "",
         file: null
     });
 
     useEffect(() => {
         if (initialData) {
             setFormData({
-                employee_id: initialData.employee_id || "",
-                doc_name: initialData.doc_name || "",
-                doc_description: initialData.doc_description || "",
+                project_id: initialData.project_id || "",
+                document_name: initialData.document_name || "",
+                document_description: initialData.document_description || "",
                 file: null
             });
         } else {
-            setFormData({ employee_id: "", doc_name: "", doc_description: "", file: null });
+            setFormData({ project_id: "", document_name: "", document_description: "", file: null });
         }
     }, [initialData, isOpen]);
 
@@ -30,12 +30,11 @@ export default function EmployeeDocumentModal({ isOpen, onClose, onSubmit, initi
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        const payload = new FormData();
-        payload.append("employee_id", formData.employee_id);
-        payload.append("doc_name", formData.doc_name);
-        payload.append("doc_description", formData.doc_description);
-        if (formData.file) payload.append("file", formData.file);
-        onSubmit(payload);
+        if (!formData.project_id || !formData.document_name) {
+            alert("Project ID and Document Name are required");
+            return;
+        }
+        onSubmit(formData);
     };
 
     if (!isOpen) return null;
@@ -45,58 +44,50 @@ export default function EmployeeDocumentModal({ isOpen, onClose, onSubmit, initi
             <div className="bg-white p-6 rounded shadow-md w-96 relative">
                 <h3 className="text-xl font-bold mb-4">{initialData ? "Edit Document" : "Add Document"}</h3>
                 <form onSubmit={handleSubmit} className="grid gap-4">
-
                     <input
                         type="number"
-                        name="employee_id"
-                        value={formData.employee_id}
+                        name="project_id"
+                        value={formData.project_id}
                         onChange={handleChange}
-                        placeholder="Employee ID"
+                        placeholder="Project ID"
                         className="border p-2 rounded w-full"
                         required
                     />
-
                     <input
                         type="text"
-                        name="doc_name"
-                        value={formData.doc_name}
+                        name="document_name"
+                        value={formData.document_name}
                         onChange={handleChange}
                         placeholder="Document Name"
                         maxLength={150}
                         className="border p-2 rounded w-full"
                         required
                     />
-
                     <input
                         type="text"
-                        name="doc_description"
-                        value={formData.doc_description}
+                        name="document_description"
+                        value={formData.document_description}
                         onChange={handleChange}
                         placeholder="Description"
                         maxLength={255}
                         className="border p-2 rounded w-full"
                     />
+                    <label className="block">
+                        <span className="text-gray-700 mb-1">Choose File:</span>
+                        <div className="flex items-center gap-2 border p-2 rounded cursor-pointer hover:bg-gray-100">
+                            <span>{formData.file ? formData.file.name : "Select a file..."}</span>
+                            <input
+                                type="file"
+                                name="file"
+                                onChange={handleChange}
+                                className="hidden"
+                                accept=".pdf,.doc,.docx,.xls,.xlsx,.png,.jpg,.jpeg"
+                            />
+                            <FaPlus className="text-green-500" />
+                        </div>
+                    </label>
 
-                    {/* File chooser like Company/Project */}
-                    <div>
-                        <label className="block">
-                            <span className="text-gray-700 mb-1">Choose File:</span>
-                            <div className="flex items-center gap-2 border p-2 rounded cursor-pointer hover:bg-gray-100">
-                                <span> {formData.file ? formData.file.name : "Select a file..."}</span>
-                                {/* <label className="bg-gray-200 px-3 py-2 rounded cursor-pointer hover:bg-gray-300 transition flex items-center gap-2"> */}
-
-                                <input
-                                    type="file"
-                                    name="file"
-                                    onChange={handleChange}
-                                    className="hidden"
-                                    accept=".pdf,.doc,.docx,.xls,.xlsx,.png,.jpg,.jpeg"
-                                />
-                                <FaPlus className="text-green-500" />
-                            </div>
-                        </label>
-                    </div>
-
+                    
                     <div className="flex justify-end gap-2 mt-2">
                         <button
                             type="button"
@@ -109,7 +100,7 @@ export default function EmployeeDocumentModal({ isOpen, onClose, onSubmit, initi
                             type="submit"
                             className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded flex items-center justify-center gap-2"
                         >
-                            <FaPlus /> {initialData ? "Update" : "Save"}
+                            {initialData ? "Update" : "Save"}
                         </button>
                     </div>
                 </form>

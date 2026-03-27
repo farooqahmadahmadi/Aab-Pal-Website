@@ -74,6 +74,7 @@ export default function Sidebar({ role }) {
                     { name: "Clients", path: "/admin/clients/clients-info" },
                     { name: "Projects", path: "/admin/projects/project-info" },
                     { name: "Projects Phases", path: "/admin/projects/project-phases-info" },
+                    { name: "Projects Documents", path: "/admin/projects/project-documents" },
                 ]
             },
             {
