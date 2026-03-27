@@ -27,7 +27,7 @@ import CompanyDocuments from "../pages/Company/CompanyDocuments";
 import Departments from "../pages/Departments/Departments";
 
 import EmployeeInfo from "../pages/Employees/Employees";
-import EmployeeEdcational from "../pages/Employees/EmployeeEducation";
+import EmployeeEducation from "../pages/Employees/EmployeeEducation";
 import EmployeeDocuments from "../pages/Employees/EmployeeDocuments";
 import EmployeeSalaryInfo from "../pages/Employees/EmployeeSalary";
 import AttendanceShifts from "../pages/Employees/AttendanceShifts";
@@ -38,7 +38,7 @@ import EmpSalaryPayment from "../pages/Employees/EmpSalaryPayment";
 
 import ClientInfo from "../pages/Client/ClientInfo";
 import ProjectInfo from "../pages/Project/ProjectInfo";
-
+import ProjectPhasesInfo from "../pages/Project/ProjectPhases";
 
 
 export default function AppRoutes() {
@@ -92,7 +92,7 @@ export default function AppRoutes() {
                 <Route path="/admin/employees/employee-education-info" element={
                     <ProtectedRoute allowedRoles={["Admin"]}>
                         <AdminLayout>
-                            <EmployeeEdcational />
+                            <EmployeeEducation />
                         </AdminLayout>
                     </ProtectedRoute>
                 } />
@@ -171,6 +171,13 @@ export default function AppRoutes() {
                     </ProtectedRoute>
                 } />
 
+                <Route path="/admin/projects/project-phases-info" element={
+                    <ProtectedRoute allowedRoles={["Admin"]}>
+                        <AdminLayout>
+                            <ProjectPhasesInfo />
+                        </AdminLayout>
+                    </ProtectedRoute>
+                } />
                 <Route path="/admin/users/user-list" element={
                     <ProtectedRoute allowedRoles={["Admin"]}>
                         <AdminLayout>
