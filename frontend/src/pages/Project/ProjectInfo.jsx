@@ -3,6 +3,7 @@ import ProjectInfoModal from "../../components/Project/ProjectInfoModal";
 import Toast from "../../components/common/Toast";
 import useToast from "../../hooks/useToast";
 import Pagination from "../../components/common/Pagination";
+import SearchBar from "../../components/common/SearchBar";
 import { FaPlus } from "react-icons/fa";
 
 import { getProjects, addProject, updateProject, deleteProject } from "../../services/projectInfoService";
@@ -86,7 +87,6 @@ export default function ProjectInfoPage() {
         }
     };
 
-
     const renderStatusBadge = (status) => {
         switch (status) {
             case "Planed": return <span className="px-2 py-1 rounded-full bg-blue-100 text-blue-700">{status}</span>;
@@ -105,13 +105,8 @@ export default function ProjectInfoPage() {
             <div className="flex justify-between items-center mb-4">
                 <h2 className="text-2xl font-bold">Projects Info</h2>
                 <div className="flex gap-2">
-                    <input
-                        type="text"
-                        placeholder="Search"
-                        value={search}
-                        onChange={e => setSearch(e.target.value)}
-                        className="border p-2 rounded"
-                    />
+                    <SearchBar value={search} onChange={setSearch} />
+
                     <button
                         onClick={() => { setModalOpen(true); setEditData(null); }}
                         className="bg-green-500 text-white px-4 py-2 rounded flex gap-2 items-center"
@@ -166,7 +161,9 @@ export default function ProjectInfoPage() {
                             </tr>
                         )) : (
                             <tr>
-                                <td colSpan="10" className="p-4 text-gray-500">No project records found</td>
+                                <td colSpan="10" className="p-4 text-gray-500">
+                                    No project records found
+                                </td>
                             </tr>
                         )}
                     </tbody>
@@ -187,10 +184,16 @@ export default function ProjectInfoPage() {
             {deleteData && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
                     <div className="bg-white p-6 rounded w-96">
-                        <p>Are you sure to delete <strong>{deleteData.project_name || "record"}</strong>?</p>
+                        <p>
+                            Are you sure to delete <strong>{deleteData.project_name || "record"}</strong>?
+                        </p>
                         <div className="flex justify-end gap-2 mt-4">
-                            <button onClick={() => setDeleteData(null)} className="bg-gray-300 px-4 py-2 rounded">Cancel</button>
-                            <button onClick={handleDelete} className="bg-red-500 text-white px-4 py-2 rounded">Delete</button>
+                            <button onClick={() => setDeleteData(null)} className="bg-gray-300 px-4 py-2 rounded">
+                                Cancel
+                            </button>
+                            <button onClick={handleDelete} className="bg-red-500 text-white px-4 py-2 rounded">
+                                Delete
+                            </button>
                         </div>
                     </div>
                 </div>

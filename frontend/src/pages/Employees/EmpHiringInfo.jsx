@@ -3,6 +3,7 @@ import EmpHiringModal from "../../components/Employees/EmpHiringModal";
 import Toast from "../../components/common/Toast";
 import useToast from "../../hooks/useToast";
 import Pagination from "../../components/common/Pagination";
+import SearchBar from "../../components/common/SearchBar";
 import { FaPlus } from "react-icons/fa";
 
 import { getEmpHiringInfo, addEmpHiring, updateEmpHiring, deleteEmpHiring } from "../../services/empHiringInfoService";
@@ -83,13 +84,21 @@ export default function EmpHiringInfoPage() {
             <div className="flex justify-between items-center mb-4">
                 <h2 className="text-2xl font-bold">Employee Hiring Info</h2>
                 <div className="flex gap-2">
-                    <input type="text" placeholder="Search" value={search} onChange={e => setSearch(e.target.value)} className="border p-2 rounded" />
-                    <button onClick={() => { setModalOpen(true); setEditData(null); }} className="bg-green-500 text-white px-4 py-2 rounded flex gap-2 items-center"><FaPlus /> Add</button>
+
+
+                    <SearchBar value={search} onChange={setSearch} />
+
+                    <button
+                        onClick={() => { setModalOpen(true); setEditData(null); }}
+                        className="bg-green-500 text-white px-4 py-2 rounded flex gap-2 items-center"
+                    >
+                        <FaPlus /> Add
+                    </button>
                 </div>
             </div>
 
             <div className="bg-white shadow rounded-lg overflow-x-auto">
-                <table className="w-full text-center">
+                <table className="w-full text-center text-sm">
                     <thead className="bg-gray-200 text-sm">
                         <tr>
                             <th className="p-2">ID</th>
@@ -123,7 +132,9 @@ export default function EmpHiringInfoPage() {
                             </tr>
                         )) : (
                             <tr>
-                                <td colSpan="8" className="p-4 text-center text-gray-500">No shifts found</td>
+                                <td colSpan="10" className="text-center p-4 text-gray-500">
+                                    No hiring records found
+                                </td>
                             </tr>
                         )}
                     </tbody>

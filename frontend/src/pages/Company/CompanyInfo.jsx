@@ -4,27 +4,30 @@ import { FaEdit, FaSave, FaCamera } from "react-icons/fa";
 import Toast from "../../components/common/Toast";
 import useToast from "../../hooks/useToast";
 
-const BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+const BASE_URL = import.meta.env.VITE_API_URL;
 
 export default function CompanyInfo() {
   const [data, setData] = useState({});
   const [editMode, setEditMode] = useState(false);
-  const [logoPreview, setLogoPreview] = useState(null);
+  const [logoPreview, setLogoPreview] = useState("/default-logo.png"); // fallback
   const { toast, showToast, hideToast } = useToast();
 
   // ===== Fetch =====
   const fetchData = async () => {
     try {
       const res = await API.get("/company");
-      setData(res.data);
+      const companyData = res.data || {}; // default empty object
+      setData(companyData);
 
-      if (res.data?.company_logo_url) {
-        setLogoPreview(`${BASE_URL}${res.data.company_logo_url}`);
+      if (companyData?.company_logo_url) {
+        setLogoPreview(`${BASE_URL}${companyData.company_logo_url}`);
       } else {
-        setLogoPreview(null);
+        setLogoPreview("/default-logo.png"); //  default logo
       }
     } catch (err) {
       showToast("Failed to load company info", "error");
+      setData({}); // ensure data is always object
+      setLogoPreview("/default-logo.png");
     }
   };
 
@@ -73,31 +76,33 @@ export default function CompanyInfo() {
   return (
     <>
       <div className="p-2 flex justify-center">
-        <div className="bg-white backdrop-blur-md shadow-xl rounded-2xl p-8 w-full max-w-2xl relative border">
+        <div className="bg-white backdrop-blur-md shadow-xl rounded-2xl p-4 w-full max-w-2xl relative border">
 
           {/* Edit / Save */}
           <div className="absolute top-3 right-3">
             {!editMode ? (
-              <button
+              // div as button
+              <div
                 onClick={() => setEditMode(true)}
                 title="Edit"
                 className="bg-yellow-500 hover:bg-yellow-600 text-white px-2 py-2 rounded-full flex items-center gap-2"
               >
                 <FaEdit />
-              </button>
+              </div>
             ) : (
-              <button
+              // div as button
+              <div
                 onClick={handleSave}
                 title="Save"
                 className="bg-green-500 hover:bg-green-600 text-white px-2 py-2  rounded-full flex items-center gap-2"
               >
                 <FaSave />
-              </button>
+              </div>
             )}
           </div>
 
           {/* ===== Fancy Logo ===== */}
-          <div className="flex justify-center mb-6">
+          <div className="flex justify-center mb-5">
             <div className="relative group w-48 h-48 rounded-full p-[5px]
               bg-gradient-to-r from-red-400 via-orange-400 via-yellow-300 via-green-400 via-blue-400 via-indigo-400 via-purple-400 to-pink-400
               animate-[gradientShift_12s_linear_infinite] 
@@ -107,7 +112,7 @@ export default function CompanyInfo() {
                 animate-[pulse_3s_ease-in-out_infinite] scale-100 hover:scale-110 transition-transform duration-600">
 
                 <img
-                  src={logoPreview || "/default-logo.png"}
+                  src={logoPreview}
                   alt="Company Logo"
                   className="w-44 h-44 rounded-full object-cover border-4 border-gray-100 shadow-lg"
                 />
