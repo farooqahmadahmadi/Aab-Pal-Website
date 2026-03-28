@@ -8,7 +8,6 @@ const {
     deleteDocument,
 } = require("../controllers/projectDocumentController");
 
-// Routes
 router.get("/", getDocuments);
 router.post("/", uploadProjectDoc.single("file"), createDocument);
 router.put("/:id", uploadProjectDoc.single("file"), updateDocument);

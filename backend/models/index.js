@@ -17,6 +17,7 @@ const ProjectDocuments = require('./ProjectDocuments');
 const EquipmentInfo = require('./EquipmentInfo');
 const EquipmentUsageInfo = require('./EquipmentUsageInfo');
 const EquipmentMaintenanceInfo = require('./EquipmentMaintenanceInfo');
+const EquipmentDocuments = require('./EquipmentDocuments');
 const MaterialInfo = require('./MaterialsInfo');
 const PurchaseOrderItemInfo = require('./PurchaseOrderItemsInfo');
 const StockTransactionInfo = require('./StockTransactionsInfo');
@@ -114,6 +115,10 @@ EquipmentMaintenanceInfo.belongsTo(EquipmentInfo, { foreignKey: 'equipment_id' }
 // Equipment to Equipment Usage Info
 EquipmentInfo.hasMany(EquipmentUsageInfo, { foreignKey: 'equipment_id' });
 EquipmentUsageInfo.belongsTo(EquipmentInfo, { foreignKey: 'equipment_id' });
+
+// Equipment to Equipment Documents Info
+EquipmentInfo.hasMany(EquipmentDocuments, { foreignKey: 'equipment_id' });
+EquipmentDocuments.belongsTo(EquipmentInfo, { foreignKey: 'equipment_id' });
 
 // Employee to Equipment Usage Info
 EmployeeInfo.hasMany(EquipmentUsageInfo, { foreignKey: 'employee_id' });

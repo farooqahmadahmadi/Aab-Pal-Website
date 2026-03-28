@@ -81,13 +81,13 @@ export default function ProjectDocumentModal({ isOpen, onClose, onSubmit, initia
                                 name="file"
                                 onChange={handleChange}
                                 className="hidden"
-                                accept=".pdf,.doc,.docx,.xls,.xlsx,.png,.jpg,.jpeg"
+                                accept=".txt,.pdf,.doc,.docx,.xlsx,.pptx,.png,.jpeg,.jpg,.zip,.rar"
                             />
                             <FaPlus className="text-green-500" />
                         </div>
                     </label>
 
-                    
+
                     <div className="flex justify-end gap-2 mt-2">
                         <button
                             type="button"
