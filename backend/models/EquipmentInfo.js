@@ -24,8 +24,11 @@ const EquipmentInfo = sequelize.define("EquipmentInfo", {
         type: DataTypes.DECIMAL(12, 2)
     },
     equip_current_status: {
-        type: DataTypes.STRING(50),
-        allowNull: false
+        type: DataTypes.ENUM('NotUsed','InUse','Damaged','Other'),
+    },
+    is_deleted: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false
     }
 }, {
     tableName: "equipment_info",

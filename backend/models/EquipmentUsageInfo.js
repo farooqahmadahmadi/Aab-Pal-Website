@@ -11,6 +11,10 @@ const EquipmentUsageInfo = sequelize.define("EquipmentUsageInfo", {
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull: false
     },
+    employee_id: {
+        type: DataTypes.BIGINT.UNSIGNED,
+        allowNull: false
+    },
     project_id: {
         type: DataTypes.BIGINT.UNSIGNED
     },
@@ -20,10 +24,14 @@ const EquipmentUsageInfo = sequelize.define("EquipmentUsageInfo", {
     },
     usage_end_date: {
         type: DataTypes.DATEONLY,
-        allowNull: false
+        allowNull: true
     },
     usage_description: {
         type: DataTypes.STRING(255)
+    },
+    is_deleted: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false
     }
 }, {
     tableName: "equipment_usage_info",

@@ -16,6 +16,15 @@ module.exports = {
         },
         onDelete: 'CASCADE'
       },
+      employee_id: {
+        type: Sequelize.BIGINT.UNSIGNED,
+        allowNull: false,
+        references: {
+          model: 'employee_info',
+          key: 'employee_id'
+        },
+        onUpdate: 'CASCADE',
+      },
       project_id: {
         type: Sequelize.BIGINT.UNSIGNED,
         references: {

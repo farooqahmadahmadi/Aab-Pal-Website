@@ -115,6 +115,10 @@ EquipmentMaintenanceInfo.belongsTo(EquipmentInfo, { foreignKey: 'equipment_id' }
 EquipmentInfo.hasMany(EquipmentUsageInfo, { foreignKey: 'equipment_id' });
 EquipmentUsageInfo.belongsTo(EquipmentInfo, { foreignKey: 'equipment_id' });
 
+// Employee to Equipment Usage Info
+EmployeeInfo.hasMany(EquipmentUsageInfo, { foreignKey: 'employee_id' });
+EquipmentUsageInfo.belongsTo(EmployeeInfo, { foreignKey: 'employee_id' });
+
 // Project to Equipment Usage Info
 ProjectInfo.hasMany(EquipmentUsageInfo, { foreignKey: 'project_id' });
 EquipmentUsageInfo.belongsTo(ProjectInfo, { foreignKey: 'project_id' });

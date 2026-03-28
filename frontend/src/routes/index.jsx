@@ -42,6 +42,8 @@ import ProjectPhasesInfo from "../pages/Project/ProjectPhases";
 import ProjectDocuments from "../pages/Project/ProjectDocuments";
 
 
+import Equipments from "../pages/Equipments/Equipments";
+
 export default function AppRoutes() {
     return (
         <BrowserRouter>
@@ -187,7 +189,15 @@ export default function AppRoutes() {
                         </AdminLayout>
                     </ProtectedRoute>
                 } />
-                
+
+                <Route path="/admin/equipments/equipments" element={
+                    <ProtectedRoute allowedRoles={["Admin"]}>
+                        <AdminLayout>
+                            <Equipments />
+                        </AdminLayout>
+                    </ProtectedRoute>
+                } />
+
                 <Route path="/admin/users/user-list" element={
                     <ProtectedRoute allowedRoles={["Admin"]}>
                         <AdminLayout>

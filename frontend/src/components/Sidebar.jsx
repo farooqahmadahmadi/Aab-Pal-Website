@@ -89,7 +89,7 @@ export default function Sidebar({ role }) {
             },
             {
                 name: "Equipments", icon: <FiTruck />, submenu: [
-                    { name: "Machinery", path: "/admin/users/user-list" },
+                    { name: "Equipments (Machinery)", path: "/admin/equipments/equipments" },
                 ]
             },
             {

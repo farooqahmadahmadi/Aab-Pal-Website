@@ -26,7 +26,7 @@ module.exports = {
         type: Sequelize.DATEONLY
       },
       phase_status: {
-        type: Sequelize.STRING(50)
+        type: Sequelize.ENUM('Not Started','InProgress','Completed','OnHold','Failed','Other')
       },
       created_at: {
         type: Sequelize.DATE

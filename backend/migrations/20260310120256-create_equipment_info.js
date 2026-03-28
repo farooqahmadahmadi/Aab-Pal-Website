@@ -24,8 +24,11 @@ module.exports = {
         type: Sequelize.DECIMAL(12, 2)
       },
       equip_current_status: {
-        type: Sequelize.STRING(50),
-        allowNull: false
+        type: Sequelize.ENUM('NotUsed','InUse','Damaged','Other'),
+      },
+      is_deleted: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: false
       },
       created_at: {
         type: Sequelize.DATE

@@ -17,7 +17,7 @@ exports.createPayment = async (data) => {
     if (!data.employee_salary_id) throw new Error("employee_salary_id is required");
     if (!data.salary_month) throw new Error("salary_month is required");
 
-    // ✅ Duplicate prevention per Employee per Month
+    // Duplicate prevention per Employee per Month
     const existing = await EmpSalaryPaymentInfo.findOne({
         where: {
             employee_salary_id: data.employee_salary_id,
@@ -45,7 +45,7 @@ exports.updatePayment = async (id, data) => {
     const payment = await EmpSalaryPaymentInfo.findOne({ where: { payment_id: id, is_deleted: false } });
     if (!payment) return null;
 
-    // ✅ Duplicate check per Employee per Month, exclude self
+    // Duplicate check per Employee per Month, exclude self
     const existing = await EmpSalaryPaymentInfo.findOne({
         where: {
             employee_salary_id: data.employee_salary_id || payment.employee_salary_id,
@@ -66,7 +66,7 @@ exports.updatePayment = async (id, data) => {
     const deduction = parseFloat(data.salary_deduction || payment.salary_deduction || 0);
 
     return payment.update({
-        employee_salary_id: payment.employee_salary_id, // ✅ Preserve original salary_id for edit
+        employee_salary_id: payment.employee_salary_id, // Preserve original salary_id for edit
         salary_month: data.salary_month || payment.salary_month,
         salary_bonus: bonus,
         salary_deduction: deduction,

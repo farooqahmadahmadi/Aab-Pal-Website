@@ -21,7 +21,7 @@ const ProjectPhasesInfo = sequelize.define("ProjectPhasesInfo", {
         type: DataTypes.DATEONLY
     },
     phase_status: {
-        type: DataTypes.STRING(50)
+        type: DataTypes.ENUM('Not Started','InProgress','Completed','OnHold','Failed','Other')
     },
     is_deleted: {
         type: DataTypes.BOOLEAN,
