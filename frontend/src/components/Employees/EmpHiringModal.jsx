@@ -48,9 +48,9 @@ export default function EmpHiringModal({ isOpen, onClose, onSubmit, initialData 
                     <input type="number" name="attendance_shift_id" placeholder="Shift ID" value={formData.attendance_shift_id} onChange={handleChange} className="border p-2 rounded" />
                     <input name="position" placeholder="Position" value={formData.position} onChange={handleChange} className="border p-2 rounded" />
                     <input name="employment_type" placeholder="Employment Type" value={formData.employment_type} onChange={handleChange} className="border p-2 rounded" />
-                    <input type="date" name="hire_date" placeholder="Hire Date" value={formData.hire_date} onChange={handleChange} className="border p-2 rounded" />
-                    <input type="date" name="end_date" placeholder="End Date" value={formData.end_date} onChange={handleChange} className="border p-2 rounded" />
-                    <select name="current_status" value={formData.current_status} onChange={handleChange} className="border p-2 rounded">
+                    <input type="date" name="hire_date" placeholder="Hire Date" title="Hiring Date" value={formData.hire_date} onChange={handleChange} className="border p-2 rounded" />
+                    <input type="date" name="end_date" placeholder="End Date" title="Hiring End Date" value={formData.end_date} onChange={handleChange} className="border p-2 rounded" />
+                    <select name="current_status" value={formData.current_status} title="Status" onChange={handleChange} className="border p-2 rounded">
                         <option value="Active">Active</option>
                         <option value="InActive">InActive</option>
                         <option value="Other">Other</option>

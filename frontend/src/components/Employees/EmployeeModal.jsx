@@ -45,7 +45,7 @@ export default function EmployeeModal({ isOpen, onClose, onSubmit, initialData }
 
                     <input name="emp_full_name" value={form.emp_full_name} onChange={handleChange} placeholder="Full Name" className="w-full border p-2 rounded" required />
                     <input name="emp_father_name" value={form.emp_father_name} onChange={handleChange} placeholder="Father Name" className="w-full border p-2 rounded" />
-                    <input type="date" name="emp_dob" value={form.emp_dob} onChange={handleChange} placeholder="DOB" className="w-full border p-2 rounded" />
+                    <input type="date" name="emp_dob" value={form.emp_dob} title="Date of Birth" onChange={handleChange} placeholder="DOB" className="w-full border p-2 rounded" />
                     <input name="emp_nid_number" value={form.emp_nid_number} onChange={handleChange} placeholder="NID Number" className="w-full border p-2 rounded" required />
 
                     <select name="emp_gender" value={form.emp_gender} onChange={handleChange} className="w-full border p-2 rounded">

@@ -191,7 +191,7 @@ const EmpSalaryPaymentModal = ({ isOpen, onClose, onSave, payment, allPayments =
               />
             )}
 
-            <input type="month" name="salary_month" value={form.salary_month} onChange={handleChange} required className="border p-2 rounded" />
+            <input type="month" name="salary_month" title="Year & Month" value={form.salary_month} onChange={handleChange} required className="border p-2 rounded" />
 
             <input type="number" name="salary_bonus" value={form.salary_bonus} onChange={handleChange} placeholder="Bonus" step="0.01" className="border p-2 rounded" />
 
@@ -199,9 +199,9 @@ const EmpSalaryPaymentModal = ({ isOpen, onClose, onSave, payment, allPayments =
 
             <input type="number" name="paid_amount" value={parseFloat(form.paid_amount || 0).toFixed(2)} readOnly step="0.01" className="border p-2 rounded bg-gray-100" />
 
-            <input type="date" name="payment_date" value={form.payment_date} onChange={handleChange} className="border p-2 rounded" />
+            <input type="date" name="payment_date" title="Payment Date" value={form.payment_date} onChange={handleChange} className="border p-2 rounded" />
 
-            <select name="payment_status" value={form.payment_status} onChange={handleChange} className="border p-2 rounded">
+            <select name="payment_status" title="Status" value={form.payment_status} onChange={handleChange} className="border p-2 rounded">
               <option value="Pending">Pending</option>
               <option value="Paid">Paid</option>
               <option value="Failed">Failed</option>

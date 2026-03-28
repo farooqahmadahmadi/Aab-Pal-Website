@@ -22,6 +22,11 @@ const projectInfoRoutes = require("./routes/projectInfoRoutes");
 const projectPhasesRoutes = require("./routes/projectPhasesRoutes");
 const projectDocumentRoutes = require("./routes/projectDocumentRoutes");
 const equipmentRoutes = require("./routes/equipmentRoutes");
+const equipmentUsageRoutes = require("./routes/equipmentUsageRoutes");
+const equipmentMaintenanceRoutes = require("./routes/equipmentMaintenanceRoutes");
+
+
+
 
 const app = express();
 
@@ -62,7 +67,8 @@ app.use("/api/project-info", projectInfoRoutes);
 app.use("/api/project-phases", projectPhasesRoutes);
 app.use("/api/project-documents", projectDocumentRoutes);
 app.use("/api/equipment", equipmentRoutes);
-
+app.use("/api/equipment-usage", equipmentUsageRoutes);
+app.use("/api/equipment-maintenance", equipmentMaintenanceRoutes);
 
 
 // Error handler

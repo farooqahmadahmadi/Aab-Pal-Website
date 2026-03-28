@@ -44,6 +44,10 @@ module.exports = {
       usage_description: {
         type: Sequelize.STRING(255)
       },
+      is_deleted: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: false
+      },
       created_at: {
         type: Sequelize.DATE
       },

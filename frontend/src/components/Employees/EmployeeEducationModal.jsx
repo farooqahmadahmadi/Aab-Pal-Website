@@ -57,70 +57,46 @@ export default function EmployeeEducationModal({ isOpen, onClose, onSubmit, init
         <form onSubmit={submit} className="space-y-3">
 
           <input
-            type="number"
-            name="employee_id"
-            value={form.employee_id}
-            onChange={handleChange}
-            placeholder="Employee ID"
-            className="w-full border p-2 rounded"
-            required
+            type="number" name="employee_id" value={form.employee_id}
+            onChange={handleChange} placeholder="Employee ID"
+            className="w-full border p-2 rounded" required
           />
 
           <input
-            type="text"
-            name="educational_degree"
-            value={form.educational_degree}
-            onChange={handleChange}
-            placeholder="Degree"
-            className="w-full border p-2 rounded"
+            type="text" name="educational_degree" value={form.educational_degree}
+            onChange={handleChange} placeholder="Degree" className="w-full border p-2 rounded"
           />
 
           <input
-            type="text"
-            name="educational_institution"
-            value={form.educational_institution}
-            onChange={handleChange}
-            placeholder="Institution Name"
-            className="w-full border p-2 rounded"
+            type="text" name="educational_institution" value={form.educational_institution}
+            onChange={handleChange} placeholder="Institution Name" className="w-full border p-2 rounded"
           />
 
           <input
-            type="text"
-            name="educational_field"
-            value={form.educational_field}
-            onChange={handleChange}
-            placeholder="Field of Study"
-            className="w-full border p-2 rounded"
+            type="text" name="educational_field" value={form.educational_field}
+            onChange={handleChange} placeholder="Field of Study" className="w-full border p-2 rounded"
           />
 
           <input
-            type="date"
-            name="graduation_date"
-            value={form.graduation_date}
-            onChange={handleChange}
-            className="w-full border p-2 rounded"
+            type="date" name="graduation_date" value={form.graduation_date}
+            onChange={handleChange} title="Graduation Date" className="w-full border p-2 rounded"
           />
 
           <textarea
-            name="description"
-            value={form.description}
-            onChange={handleChange}
-            placeholder="Additional Notes"
-            className="w-full border p-2 rounded"
+            name="description" value={form.description} onChange={handleChange}
+            placeholder="Additional Notes" className="w-full border p-2 rounded"
           />
 
           <div className="flex justify-end gap-2">
             <button
-              type="button"
-              onClick={onClose}
+              type="button" onClick={onClose}
               className="bg-gray-400 hover:bg-gray-500 text-white px-4 py-2 rounded"
             >
               Cancel
             </button>
 
             <button
-              type="submit"
-              className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded"
+              type="submit" className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded"
             >
               {initialData ? "Update" : "Save"}
             </button>

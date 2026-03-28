@@ -109,6 +109,7 @@ export default function EmployeeSalaryModal({ isOpen, onClose, onSubmit, initial
                     <input
                         type="date"
                         name="effective_from"
+                        title="Effective From"
                         value={form.effective_from}
                         onChange={handleChange}
                         required
@@ -117,15 +118,17 @@ export default function EmployeeSalaryModal({ isOpen, onClose, onSubmit, initial
                     <input
                         type="date"
                         name="effective_to"
+                        title="Effective To"
                         value={form.effective_to}
                         onChange={handleChange}
                         required
                         className="border px-3 py-2 rounded"
                     />
 
-                    <label className="block text-sm font-medium">Status</label>
+                    
                     <select
                         name="is_active"
+                        title="Status"
                         value={form.is_active ? "true" : "false"}
                         onChange={handleChange}
                         disabled={activeExists && !form.is_active}

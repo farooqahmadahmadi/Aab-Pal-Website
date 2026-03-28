@@ -126,6 +126,7 @@ export default function EmployeeAttendanceModal({
                 <input
                     type="date"
                     value={form.attendance_date}
+                    title="Date"
                     onChange={(e) =>
                         setForm({ ...form, attendance_date: e.target.value })
                     }
@@ -136,6 +137,7 @@ export default function EmployeeAttendanceModal({
                 <input
                     type="time"
                     value={form.check_in_time || ""}
+                    title="Check In Time"
                     onChange={(e) =>
                         setForm({ ...form, check_in_time: e.target.value })
                     }
@@ -146,6 +148,7 @@ export default function EmployeeAttendanceModal({
                 <input
                     type="time"
                     value={form.check_out_time || ""}
+                    title="Check Out Time"
                     onChange={(e) =>
                         setForm({ ...form, check_out_time: e.target.value })
                     }
@@ -156,6 +159,7 @@ export default function EmployeeAttendanceModal({
                 <input
                     type="text"
                     value={form.total_work_hours}
+                    title="Total Work Hours"
                     readOnly
                     className="border p-2 w-full rounded bg-gray-100 text-center font-semibold"
                 />
@@ -163,6 +167,7 @@ export default function EmployeeAttendanceModal({
                 {/* Status */}
                 <select
                     value={form.attendance_status}
+                    title="Stats"
                     onChange={(e) =>
                         setForm({ ...form, attendance_status: e.target.value })
                     }

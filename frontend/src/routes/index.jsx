@@ -43,6 +43,8 @@ import ProjectDocuments from "../pages/Project/ProjectDocuments";
 
 
 import Equipments from "../pages/Equipments/Equipments";
+import EquipmentUsage from "../pages/Equipments/EquipmentUsage";
+import EquipmentMaintenance from "../pages/Equipments/EquipmentMaintenance";
 
 export default function AppRoutes() {
     return (
@@ -149,7 +151,6 @@ export default function AppRoutes() {
                     </ProtectedRoute>
                 } />
 
-
                 <Route path="/admin/employees/employee-salary-payment" element={
                     <ProtectedRoute allowedRoles={["Admin"]}>
                         <AdminLayout>
@@ -194,6 +195,22 @@ export default function AppRoutes() {
                     <ProtectedRoute allowedRoles={["Admin"]}>
                         <AdminLayout>
                             <Equipments />
+                        </AdminLayout>
+                    </ProtectedRoute>
+                } />
+
+                <Route path="/admin/equipments/equipments-usage" element={
+                    <ProtectedRoute allowedRoles={["Admin"]}>
+                        <AdminLayout>
+                            <EquipmentUsage />
+                        </AdminLayout>
+                    </ProtectedRoute>
+                } />
+
+                <Route path="/admin/equipments/equipment-maintenance" element={
+                    <ProtectedRoute allowedRoles={["Admin"]}>
+                        <AdminLayout>
+                            <EquipmentMaintenance />
                         </AdminLayout>
                     </ProtectedRoute>
                 } />

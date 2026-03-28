@@ -90,6 +90,9 @@ export default function Sidebar({ role }) {
             {
                 name: "Equipments", icon: <FiTruck />, submenu: [
                     { name: "Equipments (Machinery)", path: "/admin/equipments/equipments" },
+                    { name: "Equipments Usage", path: "/admin/equipments/equipments-usage" },
+                    { name: "Equipments Maintenance", path: "/admin/equipments/equipment-maintenance" },
+                    // { name: "Equipments Documents", path: "/admin/equipments/equipment-documents" },
                 ]
             },
             {

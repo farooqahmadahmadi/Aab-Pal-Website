@@ -104,27 +104,28 @@ export default function ProjectInfoModal({ isOpen, onClose, onSubmit, initialDat
                     </select>
 
                     <input type="date" name="project_start_date"
-                        value={formData.project_start_date ?? ""}
+                        value={formData.project_start_date ?? ""} title="Start Date"
                         onChange={handleChange} className="border p-2 rounded" />
 
                     <input type="date" name="project_end_date"
-                        value={formData.project_end_date ?? ""}
-                        onChange={handleChange} className="border p-2 rounded" />
-
-                    <input type="number" step="0.000001" name="longitude"
-                        value={formData.longitude ?? 0}
+                        value={formData.project_end_date ?? ""} title="End Date"
                         onChange={handleChange} className="border p-2 rounded" />
 
                     <input type="number" step="0.000001" name="latitude"
-                        value={formData.latitude ?? 0}
+                        value={formData.latitude ?? 0} title="Latitude"
+                        onChange={handleChange} className="border p-2 rounded" />
+
+                    <input type="number" step="0.000001" name="longitude"
+                        value={formData.longitude ?? 0} title="Longitude"
                         onChange={handleChange} className="border p-2 rounded" />
 
                     <input name="project_address"
-                        value={formData.project_address ?? ""}
+                        value={formData.project_address ?? ""} placeholder="Address"
                         onChange={handleChange} className="border p-2 rounded" />
 
                     <input type="number" step="0.01" name="project_estimate_budget"
                         value={formData.project_estimate_budget ?? 0}
+                        title="Estimate Budget"
                         onChange={handleChange} className="border p-2 rounded" />
 
                     <select name="project_status"

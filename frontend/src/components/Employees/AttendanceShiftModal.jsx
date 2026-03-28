@@ -35,14 +35,14 @@ export default function AttendanceShiftModal({ isOpen, onClose, onSubmit, initia
                 <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-2">
                     <input name="shift_name" placeholder="Shift Name" value={form.shift_name} onChange={handleChange} className="border p-2 rounded" required />
                     <div className="grid grid-cols-2 gap-2">
-                        <input type="time" name="check_in_start" value={form.check_in_start} onChange={handleChange} className="border p-2 rounded" required />
-                        <input type="time" name="check_in_end" value={form.check_in_end} onChange={handleChange} className="border p-2 rounded" required />
-                        <input type="time" name="check_out_start" value={form.check_out_start} onChange={handleChange} className="border p-2 rounded" required />
-                        <input type="time" name="check_out_end" value={form.check_out_end} onChange={handleChange} className="border p-2 rounded" required />
+                        <input type="time" name="check_in_start" value={form.check_in_start} title="Check In Start" onChange={handleChange} className="border p-2 rounded" required />
+                        <input type="time" name="check_in_end" value={form.check_in_end} title="Check In End" onChange={handleChange} className="border p-2 rounded" required />
+                        <input type="time" name="check_out_start" value={form.check_out_start} title="Check Out Start" onChange={handleChange} className="border p-2 rounded" required />
+                        <input type="time" name="check_out_end" value={form.check_out_end} title="Check Out End" onChange={handleChange} className="border p-2 rounded" required />
                     </div>
                     <div className="grid grid-cols-2 gap-2">
-                        <input type="number" step="0.0000001" name="latitude" value={form.latitude} onChange={handleChange} placeholder="Latitude" className="border p-2 rounded" required />
-                        <input type="number" step="0.0000001" name="longitude" value={form.longitude} onChange={handleChange} placeholder="Longitude" className="border p-2 rounded" required />
+                        <input type="number" step="0.0000001" name="latitude" value={form.latitude ?? 0} title="Latitude" onChange={handleChange} placeholder="Latitude" className="border p-2 rounded" required />
+                        <input type="number" step="0.0000001" name="longitude" value={form.longitude ?? 0} title="Longitude" onChange={handleChange} placeholder="Longitude" className="border p-2 rounded" required />
                     </div>
                     <input type="number" name="reduce" value={form.reduce} onChange={handleChange} placeholder="Reduce (meters)" className="border p-2 rounded" />
                     <div className="flex justify-end gap-2 mt-4">
