@@ -38,9 +38,9 @@ import EmpSalaryPayment from "../pages/Employees/EmpSalaryPayment";
 
 import ClientInfo from "../pages/Client/ClientInfo";
 import ProjectInfo from "../pages/Project/ProjectInfo";
+import BoqItems from "../pages/Project/BoqItems";
 import ProjectPhasesInfo from "../pages/Project/ProjectPhases";
 import ProjectDocuments from "../pages/Project/ProjectDocuments";
-
 
 import Equipments from "../pages/Equipments/Equipments";
 import EquipmentUsage from "../pages/Equipments/EquipmentUsage";
@@ -180,6 +180,14 @@ export default function AppRoutes() {
                     </ProtectedRoute>
                 } />
 
+                <Route path="/admin/projects/boq-items" element={
+                    <ProtectedRoute allowedRoles={["Admin"]}>
+                        <AdminLayout>
+                            <BoqItems />
+                        </AdminLayout>
+                    </ProtectedRoute>
+                } />
+
                 <Route path="/admin/projects/project-phases-info" element={
                     <ProtectedRoute allowedRoles={["Admin"]}>
                         <AdminLayout>
@@ -265,17 +273,17 @@ export default function AppRoutes() {
 
                 <Route path="/hr/employees/employee-info" element={
                     <ProtectedRoute allowedRoles={["HR"]}>
-                        <AdminLayout>
+                        <HRLayout>
                             <EmployeeInfo />
-                        </AdminLayout>
+                        </HRLayout>
                     </ProtectedRoute>
                 } />
 
                 <Route path="/hr/employees/employee-attendance" element={
                     <ProtectedRoute allowedRoles={["HR"]}>
-                        <AdminLayout>
+                        <HRLayout>
                             <EmployeeAttendance />
-                        </AdminLayout>
+                        </HRLayout>
                     </ProtectedRoute>
                 } />
 

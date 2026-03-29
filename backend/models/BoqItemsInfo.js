@@ -16,7 +16,7 @@ const BoqItemsInfo = sequelize.define('BoqItemsInfo', {
         allowNull: false
     },
     unit: {
-        type: DataTypes.STRING(50)
+        type: DataTypes.ENUM('Meter', 'Tone', 'Squire Meter', 'Other')
     },
     item_quantity: {
         type: DataTypes.DECIMAL(14, 2),
@@ -24,10 +24,12 @@ const BoqItemsInfo = sequelize.define('BoqItemsInfo', {
         allowNull: false
     },
     unit_price: {
-        type: DataTypes.DECIMAL(14, 2)
+        type: DataTypes.DECIMAL(14, 2),
+        defaultValue: 0
     },
     total_amount: {
-        type: DataTypes.DECIMAL(14, 2)
+        type: DataTypes.DECIMAL(14, 2),
+        defaultValue: 0
     },
     is_deleted: {
         type: DataTypes.BOOLEAN,

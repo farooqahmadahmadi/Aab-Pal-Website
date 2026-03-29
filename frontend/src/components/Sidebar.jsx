@@ -73,6 +73,7 @@ export default function Sidebar({ role }) {
                 name: "Projects", icon: <FiBox />, submenu: [
                     { name: "Clients", path: "/admin/clients/clients-info" },
                     { name: "Projects", path: "/admin/projects/project-info" },
+                    { name: "BOQ Items", path: "/admin/projects/boq-items" },
                     { name: "Projects Phases", path: "/admin/projects/project-phases-info" },
                     { name: "Projects Documents", path: "/admin/projects/project-documents" },
                 ]
@@ -143,8 +144,8 @@ export default function Sidebar({ role }) {
                 <Link
                     key={idx}
                     to={item.path}
-                    className={`flex items-center justify-center mb-2 p-2 rounded hover:bg-gray-900 transition-all duration-300
-            ${activeParent ? "bg-gray-900 font-semibold shadow-md" : ""}`}
+                    className={`flex items-center justify-center mb-2 p-2 rounded text-black hover:bg-gray-300 hover:text-black transition-all duration-300
+            ${activeParent ? "bg-gray-300 text-blue-700 font-semibold shadow-md" : ""}`}
                 >
                     <span className="text-xl relative">
                         {item.icon}
@@ -161,14 +162,14 @@ export default function Sidebar({ role }) {
         return (
             <div key={idx} className="relative group">
                 <div
-                    className={`flex items-center justify-center mb-3 p-2  rounded hover:bg-gray-900 transition-all duration-300 cursor-pointer
-            ${activeParent ? "bg-gray-900 font-semibold shadow-md" : ""}`}
+                    className={`flex items-center justify-center mb-3 p-2  rounded hover:bg-gray-300 transition-all duration-300 cursor-pointer
+            ${activeParent ? "bg-gray-300 text-blue-700 font-semibold shadow-md" : ""}`}
                     onClick={() => togglePopup(item.name)}
                 >
                     <span className="text-xl relative">
                         {item.icon}
                         {!sidebarOpen && (
-                            <span className="absolute left-16 top-1/2 -translate-y-1/2 bg-gray-900 text-white text-xs px-3 py-1 rounded shadow-lg opacity-0 group-hover:opacity-100 transition-all duration-300 whitespace-nowrap z-50">
+                            <span className="absolute left-16 top-1/2 -translate-y-1/2 bg-white text-black text-xs px-2 py-1 rounded shadow-lg opacity-0 group-hover:opacity-100 transition-all duration-300 whitespace-nowrap z-50">
                                 {item.name}
                             </span>
                         )}
@@ -177,12 +178,12 @@ export default function Sidebar({ role }) {
 
                 {/* Sub menu */}
                 {popupMenu === item.name && (
-                    <div className="absolute top-0 left-full ml-0 w-48 text-sm bg-black rounded shadow-lg py-2 z-50 transition-transform duration-300 transform scale-95 opacity-0 animate-popup">
+                    <div className="absolute top-0 left-full ml-0 w-48 text-sm bg-white rounded shadow-lg py-2 z-50 transition-transform duration-300 transform scale-95 opacity-0 animate-popup">
                         {item.submenu.map((sub, subIdx) => (
                             <Link
                                 key={subIdx}
                                 to={sub.path}
-                                className="flex items-center px-3 py-2 rounded text-white hover:bg-gray-900 transition-all duration-300"
+                                className="flex items-center px-3 py-2 rounded text-black hover:bg-gray-200 hover:text-black transition-all duration-300"
                                 onClick={() => {
                                     setPopupMenu(null);
                                     if (windowWidth < 768) setSidebarOpen(false);
@@ -214,7 +215,7 @@ export default function Sidebar({ role }) {
 
             <div
                 ref={sidebarRef}
-                className={`fixed top-0 left-0 h-screen  w-9 bg-black text-white z-40 transform shadow-lg transition-all duration-500 ease-in-out
+                className={`fixed top-0 left-0 h-screen  w-9 bg-white text-black z-40 transform shadow-lg transition-all duration-500 ease-in-out
           ${sidebarOpen ? "translate-x-0 w-20" : "-translate-x-full w-20"}`}
             >
                 <div className="p-4 mt-16 flex flex-col items-center">

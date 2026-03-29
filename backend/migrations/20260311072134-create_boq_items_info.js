@@ -22,18 +22,20 @@ module.exports = {
         allowNull: false
       },
       unit: {
-        type: Sequelize.STRING(50)
+        type: Sequelize.ENUM('Meter', 'Tone', 'Squire Meter', 'Other')
       },
       item_quantity: {
-        type: Sequelize.DECIMAL(14,2),
+        type: Sequelize.DECIMAL(14, 2),
         defaultValue: 0,
         allowNull: false
       },
       unit_price: {
-        type: Sequelize.DECIMAL(14,2)
+        type: Sequelize.DECIMAL(14, 2),
+        defaultValue: 0
       },
       total_amount: {
-        type: Sequelize.DECIMAL(14,2)
+        type: Sequelize.DECIMAL(14, 2),
+        defaultValue: 0
       },
       is_deleted: {
         type: Sequelize.BOOLEAN,
