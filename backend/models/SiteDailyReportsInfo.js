@@ -22,6 +22,10 @@ const SiteDailyReportsInfo = sequelize.define('SiteDailyReportsInfo', {
     weather: {
         type: DataTypes.STRING(100)
     },
+    report_title: {
+        type: DataTypes.STRING(255),
+        allowNull: false
+    },
     work_completed: {
         type: DataTypes.TEXT
     },

@@ -15,6 +15,10 @@ const TasksAssignmentInfo = sequelize.define('TasksAssignmentInfo', {
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull: false
     },
+    task_title: {
+        type: DataTypes.STRING(255),
+        allowNull: false
+    },
     task_description: {
         type: DataTypes.TEXT
     },

@@ -34,6 +34,10 @@ module.exports = {
       weather: {
         type: Sequelize.STRING(100)
       },
+      report_title: {
+        type: Sequelize.STRING(255),
+        allowNull: false
+      },
       work_completed: {
         type: Sequelize.TEXT
       },
@@ -45,11 +49,9 @@ module.exports = {
         defaultValue: false
       },
       created_at: {
-        allowNull: false,
         type: Sequelize.DATE
       },
       updated_at: {
-        allowNull: false,
         type: Sequelize.DATE
       }
     });
