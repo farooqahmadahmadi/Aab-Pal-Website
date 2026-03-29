@@ -14,7 +14,7 @@ const ContractInfo = sequelize.define('ContractInfo', {
         type: DataTypes.STRING(255)
     },
     contract_number: {
-        type: DataTypes.STRING (10)
+        type: DataTypes.STRING(10)
     },
     signed_date: {
         type: DataTypes.DATEONLY,
@@ -27,7 +27,8 @@ const ContractInfo = sequelize.define('ContractInfo', {
         type: DataTypes.DATEONLY
     },
     total_value: {
-        type: DataTypes.DECIMAL(14, 2)
+        type: DataTypes.DECIMAL(14, 2),
+        defaultValue: 0
     },
     contract_status: {
         type: DataTypes.ENUM('Draft', 'Active', 'Completed', 'Cancelled')

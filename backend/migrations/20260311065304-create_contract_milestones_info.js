@@ -25,7 +25,8 @@ module.exports = {
         type: Sequelize.DATEONLY
       },
       amount: {
-        type: Sequelize.DECIMAL(14, 2)
+        type: Sequelize.DECIMAL(14, 2),
+        defaultValue: 0
       },
       status: {
         type: Sequelize.ENUM('Pending', 'Completed', 'Delayed', 'Cancelled')

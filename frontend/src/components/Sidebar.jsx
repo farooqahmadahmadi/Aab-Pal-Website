@@ -99,6 +99,7 @@ export default function Sidebar({ role }) {
             {
                 name: "Contracts", icon: <FiClipboard />, submenu: [
                     { name: "Contracts", path: "/admin/contracts/contracts" },
+                    { name: "Contract Milestones", path: "/admin/contracts/contract-milestones" },
                 ]
             },
             {

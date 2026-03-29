@@ -34,7 +34,8 @@ module.exports = {
         type: Sequelize.DATEONLY
       },
       total_value: {
-        type: Sequelize.DECIMAL(14, 2)
+        type: Sequelize.DECIMAL(14, 2),
+        defaultValue: 0
       },
       contract_status: {
         type: Sequelize.ENUM('Draft', 'Active', 'Completed', 'Cancelled')

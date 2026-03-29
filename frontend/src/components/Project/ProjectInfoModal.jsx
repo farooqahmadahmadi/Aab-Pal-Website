@@ -144,10 +144,10 @@ export default function ProjectInfoModal({ isOpen, onClose, onSubmit, initialDat
                 </div>
 
                 <div className="flex justify-end gap-2 mt-4">
-                    <button onClick={onClose} className="bg-gray-300 px-4 py-2 rounded">
+                    <button type="button" onClick={onClose} className="bg-gray-400 hover:bg-gray-500 text-white px-4 py-2 rounded">
                         Cancel
                     </button>
-                    <button onClick={handleSubmit} className="bg-green-500 px-4 py-2 text-white rounded">
+                    <button type="submit" onClick={handleSubmit} className="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded">
                         {initialData ? "Update" : "Save"}
                     </button>
                 </div>

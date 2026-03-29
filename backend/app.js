@@ -27,6 +27,10 @@ const equipmentMaintenanceRoutes = require("./routes/equipmentMaintenanceRoutes"
 const equipmentDocumentsRoutes = require("./routes/equipmentDocumentsRoutes");
 const contractRoutes = require("./routes/contractRoutes");
 
+const milestoneRoutes = require("./routes/contractMilestoneRoutes");
+
+
+
 const app = express();
 
 // Security
@@ -70,7 +74,7 @@ app.use("/api/equipment-usage", equipmentUsageRoutes);
 app.use("/api/equipment-maintenance", equipmentMaintenanceRoutes);
 app.use("/api/equipment-documents", equipmentDocumentsRoutes);
 app.use("/api/contracts", contractRoutes);
-
+app.use("/api/contract-milestones", milestoneRoutes);
 
 
 

@@ -184,9 +184,9 @@ export default function CompanyDocuments() {
 
                                     <td className="p-2 flex justify-center gap-1.5">
                                         <button onClick={() => handlePreview(doc)} className="bg-purple-500 px-2 py-1 text-white rounded"><FaEye /></button>
+                                        <button onClick={() => handleDownload(doc)} className="bg-blue-500 px-2 py-1 text-white rounded"><FaDownload /></button>
                                         <button onClick={() => handleEdit(doc)} className="bg-yellow-500 px-2 py-1 text-white rounded"><FaEdit /></button>
                                         <button onClick={() => setDeleteData(doc)} className="bg-red-500 px-2 py-1 text-white rounded"><FaTrash /></button>
-                                        <button onClick={() => handleDownload(doc)} className="bg-blue-500 px-2 py-1 text-white rounded"><FaDownload /></button>
                                     </td>
                                 </tr>
                             ))

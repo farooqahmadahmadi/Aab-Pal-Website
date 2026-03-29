@@ -115,7 +115,7 @@ export default function EquipmentDocuments() {
                 <div className="flex gap-2">
                     <SearchBar value={search} onChange={setSearch} />
                     <button onClick={() => { setModalOpen(true); setEditData(null); }} className="bg-green-500 text-white px-4 py-2 rounded flex items-center gap-2">
-                        <FaPlus /> Add
+                        <FaPlus /> Add Document
                     </button>
                 </div>
             </div>
@@ -138,12 +138,12 @@ export default function EquipmentDocuments() {
                                 <td className="p-2">{i.equipment_id}</td>
                                 <td className="p-2 text-left">{i.doc_name}</td>
                                 <td className="p-2 text-left">{i.doc_description}</td>
-                                
+
                                 <td className="p-2 flex justify-center gap-1.5">
                                     <button onClick={() => handlePreview(i)} className="bg-purple-500 px-2 py-1 text-white rounded"><FaEye /></button>
+                                    <button onClick={() => handleDownload(i)} className="bg-blue-500 px-2 py-1 text-white rounded"><FaDownload /></button>
                                     <button onClick={() => { setEditData(i); setModalOpen(true); }} className="bg-yellow-500 px-2 py-1 text-white rounded"><FaEdit /></button>
                                     <button onClick={() => setDeleteData(i)} className="bg-red-500 px-2 py-1 text-white rounded"><FaTrash /></button>
-                                    <button onClick={() => handleDownload(i)} className="bg-blue-500 px-2 py-1 text-white rounded"><FaDownload /></button>
                                 </td>
                             </tr>
                         )) : (

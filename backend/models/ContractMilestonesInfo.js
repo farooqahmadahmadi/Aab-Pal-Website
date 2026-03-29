@@ -19,7 +19,8 @@ const ContractMilestonesInfo = sequelize.define('ContractMilestonesInfo', {
         type: DataTypes.DATEONLY
     },
     amount: {
-        type: DataTypes.DECIMAL(14, 2)
+        type: DataTypes.DECIMAL(14, 2),
+        defaultValue: 0
     },
     status: {
         type: DataTypes.ENUM('Pending', 'Completed', 'Delayed', 'Cancelled')

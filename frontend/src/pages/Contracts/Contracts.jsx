@@ -126,7 +126,7 @@ export default function Contracts() {
                         <tr>
                             <th className="p-2">ID</th>
                             <th className="p-2">Project</th>
-                            <th className="p-2">Name (Subject)</th>
+                            <th className="p-2 text-left">Name (Subject)</th>
                             <th className="p-2">Number</th>
                             <th className="p-2">Status</th>
                             <th className="p-2">Signed Date</th>
@@ -140,7 +140,7 @@ export default function Contracts() {
                             <tr key={i.contract_id} className="border-t hover:bg-gray-50">
                                 <td className="p-2">{i.contract_id}</td>
                                 <td className="p-2">{i.project_id}</td>
-                                <td className="p-2">{i.contract_name}</td>
+                                <td className="p-2 text-left">{i.contract_name}</td>
                                 <td className="p-2">{i.contract_number}</td>
                                 <td className="p-2">{i.contract_status}</td>
                                 <td className="p-2">{i.signed_date}</td>
@@ -171,8 +171,8 @@ export default function Contracts() {
                             </tr>
                         )) : (
                             <tr>
-                                <td colSpan="7" className="p-4 text-gray-500 text-center">
-                                    No contracts found
+                                <td colSpan="8" className="p-4 text-gray-500 text-center">
+                                    No contract records found
                                 </td>
                             </tr>
                         )}

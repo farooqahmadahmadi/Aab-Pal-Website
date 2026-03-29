@@ -9,7 +9,7 @@ export default function ContractModal({ isOpen, onClose, onSubmit, initialData }
         signed_date: "",
         contract_start_date: "",
         contract_end_date: "",
-        total_value: "",
+        total_value: 0,
         contract_status: "Draft",
         file: null
     });
@@ -23,7 +23,7 @@ export default function ContractModal({ isOpen, onClose, onSubmit, initialData }
             signed_date: "",
             contract_start_date: "",
             contract_end_date: "",
-            total_value: "",
+            total_value: 0,
             contract_status: "Draft",
             file: null
         });
@@ -48,26 +48,29 @@ export default function ContractModal({ isOpen, onClose, onSubmit, initialData }
 
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-            <div className="bg-white p-6 rounded w-96">
+            <div className="bg-white p-6 rounded-2xl w-full max-w-xl">
                 <h3 className="font-bold mb-4">{initialData ? "Edit" : "Add"} Contract</h3>
 
                 <form onSubmit={submit} className="space-y-3">
-                    <input name="project_id" value={form.project_id} onChange={handleChange} placeholder="Project ID" className="w-full border p-2 rounded" required />
-                    <input name="contract_name" value={form.contract_name} onChange={handleChange} placeholder="Contract Name(Subject)" className="w-full border p-2 rounded" />
-                    <input name="contract_number" value={form.contract_number} onChange={handleChange} placeholder="Contract Number" className="w-full border p-2 rounded" />
-                    <input type="date" name="signed_date" title="Signature Date" value={form.signed_date} onChange={handleChange} className="w-full border p-2 rounded" required />
 
-                    <input type="date" name="contract_start_date" title="Start Date" value={form.contract_start_date} onChange={handleChange} className="w-full border p-2 rounded" />
-                    <input type="date" name="contract_end_date" title="End Date" value={form.contract_end_date} onChange={handleChange} className="w-full border p-2 rounded" />
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                        <input name="project_id" value={form.project_id} onChange={handleChange} placeholder="Project ID" className="w-full border p-2 rounded" required />
+                        <input name="contract_name" value={form.contract_name} onChange={handleChange} placeholder="Contract Name(Subject)" className="w-full border p-2 rounded" />
+                        <input name="contract_number" value={form.contract_number} onChange={handleChange} placeholder="Contract Number" className="w-full border p-2 rounded" />
+                        <input type="date" name="signed_date" title="Signature Date" value={form.signed_date} onChange={handleChange} className="w-full border p-2 rounded" required />
 
-                    <input name="total_value" value={form.total_value} onChange={handleChange} placeholder="Total Value" className="w-full border p-2 rounded" />
+                        <input type="date" name="contract_start_date" title="Start Date" value={form.contract_start_date} onChange={handleChange} className="w-full border p-2 rounded" />
+                        <input type="date" name="contract_end_date" title="End Date" value={form.contract_end_date} onChange={handleChange} className="w-full border p-2 rounded" />
 
-                    <select name="contract_status" value={form.contract_status} onChange={handleChange} className="w-full border p-2 rounded">
-                        <option>Draft</option>
-                        <option>Active</option>
-                        <option>Completed</option>
-                        <option>Cancelled</option>
-                    </select>
+                        <input type="number" name="total_value" step="0.01" title="Total Value" value={form.total_value ?? 0} onChange={handleChange} placeholder="Total Value" className="w-full border p-2 rounded" />
+
+                        <select name="contract_status" title="Status" value={form.contract_status} onChange={handleChange} className="w-full border p-2 rounded">
+                            <option>Draft</option>
+                            <option>Active</option>
+                            <option>Completed</option>
+                            <option>Cancelled</option>
+                        </select>
+                    </div>
 
                     <label className="block">
                         <span className="text-gray-700 mb-1">Choose File:</span>
@@ -90,7 +93,7 @@ export default function ContractModal({ isOpen, onClose, onSubmit, initialData }
                         </button>
                     </div>
                 </form>
-            </div>
-        </div>
+            </div >
+        </div >
     );
 }
