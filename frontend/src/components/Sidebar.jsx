@@ -97,8 +97,8 @@ export default function Sidebar({ role }) {
                 ]
             },
             {
-                name: "Reports", icon: <FiClipboard />, submenu: [
-                    { name: "Machinery", path: "/admin/users/user-list" },
+                name: "Contracts", icon: <FiClipboard />, submenu: [
+                    { name: "Contracts", path: "/admin/contracts/contracts" },
                 ]
             },
             {

@@ -47,6 +47,7 @@ import EquipmentUsage from "../pages/Equipments/EquipmentUsage";
 import EquipmentMaintenance from "../pages/Equipments/EquipmentMaintenance";
 import EquipmentDocuments from "../pages/Equipments/EquipmentDocuments";
 
+import Contracts from "../pages/Contracts/Contracts";
 
 
 export default function AppRoutes() {
@@ -225,6 +226,16 @@ export default function AppRoutes() {
                         </AdminLayout>
                     </ProtectedRoute>
                 } />
+
+
+                <Route path="/admin/contracts/contracts" element={
+                    <ProtectedRoute allowedRoles={["Admin"]}>
+                        <AdminLayout>
+                            <Contracts />
+                        </AdminLayout>
+                    </ProtectedRoute>
+                } />
+
 
                 <Route path="/admin/users/user-list" element={
                     <ProtectedRoute allowedRoles={["Admin"]}>

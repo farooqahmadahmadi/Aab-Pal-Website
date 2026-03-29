@@ -25,8 +25,7 @@ const equipmentRoutes = require("./routes/equipmentRoutes");
 const equipmentUsageRoutes = require("./routes/equipmentUsageRoutes");
 const equipmentMaintenanceRoutes = require("./routes/equipmentMaintenanceRoutes");
 const equipmentDocumentsRoutes = require("./routes/equipmentDocumentsRoutes");
-
-
+const contractRoutes = require("./routes/contractRoutes");
 
 const app = express();
 
@@ -70,6 +69,11 @@ app.use("/api/equipment", equipmentRoutes);
 app.use("/api/equipment-usage", equipmentUsageRoutes);
 app.use("/api/equipment-maintenance", equipmentMaintenanceRoutes);
 app.use("/api/equipment-documents", equipmentDocumentsRoutes);
+app.use("/api/contracts", contractRoutes);
+
+
+
+
 
 // Error handler
 app.use((err, req, res, next) => {

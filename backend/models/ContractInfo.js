@@ -9,10 +9,12 @@ const ContractInfo = sequelize.define('ContractInfo', {
     },
     project_id: {
         type: DataTypes.BIGINT.UNSIGNED,
-        allowNull: false
+    },
+    contract_name: {
+        type: DataTypes.STRING(255)
     },
     contract_number: {
-        type: DataTypes.STRING
+        type: DataTypes.STRING (10)
     },
     signed_date: {
         type: DataTypes.DATEONLY,

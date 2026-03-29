@@ -86,5 +86,22 @@ const equipmentDocStorage = multer.diskStorage({
 });
 const uploadEquipmentDoc = multer({ storage: equipmentDocStorage });
 
+
+// ===== Contract Documents folder =====
+const contractDir = path.join(__dirname, "../uploads/documents/contracts");
+if (!fs.existsSync(contractDir)) fs.mkdirSync(contractDir, { recursive: true });
+
+const contractStorage = multer.diskStorage({
+  destination: (req, file, cb) => cb(null, contractDir),
+  filename: (req, file, cb) => {
+    const timestamp = Date.now();
+    const ext = path.extname(file.originalname);
+    cb(null, `contract-${timestamp}${ext}`);
+  },
+});
+
+const uploadContract = multer({ storage: contractStorage });
+
+
 // ===== Export all uploads =====
-module.exports = { uploadLogo, uploadDoc, upload, uploadClient, uploadProjectDoc, uploadEquipmentDoc };
+module.exports = { uploadLogo, uploadDoc, upload, uploadClient, uploadProjectDoc, uploadEquipmentDoc, uploadContract };

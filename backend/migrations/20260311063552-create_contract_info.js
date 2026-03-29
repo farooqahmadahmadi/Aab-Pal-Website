@@ -9,7 +9,6 @@ module.exports = {
       },
       project_id: {
         type: Sequelize.BIGINT.UNSIGNED,
-        allowNull: false,
         references: {
           model: 'project_info',
           key: 'project_id'
@@ -17,8 +16,12 @@ module.exports = {
         onUpdate: 'CASCADE',
         onDelete: 'RESTRICT'
       },
+      contract_name: {
+        type: Sequelize.STRING(255),
+        allowNull: false
+      },
       contract_number: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING(10)
       },
       signed_date: {
         type: Sequelize.DATEONLY,
@@ -40,17 +43,15 @@ module.exports = {
         type: Sequelize.STRING(255),
         allowNull: false
       },
-      created_at: {
-        type: Sequelize.DATE,
-        allowNull: false
-      },
-      updated_at: {
-        type: Sequelize.DATE,
-        allowNull: false
-      },
       is_deleted: {
         type: Sequelize.BOOLEAN,
         defaultValue: false
+      },
+      created_at: {
+        type: Sequelize.DATE,
+      },
+      updated_at: {
+        type: Sequelize.DATE,
       }
     });
   },
