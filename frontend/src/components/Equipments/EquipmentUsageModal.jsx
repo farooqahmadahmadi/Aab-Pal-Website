@@ -53,7 +53,7 @@ export default function EquipmentUsageModal({ isOpen, onClose, onSubmit, initial
 
                     <div className="flex justify-end gap-2">
                         <button type="button" onClick={onClose} className="bg-gray-300 hover:bg-gray-400 px-4 py-2 rounded">Cancel</button>
-                        <button className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded flex items-center gap-2">
+                        <button type="submit" className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded flex items-center gap-2">
                             {initialData ? "Update" : "Save"}
                         </button>
                     </div>

@@ -21,6 +21,9 @@ const SuppliersInfo = sequelize.define("SuppliersInfo", {
         type: DataTypes.STRING(255),
         allowNull: false
     },
+    supplier_status: {
+        type: DataTypes.ENUM('Active','InActive'),
+    },
     is_deleted: {
         type: DataTypes.BOOLEAN,
         defaultValue: false

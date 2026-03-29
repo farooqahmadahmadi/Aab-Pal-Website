@@ -50,6 +50,8 @@ import EquipmentDocuments from "../pages/Equipments/EquipmentDocuments";
 import Contracts from "../pages/Contracts/Contracts";
 import ContractMilestones from "../pages/Contracts/ContractMilestones";
 
+import Suppliers from "../pages/Inventory/Suppliers";
+
 
 export default function AppRoutes() {
     return (
@@ -200,6 +202,14 @@ export default function AppRoutes() {
                     <ProtectedRoute allowedRoles={["Admin"]}>
                         <AdminLayout>
                             <ProjectDocuments />
+                        </AdminLayout>
+                    </ProtectedRoute>
+                } />
+
+                <Route path="/admin/inventory/suppliers" element={
+                    <ProtectedRoute allowedRoles={["Admin"]}>
+                        <AdminLayout>
+                            <Suppliers />
                         </AdminLayout>
                     </ProtectedRoute>
                 } />

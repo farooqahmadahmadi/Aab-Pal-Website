@@ -21,15 +21,18 @@ module.exports = {
         type: Sequelize.STRING(255),
         allowNull: false
       },
+      supplier_status: {
+        type: Sequelize.ENUM('Active', 'InActive'),
+      },
+      is_deleted: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: false
+      },
       created_at: {
         type: Sequelize.DATE
       },
       updated_at: {
         type: Sequelize.DATE
-      },
-      is_deleted: {
-        type: Sequelize.BOOLEAN,
-        defaultValue: false
       }
     });
   },

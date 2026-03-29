@@ -85,7 +85,7 @@ export default function Sidebar({ role }) {
             },
             {
                 name: "Inventory", icon: <FiShoppingBag />, submenu: [
-                    { name: "Stock", path: "/admin/users/user-list" },
+                    { name: "Suppliers", path: "/admin/inventory/suppliers" },
                 ]
             },
             {

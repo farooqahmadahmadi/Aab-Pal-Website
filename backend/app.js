@@ -28,6 +28,7 @@ const equipmentMaintenanceRoutes = require("./routes/equipmentMaintenanceRoutes"
 const equipmentDocumentsRoutes = require("./routes/equipmentDocumentsRoutes");
 const contractRoutes = require("./routes/contractRoutes");
 const milestoneRoutes = require("./routes/contractMilestoneRoutes");
+const suppliersRoutes = require("./routes/suppliersRoutes");
 
 
 
@@ -76,8 +77,7 @@ app.use("/api/equipment-maintenance", equipmentMaintenanceRoutes);
 app.use("/api/equipment-documents", equipmentDocumentsRoutes);
 app.use("/api/contracts", contractRoutes);
 app.use("/api/contract-milestones", milestoneRoutes);
-
-
+app.use("/api/suppliers", suppliersRoutes);
 
 
 // Error handler
