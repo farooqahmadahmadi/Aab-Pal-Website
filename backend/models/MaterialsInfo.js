@@ -12,14 +12,15 @@ const MaterialsInfo = sequelize.define("MaterialsInfo", {
         allowNull: false
     },
     material_unit: {
-        type: DataTypes.STRING(50),
-        allowNull: false
+        type: DataTypes.ENUM('Meter', 'Squire Meter', 'Kg', 'Tone'),
     },
     current_stock: {
-        type: DataTypes.DECIMAL(12, 2)
+        type: DataTypes.DECIMAL(12, 2),
+        defaultValue: 0
     },
     unit_price: {
-        type: DataTypes.DECIMAL(12, 2)
+        type: DataTypes.DECIMAL(12, 2),
+        defaultValue: 0
     },
     is_deleted: {
         type: DataTypes.BOOLEAN,

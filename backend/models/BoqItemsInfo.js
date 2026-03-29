@@ -16,7 +16,7 @@ const BoqItemsInfo = sequelize.define('BoqItemsInfo', {
         allowNull: false
     },
     unit: {
-        type: DataTypes.ENUM('Meter', 'Tone', 'Squire Meter', 'Other')
+        type: DataTypes.ENUM('Meter', 'Squire Meter','Kg','Tone', 'Other')
     },
     item_quantity: {
         type: DataTypes.DECIMAL(14, 2),

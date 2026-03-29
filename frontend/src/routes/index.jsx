@@ -51,6 +51,7 @@ import Contracts from "../pages/Contracts/Contracts";
 import ContractMilestones from "../pages/Contracts/ContractMilestones";
 
 import Suppliers from "../pages/Inventory/Suppliers";
+import Materials from "../pages/Inventory/Materials";
 
 
 export default function AppRoutes() {
@@ -69,6 +70,7 @@ export default function AppRoutes() {
                     </ProtectedRoute>
                 } />
 
+{/* Company */}
                 <Route path="/admin/company/company-info" element={
                     <ProtectedRoute allowedRoles={["Admin"]}>
                         <AdminLayout>
@@ -85,6 +87,7 @@ export default function AppRoutes() {
                     </ProtectedRoute>
                 } />
 
+{/* Department */}
                 <Route path="/admin/departments/departments-info" element={
                     <ProtectedRoute allowedRoles={["Admin"]}>
                         <AdminLayout>
@@ -93,6 +96,7 @@ export default function AppRoutes() {
                     </ProtectedRoute>
                 } />
 
+{/* Employees */}
                 <Route path="/admin/employees/employee-info" element={
                     <ProtectedRoute allowedRoles={["Admin"]}>
                         <AdminLayout>
@@ -108,7 +112,6 @@ export default function AppRoutes() {
                         </AdminLayout>
                     </ProtectedRoute>
                 } />
-
 
                 <Route path="/admin/employees/employee-documents" element={
                     <ProtectedRoute allowedRoles={["Admin"]}>
@@ -166,6 +169,7 @@ export default function AppRoutes() {
                     </ProtectedRoute>
                 } />
 
+{/* Project */}
                 <Route path="/admin/clients/clients-info" element={
                     <ProtectedRoute allowedRoles={["Admin"]}>
                         <AdminLayout>
@@ -206,6 +210,7 @@ export default function AppRoutes() {
                     </ProtectedRoute>
                 } />
 
+{/* Inventory */}
                 <Route path="/admin/inventory/suppliers" element={
                     <ProtectedRoute allowedRoles={["Admin"]}>
                         <AdminLayout>
@@ -214,6 +219,15 @@ export default function AppRoutes() {
                     </ProtectedRoute>
                 } />
 
+                <Route path="/admin/inventory/materials" element={
+                    <ProtectedRoute allowedRoles={["Admin"]}>
+                        <AdminLayout>
+                            <Materials />
+                        </AdminLayout>
+                    </ProtectedRoute>
+                } />
+
+{/* Equipments / Machinery */}
                 <Route path="/admin/equipments/equipments" element={
                     <ProtectedRoute allowedRoles={["Admin"]}>
                         <AdminLayout>
@@ -246,6 +260,7 @@ export default function AppRoutes() {
                     </ProtectedRoute>
                 } />
 
+{/* Contracts */}
                 <Route path="/admin/contracts/contracts" element={
                     <ProtectedRoute allowedRoles={["Admin"]}>
                         <AdminLayout>
@@ -262,7 +277,7 @@ export default function AppRoutes() {
                     </ProtectedRoute>
                 } />
 
-
+{/* Users */}
                 <Route path="/admin/users/user-list" element={
                     <ProtectedRoute allowedRoles={["Admin"]}>
                         <AdminLayout>
@@ -270,6 +285,7 @@ export default function AppRoutes() {
                         </AdminLayout>
                     </ProtectedRoute>
                 } />
+
 
 
                 {/* HR */}

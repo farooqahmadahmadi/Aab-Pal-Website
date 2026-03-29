@@ -29,6 +29,8 @@ const equipmentDocumentsRoutes = require("./routes/equipmentDocumentsRoutes");
 const contractRoutes = require("./routes/contractRoutes");
 const milestoneRoutes = require("./routes/contractMilestoneRoutes");
 const suppliersRoutes = require("./routes/suppliersRoutes");
+const materialsRoutes = require("./routes/materialsRoutes");
+
 
 
 
@@ -78,6 +80,8 @@ app.use("/api/equipment-documents", equipmentDocumentsRoutes);
 app.use("/api/contracts", contractRoutes);
 app.use("/api/contract-milestones", milestoneRoutes);
 app.use("/api/suppliers", suppliersRoutes);
+app.use("/api/materials", materialsRoutes);
+
 
 
 // Error handler

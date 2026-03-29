@@ -22,7 +22,7 @@ module.exports = {
         allowNull: false
       },
       unit: {
-        type: Sequelize.ENUM('Meter', 'Tone', 'Squire Meter', 'Other')
+        type: Sequelize.ENUM('Meter', 'Squire Meter','Kg','Tone', 'Other')
       },
       item_quantity: {
         type: Sequelize.DECIMAL(14, 2),
