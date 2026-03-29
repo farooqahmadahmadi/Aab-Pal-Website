@@ -92,7 +92,7 @@ export default function ClientInfoModal({ isOpen, onClose, onSubmit, initialData
                         <button
                             className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded flex items-center justify-center gap-2"
                         >
-                            <FaPlus /> {initialData ? "Update" : "Save"}
+                            {initialData ? "Update" : "Save"}
                         </button>
                     </div>
                 </form>
