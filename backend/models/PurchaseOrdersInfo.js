@@ -16,7 +16,8 @@ const PurchaseOrdersInfo = sequelize.define('PurchaseOrdersInfo', {
         allowNull: false
     },
     total_amount: {
-        type: DataTypes.DECIMAL(12, 2)
+        type: DataTypes.DECIMAL(12, 2),
+        defaultValue: 0
     },
     po_status: {
         type: DataTypes.ENUM('Pending', 'Approved', 'Ordered', 'Received', 'Cancelled')

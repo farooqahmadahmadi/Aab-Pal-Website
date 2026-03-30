@@ -28,19 +28,16 @@ module.exports = {
       },
       po_status: {
         type: Sequelize.ENUM('Pending', 'Approved', 'Ordered', 'Received', 'Cancelled'),
-        defaultValue: 'Pending'
-      },
-      created_at: {
-        type: Sequelize.DATE,
-        allowNull: false
-      },
-      updated_at: {
-        type: Sequelize.DATE,
-        allowNull: false
       },
       is_deleted: {
         type: Sequelize.BOOLEAN,
         defaultValue: false
+      },
+      created_at: {
+        type: Sequelize.DATE,
+      },
+      updated_at: {
+        type: Sequelize.DATE,
       }
     });
   },
