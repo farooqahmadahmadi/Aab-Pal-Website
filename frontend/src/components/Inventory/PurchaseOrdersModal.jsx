@@ -1,3 +1,6 @@
+
+
+
 import React, { useEffect, useState } from "react";
 import API from "../../services/api";
 
@@ -14,30 +17,45 @@ export default function PurchaseOrdersModal({ isOpen, onClose, onSubmit, initial
     });
 
     useEffect(() => {
-        // Initialize form safely
-        setForm({
-            supplier_id: initialData?.supplier_id || "",
-            project_id: initialData?.project_id || "",
-            order_date: initialData?.order_date || "",
-            total_amount: Number(initialData?.total_amount || 0),
-            po_type: initialData?.po_type || "In",
-            po_status: initialData?.po_status || "Pending"
+        if (initialData) setForm(initialData);
+        else setForm({
+            supplier_id: "",
+            project_id: "",
+            order_date: "",
+            total_amount: 0,
+            po_type: "In",
+            po_status: "Pending"
         });
     }, [initialData, isOpen]);
 
     useEffect(() => {
-        API.get("/suppliers").then(res => setSuppliers(res.data.filter(s => s.supplier_status === "Active"))).catch(() => { });
-        API.get("/project-info").then(res => setProjects(res.data.filter(p => p.project_status === "InProgress"))).catch(() => { });
+        const fetchSuppliers = async () => {
+            try {
+                const res = await API.get("/suppliers");
+                setSuppliers(res.data.filter(s => s.supplier_status === "Active"));
+            } catch { }
+        };
+        fetchSuppliers();
+    }, []);
+
+    useEffect(() => {
+        const fetchProjects = async () => {
+            try {
+                const res = await API.get("/project-info");
+                setProjects(res.data.filter(p => p.project_status === "InProgress"));
+            } catch { }
+        };
+        fetchProjects();
     }, []);
 
     if (!isOpen) return null;
 
-    const handleChange = e => {
+    const handleChange = (e) => {
         const { name, value } = e.target;
         setForm(prev => ({ ...prev, [name]: value }));
     };
 
-    const submit = e => {
+    const submit = (e) => {
         e.preventDefault();
 
         if ((form.po_type === "In" && !form.supplier_id) || !form.order_date) {
@@ -49,12 +67,14 @@ export default function PurchaseOrdersModal({ isOpen, onClose, onSubmit, initial
             return;
         }
 
-        onSubmit({
+        const payload = {
             ...form,
             supplier_id: form.supplier_id ? Number(form.supplier_id) : null,
             project_id: form.project_id ? Number(form.project_id) : null,
             total_amount: Number(form.total_amount)
-        });
+        };
+
+        onSubmit(payload);
     };
 
     return (
@@ -68,21 +88,20 @@ export default function PurchaseOrdersModal({ isOpen, onClose, onSubmit, initial
                     </select>
 
                     {form.po_type === "In" && (
-                        <select name="supplier_id" value={form.supplier_id} onChange={handleChange} className="w-full border p-2 rounded">
+                        <select name="supplier_id" value={form.supplier_id} onChange={handleChange} className="w-full border p-2 rounded" required>
                             <option value="">Select Supplier</option>
                             {suppliers.map(s => <option key={s.supplier_id} value={s.supplier_id}>{s.supplier_name}</option>)}
                         </select>
                     )}
 
                     {form.po_type === "Out" && (
-                        <select name="project_id" value={form.project_id} onChange={handleChange} className="w-full border p-2 rounded">
+                        <select name="project_id" value={form.project_id} onChange={handleChange} className="w-full border p-2 rounded" required>
                             <option value="">Select Project</option>
                             {projects.map(p => <option key={p.project_id} value={p.project_id}>{p.project_name}</option>)}
                         </select>
                     )}
 
-                    <input type="date" name="order_date" value={form.order_date} onChange={handleChange} className="w-full border p-2 rounded" />
-
+                    <input type="date" name="order_date" value={form.order_date} onChange={handleChange} className="w-full border p-2 rounded" required />
                     <input type="number" name="total_amount" value={form.total_amount} readOnly className="w-full border p-2 rounded bg-gray-100" />
 
                     <select name="po_status" value={form.po_status} onChange={handleChange} className="w-full border p-2 rounded">

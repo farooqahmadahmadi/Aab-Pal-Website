@@ -1,3 +1,4 @@
+const sequelize = require('../config/db');
 const CompanyInfo = require('./CompanyInfo');
 const CompanyDocument = require('./CompanyDocument');
 const EmployeeInfo = require('./EmployeeInfo');
@@ -20,7 +21,7 @@ const EquipmentMaintenanceInfo = require('./EquipmentMaintenanceInfo');
 const EquipmentDocuments = require('./EquipmentDocuments');
 const MaterialInfo = require('./MaterialsInfo');
 const PurchaseOrderItemInfo = require('./PurchaseOrderItemsInfo');
-const StockTransactionInfo = require('./StockTransactionsInfo');
+// const StockTransactionInfo = require('./StockTransactionsInfo');
 const SupplierInfo = require('./SuppliersInfo');
 const PurchaseOrdersInfo = require('./PurchaseOrdersInfo');
 const ContractInfo = require('./ContractInfo');
@@ -149,7 +150,7 @@ PurchaseOrderItemInfo.belongsTo(PurchaseOrdersInfo, { foreignKey: 'po_id' });
 
 // Project Info to Purchase Orders Info
 ProjectInfo.hasMany(PurchaseOrdersInfo, { foreignKey: 'project_id' });
-PurchaseOrdersInfo.belongsTo(ProjectInfo, { foreignKey: 'project)id' });
+PurchaseOrdersInfo.belongsTo(ProjectInfo, { foreignKey: 'project_id' });
 
 // Project Info to Stock Transactions Info
 // ProjectInfo.hasMany(StockTransactionInfo, { foreignKey: 'project_id' });
@@ -242,3 +243,45 @@ Notifications.belongsTo(Users, { foreignKey: 'user_id' });
 // Users to System Logs
 Users.hasMany(SystemLogs, { foreignKey: 'user_id' });
 SystemLogs.belongsTo(Users, { foreignKey: 'user_id' });
+
+
+
+module.exports = {
+    sequelize,
+    CompanyInfo,
+    CompanyDocument,
+    EmployeeInfo,
+    EmployeeDocuments,
+    EmployeeEducationalInfo,
+    EmpSalaryInfo,
+    EmpHiringInfo,
+    EmpAttendanceInfo,
+    AttendanceShiftsInfo,
+    DepartmentInfo,
+    EmpSalaryPaymentInfo,
+    ProjectInfo,
+    ClientInfo,
+    ProjectPhasesInfo,
+    ProjectDocuments,
+    EquipmentInfo,
+    EquipmentUsageInfo,
+    EquipmentMaintenanceInfo,
+    EquipmentDocuments,
+    MaterialInfo,
+    PurchaseOrderItemInfo,
+    SupplierInfo,
+    PurchaseOrdersInfo,
+    ContractInfo,
+    ContractMilestonesInfo,
+    BoqItemsInfo,
+    TasksAssignmentInfo,
+    SiteDailyReportsInfo,
+    SafetyIncidentsInfo,
+    ExpensesInfo,
+    CashTransactionsInfo,
+    InvoicesInfo,
+    PaymentsInfo,
+    Users,
+    Notifications,
+    SystemLogs
+};
