@@ -54,6 +54,7 @@ import Suppliers from "../pages/Inventory/Suppliers";
 import Materials from "../pages/Inventory/Materials";
 import PurchaseOrders from "../pages/Inventory/PurchaseOrders";
 import PurchaseOrderItems from "../pages/Inventory/PurchaseOrderItems";
+import StockTransactions from "../pages/Inventory/StockTransactions";
 
 
 export default function AppRoutes() {
@@ -72,7 +73,7 @@ export default function AppRoutes() {
                     </ProtectedRoute>
                 } />
 
-{/* Company */}
+                {/* Company */}
                 <Route path="/admin/company/company-info" element={
                     <ProtectedRoute allowedRoles={["Admin"]}>
                         <AdminLayout>
@@ -89,7 +90,7 @@ export default function AppRoutes() {
                     </ProtectedRoute>
                 } />
 
-{/* Department */}
+                {/* Department */}
                 <Route path="/admin/departments/departments-info" element={
                     <ProtectedRoute allowedRoles={["Admin"]}>
                         <AdminLayout>
@@ -98,7 +99,7 @@ export default function AppRoutes() {
                     </ProtectedRoute>
                 } />
 
-{/* Employees */}
+                {/* Employees */}
                 <Route path="/admin/employees/employee-info" element={
                     <ProtectedRoute allowedRoles={["Admin"]}>
                         <AdminLayout>
@@ -171,7 +172,7 @@ export default function AppRoutes() {
                     </ProtectedRoute>
                 } />
 
-{/* Project */}
+                {/* Project */}
                 <Route path="/admin/clients/clients-info" element={
                     <ProtectedRoute allowedRoles={["Admin"]}>
                         <AdminLayout>
@@ -212,7 +213,7 @@ export default function AppRoutes() {
                     </ProtectedRoute>
                 } />
 
-{/* Inventory */}
+                {/* Inventory */}
                 <Route path="/admin/inventory/suppliers" element={
                     <ProtectedRoute allowedRoles={["Admin"]}>
                         <AdminLayout>
@@ -236,6 +237,7 @@ export default function AppRoutes() {
                         </AdminLayout>
                     </ProtectedRoute>
                 } />
+
                 <Route path="/admin/inventory/purchase-order-items" element={
                     <ProtectedRoute allowedRoles={["Admin"]}>
                         <AdminLayout>
@@ -244,7 +246,15 @@ export default function AppRoutes() {
                     </ProtectedRoute>
                 } />
 
-{/* Equipments / Machinery */}
+                <Route path="/admin/inventory/stock-transactions" element={
+                    <ProtectedRoute allowedRoles={["Admin"]}>
+                        <AdminLayout>
+                            <StockTransactions />
+                        </AdminLayout>
+                    </ProtectedRoute>
+                } />
+
+                {/* Equipments / Machinery */}
                 <Route path="/admin/equipments/equipments" element={
                     <ProtectedRoute allowedRoles={["Admin"]}>
                         <AdminLayout>
@@ -277,7 +287,7 @@ export default function AppRoutes() {
                     </ProtectedRoute>
                 } />
 
-{/* Contracts */}
+                {/* Contracts */}
                 <Route path="/admin/contracts/contracts" element={
                     <ProtectedRoute allowedRoles={["Admin"]}>
                         <AdminLayout>
@@ -294,7 +304,7 @@ export default function AppRoutes() {
                     </ProtectedRoute>
                 } />
 
-{/* Users */}
+                {/* Users */}
                 <Route path="/admin/users/user-list" element={
                     <ProtectedRoute allowedRoles={["Admin"]}>
                         <AdminLayout>

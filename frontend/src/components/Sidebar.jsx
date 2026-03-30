@@ -89,6 +89,7 @@ export default function Sidebar({ role }) {
                     { name: "Materials", path: "/admin/inventory/materials" },
                     { name: "Purchase Orders", path: "/admin/inventory/purchase-orders" },
                     { name: "P.O Items", path: "/admin/inventory/purchase-order-items" },
+                    { name: "Stock Transactions", path: "/admin/inventory/stock-transactions" },
                 ]
             },
             {

@@ -32,7 +32,7 @@ const suppliersRoutes = require("./routes/suppliersRoutes");
 const materialsRoutes = require("./routes/materialsRoutes");
 const purchaseOrdersRoutes = require("./routes/purchaseOrdersRoutes");
 const purchaseOrderItemsRoutes = require("./routes/purchaseOrderItemsRoutes");
-
+const stockTransactionRoutes = require("./routes/stockTransactionRoutes");
 
 
 
@@ -85,6 +85,9 @@ app.use("/api/suppliers", suppliersRoutes);
 app.use("/api/materials", materialsRoutes);
 app.use("/api/purchase-orders", purchaseOrdersRoutes);
 app.use("/api/purchase-order-items", purchaseOrderItemsRoutes);
+app.use("/api/stock-transactions", stockTransactionRoutes);
+
+
 
 
 // Error handler
