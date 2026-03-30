@@ -93,6 +93,7 @@ export default function PurchaseOrders() {
                         <tr>
                             <th>ID</th>
                             <th>Supplier</th>
+                            <th>Project</th>
                             <th>Date</th>
                             <th>Total</th>
                             <th>Status</th>
@@ -105,6 +106,7 @@ export default function PurchaseOrders() {
                             <tr key={i.po_id} className="border-t hover:bg-gray-50">
                                 <td>{i.po_id}</td>
                                 <td>{i.supplier_id}</td>
+                                <td>{i.project_id}</td>
                                 <td>{i.order_date}</td>
                                 <td>{i.total_amount}</td>
                                 <td>{i.po_status}</td>
