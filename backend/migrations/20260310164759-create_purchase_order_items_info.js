@@ -33,6 +33,10 @@ module.exports = {
         type: Sequelize.DECIMAL(12, 2),
         defaultValue: 0
       },
+      total_amount: {
+        type: Sequelize.DECIMAL(12, 2),
+        defaultValue: 0
+      },
       is_deleted: {
         type: Sequelize.BOOLEAN,
         defaultValue: false

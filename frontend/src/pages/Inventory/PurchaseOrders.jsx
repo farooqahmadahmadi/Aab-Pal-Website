@@ -32,19 +32,20 @@ export default function PurchaseOrders() {
     useEffect(() => { fetchData(); }, []);
 
     useEffect(() => {
-        const f = data.filter(i =>
-            i.po_id.toString().includes(search) ||
-            i.supplier_id.toString().includes(search) ||
-            i.po_status?.toLowerCase().includes(search.toLowerCase())
+        setFiltered(
+            data.filter(i =>
+                i.po_id.toString().includes(search) ||
+                (i.supplier_id && i.supplier_id.toString().includes(search)) ||
+                i.po_status?.toLowerCase().includes(search.toLowerCase())
+            )
         );
-        setFiltered(f);
         setPage(1);
     }, [search, data]);
 
     const start = (page - 1) * limit;
     const paginated = filtered.slice(start, start + limit);
 
-    const submit = async (formData) => {
+    const submit = async formData => {
         try {
             if (editData) {
                 await updateOrder(editData.po_id, formData);
@@ -57,7 +58,7 @@ export default function PurchaseOrders() {
             setEditData(null);
             fetchData();
         } catch {
-            showToast("Error", "error");
+            showToast("Error saving data", "error");
         }
     };
 
@@ -108,7 +109,6 @@ export default function PurchaseOrders() {
                                 <td>{i.order_date}</td>
                                 <td>{i.total_amount}</td>
                                 <td>{i.po_status}</td>
-
                                 <td className="flex justify-center gap-1.5 p-2">
                                     <button onClick={() => { setEditData(i); setModalOpen(true); }} className="bg-yellow-500 px-2 py-1 text-white rounded">Edit</button>
                                     <button onClick={() => setDeleteData(i)} className="bg-red-500 px-2 py-1 text-white rounded">Delete</button>

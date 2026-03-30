@@ -95,6 +95,7 @@ export default function PurchaseOrderItems() {
                             <th>Material</th>
                             <th>Qty</th>
                             <th>Price</th>
+                            <th>Total Amount</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -107,6 +108,7 @@ export default function PurchaseOrderItems() {
                                 <td>{i.material_id}</td>
                                 <td>{i.po_item_quantity}</td>
                                 <td>{i.po_item_unit_price}</td>
+                                <td>{i.total_amount}</td>
 
                                 <td className="flex justify-center gap-1.5 p-2">
                                     <button onClick={() => { setEditData(i); setModalOpen(true); }} className="bg-yellow-500 px-2 py-1 text-white rounded">Edit</button>

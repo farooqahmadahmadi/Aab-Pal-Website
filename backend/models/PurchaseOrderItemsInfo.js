@@ -23,6 +23,10 @@ const PurchaseOrderItemsInfo = sequelize.define('PurchaseOrderItemInfo', {
         type: DataTypes.DECIMAL(12, 2),
         defaultValue: 0
     },
+    total_amount: {
+        type: DataTypes.DECIMAL(12, 2),
+        defaultValue: 0
+    },
     is_deleted: {
         type: DataTypes.BOOLEAN,
         defaultValue: false

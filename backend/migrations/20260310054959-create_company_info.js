@@ -18,7 +18,6 @@ module.exports = {
       },
       license_expire_date: {
         type: Sequelize.DATE,
-        allowNull: true
       },
       company_phone: {
         type: Sequelize.STRING(20),

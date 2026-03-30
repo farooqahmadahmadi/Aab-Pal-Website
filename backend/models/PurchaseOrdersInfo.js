@@ -9,7 +9,11 @@ const PurchaseOrdersInfo = sequelize.define('PurchaseOrdersInfo', {
     },
     supplier_id: {
         type: DataTypes.BIGINT.UNSIGNED,
-        allowNull: false
+        allowNull: true
+    },
+    project_id: {
+        type: DataTypes.BIGINT.UNSIGNED,
+        allowNull: true
     },
     order_date: {
         type: DataTypes.DATEONLY,
@@ -19,8 +23,11 @@ const PurchaseOrdersInfo = sequelize.define('PurchaseOrdersInfo', {
         type: DataTypes.DECIMAL(12, 2),
         defaultValue: 0
     },
+    po_type: {
+        type: DataTypes.ENUM('In', 'Out')
+    },
     po_status: {
-        type: DataTypes.ENUM('Pending', 'Approved', 'Ordered', 'Received', 'Cancelled')
+        type: DataTypes.ENUM('Pending', 'Approved', 'Ordered', 'Received', 'Sent', 'Cancelled')
     },
     is_deleted: {
         type: DataTypes.BOOLEAN,

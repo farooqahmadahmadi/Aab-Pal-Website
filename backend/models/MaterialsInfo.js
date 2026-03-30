@@ -18,7 +18,7 @@ const MaterialsInfo = sequelize.define("MaterialsInfo", {
         type: DataTypes.DECIMAL(12, 2),
         defaultValue: 0
     },
-    unit_price: {
+    average_price: {
         type: DataTypes.DECIMAL(12, 2),
         defaultValue: 0
     },

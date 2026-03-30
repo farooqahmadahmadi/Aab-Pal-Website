@@ -5,7 +5,7 @@ export default function MaterialsModal({ isOpen, onClose, onSubmit, initialData 
         material_name: "",
         material_unit: "",
         current_stock: 0,
-        unit_price: 0
+        average_price: 0
     });
 
     useEffect(() => {
@@ -14,7 +14,7 @@ export default function MaterialsModal({ isOpen, onClose, onSubmit, initialData 
             material_name: "",
             material_unit: "",
             current_stock: 0,
-            unit_price: 0
+            average_price: 0
         });
     }, [initialData, isOpen]);
 
@@ -51,7 +51,7 @@ export default function MaterialsModal({ isOpen, onClose, onSubmit, initialData 
                     </select>
 
                     <input type="number" title="Current Stock" name="current_stock" value={form.current_stock} onChange={handleChange} placeholder="Stock" className="w-full border p-2 rounded" />
-                    <input type="number" title="Unit Price" name="unit_price" value={form.unit_price} onChange={handleChange} placeholder="Unit Price" className="w-full border p-2 rounded" />
+                    <input type="number" title="Average Price" name="average_price" value={form.average_price} onChange={handleChange} placeholder="Unit Price" className="w-full border p-2 rounded" />
 
                     <div className="flex justify-end gap-2">
                         <button type="button" onClick={onClose} className="bg-gray-300 hover:bg-gray-400 px-4 py-2 rounded">Cancel</button>

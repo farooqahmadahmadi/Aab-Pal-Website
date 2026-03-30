@@ -161,6 +161,7 @@ export default function CompanyInfo() {
               name="license_expire_date"
               value={data.license_expire_date?.slice(0, 10) || ""}
               onChange={handleChange}
+              required
               disabled={!editMode}
               className="border p-3 rounded w-full"
             />

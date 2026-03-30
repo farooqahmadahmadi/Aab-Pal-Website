@@ -10,10 +10,20 @@ module.exports = {
       },
       supplier_id: {
         type: Sequelize.BIGINT.UNSIGNED,
-        allowNull: false,
+        allowNull: true,
         references: {
           model: 'suppliers_info',
           key: 'supplier_id'
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'RESTRICT'
+      },
+      project_id: {
+        type: Sequelize.BIGINT.UNSIGNED,
+        allowNull: true,
+        references: {
+          model: 'project_info',
+          key: 'project_id'
         },
         onUpdate: 'CASCADE',
         onDelete: 'RESTRICT'
@@ -26,8 +36,11 @@ module.exports = {
         type: Sequelize.DECIMAL(12, 2),
         defaultValue: 0
       },
+      po_type: {
+        type: Sequelize.ENUM('In', 'Out'),
+      },
       po_status: {
-        type: Sequelize.ENUM('Pending', 'Approved', 'Ordered', 'Received', 'Cancelled'),
+        type: Sequelize.ENUM('Pending', 'Approved', 'Ordered', 'Received', 'Sent', 'Cancelled'),
       },
       is_deleted: {
         type: Sequelize.BOOLEAN,

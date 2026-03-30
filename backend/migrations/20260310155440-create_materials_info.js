@@ -18,7 +18,7 @@ module.exports = {
         type: Sequelize.DECIMAL(12, 2),
         defaultValue: 0
       },
-      unit_price: {
+      average_price: {
         type: Sequelize.DECIMAL(12, 2),
         defaultValue: 0
       },

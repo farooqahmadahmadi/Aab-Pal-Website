@@ -97,7 +97,7 @@ export default function Materials() {
                             <th>Name</th>
                             <th>Unit</th>
                             <th>Current Stock</th>
-                            <th>Unit Price</th>
+                            <th>Average Price</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -109,7 +109,7 @@ export default function Materials() {
                                 <td>{i.material_name}</td>
                                 <td>{i.material_unit}</td>
                                 <td>{i.current_stock}</td>
-                                <td>{i.unit_price}</td>
+                                <td>{i.average_price}</td>
 
                                 <td className="flex justify-center gap-1.5 p-2">
                                     <button onClick={() => { setEditData(i); setModalOpen(true); }} className="bg-yellow-500 px-2 py-1 text-white rounded">Edit</button>
