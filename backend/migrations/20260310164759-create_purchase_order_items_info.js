@@ -26,22 +26,22 @@ module.exports = {
         }
       },
       po_item_quantity: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        defaultValue: 0
       },
       po_item_unit_price: {
-        type: Sequelize.DECIMAL(12,2)
-      },
-      created_at: {
-        type: Sequelize.DATE,
-        allowNull: false
-      },
-      updated_at: {
-        type: Sequelize.DATE,
-        allowNull: false
+        type: Sequelize.DECIMAL(12, 2),
+        defaultValue: 0
       },
       is_deleted: {
         type: Sequelize.BOOLEAN,
         defaultValue: false
+      },
+      created_at: {
+        type: Sequelize.DATE,
+      },
+      updated_at: {
+        type: Sequelize.DATE,
       }
     });
   },

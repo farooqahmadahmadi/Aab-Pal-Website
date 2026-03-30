@@ -16,10 +16,12 @@ const PurchaseOrderItemsInfo = sequelize.define('PurchaseOrderItemInfo', {
         allowNull: false
     },
     po_item_quantity: {
-        type: DataTypes.INTEGER
+        type: DataTypes.INTEGER,
+        defaultValue: 0
     },
     po_item_unit_price: {
-        type: DataTypes.DECIMAL(12, 2)
+        type: DataTypes.DECIMAL(12, 2),
+        defaultValue: 0
     },
     is_deleted: {
         type: DataTypes.BOOLEAN,

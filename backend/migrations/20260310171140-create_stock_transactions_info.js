@@ -24,7 +24,8 @@ module.exports = {
         }
       },
       quantity: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        defaultValue: 0
       },
       stock_transaction_type: {
         type: Sequelize.ENUM('IN', 'OUT', 'ADJUSTMENT')
@@ -32,17 +33,15 @@ module.exports = {
       stock_transaction_date: {
         type: Sequelize.DATEONLY
       },
-      created_at: {
-        type: Sequelize.DATE,
-        allowNull: false
-      },
-      updated_at: {
-        type: Sequelize.DATE,
-        allowNull: false
-      },
       is_deleted: {
         type: Sequelize.BOOLEAN,
         defaultValue: false
+      },
+      created_at: {
+        type: Sequelize.DATE,
+      },
+      updated_at: {
+        type: Sequelize.DATE,
       }
     });
   },

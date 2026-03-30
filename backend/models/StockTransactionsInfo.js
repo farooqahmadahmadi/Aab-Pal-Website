@@ -16,7 +16,8 @@ const StockTransactionInfo = sequelize.define('StockTransactionsInfo', {
         allowNull: false
     },
     quantity: {
-        type: DataTypes.INTEGER
+        type: DataTypes.INTEGER,
+        defaultValue: 0
     },
     stock_transaction_type: {
         type: DataTypes.ENUM('IN', 'OUT', 'ADJUSTMENT')

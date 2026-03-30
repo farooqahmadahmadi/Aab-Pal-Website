@@ -88,6 +88,7 @@ export default function Sidebar({ role }) {
                     { name: "Suppliers", path: "/admin/inventory/suppliers" },
                     { name: "Materials", path: "/admin/inventory/materials" },
                     { name: "Purchase Orders", path: "/admin/inventory/purchase-orders" },
+                    { name: "P.O Items", path: "/admin/inventory/purchase-order-items" },
                 ]
             },
             {
