@@ -3,7 +3,7 @@ const PurchaseOrder = require("../models/PurchaseOrdersInfo");
 const PurchaseOrderItem = require("../models/PurchaseOrderItemsInfo");
 const Material = require("../models/MaterialsInfo");
 
-// 🔥 helper: update stock + avg price based on PO type (transaction-safe)
+// 🔥 helper: update stock + avg price based on PO type (transaction-safe & bulk)
 const updateStock = async (po_id, type = "add", t) => {
     const po = await PurchaseOrder.findByPk(po_id, { transaction: t });
     if (!po) return;
@@ -13,6 +13,7 @@ const updateStock = async (po_id, type = "add", t) => {
         transaction: t
     });
 
+    // د materials map د quantity او value سره
     const materialMap = {};
     for (let i of items) {
         const matId = i.material_id;
@@ -24,29 +25,32 @@ const updateStock = async (po_id, type = "add", t) => {
         materialMap[matId].totalValue += qty * price;
     }
 
-    for (let matId of Object.keys(materialMap)) {
-        const material = await Material.findByPk(matId, { transaction: t });
-        if (!material) continue;
+    const matIds = Object.keys(materialMap);
+    const materials = await Material.findAll({
+        where: { material_id: matIds },
+        transaction: t
+    });
 
-        let currentStock = parseFloat(material.current_stock) || 0;
-        let avgPrice = parseFloat(material.average_price) || 0;
+    for (let material of materials) {
+        const matId = material.material_id;
+        const currentStock = parseFloat(material.current_stock) || 0;
+        const avgPrice = parseFloat(material.average_price) || 0;
 
         const qty = materialMap[matId].qty;
         const value = materialMap[matId].totalValue;
 
-        // in → stock زیاتوي, out → stock کموي
+        let newStock = currentStock;
+        let newAvg = avgPrice;
+
         if ((type === "add" && po.po_type === "In") || (type === "subtract" && po.po_type === "Out")) {
-            const newStock = currentStock + qty;
-            const newAvg = newStock === 0 ? 0 : ((currentStock * avgPrice) + value) / newStock;
-            await material.update({ current_stock: newStock, average_price: newAvg }, { transaction: t });
+            newStock = currentStock + qty;
+            newAvg = newStock === 0 ? 0 : ((currentStock * avgPrice) + value) / newStock;
+        } else if ((type === "subtract" && po.po_type === "In") || (type === "add" && po.po_type === "Out")) {
+            newStock = Math.max(currentStock - qty, 0);
+            newAvg = (newStock > 0 && currentStock > 0) ? ((currentStock * avgPrice) - value) / newStock : 0;
         }
 
-        if ((type === "subtract" && po.po_type === "In") || (type === "add" && po.po_type === "Out")) {
-            const newStock = Math.max(currentStock - qty, 0);
-            let newAvg = 0;
-            if (newStock > 0 && currentStock > 0) newAvg = ((currentStock * avgPrice) - value) / newStock;
-            await material.update({ current_stock: newStock, average_price: newAvg }, { transaction: t });
-        }
+        await material.update({ current_stock: newStock, average_price: newAvg }, { transaction: t });
     }
 };
 
@@ -62,11 +66,9 @@ exports.getOrders = async () => {
 exports.createOrder = async (data) => {
     return await db.sequelize.transaction(async (t) => {
         const order = await PurchaseOrder.create(data, { transaction: t });
-
         if (order.po_status === "Received") {
             await updateStock(order.po_id, "add", t);
         }
-
         return order;
     });
 };
@@ -74,10 +76,7 @@ exports.createOrder = async (data) => {
 // UPDATE
 exports.updateOrder = async (id, data) => {
     return await db.sequelize.transaction(async (t) => {
-        const item = await PurchaseOrder.findOne({
-            where: { po_id: id, is_deleted: false },
-            transaction: t
-        });
+        const item = await PurchaseOrder.findOne({ where: { po_id: id, is_deleted: false }, transaction: t });
         if (!item) throw new Error("Order not found");
 
         const oldStatus = item.po_status;
@@ -100,10 +99,7 @@ exports.updateOrder = async (id, data) => {
 // DELETE
 exports.deleteOrder = async (id) => {
     return await db.sequelize.transaction(async (t) => {
-        const item = await PurchaseOrder.findOne({
-            where: { po_id: id, is_deleted: false },
-            transaction: t
-        });
+        const item = await PurchaseOrder.findOne({ where: { po_id: id, is_deleted: false }, transaction: t });
         if (!item) throw new Error("Order not found");
 
         if (item.po_status === "Received") {
