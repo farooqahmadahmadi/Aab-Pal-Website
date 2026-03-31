@@ -105,11 +105,12 @@ export default function PurchaseOrdersModal({ isOpen, onClose, onSubmit, initial
                     <input type="number" name="total_amount" value={form.total_amount} readOnly className="w-full border p-2 rounded bg-gray-100" />
 
                     <select name="po_status" value={form.po_status} onChange={handleChange} className="w-full border p-2 rounded">
-                        <option>Pending</option>
-                        <option>Approved</option>
-                        <option>Ordered</option>
-                        <option>Received</option>
-                        <option>Cancelled</option>
+                        <option value="Pending">Pending</option>
+                        <option value="Approved">Approved</option>
+                        <option value="Ordered">Ordered</option>
+                        <option value="Received">Received</option>
+                        <option value="Sent">Sent</option>
+                        <option value="Cancelled">Cancelled</option>
                     </select>
 
                     <div className="flex justify-end gap-2">
