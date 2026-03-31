@@ -117,7 +117,7 @@ export default function PurchaseOrderItems() {
                             </tr>
                         )) : (
                             <tr>
-                                <td colSpan="6" className="p-4 text-gray-500">No data</td>
+                                <td colSpan="7" className="p-4 text-gray-500">No P.O Item records found</td>
                             </tr>
                         )}
                     </tbody>
