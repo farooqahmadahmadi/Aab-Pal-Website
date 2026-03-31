@@ -34,7 +34,6 @@ export default function PurchaseOrders() {
     useEffect(() => {
         const f = data.filter(i =>
             i.po_id.toString().includes(search) ||
-            i.supplier_id.toString().includes(search) ||
             i.po_status?.toLowerCase().includes(search.toLowerCase())
         );
         setFiltered(f);
