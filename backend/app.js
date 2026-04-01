@@ -37,6 +37,8 @@ const siteDailyReportsRoutes = require("./routes/siteDailyReportsRoutes");
 const safetyIncidentsRoutes = require("./routes/safetyIncidentsRoutes");
 const expensesRoutes = require("./routes/expensesRoutes");
 const invoicesRoutes = require("./routes/invoicesRoutes");
+const cashTransactionsRoutes = require("./routes/cashTransactionsRoutes");
+
 
 
 
@@ -95,7 +97,7 @@ app.use("/api/site-daily-reports", siteDailyReportsRoutes);
 app.use("/api/safety-incidents", safetyIncidentsRoutes);
 app.use("/api/expenses", expensesRoutes);
 app.use("/api/invoices", invoicesRoutes);
-
+app.use("/cash-transactions", cashTransactionsRoutes);
 
 
 

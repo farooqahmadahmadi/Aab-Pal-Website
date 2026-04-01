@@ -8,10 +8,11 @@ const InvoicesInfo = sequelize.define('InvoicesInfo', {
         autoIncrement: true
     },
     project_id: {
-        type: DataTypes.BIGINT.UNSIGNED
+        type: DataTypes.BIGINT.UNSIGNED,
+        allowNull: true
     },
     client_id: {
-        type: DataTypes.BIGINT.UNSIGNED
+        type: DataTypes.BIGINT.UNSIGNED,
     },
     invoice_amount: {
         type: DataTypes.DECIMAL(12, 2),

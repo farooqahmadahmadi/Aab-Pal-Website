@@ -9,6 +9,7 @@ module.exports = {
       },
       project_id: {
         type: Sequelize.BIGINT.UNSIGNED,
+        allowNull: true,
         references: {
           model: 'project_info',
           key: 'project_id'

@@ -61,6 +61,7 @@ import SafetyIncident from "../pages/Safety/SafetyIncidents";
 
 import Expenses from "../pages/Expenses/Expenses";
 import Invoices from "../pages/Invoices/Invoices";
+import CashTransactions from "../pages/CashTransaction/CashTransactions";
 
 
 export default function AppRoutes() {
@@ -323,6 +324,14 @@ export default function AppRoutes() {
                         </AdminLayout>
                     </ProtectedRoute>
                 } />
+                <Route path="/admin/financial/cash-transactions" element={
+                    <ProtectedRoute allowedRoles={["Admin"]}>
+                        <AdminLayout>
+                            <CashTransactions />
+                        </AdminLayout>
+                    </ProtectedRoute>
+                } />
+
 
                 {/* Users */}
                 <Route path="/admin/users/user-list" element={

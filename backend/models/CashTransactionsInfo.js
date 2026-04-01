@@ -9,7 +9,7 @@ const CashTransactions = sequelize.define('CashTransactionsInfo', {
     },
     project_id: {
         type: DataTypes.BIGINT.UNSIGNED,
-        allowNull: false
+        allowNull: true
     },
     reference_type: {
         type: DataTypes.ENUM('expense', 'invoice', 'payment', 'manual')
