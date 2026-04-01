@@ -65,12 +65,10 @@ export default function Login() {
 
     useEffect(() => {
         if (blockTime <= 0) {
-            setToast(""); // clear message when block time ends
+            setToast("");
             return;
         }
-        const timer = setInterval(() => {
-            setBlockTime(prev => prev - 1);
-        }, 1000);
+        const timer = setInterval(() => setBlockTime(prev => prev - 1), 1000);
         return () => clearInterval(timer);
     }, [blockTime]);
 
@@ -92,17 +90,20 @@ export default function Login() {
     };
 
     return (
-        <div
-            className=" min-h-screen flex items-center justify-center w-svw p-4 bg-cover"
-            style={{ backgroundImage: `url(${loginBg})` }}
+        <div className="min-h-screen w-screen flex items-center justify-center p-4 bg-cover bg-center animate-bgGradient"
+            style={{    backgroundImage: `url(${loginBg})`, backgroundSize: "200% 100%", backgroundBlendMode: "overlay"}}
         >
-            <div className="absolute inset-0 bg-black bg-opacity-15 "></div>
+            <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50 animate-fadeIn rounded-2xl">
+            <div className="relative z-10 flex items-center justify-center min-h-screen p-4"></div>
 
-            <div className="bg-white bg-opacity-10 border border-gray-500 backdrop-blur-sm rounded-xl shadow-2xl p-8 w-full max-w-md relative">
-                <h2 className="text-2xl font-bold mb-8 text-center text-white">Welcome! Let's Login</h2>
+
+            <div className="bg-white/10 backdrop-blur-md border border-gray-400 rounded-xl shadow-2xl p-8 w-full max-w-md animate-scaleIn transition-transform transform  hover:scale-105 duration-500 ">
+                <h2 className="text-2xl font-bold mb-8 text-center text-white animate-fadeIn">
+                    Welcome! Let's Login
+                </h2>
 
                 {blockTime > 0 && (
-                    <div className="w-full bg-gray-500  rounded-full h-2 mb-4 overflow-hidden">
+                    <div className="w-full bg-gray-500 rounded-full h-2 mb-4 overflow-hidden">
                         <div
                             className={`h-2 rounded-full transition-all duration-1000 ease-linear ${progressColor}`}
                             style={{ width: `${progress}%` }}
@@ -111,40 +112,51 @@ export default function Login() {
                 )}
 
                 {toast && (
-                    <p className={`mb-2 text-center font-semibold ${toastType === "error" ? "text-yellow-400" : "text-green-600"}`}>
+                    <p className={`mb-2 text-center font-semibold ${toastType === "error" ? "text-yellow-400" : "text-green-400"}`}>
                         {toast}
                     </p>
                 )}
 
-                <form onSubmit={handleSubmit} className="space-y-4">
+                <form onSubmit={handleSubmit} className="space-y-7">
+                    {/* Email */}
                     <div className="relative">
                         <input
                             type="email"
                             name="user_email"
-                            placeholder="Email"
                             value={form.user_email}
                             onChange={handleChange}
-                            className=" w-full p-3 border opacity-70 rounded-lg focus:ring-2 focus:ring-green-400"
+                            placeholder="Email"
+                            className="peer w-full p-3 border rounded-lg bg-white/20 placeholder-transparent focus:ring-2 focus:ring-green-400 focus:border-green-400 text-white"
                             required
                             disabled={blockTime > 0}
                         />
-
-                        <div className="absolute top-1 right-1 p-3  text-gray-600">
+                        <label className="absolute left-3 top-1 text-gray-300 text-sm transition-all peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:top-1 peer-focus:text-sm peer-focus:text-green-200">
+                            Email
+                        </label>
+                        <div className="absolute right-3 top-4 text-gray-400">
                             <FaUserLock />
                         </div>
                     </div>
+
+                    {/* Password */}
                     <div className="relative">
                         <input
                             type={showPassword ? "text" : "password"}
                             name="password"
-                            placeholder="Password"
                             value={form.password}
                             onChange={handleChange}
-                            className="w-full p-3 border opacity-70 rounded-lg focus:ring-2 focus:ring-green-400"
+                            placeholder="Password"
+                            className="peer w-full p-3 border rounded-lg bg-white/20 placeholder-transparent focus:ring-2 focus:ring-green-400 focus:border-green-400 text-white"
                             required
                             disabled={blockTime > 0}
                         />
-                        <div onClick={() => setShowPassword(!showPassword)} className="absolute top-1 right-1 p-3 cursor-pointer text-gray-600">
+                        <label className="absolute left-3 top-1 text-gray-300 text-sm transition-all peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:top-1 peer-focus:text-sm peer-focus:text-green-200">
+                            Password
+                        </label>
+                        <div
+                            onClick={() => setShowPassword(!showPassword)}
+                            className="absolute right-3 top-4 cursor-pointer text-gray-400"
+                        >
                             {showPassword ? <FaEyeSlash /> : <FaEye />}
                         </div>
                     </div>
@@ -152,40 +164,62 @@ export default function Login() {
 
                     <button
                         type="submit"
-                        className={`w-full bg-green-500 text-white p-3 rounded-lg hover:bg-green-600 transition ${blockTime > 0 ? "opacity-50 cursor-not-allowed" : ""}`}
+                        className={`w-full bg-gradient-to-r from-green-500 to-blue-500 text-white p-4 rounded-xl font-semibold shadow-lg transform transition-all duration-300
+    hover:scale-105 
+    hover:from-blue-500 hover:to-green-500 
+    hover:shadow-2xl hover:shadow-blue-500/50
+    hover:brightness-110
+  `}
                         disabled={blockTime > 0}
                     >
                         Login
                     </button>
                 </form>
-                <p className="mt-4 text-center text-white   cursor-pointer hover:underline" onClick={() => setShowForgot(true)}>
+
+                <p
+                    className="mt-4 text-center text-white cursor-pointer hover:underline"
+                    onClick={() => setShowForgot(true)}
+                >
                     Forgot Password?
                 </p>
 
-
                 {showForgot && (
-                    <div className="fixed inset-0 bg-black bg-opacity-10 flex items-center justify-center z-50">
-                        <div className="bg-white rounded-xl shadow-2xl p-6 w-full max-w-sm relative animate-fadeIn">
+                    <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50 animate-fadeIn rounded-2xl">
+                        <div className="bg-white rounded-2xl shadow-2xl p-6 w-full max-w-sm relative animate-scaleIn">
                             <h3 className="text-xl font-bold mb-4 text-center">Forgot Password</h3>
                             {forgotMessage && <p className="mb-4 text-center text-green-500">{forgotMessage}</p>}
-                            <form onSubmit={handleForgotSubmit} className="space-y-4">
+                            
+                            <form onSubmit={handleForgotSubmit} className="space-y-6">
+                                <div className="relative">
                                 <input
                                     type="email"
                                     placeholder="Enter your email"
                                     value={forgotEmail}
                                     onChange={(e) => setForgotEmail(e.target.value)}
-                                    className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-green-400"
+                                    className="peer w-full p-3.5 border rounded-lg bg-white/20 placeholder-transparent focus:ring-2 focus:ring-green-400 focus:border-green-400 "
                                     required
                                 />
+                                <label className="absolute left-3 top-1 text-gray-300 text-sm transition-all peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:top-1 peer-focus:text-sm peer-focus:text-green-600 peer-focus:t-0">
+                            Email
+                        </label>
+                        <div className="absolute right-3 top-4 text-gray-400">
+                            <FaUserLock />
+                        </div>
+                        </div>
                                 <button
                                     type="submit"
-                                    className="w-full bg-blue-500 text-white p-3 rounded-lg hover:bg-blue-600 transition"
+                                    className={`w-full bg-gradient-to-r from-green-500 to-blue-500 text-white p-4 rounded-xl font-semibold shadow-lg transform transition-all duration-300
+    hover:scale-105 
+    hover:from-blue-600 hover:to-green-500 
+    hover:shadow-2xl hover:shadow-blue-500/50
+    hover:brightness-110
+  `}
                                 >
                                     Send Reset Link
                                 </button>
                             </form>
                             <div
-                                className="absolute top-3 right-3 text-red-500 hover:bg-red-500 hover:text-white p-2 rounded-full"
+                                className="absolute top-3 right-3 text-red-500 hover:bg-red-500 hover:text-white p-2 rounded-full cursor-pointer"
                                 onClick={() => { setShowForgot(false); setForgotMessage(""); }}
                             >
                                 <FaTimes />
@@ -194,6 +228,7 @@ export default function Login() {
                     </div>
                 )}
             </div>
-        </div>
+            </div>
+        </div>  
     );
 }
