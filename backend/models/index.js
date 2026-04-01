@@ -1,4 +1,4 @@
-const sequelize = require('../config/db');
+const Sequelize = require('../config/db');
 const CompanyInfo = require('./CompanyInfo');
 const CompanyDocument = require('./CompanyDocument');
 const EmployeeInfo = require('./EmployeeInfo');
@@ -21,7 +21,6 @@ const EquipmentMaintenanceInfo = require('./EquipmentMaintenanceInfo');
 const EquipmentDocuments = require('./EquipmentDocuments');
 const MaterialInfo = require('./MaterialsInfo');
 const PurchaseOrderItemInfo = require('./PurchaseOrderItemsInfo');
-// const StockTransactionInfo = require('./StockTransactionsInfo');
 const SupplierInfo = require('./SuppliersInfo');
 const PurchaseOrdersInfo = require('./PurchaseOrdersInfo');
 const ContractInfo = require('./ContractInfo');
@@ -136,10 +135,6 @@ Materials & Inventory Models Associations*/
 MaterialInfo.hasMany(PurchaseOrderItemInfo, { foreignKey: 'material_id' });
 PurchaseOrderItemInfo.belongsTo(MaterialInfo, { foreignKey: 'material_id' });
 
-// Materials Info to Stock Transactions Info
-// MaterialInfo.hasMany(StockTransactionInfo, { foreignKey: 'material_id' });
-// StockTransactionInfo.belongsTo(MaterialInfo, { foreignKey: 'material_id' });
-
 // Suppliers Info to Purchase Orders Info
 SupplierInfo.hasMany(PurchaseOrdersInfo, { foreignKey: 'supplier_id' });
 PurchaseOrdersInfo.belongsTo(SupplierInfo, { foreignKey: 'supplier_id' });
@@ -151,10 +146,6 @@ PurchaseOrderItemInfo.belongsTo(PurchaseOrdersInfo, { foreignKey: 'po_id' });
 // Project Info to Purchase Orders Info
 ProjectInfo.hasMany(PurchaseOrdersInfo, { foreignKey: 'project_id' });
 PurchaseOrdersInfo.belongsTo(ProjectInfo, { foreignKey: 'project_id' });
-
-// Project Info to Stock Transactions Info
-// ProjectInfo.hasMany(StockTransactionInfo, { foreignKey: 'project_id' });
-// StockTransactionInfo.belongsTo(ProjectInfo, { foreignKey: 'project_id' });
 
 
 /* 06 -----------------------------------------------------------------------------
@@ -247,7 +238,7 @@ SystemLogs.belongsTo(Users, { foreignKey: 'user_id' });
 
 
 module.exports = {
-    sequelize,
+    Sequelize,
     CompanyInfo,
     CompanyDocument,
     EmployeeInfo,
