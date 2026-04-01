@@ -112,6 +112,7 @@ export default function Sidebar({ role }) {
                 name: "Tasks", icon: <FiList/>, submenu: [
                     { name: "Tasks Assignment", path: "/admin/tasks/tasks-assignment" },
                     { name: "Site Reports", path: "/admin/site-daily-reports/site-daily-reports" },
+                    { name: "Safety Incident", path: "/admin/safety-incident/safety-incident-info" },
                     
                 ]
             },

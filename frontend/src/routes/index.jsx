@@ -57,6 +57,7 @@ import PurchaseOrderItems from "../pages/Inventory/PurchaseOrderItems";
 
 import TasksAssignment from "../pages/Tasks/TasksAssignment";
 import SiteDailyReports from "../pages/SiteDailyReports/SiteDailyReports";
+import SafetyIncident from "../pages/Safety/SafetyIncidents";
 
 
 export default function AppRoutes() {
@@ -317,6 +318,13 @@ export default function AppRoutes() {
                     </ProtectedRoute>
                 } />
 
+                <Route path="/admin/safety-incident/safety-incident-info" element={
+                    <ProtectedRoute allowedRoles={["Admin"]}>
+                        <AdminLayout>
+                            <SafetyIncident />
+                        </AdminLayout>
+                    </ProtectedRoute>
+                } />
 
 
                 {/* Users */}
