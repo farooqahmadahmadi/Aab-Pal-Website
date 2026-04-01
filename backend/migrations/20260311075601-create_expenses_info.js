@@ -9,7 +9,7 @@ module.exports = {
       },
       project_id: {
         type: Sequelize.BIGINT.UNSIGNED,
-        allowNull: false,
+        allowNull: true,
         references: {
           model: 'project_info',
           key: 'project_id'
@@ -23,7 +23,8 @@ module.exports = {
       },
       expense_amount: {
         type: Sequelize.DECIMAL(12, 2),
-        allowNull: false
+        allowNull: false,
+        defaultValue: 0
       },
       expense_date: {
         type: Sequelize.DATEONLY,
@@ -32,17 +33,17 @@ module.exports = {
       expense_description: {
         type: Sequelize.STRING(255)
       },
-      created_at: {
-        type: Sequelize.DATE,
-        defaultValue: Sequelize.NOW
-      },
-      updated_at: {
-        type: Sequelize.DATE,
-        defaultValue: Sequelize.NOW
-      },
       is_deleted: {
         type: Sequelize.BOOLEAN,
         defaultValue: false
+      },
+      created_at: {
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.DATE
+      },
+      updated_at: {
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.DATE
       }
     });
   },

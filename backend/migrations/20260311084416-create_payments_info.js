@@ -31,11 +31,11 @@ module.exports = {
       },
       created_at: {
         type: Sequelize.DATE,
-        defaultValue: Sequelize.NOW
+        defaultValue: Sequelize.DATE
       },
       updated_at: {
         type: Sequelize.DATE,
-        defaultValue: Sequelize.NOW
+        defaultValue: Sequelize.DATE
       },
       is_deleted: {
         type: Sequelize.BOOLEAN,

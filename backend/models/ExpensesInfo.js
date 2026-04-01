@@ -9,14 +9,15 @@ const ExpensesInfo = sequelize.define('ExpensesInfo', {
     },
     project_id: {
         type: DataTypes.BIGINT.UNSIGNED,
-        allowNull: false
+        allowNull: true
     },
     expense_type: {
         type: DataTypes.ENUM('material', 'labor', 'transport', 'equipment', 'other')
     },
     expense_amount: {
         type: DataTypes.DECIMAL(12, 2),
-        allowNull: false
+        allowNull: false,
+        defaultValue: 0
     },
     expense_date: {
         type: DataTypes.DATEONLY
