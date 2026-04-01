@@ -55,6 +55,8 @@ import Materials from "../pages/Inventory/Materials";
 import PurchaseOrders from "../pages/Inventory/PurchaseOrders";
 import PurchaseOrderItems from "../pages/Inventory/PurchaseOrderItems";
 
+import TasksAssignment from "../pages/Tasks/TasksAssignment";
+
 
 export default function AppRoutes() {
     return (
@@ -295,6 +297,18 @@ export default function AppRoutes() {
                         </AdminLayout>
                     </ProtectedRoute>
                 } />
+                
+
+                {/* Tasks Assignment */}
+                <Route path="/admin/tasks/tasks-assignment" element={
+                    <ProtectedRoute allowedRoles={["Admin"]}>
+                        <AdminLayout>
+                            <TasksAssignment />
+                        </AdminLayout>
+                    </ProtectedRoute>
+                } />
+
+
 
                 {/* Users */}
                 <Route path="/admin/users/user-list" element={
@@ -304,6 +318,7 @@ export default function AppRoutes() {
                         </AdminLayout>
                     </ProtectedRoute>
                 } />
+
 
 
 

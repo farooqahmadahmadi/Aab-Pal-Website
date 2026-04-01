@@ -9,6 +9,7 @@ import {
     FiBox,
     FiShoppingBag,
     FiClipboard,
+    FiList
 } from "react-icons/fi";
 
 export default function Sidebar({ role }) {
@@ -104,6 +105,13 @@ export default function Sidebar({ role }) {
                 name: "Contracts", icon: <FiClipboard />, submenu: [
                     { name: "Contracts", path: "/admin/contracts/contracts" },
                     { name: "Contract Milestones", path: "/admin/contracts/contract-milestones" },
+                ]
+            },
+
+            {
+                name: "Tasks", icon: <FiList/>, submenu: [
+                    { name: "Tasks Assignment", path: "/admin/tasks/tasks-assignment" },
+                    
                 ]
             },
             {
