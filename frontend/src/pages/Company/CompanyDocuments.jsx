@@ -5,8 +5,7 @@ import useToast from "../../hooks/useToast";
 import DocumentModal from "../../components/Company/DocumentModal";
 import SearchBar from "../../components/common/SearchBar";
 import Pagination from "../../components/common/Pagination";
-import { FaTimes, FaPlus, FaEdit, FaTrash, FaDownload, FaEye } from "react-icons/fa";
-
+import { FiDownload, FiEdit3, FiEye, FiPlusCircle, FiTrash2, FiXCircle } from "react-icons/fi";
 export default function CompanyDocuments() {
 
     const [documents, setDocuments] = useState([]);
@@ -157,7 +156,7 @@ export default function CompanyDocuments() {
                         onClick={() => { setModalOpen(true); setEditData(null); }}
                         className="bg-green-500 text-white px-4 py-2 rounded flex gap-2 items-center"
                     >
-                        <FaPlus /> Add Document
+                        <FiPlusCircle /> Add Document
                     </button>
                 </div>
             </div>
@@ -183,10 +182,10 @@ export default function CompanyDocuments() {
                                     <td className="p-2">{doc.doc_description}</td>
 
                                     <td className="p-2 flex justify-center gap-1.5">
-                                        <button onClick={() => handlePreview(doc)} className="bg-purple-500 px-2 py-1 text-white rounded"><FaEye /></button>
-                                        <button onClick={() => handleDownload(doc)} className="bg-blue-500 px-2 py-1 text-white rounded"><FaDownload /></button>
-                                        <button onClick={() => handleEdit(doc)} className="bg-yellow-500 px-2 py-1 text-white rounded"><FaEdit /></button>
-                                        <button onClick={() => setDeleteData(doc)} className="bg-red-500 px-2 py-1 text-white rounded"><FaTrash /></button>
+                                        <button onClick={() => handlePreview(doc)} className="bg-purple-500 px-2 py-1 text-white rounded"><FiEye /></button>
+                                        <button onClick={() => handleDownload(doc)} className="bg-blue-500 px-2 py-1 text-white rounded"><FiDownload /></button>
+                                        <button onClick={() => handleEdit(doc)} className="bg-yellow-500 px-2 py-1 text-white rounded"><FiEdit3 /></button>
+                                        <button onClick={() => setDeleteData(doc)} className="bg-red-500 px-2 py-1 text-white rounded"><FiTrash2 /></button>
                                     </td>
                                 </tr>
                             ))
@@ -219,7 +218,7 @@ export default function CompanyDocuments() {
                         <div className="flex justify-between m-2">
                             <h3 className="font-bold">{previewData.doc_name}</h3>
                             <span onClick={() => setPreviewData(null)} className="cursor-pointer text-red-500">
-                                <FaTimes />
+                                <FiXCircle />
                             </span>
                         </div>
 
