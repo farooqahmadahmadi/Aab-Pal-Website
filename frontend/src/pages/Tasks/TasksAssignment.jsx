@@ -109,7 +109,7 @@ export default function Tasks() {
                     <thead className="bg-gray-200">
                         <tr>
                             <th className="p-2">ID</th>
-                            <th className="p-2">Title</th>
+                            <th className="p-2 text-left">Title</th>
                             <th className="p-2">Status</th>
                             <th className="p-2">Due Date</th>
                             <th className="p-2">Actions</th>
@@ -120,7 +120,7 @@ export default function Tasks() {
                         {paginated.length ? paginated.map(i => (
                             <tr key={i.task_assignment_id} className="border-t hover:bg-gray-50">
                                 <td className="p-2">{i.task_assignment_id}</td>
-                                <td className="p-2">{i.task_title}</td>
+                                <td className="p-2 text-left">{i.task_title}</td>
                                 <td className="p-2">{i.task_status}</td>
                                 <td className="p-2">{i.task_due_date}</td>
 
