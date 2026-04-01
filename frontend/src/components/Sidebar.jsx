@@ -82,6 +82,7 @@ export default function Sidebar({ role }) {
             {
                 name: "Financial", icon: <FiDollarSign />, submenu: [
                     { name: "Expenses", path: "/admin/financial/expenses" },
+                    { name: "Invoices", path: "/admin/financial/invoices" },
                 ]
             },
             {

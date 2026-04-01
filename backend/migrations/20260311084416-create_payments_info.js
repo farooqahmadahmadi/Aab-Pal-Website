@@ -17,7 +17,8 @@ module.exports = {
         onDelete: 'RESTRICT'
       },
       payment_amount: {
-        type: Sequelize.DECIMAL(12, 2)
+        type: Sequelize.DECIMAL(12, 2),
+        defaultValue: 0
       },
       payment_date: {
         type: Sequelize.DATEONLY
@@ -29,6 +30,10 @@ module.exports = {
         type: Sequelize.ENUM('pending', 'completed', 'failed'),
         defaultValue: 'pending'
       },
+      is_deleted: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: false
+      },
       created_at: {
         type: Sequelize.DATE,
         defaultValue: Sequelize.DATE
@@ -36,10 +41,6 @@ module.exports = {
       updated_at: {
         type: Sequelize.DATE,
         defaultValue: Sequelize.DATE
-      },
-      is_deleted: {
-        type: Sequelize.BOOLEAN,
-        defaultValue: false
       }
     });
   },

@@ -36,6 +36,8 @@ const tasksRoutes = require("./routes/tasksAssignmentRoutes");
 const siteDailyReportsRoutes = require("./routes/siteDailyReportsRoutes");
 const safetyIncidentsRoutes = require("./routes/safetyIncidentsRoutes");
 const expensesRoutes = require("./routes/expensesRoutes");
+const invoicesRoutes = require("./routes/invoicesRoutes");
+
 
 
 
@@ -93,7 +95,7 @@ app.use("/api/tasks", tasksRoutes);
 app.use("/api/site-daily-reports", siteDailyReportsRoutes);
 app.use("/api/safety-incidents", safetyIncidentsRoutes);
 app.use("/api/expenses", expensesRoutes);
-
+app.use("/api/invoices", invoicesRoutes);
 
 
 // Error handler

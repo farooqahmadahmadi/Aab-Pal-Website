@@ -15,7 +15,8 @@ const InvoicesInfo = sequelize.define('InvoicesInfo', {
     },
     invoice_amount: {
         type: DataTypes.DECIMAL(12, 2),
-        allowNull: false
+        allowNull: false,
+        defaultValue: 0
     },
     invoice_due_date: {
         type: DataTypes.DATEONLY

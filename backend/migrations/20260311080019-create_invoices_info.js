@@ -23,7 +23,8 @@ module.exports = {
       },
       invoice_amount: {
         type: Sequelize.DECIMAL(12, 2),
-        allowNull: false
+        allowNull: false,
+        defaultValue: 0
       },
       invoice_due_date: {
         type: Sequelize.DATEONLY
@@ -32,8 +33,12 @@ module.exports = {
         type: Sequelize.TEXT
       },
       invoice_status: {
-        type: Sequelize.ENUM('pending','paid','partial','overdue','cancelled'),
+        type: Sequelize.ENUM('pending', 'paid', 'partial', 'overdue', 'cancelled'),
         defaultValue: 'pending'
+      },
+      is_deleted: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: false
       },
       created_at: {
         type: Sequelize.DATE,
@@ -42,10 +47,6 @@ module.exports = {
       updated_at: {
         type: Sequelize.DATE,
         defaultValue: Sequelize.DATE
-      },
-      is_deleted: {
-        type: Sequelize.BOOLEAN,
-        defaultValue: false
       }
     });
   },

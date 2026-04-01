@@ -60,6 +60,7 @@ import SiteDailyReports from "../pages/SiteDailyReports/SiteDailyReports";
 import SafetyIncident from "../pages/Safety/SafetyIncidents";
 
 import Expenses from "../pages/Expenses/Expenses";
+import Invoices from "../pages/Invoices/Invoices";
 
 
 export default function AppRoutes() {
@@ -312,6 +313,13 @@ export default function AppRoutes() {
                     <ProtectedRoute allowedRoles={["Admin"]}>
                         <AdminLayout>
                             <Expenses />
+                        </AdminLayout>
+                    </ProtectedRoute>
+                } />
+                <Route path="/admin/financial/invoices" element={
+                    <ProtectedRoute allowedRoles={["Admin"]}>
+                        <AdminLayout>
+                            <Invoices />
                         </AdminLayout>
                     </ProtectedRoute>
                 } />
