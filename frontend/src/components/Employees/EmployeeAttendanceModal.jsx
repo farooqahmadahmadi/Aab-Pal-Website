@@ -10,7 +10,6 @@ export default function EmployeeAttendanceModal({
     initialData,
     onSuccess
 }) {
-
     const emptyForm = {
         employee_id: "",
         attendance_date: "",
@@ -168,7 +167,7 @@ export default function EmployeeAttendanceModal({
                 {/* Status */}
                 <select
                     value={form.attendance_status}
-                    title="Stats"
+                    title="Status"
                     onChange={(e) =>
                         setForm({ ...form, attendance_status: e.target.value })
                     }
@@ -183,15 +182,13 @@ export default function EmployeeAttendanceModal({
                 {/* Attendance Type */}
                 <select
                     value={form.attendance_type}
-                    title="attendance_type"
+                    title="Attendance Type"
                     onChange={(e) =>
                         setForm({ ...form, attendance_type: e.target.value })
                     }
                     className="border p-2 w-full rounded"
                 >
                     <option value="Manual">Manual</option>
-                    <option value="Mobile">Mobile</option>
-                    <option value="Biometric">Biometric</option>
                     <option value="Other">Other</option>
                 </select>
 
