@@ -15,11 +15,11 @@ const EquipmentDocuments = sequelize.define("EquipmentDocuments", {
         type: DataTypes.STRING(150),
         allowNull: false
     },
-    doc_description: {
+    document_description: {
         type: DataTypes.STRING(255),
         allowNull: true
     },
-    doc_file_url: {
+    document_file_url: {
         type: DataTypes.STRING(255),
         allowNull: false
     },
