@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { FaPlus } from "react-icons/fa";
+import { FiPlusCircle } from "react-icons/fi";
 
 import SafetyIncidentModal from "../../components/Safety/SafetyIncidentModal";
 import Pagination from "../../components/common/Pagination";
@@ -86,20 +86,20 @@ export default function SafetyIncidents() {
                     <SearchBar value={search} onChange={setSearch} />
                     <button onClick={() => { setModalOpen(true); setEditData(null); }}
                         className="bg-green-500 text-white px-4 py-2 rounded flex items-center gap-2">
-                        <FaPlus /> Add
+                        <FiPlusCircle /> Add Safety Incident
                     </button>
                 </div>
             </div>
 
             <div className="bg-white shadow rounded overflow-x-auto">
-                <table className="w-full text-sm text-center">
-                    <thead className="bg-gray-200">
+                <table className="w-full text-center text-sm">
+                    <thead className="bg-gray-200 text-sm">
                         <tr>
                             <th className="p-2">ID</th>
                             <th className="p-2">Project</th>
                             <th className="p-2">Severity</th>
                             <th className="p-2">Date</th>
-                            <th className="p-2">Actions</th>
+                            <th className="p-2 text-center">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -109,13 +109,15 @@ export default function SafetyIncidents() {
                                 <td>{i.project_id}</td>
                                 <td>{i.incident_severity}</td>
                                 <td>{i.incident_date}</td>
-                                <td className="flex justify-center gap-2">
+                                <td className="p-2 flex justify-center gap-1.5">
                                     <button onClick={() => { setEditData(i); setModalOpen(true); }} className="bg-yellow-500 px-2 py-1 text-white rounded">Edit</button>
                                     <button onClick={() => setDeleteData(i)} className="bg-red-500 px-2 py-1 text-white rounded">Delete</button>
                                 </td>
                             </tr>
                         )) : (
-                            <tr><td colSpan="5" className="p-4 text-gray-500">No data</td></tr>
+                            <tr>
+                                <td colSpan="5" className="p-4 text-gray-500">No safety incident records found</td>
+                                </tr>
                         )}
                     </tbody>
                 </table>
