@@ -11,7 +11,8 @@ const Payments = sequelize.define('payments_info', {
         type: DataTypes.BIGINT.UNSIGNED
     },
     payment_amount: {
-        type: DataTypes.DECIMAL(12, 2)
+        type: DataTypes.DECIMAL(12, 2),
+        defaultValue: 0
     },
     payment_date: {
         type: DataTypes.DATEONLY

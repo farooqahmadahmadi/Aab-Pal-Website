@@ -84,6 +84,7 @@ export default function Sidebar({ role }) {
                     { name: "Expenses", path: "/admin/financial/expenses" },
                     { name: "Invoices", path: "/admin/financial/invoices" },
                     { name: "Cash Transactions", path: "/admin/financial/cash-transactions" },
+                    { name: "Payments Info", path: "/admin/financial/payments-info" },
                 ]
             },
             {

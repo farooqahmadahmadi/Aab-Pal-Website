@@ -38,7 +38,7 @@ const safetyIncidentsRoutes = require("./routes/safetyIncidentsRoutes");
 const expensesRoutes = require("./routes/expensesRoutes");
 const invoicesRoutes = require("./routes/invoicesRoutes");
 const cashTransactionsRoutes = require("./routes/cashTransactionsRoutes");
-
+const paymentsInfoRoutes = require("./routes/paymentsInfoRoutes");
 
 
 
@@ -98,7 +98,7 @@ app.use("/api/safety-incidents", safetyIncidentsRoutes);
 app.use("/api/expenses", expensesRoutes);
 app.use("/api/invoices", invoicesRoutes);
 app.use("/api/cash-transactions", cashTransactionsRoutes);
-
+app.use("/api/payments", paymentsInfoRoutes);
 
 
 // Error handler
