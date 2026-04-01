@@ -5,7 +5,7 @@ import useToast from "../../hooks/useToast";
 import ProjectDocumentModal from "../../components/Project/ProjectDocumentModal";
 import SearchBar from "../../components/common/SearchBar";
 import Pagination from "../../components/common/Pagination";
-import { FaTimes, FaPlus, FaEdit, FaTrash, FaDownload, FaEye } from "react-icons/fa";
+import { FiDownload, FiEdit3, FiEye, FiPlusCircle, FiTrash2, FiXCircle } from "react-icons/fi";
 
 export default function ProjectDocuments() {
     const [documents, setDocuments] = useState([]);
@@ -125,7 +125,7 @@ export default function ProjectDocuments() {
                     <SearchBar value={search} onChange={setSearch} />
 
                     <button onClick={() => { setModalOpen(true); setEditData(null); }}
-                        className="bg-green-500 text-white px-4 py-2 rounded flex gap-2 items-center"><FaPlus /> Add Document
+                        className="bg-green-500 text-white px-4 py-2 rounded flex gap-2 items-center"><FiPlusCircle /> Add Document
                     </button>
                 </div>
             </div>
@@ -149,10 +149,10 @@ export default function ProjectDocuments() {
                                     <td className="p-2">{doc.document_name}</td>
                                     <td className="p-2">{doc.document_description}</td>
                                     <td className="p-2 flex justify-center gap-1.5">
-                                        <button onClick={() => handlePreview(doc)} className="bg-purple-500 px-2 py-1 text-white rounded"><FaEye /></button>
-                                        <button onClick={() => handleDownload(doc)} className="bg-blue-500 px-2 py-1 text-white rounded"><FaDownload /></button>
-                                        <button onClick={() => handleEdit(doc)} className="bg-yellow-500 px-2 py-1 text-white rounded"><FaEdit /></button>
-                                        <button onClick={() => setDeleteData(doc)} className="bg-red-500 px-2 py-1 text-white rounded"><FaTrash /></button>
+                                        <button onClick={() => handlePreview(doc)} className="bg-purple-500 px-2 py-1 text-white rounded"><FiEye /></button>
+                                        <button onClick={() => handleDownload(doc)} className="bg-blue-500 px-2 py-1 text-white rounded"><FiDownload /></button>
+                                        <button onClick={() => handleEdit(doc)} className="bg-yellow-500 px-2 py-1 text-white rounded"><FiEdit3 /></button>
+                                        <button onClick={() => setDeleteData(doc)} className="bg-red-500 px-2 py-1 text-white rounded"><FiTrash2 /></button>
                                     </td>
                                 </tr>
                             ))
@@ -172,7 +172,7 @@ export default function ProjectDocuments() {
                     <div className="bg-white p-2 rounded-2xl w-[50%] h-[80%] overflow-auto">
                         <div className="flex justify-between m-2">
                             <h3 className="font-bold">{previewData.document_name}</h3>
-                            <span onClick={() => setPreviewData(null)} className="cursor-pointer text-red-500"><FaTimes /></span>
+                            <span onClick={() => setPreviewData(null)} className="cursor-pointer text-red-500"><FiXCircle /></span>
                         </div>
                         {getFileType(previewData.document_file_url) === "image" && (
                             <img src={`${BASE_URL}${previewData.document_file_url}`} className="mx-auto" />
