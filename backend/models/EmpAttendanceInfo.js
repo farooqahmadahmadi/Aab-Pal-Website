@@ -27,7 +27,7 @@ const EmpAttendanceInfo = sequelize.define("EmpAttendanceInfo", {
         type: DataTypes.DECIMAL(5, 2)
     },
     attendance_type: {
-        type: DataTypes.ENUM('Mobile', 'Biometric', 'Other'),
+        type: DataTypes.ENUM('Manual', 'Mobile', 'Biometric', 'Other'),
         defaultValue: 'Mobile'
     },
     is_deleted: {

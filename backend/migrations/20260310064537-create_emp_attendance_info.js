@@ -36,7 +36,7 @@ module.exports = {
         type: Sequelize.DECIMAL(5, 2)
       },
       attendance_type: {
-        type: Sequelize.ENUM('Mobile', 'Biometric', 'Other'),
+        type: Sequelize.ENUM('Manual', 'Mobile', 'Biometric', 'Other'),
         defaultValue: 'Mobile'
       },
       is_deleted: {
