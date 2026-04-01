@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { FaPlus, FaEdit, FaTrash, FaDownload } from "react-icons/fa";
 import { getContracts, addContract, updateContract, deleteContract } from "../../services/contractService";
 import ContractModal from "../../components/Contracts/ContractModal";
 import Pagination from "../../components/common/Pagination";
 import Toast from "../../components/common/Toast";
 import useToast from "../../hooks/useToast";
 import SearchBar from "../../components/common/SearchBar";
+import { FiDownload, FiEdit3, FiPlusCircle, FiTrash2 } from "react-icons/fi";
 
 export default function Contracts() {
     const [data, setData] = useState([]);
@@ -114,7 +114,7 @@ export default function Contracts() {
                         onClick={() => { setModalOpen(true); setEditData(null); }}
                         className="bg-green-500 text-white px-4 py-2 rounded flex gap-2 items-center"
                     >
-                        <FaPlus /> Add Contract
+                        <FiPlusCircle /> Add Contract
                     </button>
                 </div>
             </div>
@@ -146,27 +146,9 @@ export default function Contracts() {
                                 <td className="p-2">{i.signed_date}</td>
                                 <td className="p-2">{i.total_value}</td>
 
-                                <td className="p-2 flex justify-center gap-1.5">
-                                    <button
-                                        onClick={() => handleDownload(i)}
-                                        className="bg-blue-500 px-2 py-1 text-white rounded"
-                                    >
-                                        <FaDownload />
-                                    </button>
-
-                                    <button
-                                        onClick={() => { setEditData(i); setModalOpen(true); }}
-                                        className="bg-yellow-500 px-2 py-1 text-white rounded"
-                                    >
-                                        <FaEdit />
-                                    </button>
-
-                                    <button
-                                        onClick={() => setDeleteData(i)}
-                                        className="bg-red-500 px-2 py-1 text-white rounded"
-                                    >
-                                        <FaTrash />
-                                    </button>
+                                <td className="p-2 flex justify-center gap-1.5"><button onClick={() => handleDownload(i)} className="bg-blue-500 px-2 py-1 text-white rounded"><FiDownload /></button>
+                                    <button onClick={() => { setEditData(i); setModalOpen(true); }} className="bg-yellow-500 px-2 py-1 text-white rounded"><FiEdit3 /></button>
+                                    <button onClick={() => setDeleteData(i)} className="bg-red-500 px-2 py-1 text-white rounded"><FiTrash2 /></button>
                                 </td>
                             </tr>
                         )) : (
