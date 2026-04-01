@@ -27,7 +27,8 @@ module.exports = {
         type: Sequelize.ENUM('income', 'expense')
       },
       amount: {
-        type: Sequelize.DECIMAL(12, 2)
+        type: Sequelize.DECIMAL(12, 2),
+        defaultValue: 0
       },
       transaction_description: {
         type: Sequelize.STRING(255)

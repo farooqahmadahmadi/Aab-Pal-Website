@@ -21,7 +21,8 @@ const CashTransactions = sequelize.define('CashTransactionsInfo', {
         type: DataTypes.ENUM('income', 'expense')
     },
     amount: {
-        type: DataTypes.DECIMAL(12, 2)
+        type: DataTypes.DECIMAL(12, 2),
+        defaultValue: 0
     },
     transaction_description: {
         type: DataTypes.STRING(255)

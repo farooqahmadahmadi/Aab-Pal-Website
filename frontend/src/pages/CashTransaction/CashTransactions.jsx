@@ -41,6 +41,7 @@ export default function CashTransactions() {
     useEffect(() => {
         const f = data.filter(i =>
             i.transaction_id.toString().includes(search) ||
+            i.transaction_type?.toLowerCase().includes(search.toLowerCase()) ||
             i.transaction_description?.toLowerCase().includes(search.toLowerCase())
         );
         setFiltered(f);
@@ -91,16 +92,16 @@ export default function CashTransactions() {
                 </div>
             </div>
 
-            <div className="bg-white shadow rounded-lg overflow-x-auto">
+             <div className="bg-white shadow rounded overflow-x-auto">
                 <table className="w-full text-center text-sm">
-                    <thead className="bg-gray-200">
+                    <thead className="bg-gray-200 text-sm">
                         <tr>
                             <th>ID</th>
                             <th>Type</th>
                             <th>Amount</th>
-                            <th>Description</th>
+                            <th className="p-2 text-left">Description</th>
                             <th>Date</th>
-                            <th>Actions</th>
+                            <th className="p-2 text-center">Actions</th>
                         </tr>
                     </thead>
 
@@ -110,9 +111,9 @@ export default function CashTransactions() {
                                 <td>{i.transaction_id}</td>
                                 <td>{i.transaction_type}</td>
                                 <td>{i.amount}</td>
-                                <td>{i.transaction_description}</td>
+                                <td className="p-2 text-left">{i.transaction_description}</td>
                                 <td>{i.transaction_date}</td>
-                                <td className="flex justify-center gap-2">
+                                <td className="p-2 flex justify-center gap-1.5">
                                     <button onClick={() => { setEditData(i); setModalOpen(true); }} className="bg-yellow-500 text-white px-2 py-1 rounded">Edit</button>
                                     <button onClick={() => setDeleteData(i)} className="bg-red-500 text-white px-2 py-1 rounded">Delete</button>
                                 </td>

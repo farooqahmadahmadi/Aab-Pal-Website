@@ -87,9 +87,9 @@ export default function Expenses() {
                 </div>
             </div>
 
-            <div className="bg-white shadow rounded-lg overflow-x-auto">
+             <div className="bg-white shadow rounded overflow-x-auto">
                 <table className="w-full text-center text-sm">
-                    <thead className="bg-gray-200">
+                    <thead className="bg-gray-200 text-sm">
                         <tr>
                             <th className="p-2">ID</th>
                             <th className="p-2">Project</th>
