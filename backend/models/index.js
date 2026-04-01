@@ -184,8 +184,12 @@ ProjectInfo.hasMany(SiteDailyReportsInfo, { foreignKey: 'project_id' });
 SiteDailyReportsInfo.belongsTo(ProjectInfo, { foreignKey: 'project_id' });
 
 // Employee to Daily Reports
-EmployeeInfo.hasMany(SiteDailyReportsInfo, { foreignKey: 'prepared_by' });
-SiteDailyReportsInfo.belongsTo(EmployeeInfo, { foreignKey: 'prepared_by' });
+EmployeeInfo.hasMany(SiteDailyReportsInfo, { foreignKey: 'employee_id' });
+SiteDailyReportsInfo.belongsTo(EmployeeInfo, { foreignKey: 'employee_id' });
+
+// Tasks to Daily Reports
+TasksAssignmentInfo.hasMany(SiteDailyReportsInfo, { foreignKey: 'task_assignment_id' });
+SiteDailyReportsInfo.belongsTo(TasksAssignmentInfo, { foreignKey: 'task_assignment_id' });
 
 
 /* 10 -----------------------------------------------------------------------------

@@ -11,9 +11,13 @@ const SiteDailyReportsInfo = sequelize.define('SiteDailyReportsInfo', {
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull: false
     },
-    prepared_by: {
+    employee_id: {
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull: false
+    },
+    task_assignment_id: {
+        type: DataTypes.BIGINT.UNSIGNED,
+        allowNull: true
     },
     report_date: {
         type: DataTypes.DATEONLY,

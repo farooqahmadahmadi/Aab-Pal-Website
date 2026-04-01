@@ -17,7 +17,7 @@ module.exports = {
         onUpdate: 'CASCADE',
         onDelete: 'RESTRICT'
       },
-      assigned_to: {
+      employee_id: {
         type: Sequelize.BIGINT.UNSIGNED,
         allowNull: false,
         references: {

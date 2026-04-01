@@ -33,7 +33,7 @@ const materialsRoutes = require("./routes/materialsRoutes");
 const purchaseOrdersRoutes = require("./routes/purchaseOrdersRoutes");
 const purchaseOrderItemsRoutes = require("./routes/purchaseOrderItemsRoutes");
 const tasksRoutes = require("./routes/tasksAssignmentRoutes");
-
+const siteDailyReportsRoutes = require("./routes/siteDailyReportsRoutes");
 
 
 
@@ -89,6 +89,7 @@ app.use("/api/materials", materialsRoutes);
 app.use("/api/purchase-orders", purchaseOrdersRoutes);
 app.use("/api/purchase-order-items", purchaseOrderItemsRoutes);
 app.use("/api/tasks", tasksRoutes);
+app.use("/api/site-daily-reports", siteDailyReportsRoutes);
 
 
 

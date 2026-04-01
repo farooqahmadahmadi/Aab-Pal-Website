@@ -12,16 +12,16 @@ exports.login = async (req, res) => {
     try {
         const { user_email, password } = req.body;
 
-        // 🔥 get user from service
+        // get user from service
         const data = await loginUser(user_email, password);
 
-        // 🔥 مهم: token rebuild with employee_id
+        //  token rebuild with employee_id
         const user = data.user;
 
         const token = jwt.sign(
             {
                 id: user.user_id,
-                employee_id: user.employee_id, // ✅ FIX
+                employee_id: user.employee_id,
                 role: user.user_role
             },
             JWT_SECRET,
@@ -43,7 +43,7 @@ exports.login = async (req, res) => {
 // ---------------- LOGOUT ----------------
 exports.logout = async (req, res) => {
     try {
-        const userId = req.user.user_id; // ✅ fix id
+        const userId = req.user.user_id;
         await logoutUser(userId);
         res.json({ message: "Logged out successfully" });
     } catch (err) {
