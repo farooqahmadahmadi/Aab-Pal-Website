@@ -1,4 +1,7 @@
 'use strict';
+
+const sequelize = require("../config/db");
+
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable('emp_attendance_info', {
@@ -32,15 +35,19 @@ module.exports = {
       total_work_hours: {
         type: Sequelize.DECIMAL(5, 2)
       },
+      attendance_type: {
+        type: Sequelize.ENUM('Mobile', 'Biometric', 'Other'),
+        defaultValue: 'Mobile'
+      },
+      is_deleted: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: false
+      },
       created_at: {
         type: Sequelize.DATE
       },
       updated_at: {
         type: Sequelize.DATE
-      },
-      is_deleted: {
-        type: Sequelize.BOOLEAN,
-        defaultValue: false
       }
     });
   },

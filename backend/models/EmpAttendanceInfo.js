@@ -26,6 +26,10 @@ const EmpAttendanceInfo = sequelize.define("EmpAttendanceInfo", {
     total_work_hours: {
         type: DataTypes.DECIMAL(5, 2)
     },
+    attendance_type: {
+        type: DataTypes.ENUM('Mobile', 'Biometric', 'Other'),
+        defaultValue: 'Mobile'
+    },
     is_deleted: {
         type: DataTypes.BOOLEAN,
         defaultValue: false
