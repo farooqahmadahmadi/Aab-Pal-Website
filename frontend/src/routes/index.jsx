@@ -59,6 +59,8 @@ import TasksAssignment from "../pages/Tasks/TasksAssignment";
 import SiteDailyReports from "../pages/SiteDailyReports/SiteDailyReports";
 import SafetyIncident from "../pages/Safety/SafetyIncidents";
 
+import Expenses from "../pages/Expenses/Expenses";
+
 
 export default function AppRoutes() {
     return (
@@ -84,7 +86,6 @@ export default function AppRoutes() {
                         </AdminLayout>
                     </ProtectedRoute>
                 } />
-
                 <Route path="/admin/company/company-documents" element={
                     <ProtectedRoute allowedRoles={["Admin"]}>
                         <AdminLayout>
@@ -110,7 +111,6 @@ export default function AppRoutes() {
                         </AdminLayout>
                     </ProtectedRoute>
                 } />
-
                 <Route path="/admin/employees/employee-education-info" element={
                     <ProtectedRoute allowedRoles={["Admin"]}>
                         <AdminLayout>
@@ -118,7 +118,6 @@ export default function AppRoutes() {
                         </AdminLayout>
                     </ProtectedRoute>
                 } />
-
                 <Route path="/admin/employees/employee-documents" element={
                     <ProtectedRoute allowedRoles={["Admin"]}>
                         <AdminLayout>
@@ -126,7 +125,6 @@ export default function AppRoutes() {
                         </AdminLayout>
                     </ProtectedRoute>
                 } />
-
                 <Route path="/admin/employees/employee-salary-info" element={
                     <ProtectedRoute allowedRoles={["Admin"]}>
                         <AdminLayout>
@@ -134,7 +132,6 @@ export default function AppRoutes() {
                         </AdminLayout>
                     </ProtectedRoute>
                 } />
-
                 <Route path="/admin/employees/attendance-shifts" element={
                     <ProtectedRoute allowedRoles={["Admin"]}>
                         <AdminLayout>
@@ -142,7 +139,6 @@ export default function AppRoutes() {
                         </AdminLayout>
                     </ProtectedRoute>
                 } />
-
                 <Route path="/admin/employees/employee-hiring-info" element={
                     <ProtectedRoute allowedRoles={["Admin"]}>
                         <AdminLayout>
@@ -150,7 +146,6 @@ export default function AppRoutes() {
                         </AdminLayout>
                     </ProtectedRoute>
                 } />
-
                 <Route path="/admin/employees/employee-attendance-list" element={
                     <ProtectedRoute allowedRoles={["Admin"]}>
                         <AdminLayout>
@@ -158,7 +153,6 @@ export default function AppRoutes() {
                         </AdminLayout>
                     </ProtectedRoute>
                 } />
-
                 <Route path="/admin/employees/employee-attendance" element={
                     <ProtectedRoute allowedRoles={["Admin"]}>
                         <AdminLayout>
@@ -166,7 +160,6 @@ export default function AppRoutes() {
                         </AdminLayout>
                     </ProtectedRoute>
                 } />
-
                 <Route path="/admin/employees/employee-salary-payment" element={
                     <ProtectedRoute allowedRoles={["Admin"]}>
                         <AdminLayout>
@@ -183,7 +176,6 @@ export default function AppRoutes() {
                         </AdminLayout>
                     </ProtectedRoute>
                 } />
-
                 <Route path="/admin/projects/project-info" element={
                     <ProtectedRoute allowedRoles={["Admin"]}>
                         <AdminLayout>
@@ -191,7 +183,6 @@ export default function AppRoutes() {
                         </AdminLayout>
                     </ProtectedRoute>
                 } />
-
                 <Route path="/admin/projects/boq-items" element={
                     <ProtectedRoute allowedRoles={["Admin"]}>
                         <AdminLayout>
@@ -199,7 +190,6 @@ export default function AppRoutes() {
                         </AdminLayout>
                     </ProtectedRoute>
                 } />
-
                 <Route path="/admin/projects/project-phases-info" element={
                     <ProtectedRoute allowedRoles={["Admin"]}>
                         <AdminLayout>
@@ -207,7 +197,6 @@ export default function AppRoutes() {
                         </AdminLayout>
                     </ProtectedRoute>
                 } />
-
                 <Route path="/admin/projects/project-documents" element={
                     <ProtectedRoute allowedRoles={["Admin"]}>
                         <AdminLayout>
@@ -224,7 +213,6 @@ export default function AppRoutes() {
                         </AdminLayout>
                     </ProtectedRoute>
                 } />
-
                 <Route path="/admin/inventory/materials" element={
                     <ProtectedRoute allowedRoles={["Admin"]}>
                         <AdminLayout>
@@ -232,7 +220,6 @@ export default function AppRoutes() {
                         </AdminLayout>
                     </ProtectedRoute>
                 } />
-
                 <Route path="/admin/inventory/purchase-orders" element={
                     <ProtectedRoute allowedRoles={["Admin"]}>
                         <AdminLayout>
@@ -240,7 +227,6 @@ export default function AppRoutes() {
                         </AdminLayout>
                     </ProtectedRoute>
                 } />
-
                 <Route path="/admin/inventory/purchase-order-items" element={
                     <ProtectedRoute allowedRoles={["Admin"]}>
                         <AdminLayout>
@@ -258,7 +244,6 @@ export default function AppRoutes() {
                         </AdminLayout>
                     </ProtectedRoute>
                 } />
-
                 <Route path="/admin/equipments/equipments-documents" element={
                     <ProtectedRoute allowedRoles={["Admin"]}>
                         <AdminLayout>
@@ -266,7 +251,6 @@ export default function AppRoutes() {
                         </AdminLayout>
                     </ProtectedRoute>
                 } />
-
                 <Route path="/admin/equipments/equipments-usage" element={
                     <ProtectedRoute allowedRoles={["Admin"]}>
                         <AdminLayout>
@@ -274,7 +258,6 @@ export default function AppRoutes() {
                         </AdminLayout>
                     </ProtectedRoute>
                 } />
-
                 <Route path="/admin/equipments/equipment-maintenance" element={
                     <ProtectedRoute allowedRoles={["Admin"]}>
                         <AdminLayout>
@@ -291,7 +274,6 @@ export default function AppRoutes() {
                         </AdminLayout>
                     </ProtectedRoute>
                 } />
-
                 <Route path="/admin/contracts/contract-milestones" element={
                     <ProtectedRoute allowedRoles={["Admin"]}>
                         <AdminLayout>
@@ -309,7 +291,6 @@ export default function AppRoutes() {
                         </AdminLayout>
                     </ProtectedRoute>
                 } />
-
                 <Route path="/admin/site-daily-reports/site-daily-reports" element={
                     <ProtectedRoute allowedRoles={["Admin"]}>
                         <AdminLayout>
@@ -317,7 +298,6 @@ export default function AppRoutes() {
                         </AdminLayout>
                     </ProtectedRoute>
                 } />
-
                 <Route path="/admin/safety-incident/safety-incident-info" element={
                     <ProtectedRoute allowedRoles={["Admin"]}>
                         <AdminLayout>
@@ -326,6 +306,15 @@ export default function AppRoutes() {
                     </ProtectedRoute>
                 } />
 
+
+                {/* Financial */}
+                <Route path="/admin/financial/expenses" element={
+                    <ProtectedRoute allowedRoles={["Admin"]}>
+                        <AdminLayout>
+                            <Expenses />
+                        </AdminLayout>
+                    </ProtectedRoute>
+                } />
 
                 {/* Users */}
                 <Route path="/admin/users/user-list" element={
