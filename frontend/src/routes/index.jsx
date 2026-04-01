@@ -56,6 +56,7 @@ import PurchaseOrders from "../pages/Inventory/PurchaseOrders";
 import PurchaseOrderItems from "../pages/Inventory/PurchaseOrderItems";
 
 import TasksAssignment from "../pages/Tasks/TasksAssignment";
+import SiteDailyReports from "../pages/SiteDailyReports/SiteDailyReports";
 
 
 export default function AppRoutes() {
@@ -304,6 +305,14 @@ export default function AppRoutes() {
                     <ProtectedRoute allowedRoles={["Admin"]}>
                         <AdminLayout>
                             <TasksAssignment />
+                        </AdminLayout>
+                    </ProtectedRoute>
+                } />
+
+                <Route path="/admin/site-daily-reports/site-daily-reports" element={
+                    <ProtectedRoute allowedRoles={["Admin"]}>
+                        <AdminLayout>
+                            <SiteDailyReports />
                         </AdminLayout>
                     </ProtectedRoute>
                 } />
