@@ -98,7 +98,7 @@ export default function Tasks() {
                         onClick={() => { setModalOpen(true); setEditData(null); }}
                         className="bg-green-500 text-white px-4 py-2 rounded flex items-center gap-2"
                     >
-                        <FaPlus /> Add
+                        <FaPlus /> Add Task
                     </button>
                 </div>
             </div>

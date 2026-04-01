@@ -88,7 +88,7 @@ export default function SiteReports() {
                 <div className="flex gap-2">
                     <SearchBar value={search} onChange={setSearch} />
                     <button onClick={() => { setModalOpen(true); setEditData(null); }} className="bg-green-500 text-white px-4 py-2 rounded flex items-center gap-2">
-                        <FaPlus /> Add
+                        <FaPlus /> Add Report
                     </button>
                 </div>
             </div>
