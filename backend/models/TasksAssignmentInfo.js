@@ -11,7 +11,7 @@ const TasksAssignmentInfo = sequelize.define('TasksAssignmentInfo', {
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull: false
     },
-    assigned_to: {
+    employee_id: {
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull: false
     },

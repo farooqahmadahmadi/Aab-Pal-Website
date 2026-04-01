@@ -173,8 +173,8 @@ ProjectInfo.hasMany(TasksAssignmentInfo, { foreignKey: 'project_id' });
 TasksAssignmentInfo.belongsTo(ProjectInfo, { foreignKey: 'project_id' });
 
 // Employee to Tasks Assignment
-EmployeeInfo.hasMany(TasksAssignmentInfo, { foreignKey: 'assigned_to' });
-TasksAssignmentInfo.belongsTo(EmployeeInfo, { foreignKey: 'assigned_to' });
+EmployeeInfo.hasMany(TasksAssignmentInfo, { foreignKey: 'employee_id' });
+TasksAssignmentInfo.belongsTo(EmployeeInfo, { foreignKey: 'employee_id' });
 
 
 /* 09 -----------------------------------------------------------------------------

@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 export default function TaskModal({ isOpen, onClose, onSubmit, initialData }) {
     const [form, setForm] = useState({
         project_id: "",
-        assigned_to: "",
+        employee_id: "",
         task_title: "",
         task_description: "",
         task_due_date: "",
@@ -14,7 +14,7 @@ export default function TaskModal({ isOpen, onClose, onSubmit, initialData }) {
         if (initialData) setForm({ ...initialData });
         else setForm({
             project_id: "",
-            assigned_to: "",
+            employee_id: "",
             task_title: "",
             task_description: "",
             task_due_date: "",
@@ -43,7 +43,7 @@ export default function TaskModal({ isOpen, onClose, onSubmit, initialData }) {
 
                 <form onSubmit={submit} className="space-y-3">
                     <input name="project_id" value={form.project_id} onChange={handleChange} placeholder="Project ID" className="w-full border p-2 rounded" required />
-                    <input name="assigned_to" value={form.assigned_to} onChange={handleChange} placeholder="Assigned To (Employee ID)" className="w-full border p-2 rounded" required />
+                    <input name="employee_id" value={form.employee_id} onChange={handleChange} placeholder="Assigned To (Employee ID)" className="w-full border p-2 rounded" required />
                     <input name="task_title" value={form.task_title} onChange={handleChange} placeholder="Task Title" className="w-full border p-2 rounded" required />
                     <textarea name="task_description" value={form.task_description} onChange={handleChange} placeholder="Description" className="w-full border p-2 rounded" />
 

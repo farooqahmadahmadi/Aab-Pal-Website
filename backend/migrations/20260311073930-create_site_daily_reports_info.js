@@ -17,7 +17,7 @@ module.exports = {
         onUpdate: 'CASCADE',
         onDelete: 'RESTRICT'
       },
-      prepared_by: {
+      employee_id: {
         type: Sequelize.BIGINT.UNSIGNED,
         allowNull: false,
         references: {
@@ -26,6 +26,14 @@ module.exports = {
         },
         onUpdate: 'CASCADE',
         onDelete: 'RESTRICT'
+      },
+      task_assignment_id: {
+        type: Sequelize.BIGINT.UNSIGNED,
+        allowNull: true,
+        references: {
+          model: "tasks_assignment_info",
+          key: "task_assignment_id"
+        }
       },
       report_date: {
         type: Sequelize.DATEONLY,
