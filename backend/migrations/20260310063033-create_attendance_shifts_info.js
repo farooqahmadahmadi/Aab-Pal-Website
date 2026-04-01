@@ -8,7 +8,7 @@ module.exports = {
         autoIncrement: true
       },
       shift_name: {
-        type: Sequelize.STRING(100)
+        type: Sequelize.STRING(50)
       },
       check_in_start: {
         type: Sequelize.TIME
@@ -22,27 +22,29 @@ module.exports = {
       check_out_end: {
         type: Sequelize.TIME
       },
-      longitude: {
-        type: Sequelize.DECIMAL(10, 7),
-        allowNull: false
-      },
       latitude: {
         type: Sequelize.DECIMAL(10, 7),
-        allowNull: false
+        allowNull: false,
+        defaultValue: 0
+      },
+      longitude: {
+        type: Sequelize.DECIMAL(10, 7),
+        allowNull: false,
+        defaultValue: 0
       },
       reduce: {
         type: Sequelize.BIGINT.UNSIGNED,
-        defaultValue: 10
+        defaultValue: 0
+      },
+      is_deleted: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: false
       },
       created_at: {
         type: Sequelize.DATE
       },
       updated_at: {
         type: Sequelize.DATE
-      },
-      is_deleted: {
-        type: Sequelize.BOOLEAN,
-        defaultValue: false
       }
     });
   },

@@ -10,7 +10,7 @@ const AttendanceShiftsInfo = sequelize.define(
             autoIncrement: true
         },
         shift_name: {
-            type: DataTypes.STRING(100)
+            type: DataTypes.STRING(50)
         },
         check_in_start: {
             type: DataTypes.TIME
@@ -24,17 +24,19 @@ const AttendanceShiftsInfo = sequelize.define(
         check_out_end: {
             type: DataTypes.TIME
         },
-        longitude: {
-            type: DataTypes.DECIMAL(10, 7),
-            allowNull: false
-        },
         latitude: {
             type: DataTypes.DECIMAL(10, 7),
-            allowNull: false
+            allowNull: false,
+            defaultValue: 0
+        },
+        longitude: {
+            type: DataTypes.DECIMAL(10, 7),
+            allowNull: false,
+            defaultValue: 0
         },
         reduce: {
             type: DataTypes.BIGINT.UNSIGNED,
-            defaultValue: 10
+            defaultValue: 0
         },
         is_deleted: {
             type: DataTypes.BOOLEAN,
