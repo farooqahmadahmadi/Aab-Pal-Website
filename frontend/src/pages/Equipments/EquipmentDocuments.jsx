@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { FaPlus, FaEdit, FaTrash, FaDownload, FaEye, FaTimes } from "react-icons/fa";
 import EquipmentDocumentsModal from "../../components/Equipments/EquipmentDocumentsModal";
 import Pagination from "../../components/common/Pagination";
 import Toast from "../../components/common/Toast";
 import useToast from "../../hooks/useToast";
 import SearchBar from "../../components/common/SearchBar";
+import { FiDownload, FiEdit3, FiEye, FiPlusCircle, FiTrash2, FiXCircle } from "react-icons/fi";
 import { getDocuments, addDocument, updateDocument, deleteDocument } from "../../services/equipmentDocumentsService";
+
 
 export default function EquipmentDocuments() {
     const [data, setData] = useState([]);
@@ -115,7 +116,7 @@ export default function EquipmentDocuments() {
                 <div className="flex gap-2">
                     <SearchBar value={search} onChange={setSearch} />
                     <button onClick={() => { setModalOpen(true); setEditData(null); }} className="bg-green-500 text-white px-4 py-2 rounded flex items-center gap-2">
-                        <FaPlus /> Add Document
+                        <FiPlusCircle /> Add Document
                     </button>
                 </div>
             </div>
@@ -140,10 +141,10 @@ export default function EquipmentDocuments() {
                                 <td className="p-2 text-left">{i.doc_description}</td>
 
                                 <td className="p-2 flex justify-center gap-1.5">
-                                    <button onClick={() => handlePreview(i)} className="bg-purple-500 px-2 py-1 text-white rounded"><FaEye /></button>
-                                    <button onClick={() => handleDownload(i)} className="bg-blue-500 px-2 py-1 text-white rounded"><FaDownload /></button>
-                                    <button onClick={() => { setEditData(i); setModalOpen(true); }} className="bg-yellow-500 px-2 py-1 text-white rounded"><FaEdit /></button>
-                                    <button onClick={() => setDeleteData(i)} className="bg-red-500 px-2 py-1 text-white rounded"><FaTrash /></button>
+                                    <button onClick={() => handlePreview(i)} className="bg-purple-500 px-2 py-1 text-white rounded"><FiEye /></button>
+                                    <button onClick={() => handleDownload(i)} className="bg-blue-500 px-2 py-1 text-white rounded"><FiDownload /></button>
+                                    <button onClick={() => { setEditData(i); setModalOpen(true); }} className="bg-yellow-500 px-2 py-1 text-white rounded"><FiEdit3 /></button>
+                                    <button onClick={() => setDeleteData(i)} className="bg-red-500 px-2 py-1 text-white rounded"><FiTrash2 /></button>
                                 </td>
                             </tr>
                         )) : (
@@ -183,7 +184,7 @@ export default function EquipmentDocuments() {
                     <div className="bg-white p-2 rounded-2xl w-[50%] h-[80%] overflow-auto">
                         <div className="flex justify-between m-2">
                             <h3 className="font-bold">{previewData.doc_name}</h3>
-                            <span onClick={() => setPreviewData(null)} className="cursor-pointer text-red-500"><FaTimes /></span>
+                            <span onClick={() => setPreviewData(null)} className="cursor-pointer text-red-500"><FiXCircle /></span>
                         </div>
                         {getFileType(previewData.doc_file_url) === "image" && (
                             <img src={`${BASE_URL}${previewData.doc_file_url}`} className="mx-auto" />
