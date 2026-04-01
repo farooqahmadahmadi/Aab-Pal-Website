@@ -54,7 +54,6 @@ import Suppliers from "../pages/Inventory/Suppliers";
 import Materials from "../pages/Inventory/Materials";
 import PurchaseOrders from "../pages/Inventory/PurchaseOrders";
 import PurchaseOrderItems from "../pages/Inventory/PurchaseOrderItems";
-import StockTransactions from "../pages/Inventory/StockTransactions";
 
 
 export default function AppRoutes() {
@@ -246,13 +245,6 @@ export default function AppRoutes() {
                     </ProtectedRoute>
                 } />
 
-                <Route path="/admin/inventory/stock-transactions" element={
-                    <ProtectedRoute allowedRoles={["Admin"]}>
-                        <AdminLayout>
-                            <StockTransactions />
-                        </AdminLayout>
-                    </ProtectedRoute>
-                } />
 
                 {/* Equipments / Machinery */}
                 <Route path="/admin/equipments/equipments" element={
