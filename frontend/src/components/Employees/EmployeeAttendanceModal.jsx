@@ -17,7 +17,8 @@ export default function EmployeeAttendanceModal({
         attendance_status: "Present",
         check_in_time: "",
         check_out_time: "",
-        total_work_hours: 0
+        total_work_hours: 0,
+        attendance_type: "Manual",
     };
 
     const [form, setForm] = useState(emptyForm);
@@ -177,6 +178,21 @@ export default function EmployeeAttendanceModal({
                     <option value="Absent">Absent</option>
                     <option value="Leave">Leave</option>
                     <option value="Sick">Sick</option>
+                </select>
+
+                {/* Attendance Type */}
+                <select
+                    value={form.attendance_type}
+                    title="attendance_type"
+                    onChange={(e) =>
+                        setForm({ ...form, attendance_type: e.target.value })
+                    }
+                    className="border p-2 w-full rounded"
+                >
+                    <option value="Manual">Manual</option>
+                    <option value="Mobile">Mobile</option>
+                    <option value="Biometric">Biometric</option>
+                    <option value="Other">Other</option>
                 </select>
 
                 {/* Buttons */}
