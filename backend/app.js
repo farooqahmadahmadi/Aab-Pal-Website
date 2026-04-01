@@ -41,7 +41,6 @@ const invoicesRoutes = require("./routes/invoicesRoutes");
 
 
 
-
 const app = express();
 
 // Security
@@ -96,6 +95,8 @@ app.use("/api/site-daily-reports", siteDailyReportsRoutes);
 app.use("/api/safety-incidents", safetyIncidentsRoutes);
 app.use("/api/expenses", expensesRoutes);
 app.use("/api/invoices", invoicesRoutes);
+
+
 
 
 // Error handler

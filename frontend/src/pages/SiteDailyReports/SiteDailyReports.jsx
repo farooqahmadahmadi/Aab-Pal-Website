@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { FaPlus } from "react-icons/fa";
+import { FiPlusCircle } from "react-icons/fi";
 
 import SiteReportModal from "../../components/SiteDailyReports/SiteReportModal";
 import Pagination from "../../components/common/Pagination";
@@ -88,7 +88,7 @@ export default function SiteReports() {
                 <div className="flex gap-2">
                     <SearchBar value={search} onChange={setSearch} />
                     <button onClick={() => { setModalOpen(true); setEditData(null); }} className="bg-green-500 text-white px-4 py-2 rounded flex items-center gap-2">
-                        <FaPlus /> Add Report
+                        <FiPlusCircle /> Add Report
                     </button>
                 </div>
             </div>

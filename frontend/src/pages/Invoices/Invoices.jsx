@@ -35,6 +35,10 @@ export default function Invoices() {
 
     useEffect(() => {
         const f = data.filter(i =>
+            i.invoice_id.toString().includes(search) ||
+            i.project_id.toString().includes(search) ||
+            i.client_id.toString().includes(search) ||
+            i.invoice_status?.toLowerCase().includes(search.toLowerCase()) ||
             i.invoice_description?.toLowerCase().includes(search.toLowerCase()) ||
             i.invoice_status?.toLowerCase().includes(search.toLowerCase())
         );

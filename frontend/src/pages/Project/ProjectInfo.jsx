@@ -145,25 +145,13 @@ export default function ProjectInfoPage() {
                                 <td className="p-2">{item.project_end_date}</td>
                                 <td className="p-2">{renderStatusBadge(item.project_status)}</td>
                                 <td className="p-2 flex justify-center gap-1.5">
-                                    <button
-                                        onClick={() => { setEditData(item); setModalOpen(true); }}
-                                        className="bg-yellow-500 px-2 py-1 text-white rounded"
-                                    >
-                                        Edit
-                                    </button>
-                                    <button
-                                        onClick={() => setDeleteData(item)}
-                                        className="bg-red-500 px-2 py-1 text-white rounded"
-                                    >
-                                        Delete
-                                    </button>
+                                    <button onClick={() => { setEditData(item); setModalOpen(true); }} className="bg-yellow-500 px-2 py-1 text-white rounded">Edit</button>
+                                    <button onClick={() => setDeleteData(item)} className="bg-red-500 px-2 py-1 text-white rounded">Delete</button>
                                 </td>
                             </tr>
                         )) : (
                             <tr>
-                                <td colSpan="10" className="p-4 text-gray-500">
-                                    No project records found
-                                </td>
+                                <td colSpan="10" className="p-4 text-gray-500">No project records found</td>
                             </tr>
                         )}
                     </tbody>

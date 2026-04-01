@@ -1,33 +1,11 @@
 const Tasks = require("../models/TasksAssignmentInfo");
 
-// GET (with search + pagination)
-exports.getTasks = async (query) => {
-    const { page = 1, limit = 10, search = "" } = query;
-
-    const offset = (page - 1) * limit;
-
-    const where = {
-        is_deleted: false,
-        ...(search && {
-            task_title: {
-                [require("sequelize").Op.like]: `%${search}%`
-            }
-        })
-    };
-
-    const { rows, count } = await Tasks.findAndCountAll({
-        where,
-        limit: parseInt(limit),
-        offset: parseInt(offset),
+// GET ALL
+exports.getTasks = async () => {
+    return await Tasks.findAll({
+        where: { is_deleted: false },
         order: [["created_at", "DESC"]],
     });
-
-    return {
-        data: rows,
-        total: count,
-        page: parseInt(page),
-        totalPages: Math.ceil(count / limit)
-    };
 };
 
 // CREATE
@@ -57,4 +35,3 @@ exports.deleteTask = async (id) => {
 
     await task.update({ is_deleted: true });
 };
-
