@@ -11,7 +11,7 @@ const EquipmentDocuments = sequelize.define("EquipmentDocuments", {
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull: false
     },
-    doc_name: {
+    document_name: {
         type: DataTypes.STRING(150),
         allowNull: false
     },
