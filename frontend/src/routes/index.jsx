@@ -66,6 +66,7 @@ import PaymentsInfo from "../pages/PaymentsInfo/PaymentsInfo";
 
 import Notifications from "../pages/Notification/Notifications";
 import SystemLogs from "../pages/SystemLogs/SystemLogs";
+import SystemSettings from "../pages/Settings/SystemSettings";
 
 
 export default function AppRoutes() {
@@ -356,6 +357,13 @@ export default function AppRoutes() {
                     <ProtectedRoute allowedRoles={["Admin"]}>
                         <AdminLayout>
                             <Notifications />
+                        </AdminLayout>
+                    </ProtectedRoute>
+                } />
+                <Route path="/admin/system/system-settings" element={
+                    <ProtectedRoute allowedRoles={["Admin"]}>
+                        <AdminLayout>
+                            <SystemSettings />
                         </AdminLayout>
                     </ProtectedRoute>
                 } />
