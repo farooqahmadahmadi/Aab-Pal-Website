@@ -15,7 +15,7 @@ export default function Navbar({ sidebarOpen, role }) {
 
   const [notifications, setNotifications] = useState([]);
   const [tab, setTab] = useState("unread");
-  const [limit, setLimit] = useState(10);
+  const [limit, setLimit] = useState(6);
 
   const notifRef = useRef();
   const profileRef = useRef();
@@ -117,16 +117,16 @@ export default function Navbar({ sidebarOpen, role }) {
                 >
 
                   {/* Tabs */}
-                  <div className="flex border-b text-sm">
+                  <div className="flex border-b text-sm cursor-pointer" >
                     <div
                       onClick={() => setTab("unread")}
-                      className={`flex-1 py-2 text-center hover:bg-gray-100 ${tab === "unread" ? "border-b-2 border-blue-500 font-semibold" : ""}`}
+                      className={`flex-1 py-2 text-center hover:bg-gray-100 ${tab === "unread" ? "border-b-2 border-blue-500 font-semibold text-blue-500" : ""}`}
                     >
                       Unread ({unread.length})
                     </div>
                     <div
                       onClick={() => setTab("read")}
-                      className={`flex-1 py-2 text-center hover:bg-gray-100 ${tab === "read" ? "border-b-2 border-blue-500 font-semibold" : ""}`}
+                      className={`flex-1 py-2 text-center hover:bg-gray-100 ${tab === "read" ? "border-b-2 border-blue-500 font-semibold text-blue-500" : ""}`}
                     >
                       Read ({read.length})
                     </div>
@@ -144,7 +144,7 @@ export default function Navbar({ sidebarOpen, role }) {
                     {visible.map(n => (
                       <div
                         key={n.notification_id}
-                        className="p-3 border-b hover:bg-gray-50 text-sm space-y-1"
+                        className="p-3 border-b hover:bg-gray-50 hover:space-y-2 text-sm space-y-1"
                       >
                         <div className="flex justify-between items-start gap-2">
                           <span className="font-semibold break-words">
@@ -154,7 +154,7 @@ export default function Navbar({ sidebarOpen, role }) {
                           {!n.is_read && (
                             <div
                               onClick={() => markAsRead(n.notification_id)}
-                              className="text-gray-500 bg-green-200 rounded-full p-0.5 font-semibold"
+                              className="text-gray-600 bg-green-200 rounded-full p-0.5 font-semibold hover:bg-blue-300 cursor-pointer"
                             >
                               <FiCheck />
                             </div>
@@ -175,7 +175,7 @@ export default function Navbar({ sidebarOpen, role }) {
                     {visible.length < currentList.length && (
                       <div
                         onClick={() => setLimit(prev => prev + 10)}
-                        className="w-full text-center text-blue-500 text-xs py-2 hover:bg-gray-50"
+                        className="w-full text-center text-blue-500 text-xs py-2 hover:bg-gray-50 cursor-pointer"
                       >
                         More...
                       </div>

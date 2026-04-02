@@ -22,8 +22,7 @@ class NotificationsService {
         return notif.save();
     }
 
-    async deleteNotification(id, user) {
-        if (user.role !== 'Admin') throw new Error('Unauthorized');
+    async deleteNotification(id) {
         const notif = await Notifications.findByPk(id);
         if (!notif) throw new Error('Notification not found');
         return notif.destroy();

@@ -122,8 +122,9 @@ export default function Sidebar({ role }) {
             {
                 name: "System", icon: <FiSettings />, submenu: [
                     { name: "User Accounts", path: "/admin/users/user-list" },
-                    { name: "Notifications", path: "/admin/system/notifications" },
-                    { name: "System Backup", path: "/admin/users/user-list" },
+                    { name: "Notification Center", path: "/admin/system/notifications" },
+                    { name: "Database Backup", path: "/admin/users/user-list" },
+                    { name: "Settings", path: "/admin/users/user-list" },
 
                 ]
             }
@@ -155,7 +156,7 @@ Client: [
             { name: "Dashboard", path: "/client/dashboard", icon: <FiPieChart /> },
             {
                 name: "System", icon: <FiSettings />, submenu: [
-                    { name: "Notifications", path: "/client/system/notifications" },
+                    { name: "Notification Center", path: "/client/" },
 
                 ]
             }
