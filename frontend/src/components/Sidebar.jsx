@@ -242,7 +242,7 @@ Client: [
 
             <div
                 ref={sidebarRef}
-                className={`fixed top-0 left-0 h-screen  w-9 bg-white text-black z-40 transform shadow-lg transition-all duration-500 ease-in-out
+                className={`fixed top-0 left-0 h-screen  w-10 bg-white text-black z-40 transform shadow-lg transition-all duration-500 ease-in-out
           ${sidebarOpen ? "translate-x-0 w-20" : "-translate-x-full w-20"}`}
             >
                 <div className="p-4 mt-16 flex flex-col items-center">

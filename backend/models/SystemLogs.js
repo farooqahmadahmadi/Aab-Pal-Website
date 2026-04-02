@@ -34,7 +34,8 @@ const SystemLogs = sequelize.define('SystemLogs', {
 }, {
     tableName: 'system_logs',
     timestamps: true,
-    createdAt: 'created_at'
+    createdAt: 'created_at',
+    updatedAt: false
 });
 
 module.exports = SystemLogs;

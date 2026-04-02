@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import API from "../services/api";
-import { FiBell, FiUser, FiLogOut, FiCheck, FiUnlock } from "react-icons/fi";
+import { FiBell, FiUser, FiLogOut, FiCheck, FiUnlock, FiUserCheck, FiUsers, FiUserPlus, FiUserX } from "react-icons/fi";
 import UserChangePasswordModal from "../components/Users/UserChangePasswordModal";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -80,11 +80,11 @@ export default function Navbar({ sidebarOpen, role }) {
   return (
     <>
       <div
-        className="flex items-center justify-between bg-white shadow px-4 py-2 relative w-dvw top-0 left-0 right-0 z-40 transition-all"
+        className="flex items-center justify-between bg-white shadow px-4 py-1 relative w-dvw top-0 left-0 right-0 z-40 transition-all"
         style={{ marginLeft: sidebarOpen ? "16rem" : "0" }}
       >
 
-        <h1 className="font-bold text-lg">{role} Panel</h1>
+        <h1 className="font-bold text-lg ml-5">{role} Panel</h1>
 
         <div className="flex items-center gap-4">
 
@@ -92,7 +92,7 @@ export default function Navbar({ sidebarOpen, role }) {
           <div className="relative" ref={notifRef}>
             <div
               onClick={() => setNotifOpen(!notifOpen)}
-              className="relative p-2 rounded-full hover:bg-gray-100 cursor-pointer"
+              className="relative p-1.5 rounded-full hover:bg-gray-100 cursor-pointer"
             >
               <FiBell size={20} />
 
@@ -100,7 +100,7 @@ export default function Navbar({ sidebarOpen, role }) {
                 <motion.span
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
-                  className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] px-1.5 py-[1px] rounded-full"
+                  className="absolute -top-0.5 -right-1 bg-red-500 text-white text-[10px] px-1 py-[1px] rounded-full"
                 >
                   {unread.length}
                 </motion.span>
@@ -113,7 +113,7 @@ export default function Navbar({ sidebarOpen, role }) {
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
-                  className="absolute right-0 mt-2 w-72 max-h-[450px] bg-white shadow-lg rounded-xl border flex flex-col overflow-hidden z-50"
+                  className="absolute right-0 mt-1 w-72 max-h-[450px] bg-white shadow-lg rounded-lg border flex flex-col overflow-hidden z-50"
                 >
 
                   {/* Tabs */}
@@ -144,7 +144,7 @@ export default function Navbar({ sidebarOpen, role }) {
                     {visible.map(n => (
                       <div
                         key={n.notification_id}
-                        className="p-3 border-b hover:bg-gray-50 hover:space-y-2 text-sm space-y-1"
+                        className="p-3 border-b hover:bg-gray-50 text-sm space-y-1"
                       >
                         <div className="flex justify-between items-start gap-2">
                           <span className="font-semibold break-words">
@@ -191,10 +191,10 @@ export default function Navbar({ sidebarOpen, role }) {
           <div className="relative" ref={profileRef}>
             <div
               onClick={() => setProfileOpen(!profileOpen)}
-              className="flex items-center gap-2 bg-gray-50 px-3 py-1 rounded-full cursor-pointer"
+              className="flex items-center p-1.5 gap-1  hover:bg-gray-100 px-2 py-1 rounded-full cursor-pointer  "
             >
-              <FiUser />
-              <span className="hidden md:inline text-sm">{user?.user_name}</span>
+              <FiUserCheck className="text-blue-500" />
+              <span className="hidden md:inline text-sm text-red-500">{user?.user_name}</span>
             </div>
 
             {profileOpen && (
@@ -202,7 +202,7 @@ export default function Navbar({ sidebarOpen, role }) {
                 initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
-                className="absolute right-0 mt-3 w-44 max-h-[400px] bg-white shadow-xl rounded-lg border flex flex-col overflow-hidden z-50"
+                className="absolute right-0 mt-1 w-44 max-h-[450px] bg-white shadow-lg rounded-lg border flex flex-col overflow-hidden z-50"
               >
                 <div
                   onClick={() => { setShowChangePass(true); setProfileOpen(false); }}
