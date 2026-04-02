@@ -64,6 +64,8 @@ import Invoices from "../pages/Invoices/Invoices";
 import CashTransactions from "../pages/CashTransaction/CashTransactions";
 import PaymentsInfo from "../pages/PaymentsInfo/PaymentsInfo";
 
+import Notifications from "../pages/Notifications/Notifications";
+
 
 export default function AppRoutes() {
     return (
@@ -346,6 +348,13 @@ export default function AppRoutes() {
                     <ProtectedRoute allowedRoles={["Admin"]}>
                         <AdminLayout>
                             <UsersList />
+                        </AdminLayout>
+                    </ProtectedRoute>
+                } />
+                <Route path="/admin/system/notifications" element={
+                    <ProtectedRoute allowedRoles={["Admin"]}>
+                        <AdminLayout>
+                            <Notifications />
                         </AdminLayout>
                     </ProtectedRoute>
                 } />

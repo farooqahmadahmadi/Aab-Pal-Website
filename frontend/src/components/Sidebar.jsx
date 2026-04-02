@@ -122,7 +122,7 @@ export default function Sidebar({ role }) {
             {
                 name: "System", icon: <FiSettings />, submenu: [
                     { name: "User Accounts", path: "/admin/users/user-list" },
-                    { name: "Notifications", path: "/admin/users/user-list" },
+                    { name: "Notifications", path: "/admin/system/notifications" },
                     { name: "System Backup", path: "/admin/users/user-list" },
 
                 ]
