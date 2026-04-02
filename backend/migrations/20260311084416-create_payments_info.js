@@ -18,17 +18,16 @@ module.exports = {
       },
       payment_amount: {
         type: Sequelize.DECIMAL(12, 2),
-        defaultValue: 0
       },
       payment_date: {
         type: Sequelize.DATEONLY
       },
       payment_method: {
-        type: Sequelize.ENUM('cash', 'bank', 'transfer', 'cheque')
+        type: Sequelize.ENUM('Cash', 'Bank', 'Transfer', 'Cheque','Other')
       },
       payment_status: {
-        type: Sequelize.ENUM('pending', 'completed', 'failed'),
-        defaultValue: 'pending'
+        type: Sequelize.ENUM('Pending', 'Completed', 'Failed'),
+        defaultValue: 'Pending'
       },
       is_deleted: {
         type: Sequelize.BOOLEAN,

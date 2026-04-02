@@ -1,6 +1,7 @@
+
 import React, { useEffect, useState } from "react";
 import { FiPlusCircle } from "react-icons/fi";
-import PaymentModal from "../../components/PaymentsInfo/PaymentsInfoModal";
+import PaymentsInfoModal from "../../components/PaymentsInfo/PaymentsInfoModal";
 import Pagination from "../../components/common/Pagination";
 import Toast from "../../components/common/Toast";
 import useToast from "../../hooks/useToast";
@@ -8,26 +9,20 @@ import SearchBar from "../../components/common/SearchBar";
 
 import { getPayments, addPayment, updatePayment, deletePayment } from "../../services/paymentsInfoService";
 
-export default function Payments() {
+export default function PaymentsInfo() {
     const [data, setData] = useState([]);
     const [filtered, setFiltered] = useState([]);
     const [search, setSearch] = useState("");
     const [page, setPage] = useState(1);
     const limit = 10;
-
     const [modalOpen, setModalOpen] = useState(false);
     const [editData, setEditData] = useState(null);
     const [deleteData, setDeleteData] = useState(null);
-
     const { toast, showToast, hideToast } = useToast();
 
     const fetchData = async () => {
-        try {
-            const res = await getPayments();
-            setData(res.data || []);
-        } catch {
-            showToast("Failed to load", "error");
-        }
+        try { const res = await getPayments(); setData(res.data || []); } 
+        catch { showToast("Failed to load payments", "error"); }
     };
 
     useEffect(() => { fetchData(); }, []);
@@ -35,61 +30,42 @@ export default function Payments() {
     useEffect(() => {
         const f = data.filter(i =>
             i.payment_id.toString().includes(search) ||
+            i.invoice_id.toString().includes(search) ||
             i.payment_method?.toLowerCase().includes(search.toLowerCase())
         );
-        setFiltered(f);
-        setPage(1);
+        setFiltered(f); setPage(1);
     }, [search, data]);
 
     const start = (page - 1) * limit;
     const paginated = filtered.slice(start, start + limit);
 
-    const submit = async (form) => {
+    const submit = async form => {
         try {
-            if (editData) {
-                await updatePayment(editData.payment_id, form);
-                showToast("Updated successfully", "success");
-            } else {
-                await addPayment(form);
-                showToast("Added successfully", "success");
-            }
-            setModalOpen(false);
-            setEditData(null);
-            fetchData();
-        } catch {
-            showToast("Error", "error");
-        }
+            if(editData) { await updatePayment(editData.payment_id, form); showToast("Updated successfully", "success"); }
+            else { await addPayment(form); showToast("Added successfully", "success"); }
+            setModalOpen(false); setEditData(null); fetchData();
+        } catch { showToast("Operation failed", "error"); }
     };
 
     const handleDelete = async () => {
-        try {
-            await deletePayment(deleteData.payment_id);
-            showToast("Deleted successfully", "success");
-            fetchData();
-        } catch {
-            showToast("Delete failed", "error");
-        } finally {
-            setDeleteData(null);
-        }
+        try { await deletePayment(deleteData.payment_id); showToast("Deleted successfully", "success"); fetchData(); }
+        catch { showToast("Delete failed", "error"); }
+        finally { setDeleteData(null); }
     };
 
     return (
         <div className="p-6 max-w-6xl mx-auto">
-
             <div className="flex justify-between mb-4">
                 <h2 className="text-2xl font-bold">Payments</h2>
-
                 <div className="flex gap-2">
                     <SearchBar value={search} onChange={setSearch} />
-
-                    <button onClick={() => { setModalOpen(true); setEditData(null); }}
-                        className="bg-green-500 text-white px-4 py-2 rounded flex items-center gap-2">
+                    <button onClick={() => { setModalOpen(true); setEditData(null); }} className="bg-green-500 text-white px-4 py-2 rounded flex items-center gap-2">
                         <FiPlusCircle /> Add Payment
                     </button>
                 </div>
             </div>
 
-          <div className="bg-white shadow rounded overflow-x-auto">
+            <div className="bg-white shadow rounded overflow-x-auto">
                 <table className="w-full text-center text-sm">
                     <thead className="bg-gray-200 text-sm">
                         <tr>
@@ -102,7 +78,6 @@ export default function Payments() {
                             <th className="p-2">Actions</th>
                         </tr>
                     </thead>
-
                     <tbody>
                         {paginated.length ? paginated.map(i => (
                             <tr key={i.payment_id} className="border-t hover:bg-gray-50">
@@ -118,7 +93,7 @@ export default function Payments() {
                                 </td>
                             </tr>
                         )) : (
-                            <tr><td colSpan="7" className="p-4 text-gray-500">No financial payment records found</td></tr>
+                            <tr><td colSpan="7" className="p-4 text-gray-500">No payments found</td></tr>
                         )}
                     </tbody>
                 </table>
@@ -128,18 +103,13 @@ export default function Payments() {
                 <Pagination page={page} total={filtered.length} limit={limit} onPageChange={setPage} />
             </div>
 
-            <PaymentModal
-                isOpen={modalOpen}
-                onClose={() => { setModalOpen(false); setEditData(null); }}
-                onSubmit={submit}
-                initialData={editData}
-            />
+            <PaymentsInfoModal isOpen={modalOpen} onClose={() => { setModalOpen(false); setEditData(null); }} onSubmit={submit} initialData={editData} />
 
             {deleteData && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
                     <div className="bg-white p-6 rounded w-96">
-                        <p>Delete this payment?</p>
-                        <div className="flex justify-end gap-2 mt-4">
+                        <p className="mb-4">Delete this payment?</p>
+                        <div className="flex justify-end gap-2">
                             <button onClick={() => setDeleteData(null)} className="bg-gray-300 px-4 py-2 rounded">Cancel</button>
                             <button onClick={handleDelete} className="bg-red-500 text-white px-4 py-2 rounded">Delete</button>
                         </div>

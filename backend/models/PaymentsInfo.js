@@ -1,7 +1,7 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/db');
 
-const Payments = sequelize.define('payments_info', {
+const PaymentsInfo = sequelize.define('payments_info', {
     payment_id: {
         type: DataTypes.BIGINT.UNSIGNED,
         primaryKey: true,
@@ -12,17 +12,17 @@ const Payments = sequelize.define('payments_info', {
     },
     payment_amount: {
         type: DataTypes.DECIMAL(12, 2),
-        defaultValue: 0
+        allowNull: false
     },
     payment_date: {
         type: DataTypes.DATEONLY
     },
     payment_method: {
-        type: DataTypes.ENUM('cash', 'bank', 'transfer', 'cheque')
+        type: DataTypes.ENUM('Cash', 'Bank', 'Transfer', 'Cheque', 'Other')
     },
     payment_status: {
-        type: DataTypes.ENUM('pending', 'completed', 'failed'),
-        defaultValue: 'pending'
+        type: DataTypes.ENUM('Pending', 'Completed', 'Failed'),
+        defaultValue: 'Pending'
     },
     is_deleted: {
         type: DataTypes.BOOLEAN,
@@ -36,4 +36,4 @@ const Payments = sequelize.define('payments_info', {
 
 });
 
-module.exports = Payments;
+module.exports = PaymentsInfo;
