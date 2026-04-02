@@ -1,5 +1,6 @@
+// frontend/pages/SystemLogs/SystemLogs.jsx
 import React, { useEffect, useState } from "react";
-import { FiTrash2 } from "react-icons/fi";
+import { FiTrash2, FiDownload } from "react-icons/fi";
 import Pagination from "../../components/common/Pagination";
 import Toast from "../../components/common/Toast";
 import useToast from "../../hooks/useToast";
@@ -14,11 +15,16 @@ export default function SystemLogs() {
   const limit = 10;
 
   const [deleteData, setDeleteData] = useState(null);
-  const [selected, setSelected] = useState([]); // ✅ multi select
+  const [selected, setSelected] = useState([]);
+
+  // export states
+  const [exportModal, setExportModal] = useState(false);
+  const [fromDate, setFromDate] = useState("");
+  const [toDate, setToDate] = useState("");
+  const [fileName, setFileName] = useState("system_logs");
 
   const { toast, showToast, hideToast } = useToast();
 
-  // fetch logs
   const fetchData = async () => {
     try {
       const res = await getSystemLogs();
@@ -35,7 +41,6 @@ export default function SystemLogs() {
 
   useEffect(() => { fetchData(); }, []);
 
-  // search filter
   useEffect(() => {
     const f = data.filter(n =>
       (n.action || "").toLowerCase().includes(search.toLowerCase()) ||
@@ -57,10 +62,10 @@ export default function SystemLogs() {
     );
   };
 
+  // ✅ FIX: بېرته اضافه شول
   const selectAll = () => setSelected(paginated.map(n => n.log_id));
   const clearSelection = () => setSelected([]);
 
-  // delete single
   const handleDelete = async () => {
     try {
       await deleteSystemLog(deleteData.log_id);
@@ -73,7 +78,6 @@ export default function SystemLogs() {
     }
   };
 
-  // ✅ delete multi
   const handleMultiDelete = async () => {
     try {
       await Promise.all(selected.map(id => deleteSystemLog(id)));
@@ -87,21 +91,72 @@ export default function SystemLogs() {
     }
   };
 
+  // EXPORT
+  const handleExport = () => {
+    if (!fromDate || !toDate) {
+      showToast("Select date range", "error");
+      return;
+    }
+
+    const filteredData = data.filter(n => {
+      const d = new Date(n.created_at);
+      return d >= new Date(fromDate) && d <= new Date(toDate);
+    });
+
+    if (!filteredData.length) {
+      showToast("No data in selected range", "error");
+      return;
+    }
+
+    const csv = [
+      ["ID","User","Action","Table","Record ID","Old","New","Created At"],
+      ...filteredData.map(n => [
+        n.log_id,
+        n.user_id,
+        n.action,
+        n.reference_table,
+        n.reference_record_id,
+        n.old_value,
+        n.new_value,
+        new Date(n.created_at).toLocaleString()
+      ])
+    ].map(e => e.join(",")).join("\n");
+
+    const blob = new Blob([csv], { type: "text/csv" });
+    const url = window.URL.createObjectURL(blob);
+
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `${fileName || "system_logs"}.csv`;
+    a.click();
+
+    setExportModal(false);
+    showToast("Exported successfully", "success");
+  };
+
   return (
     <div className="p-4 max-w-6xl mx-auto">
 
       <div className="flex justify-between mb-4">
         <h2 className="text-2xl font-bold">System Logs</h2>
 
-        {/* ✅ multi delete button */}
-        {selected.length > 0 && (
+        <div className="flex gap-2">
           <button
-            onClick={() => setDeleteData({ multi: true })}
-            className="bg-red-500 text-white px-3 py-2 rounded flex items-center gap-2"
+            onClick={() => setExportModal(true)}
+            className="bg-blue-500 text-white px-3 py-2 rounded flex items-center gap-2"
           >
-            <FiTrash2 /> Delete ({selected.length})
+            <FiDownload /> Export
           </button>
-        )}
+
+          {selected.length > 0 && (
+            <button
+              onClick={() => setDeleteData({ multi: true })}
+              className="bg-red-500 text-white px-3 py-2 rounded flex items-center gap-2"
+            >
+              <FiTrash2 /> Delete ({selected.length})
+            </button>
+          )}
+        </div>
       </div>
 
       {/* Search */}
@@ -115,7 +170,7 @@ export default function SystemLogs() {
         />
       </div>
 
-      {/* Select Actions */}
+      {/* Muli record selection */}
       {paginated.length > 0 && (
         <div className="flex justify-between items-center mb-2 text-sm">
           <button onClick={selectAll} className="text-blue-500">Select Page</button>
@@ -128,56 +183,41 @@ export default function SystemLogs() {
         <table className="w-full text-center text-sm">
           <thead className="bg-gray-200">
             <tr>
-              <th className="p-2"></th> {/* checkbox */}
-              <th className="p-2">ID</th>
-              <th className="p-2">User</th>
-              <th className="p-2">Action</th>
-              <th className="p-2">Reference Table</th>
-              <th className="p-2">Record ID</th>
-              <th className="p-2">Old Data</th>
-              <th className="p-2">New Data</th>
-              <th className="p-2">Created At</th>
-              <th className="p-2">Actions</th>
+              <th></th>
+              <th>ID</th>
+              <th>User</th>
+              <th>Action</th>
+              <th>Table</th>
+              <th>Record</th>
+              <th>Old Date</th>
+              <th>New Date</th>
+              <th>Created</th>
+              <th>Actions</th>
             </tr>
           </thead>
 
           <tbody>
-            {paginated.length ? paginated.map(n => (
-              <tr key={n.log_id} className="border-t">
-
-                {/* ✅ checkbox */}
-                <td className="p-2">
-                  <input
-                    type="checkbox"
-                    checked={selected.includes(n.log_id)}
-                    onChange={() => toggleSelect(n.log_id)}
-                  />
+            {paginated.map(n => (
+              <tr key={n.log_id}>
+                <td>
+                  <input type="checkbox" checked={selected.includes(n.log_id)} onChange={() => toggleSelect(n.log_id)} />
                 </td>
-
-                <td className="p-2">{n.log_id}</td>
-                <td className="p-2">{n.user_id}</td>
-                <td className="p-2">{n.action}</td>
-                <td className="p-2">{n.reference_table}</td>
-                <td className="p-2">{n.reference_record_id}</td>
-                <td className="p-2">{n.old_value}</td>
-                <td className="p-2">{n.new_value}</td>
-                <td className="p-2">{new Date(n.created_at).toLocaleString()}</td>
-
-                <td className="p-2 flex justify-center gap-2">
-                  <button
-                    onClick={() => setDeleteData(n)}
-                    className="bg-red-500 px-2 py-1 text-white rounded flex items-center gap-1"
+                <td>{n.log_id}</td>
+                <td>{n.user_id}</td>
+                <td>{n.action}</td>
+                <td>{n.reference_table}</td>
+                <td>{n.reference_record_id}</td>
+                <td>{n.old_value}</td>
+                <td>{n.new_value}</td>
+                <td>{new Date(n.created_at).toLocaleString()}</td>
+                <td className="p-2 flex justify-center">
+                  <button onClick={() => setDeleteData(n)} className="bg-red-500 px-2 py-1 text-white rounded flex items-center gap-1"
                   >
                     <FiTrash2 /> Delete
                   </button>
                 </td>
-
               </tr>
-            )) : (
-              <tr>
-                <td colSpan="10" className="p-4 text-gray-500">No logs found</td>
-              </tr>
-            )}
+            ))}
           </tbody>
         </table>
       </div>
@@ -187,30 +227,32 @@ export default function SystemLogs() {
         <Pagination page={page} total={filtered.length} limit={limit} onPageChange={setPage} />
       </div>
 
+      {/* Export Modal */}
+      {exportModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+          <div className="bg-white p-6 rounded w-96 space-y-3">
+            <h3 className="font-bold text-lg">Export Logs</h3>
+
+            <input type="date" value={fromDate} onChange={e => setFromDate(e.target.value)} className="border p-2 w-full rounded"/>
+            <input type="date" value={toDate} onChange={e => setToDate(e.target.value)} className="border p-2 w-full rounded"/>
+            <input type="text" value={fileName} onChange={e => setFileName(e.target.value)} className="border p-2 w-full rounded"/>
+
+            <div className="flex justify-end gap-2">
+              <button onClick={() => setExportModal(false)} className="bg-gray-300 px-4 py-2 rounded">Cancel</button>
+              <button onClick={handleExport} className="bg-blue-500 text-white px-4 py-2 rounded">Export</button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Delete Modal */}
       {deleteData && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
           <div className="bg-white p-6 rounded w-96">
-            <p>
-              {deleteData.multi
-                ? `Delete ${selected.length} logs?`
-                : "Delete this log?"}
-            </p>
-
+            <p>{deleteData.multi ? `Delete ${selected.length} logs?` : "Delete this log?"}</p>
             <div className="flex justify-end gap-2 mt-4">
-              <button
-                onClick={() => setDeleteData(null)}
-                className="bg-gray-300 px-4 py-2 rounded"
-              >
-                Cancel
-              </button>
-
-              <button
-                onClick={deleteData.multi ? handleMultiDelete : handleDelete}
-                className="bg-red-500 text-white px-4 py-2 rounded"
-              >
-                Delete
-              </button>
+              <button onClick={() => setDeleteData(null)} className="bg-gray-300 px-4 py-2 rounded">Cancel</button>
+              <button onClick={deleteData.multi ? handleMultiDelete : handleDelete} className="bg-red-500 text-white px-4 py-2 rounded">Delete</button>
             </div>
           </div>
         </div>
