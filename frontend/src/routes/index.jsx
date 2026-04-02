@@ -64,7 +64,7 @@ import Invoices from "../pages/Invoices/Invoices";
 import CashTransactions from "../pages/CashTransaction/CashTransactions";
 import PaymentsInfo from "../pages/PaymentsInfo/PaymentsInfo";
 
-import Notifications from "../pages/Notifications/Notifications";
+import Notifications from "../pages/Notification/Notifications";
 
 
 export default function AppRoutes() {
@@ -423,6 +423,15 @@ export default function AppRoutes() {
                         </ClientLayout>
                     </ProtectedRoute>
                 } />
+
+                 <Route path="/client/system/notifications" element={
+                    <ProtectedRoute allowedRoles={["Client"]}>
+                        <ClientLayout>
+                            <Notifications />
+                        </ClientLayout>
+                    </ProtectedRoute>
+                } />
+
 
             </Routes>
         </BrowserRouter>

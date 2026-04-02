@@ -3,21 +3,18 @@ const JWT_SECRET = process.env.JWT_SECRET || "supersecretkey";
 
 exports.authMiddleware = (req, res, next) => {
     const token = req.headers.authorization?.split(" ")[1];
-
-    if (!token) {
-        return res.status(401).json({ message: "Unauthorized" });
-    }
+    if (!token) return res.status(401).json({ message: "Unauthorized" });
 
     try {
         const decoded = jwt.verify(token, JWT_SECRET);
-
         req.user = {
             user_id: decoded.id,
-            employee_id: decoded.employee_id
+            employee_id: decoded.employee_id || null,
+            client_id: decoded.client_id || null,
+            role: decoded.user_role || "Employee"
         };
-
         next();
-    } catch (err) {
+    } catch {
         return res.status(401).json({ message: "Invalid token" });
     }
 };

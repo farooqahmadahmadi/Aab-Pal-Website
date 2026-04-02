@@ -149,6 +149,16 @@ export default function Sidebar({ role }) {
 
                 ]
             }
+        ],
+
+Client: [
+            { name: "Dashboard", path: "/client/dashboard", icon: <FiPieChart /> },
+            {
+                name: "System", icon: <FiSettings />, submenu: [
+                    { name: "Notifications", path: "/client/system/notifications" },
+
+                ]
+            }
         ]
     };
 

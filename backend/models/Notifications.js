@@ -34,6 +34,7 @@ const Notifications = sequelize.define('Notifications', {
     tableName: 'notifications',
     timestamps: true,
     createdAt: "created_at",
+    updatedAt: false
 });
 
 module.exports = Notifications;
