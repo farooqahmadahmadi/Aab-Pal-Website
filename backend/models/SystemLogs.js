@@ -26,10 +26,6 @@ const SystemLogs = sequelize.define('SystemLogs', {
     },
     new_value: {
         type: DataTypes.TEXT
-    },
-    created_at: {
-        type: DataTypes.DATE,
-        defaultValue: DataTypes.NOW
     }
 }, {
     tableName: 'system_logs',

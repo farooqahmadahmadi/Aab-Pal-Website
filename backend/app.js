@@ -40,7 +40,7 @@ const invoicesRoutes = require("./routes/invoicesRoutes");
 const cashTransactionsRoutes = require("./routes/cashTransactionsRoutes");
 const paymentsRoutes = require("./routes/paymentsInfoRoutes");
 const notificationsRoutes = require("./routes/notificationsRoutes");
-
+const systemLogsRoutes = require('./routes/systemLogsRoutes');
 
 
 const app = express();
@@ -100,6 +100,7 @@ app.use("/api/invoices", invoicesRoutes);
 app.use("/api/cash-transactions", cashTransactionsRoutes);
 app.use("/api/finance-payments", paymentsRoutes);
 app.use("/api/notifications", notificationsRoutes);
+app.use('/api/system-logs', systemLogsRoutes);
 
 
 
