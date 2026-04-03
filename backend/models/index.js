@@ -1,4 +1,4 @@
-const Sequelize = require('../config/db');
+const sequelize = require('../config/db');
 const CompanyInfo = require('./CompanyInfo');
 const CompanyDocument = require('./CompanyDocument');
 const EmployeeInfo = require('./EmployeeInfo');
@@ -242,7 +242,7 @@ SystemLogs.belongsTo(Users, { foreignKey: 'user_id' });
 
 
 module.exports = {
-    Sequelize,
+    sequelize,
     CompanyInfo,
     CompanyDocument,
     EmployeeInfo,
