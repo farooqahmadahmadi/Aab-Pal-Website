@@ -168,10 +168,10 @@ export default function SystemSettings() {
 
           {/* group header */}
           <div
-            className="flex justify-between items-center px-4 py-3 bg-gray-100 cursor-pointer select-none"
+            className="flex justify-between items-center px-4 py-3 bg-gray-100 hover:bg-blue-100 cursor-pointer select-none"
             onClick={() => toggleGroup(group)}
           >
-            <h3 className="font-semibold text-lg">{group}</h3>
+            <h3 className="font-semibold text-md">{group}</h3>
             {groupOpen[group] ? <FiChevronUp /> : <FiChevronDown />}
           </div>
 
