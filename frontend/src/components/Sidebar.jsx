@@ -8,8 +8,11 @@ import {
     FiTruck,
     FiBox,
     FiShoppingBag,
-    FiClipboard,
-    FiList
+    FiList,
+    FiBookOpen,
+    FiSidebar,
+    FiUserMinus,
+    FiMenu,
 } from "react-icons/fi";
 
 export default function Sidebar({ role }) {
@@ -49,16 +52,16 @@ export default function Sidebar({ role }) {
 
     const menuItems = {
         Admin: [
-            { name: "Dashboard", path: "/admin/dashboard", icon: <FiPieChart /> },
+            { name: "Dashboard", path: "/admin/dashboard", icon: <FiPieChart className=" animate-bounce" /> },
             {
-                name: "Company", icon: <FiHome />, submenu: [
+                name: "Company", icon: <FiHome className=" animate-bounce" />, submenu: [
                     { name: "Company Info", path: "/admin/company/company-info" },
                     { name: "Company Documents", path: "/admin/company/company-documents" },
                     { name: "Departments", path: "/admin/departments/departments-info" },
                 ]
             },
             {
-                name: "HR", icon: <FiUsers />, submenu: [
+                name: "HR", icon: <FiUsers className=" animate-bounce" />, submenu: [
                     { name: "Employees", path: "/admin/employees/employee-info" },
                     { name: "Employee Education", path: "/admin/employees/employee-education-info" },
                     { name: "Employee Documents", path: "/admin/employees/employee-documents" },
@@ -71,7 +74,7 @@ export default function Sidebar({ role }) {
                 ]
             },
             {
-                name: "Projects", icon: <FiBox />, submenu: [
+                name: "Projects", icon: <FiBox className=" animate-bounce" />, submenu: [
                     { name: "Clients", path: "/admin/clients/clients-info" },
                     { name: "Projects", path: "/admin/projects/project-info" },
                     { name: "BOQ Items", path: "/admin/projects/boq-items" },
@@ -80,7 +83,7 @@ export default function Sidebar({ role }) {
                 ]
             },
             {
-                name: "Financial", icon: <FiDollarSign />, submenu: [
+                name: "Financial", icon: <FiDollarSign className=" animate-bounce" />, submenu: [
                     { name: "Expenses", path: "/admin/financial/expenses" },
                     { name: "Invoices", path: "/admin/financial/invoices" },
                     { name: "Cash Transactions", path: "/admin/financial/cash-transactions" },
@@ -88,7 +91,7 @@ export default function Sidebar({ role }) {
                 ]
             },
             {
-                name: "Inventory", icon: <FiShoppingBag />, submenu: [
+                name: "Inventory", icon: <FiShoppingBag className=" animate-bounce" />, submenu: [
                     { name: "Suppliers", path: "/admin/inventory/suppliers" },
                     { name: "Materials", path: "/admin/inventory/materials" },
                     { name: "Purchase Orders", path: "/admin/inventory/purchase-orders" },
@@ -96,7 +99,7 @@ export default function Sidebar({ role }) {
                 ]
             },
             {
-                name: "Equipments", icon: <FiTruck />, submenu: [
+                name: "Equipments", icon: <FiTruck className=" animate-bounce" />, submenu: [
                     { name: "Equipments (Machinery)", path: "/admin/equipments/equipments" },
                     { name: "Equipments Documents", path: "/admin/equipments/equipments-documents" },
                     { name: "Equipments Usage", path: "/admin/equipments/equipments-usage" },
@@ -105,14 +108,14 @@ export default function Sidebar({ role }) {
                 ]
             },
             {
-                name: "Contracts", icon: <FiClipboard />, submenu: [
+                name: "Contracts", icon: <FiBookOpen className=" animate-bounce" />, submenu: [
                     { name: "Contracts", path: "/admin/contracts/contracts" },
                     { name: "Contract Milestones", path: "/admin/contracts/contract-milestones" },
                 ]
             },
 
             {
-                name: "Tasks", icon: <FiList/>, submenu: [
+                name: "Tasks", icon: <FiList className="animate-bounce"/>, submenu: [
                     { name: "Tasks Assignment", path: "/admin/tasks/tasks-assignment" },
                     { name: "Site Reports", path: "/admin/site-daily-reports/site-daily-reports" },
                     { name: "Safety Incident", path: "/admin/safety-incident/safety-incident-info" },
@@ -120,7 +123,7 @@ export default function Sidebar({ role }) {
                 ]
             },
             {
-                name: "System", icon: <FiSettings />, submenu: [
+                name: "System", icon: <FiSettings className="animate-spin" />, submenu: [
                     { name: "User Accounts", path: "/admin/users/user-list" },
                     { name: "Notification Center", path: "/admin/system/notifications" },
                     { name: "Settings", path: "/admin/system/system-settings" },
@@ -173,8 +176,8 @@ Client: [
                 <Link
                     key={idx}
                     to={item.path}
-                    className={`flex items-center justify-center mb-2 p-2 rounded text-black hover:bg-gray-300 hover:text-black transition-all duration-300
-            ${activeParent ? "bg-gray-300 text-blue-700 font-semibold shadow-md" : ""}`}
+                    className={`flex items-center justify-center mb-2 p-2 rounded text-black hover:bg-gray-200 hover:text-black transition-all duration-300
+            ${activeParent ? "bg-gray-200 text-blue-700 font-semibold shadow-md" : ""}`}
                 >
                     <span className="text-xl relative">
                         {item.icon}
@@ -191,8 +194,8 @@ Client: [
         return (
             <div key={idx} className="relative group">
                 <div
-                    className={`flex items-center justify-center mb-3 p-2  rounded hover:bg-gray-300 transition-all duration-300 cursor-pointer
-            ${activeParent ? "bg-gray-300 text-blue-700 font-semibold shadow-md" : ""}`}
+                    className={`flex items-center justify-center mb-3 p-2  rounded hover:bg-gray-200 transition-all duration-300 cursor-pointer
+            ${activeParent ? "bg-gray-200 text-blue-700 font-semibold shadow-md" : ""}`}
                     onClick={() => togglePopup(item.name)}
                 >
                     <span className="text-xl relative">
@@ -229,12 +232,12 @@ Client: [
 
     return (
         <>
-            <div className=" fixed top-1.5 left-1.5 z-50">
+            <div className=" fixed top-2.5 left-1 z-50">
                 <div
                     onClick={() => setSidebarOpen(prev => !prev)}
-                    className="p-1 bg-white text-black font-bold rounded-full hover:bg-gray-200 transition-all duration-300 cursor-pointer"
+                    className="p-1 bg-white text-black font-bold rounded-full hover:bg-gray-200 transition-all duration-300 cursor-pointer animate-bounce"
                 >
-                    {sidebarOpen ? <FiArrowLeftCircle size={20} color="green" /> : <FiArrowRightCircle size={20} />}
+                    {sidebarOpen ? <FiMenu size={20} /> : <FiMenu size={20} />}
                 </div>
             </div>
 
@@ -244,7 +247,7 @@ Client: [
 
             <div
                 ref={sidebarRef}
-                className={`fixed top-0 left-0 h-screen  w-9 bg-white text-black z-40 transform shadow-lg transition-all duration-500 ease-in-out
+                className={`fixed top-0 left-0 h-screen w-9 bg-white text-black z-40 transform shadow-lg transition-all duration-500 ease-in-out
           ${sidebarOpen ? "translate-x-0 w-20" : "-translate-x-full w-20"}`}
             >
                 <div className="p-4 mt-16 flex flex-col items-center">

@@ -80,8 +80,9 @@ export default function Navbar({ sidebarOpen, role }) {
   return (
     <>
       <div
-        className="flex items-center justify-between bg-white shadow px-4 py-1 relative w-dvw top-0 left-0 right-0 z-40 transition-all"
-        style={{ marginLeft: sidebarOpen ? "16rem" : "0" }}
+        className="flex items-center justify-between bg-white shadow-sm px-4 py-1 relative w-dvw top-0 left-0 right-0 z-40 transition-all"
+        //left Space
+        style={{ marginLeft: sidebarOpen ? "16rem" : "" }}
       >
 
         <h1 className="font-bold text-lg ml-5">{role} Panel</h1>
