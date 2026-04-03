@@ -91,7 +91,7 @@ export default function UsersList() {
                                 <td className="p-2">{u.user_role}</td>
                                 <td className="p-2">
                                     <span className={`px-2 py-1 rounded-full text-xs font-semibold
-                                        ${u.login_status === "Online" ? "bg-green-100 text-green-600" : "bg-gray-200 text-gray-600"}`}>
+                                        ${u.login_status === "Online" ? "bg-green-100 animate-pulse text-green-600" : "bg-gray-200 text-gray-600"}`}>
                                         {u.login_status}
                                     </span>
                                 </td>
