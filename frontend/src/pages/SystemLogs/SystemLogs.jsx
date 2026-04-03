@@ -1,6 +1,6 @@
 // frontend/pages/SystemLogs/SystemLogs.jsx
 import React, { useEffect, useState } from "react";
-import { FiTrash2, FiDownload, FiExternalLink, FiFileText, FiDownloadCloud } from "react-icons/fi";
+import { FiTrash2, FiExternalLink } from "react-icons/fi";
 import Pagination from "../../components/common/Pagination";
 import Toast from "../../components/common/Toast";
 import useToast from "../../hooks/useToast";
