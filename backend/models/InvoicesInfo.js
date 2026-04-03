@@ -14,6 +14,9 @@ const InvoicesInfo = sequelize.define('InvoicesInfo', {
     client_id: {
         type: DataTypes.BIGINT.UNSIGNED,
     },
+    invoice_type: {
+        type: DataTypes.ENUM("In", "Out"),
+    },
     invoice_amount: {
         type: DataTypes.DECIMAL(12, 2),
         allowNull: false,

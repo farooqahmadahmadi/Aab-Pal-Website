@@ -125,7 +125,7 @@ export default function Invoices() {
                             </tr>
                         )) : (
                             <tr>
-                                <td colSpan="8" className="p-4 text-gray-500">No invoice records found</td>
+                                <td colSpan="9" className="p-4 text-gray-500">No invoice records found</td>
                             </tr>
                         )}
                     </tbody>

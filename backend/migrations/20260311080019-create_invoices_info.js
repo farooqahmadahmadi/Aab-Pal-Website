@@ -22,13 +22,16 @@ module.exports = {
           key: 'client_id'
         }
       },
-      paid_amount: {
-        type: Sequelize.DECIMAL(12, 2),
-        defaultValue: 0
+      invoice_type: {
+        type: Sequelize.ENUM("In", "Out"),
       },
       invoice_amount: {
         type: Sequelize.DECIMAL(12, 2),
         allowNull: false,
+        defaultValue: 0
+      },
+      paid_amount: {
+        type: Sequelize.DECIMAL(12, 2),
         defaultValue: 0
       },
       invoice_due_date: {

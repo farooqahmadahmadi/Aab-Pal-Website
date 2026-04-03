@@ -52,6 +52,13 @@ module.exports = {
           setting_group: "Security"
         },
 
+         // 🔹 UI
+        {
+          setting_key: "Records to Show in Page",
+          setting_value: 30,
+          setting_group: "UI-Pages"
+        },
+
         // 🔹 Storage
         {
           setting_key: "Uploading File Size (MB)",
