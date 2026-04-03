@@ -29,7 +29,14 @@ export default function ExpensesModal({ isOpen, onClose, onSubmit, initialData }
 
     const submit = (e) => {
         e.preventDefault();
-        onSubmit(form);
+
+        const payload = {
+            ...form,
+            project_id: form.project_id ? Number(form.project_id) : null, // ✅ optional
+            expense_amount: Number(form.expense_amount)
+        };
+
+        onSubmit(payload);
     };
 
     return (
@@ -40,9 +47,23 @@ export default function ExpensesModal({ isOpen, onClose, onSubmit, initialData }
                 </h3>
 
                 <form onSubmit={submit} className="space-y-3">
-                    <input name="project_id" value={form.project_id} onChange={handleChange} placeholder="Project ID" className="w-full border p-2 rounded" />
 
-                    <select name="expense_type" value={form.expense_type} onChange={handleChange} className="w-full border p-2 rounded" required>
+                    {/* optional field */}
+                    <input
+                        name="project_id"
+                        value={form.project_id}
+                        onChange={handleChange}
+                        placeholder="Project ID (optional)"
+                        className="w-full border p-2 rounded"
+                    />
+
+                    <select
+                        name="expense_type"
+                        value={form.expense_type}
+                        onChange={handleChange}
+                        className="w-full border p-2 rounded"
+                        required
+                    >
                         <option value="">Select Type</option>
                         <option value="material">Material</option>
                         <option value="labor">Labor</option>
@@ -51,14 +72,36 @@ export default function ExpensesModal({ isOpen, onClose, onSubmit, initialData }
                         <option value="other">Other</option>
                     </select>
 
-                    <input name="expense_amount" type="number" value={form.expense_amount} onChange={handleChange} placeholder="Amount" className="w-full border p-2 rounded" required />
+                    <input
+                        name="expense_amount"
+                        type="number"
+                        value={form.expense_amount}
+                        onChange={handleChange}
+                        placeholder="Amount"
+                        className="w-full border p-2 rounded"
+                        required
+                    />
 
-                    <input name="expense_date" type="date" value={form.expense_date} onChange={handleChange} className="w-full border p-2 rounded" />
+                    <input
+                        name="expense_date"
+                        type="date"
+                        value={form.expense_date}
+                        onChange={handleChange}
+                        className="w-full border p-2 rounded"
+                    />
 
-                    <input name="expense_description" value={form.expense_description} onChange={handleChange} placeholder="Description" className="w-full border p-2 rounded" />
+                    <input
+                        name="expense_description"
+                        value={form.expense_description}
+                        onChange={handleChange}
+                        placeholder="Description"
+                        className="w-full border p-2 rounded"
+                    />
 
                     <div className="flex justify-end gap-2 mt-4">
-                        <button type="button" onClick={onClose} className="bg-gray-300 px-4 py-2 rounded">Cancel</button>
+                        <button type="button" onClick={onClose} className="bg-gray-300 px-4 py-2 rounded">
+                            Cancel
+                        </button>
                         <button type="submit" className="bg-green-500 text-white px-4 py-2 rounded">
                             {initialData ? "Update" : "Save"}
                         </button>
