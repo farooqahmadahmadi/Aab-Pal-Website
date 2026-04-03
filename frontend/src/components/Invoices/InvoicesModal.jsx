@@ -7,7 +7,9 @@ export default function InvoicesModal({ isOpen, onClose, onSubmit, initialData }
         invoice_amount: "",
         invoice_due_date: "",
         invoice_description: "",
-        invoice_status: "pending"
+        invoice_status: "Pending",
+        invoice_type: "In", // 🔥 new field
+        paid_amount: 0 // 🔥 auto field
     });
 
     useEffect(() => {
@@ -18,7 +20,9 @@ export default function InvoicesModal({ isOpen, onClose, onSubmit, initialData }
             invoice_amount: "",
             invoice_due_date: "",
             invoice_description: "",
-            invoice_status: "pending"
+            invoice_status: "Pending",
+            invoice_type: "In",
+            paid_amount: 0
         });
     }, [initialData]);
 
@@ -31,7 +35,13 @@ export default function InvoicesModal({ isOpen, onClose, onSubmit, initialData }
 
     const submit = (e) => {
         e.preventDefault();
-        onSubmit(form);
+
+        onSubmit({
+            ...form,
+            project_id: form.project_id ? Number(form.project_id) : null,
+            client_id: form.client_id ? Number(form.client_id) : null,
+            invoice_amount: Number(form.invoice_amount)
+        });
     };
 
     return (
@@ -43,30 +53,98 @@ export default function InvoicesModal({ isOpen, onClose, onSubmit, initialData }
 
                 <form onSubmit={submit} className="space-y-3">
 
-                    <input name="project_id" value={form.project_id} onChange={handleChange} placeholder="Project ID" className="w-full border p-2 rounded" />
+                    {/* 🔥 Invoice Type */}
+                    <select
+                        name="invoice_type"
+                        value={form.invoice_type}
+                        onChange={handleChange}
+                        className="w-full border p-2 rounded"
+                    >
+                        <option value="In">In</option>
+                        <option value="Out">Out</option>
+                    </select>
 
-                    <input name="client_id" value={form.client_id} onChange={handleChange} placeholder="Client ID" className="w-full border p-2 rounded" />
+                    <input
+                        name="project_id"
+                        value={form.project_id}
+                        onChange={handleChange}
+                        placeholder="Project ID"
+                        className="w-full border p-2 rounded"
+                    />
 
-                    <input name="invoice_amount" type="number" value={form.invoice_amount} onChange={handleChange} placeholder="Amount" className="w-full border p-2 rounded" required />
+                    <input
+                        name="client_id"
+                        value={form.client_id}
+                        onChange={handleChange}
+                        placeholder="Client ID"
+                        className="w-full border p-2 rounded"
+                    />
 
-                    <input name="invoice_due_date" type="date" value={form.invoice_due_date} onChange={handleChange} className="w-full border p-2 rounded" />
+                    <input
+                        name="invoice_amount"
+                        type="number"
+                        value={form.invoice_amount}
+                        onChange={handleChange}
+                        placeholder="Amount"
+                        className="w-full border p-2 rounded"
+                        required
+                    />
 
-                    <textarea name="invoice_description" value={form.invoice_description} onChange={handleChange} placeholder="Description" className="w-full border p-2 rounded" />
+                    {/* 🔥 Paid Amount (auto) */}
+                    <input
+                        name="paid_amount"
+                        type="number"
+                        value={form.paid_amount || 0}
+                        readOnly
+                        className="w-full border p-2 rounded bg-gray-100"
+                    />
 
-                    <select name="invoice_status" value={form.invoice_status} onChange={handleChange} className="w-full border p-2 rounded">
+                    <input
+                        name="invoice_due_date"
+                        type="date"
+                        value={form.invoice_due_date}
+                        onChange={handleChange}
+                        className="w-full border p-2 rounded"
+                    />
+
+                    <textarea
+                        name="invoice_description"
+                        value={form.invoice_description}
+                        onChange={handleChange}
+                        placeholder="Description"
+                        className="w-full border p-2 rounded"
+                    />
+
+                    <select
+                        name="invoice_status"
+                        value={form.invoice_status}
+                        onChange={handleChange}
+                        className="w-full border p-2 rounded"
+                    >
                         <option value="Pending">Pending</option>
-                        <option value="Paid">Paid</option>
                         <option value="Partial">Partial</option>
+                        <option value="Paid">Paid</option>
                         <option value="Overdue">Overdue</option>
                         <option value="Cancelled">Cancelled</option>
                     </select>
 
                     <div className="flex justify-end gap-2 mt-4">
-                        <button type="button" onClick={onClose} className="bg-gray-300 px-4 py-2 rounded">Cancel</button>
-                        <button type="submit" className="bg-green-500 text-white px-4 py-2 rounded">
+                        <button
+                            type="button"
+                            onClick={onClose}
+                            className="bg-gray-300 px-4 py-2 rounded"
+                        >
+                            Cancel
+                        </button>
+
+                        <button
+                            type="submit"
+                            className="bg-green-500 text-white px-4 py-2 rounded"
+                        >
                             {initialData ? "Update" : "Save"}
                         </button>
                     </div>
+
                 </form>
             </div>
         </div>

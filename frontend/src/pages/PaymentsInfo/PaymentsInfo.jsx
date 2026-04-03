@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import { FiPlusCircle } from "react-icons/fi";
 import PaymentsInfoModal from "../../components/PaymentsInfo/PaymentsInfoModal";
@@ -8,6 +7,7 @@ import useToast from "../../hooks/useToast";
 import SearchBar from "../../components/common/SearchBar";
 
 import { getPayments, addPayment, updatePayment, deletePayment } from "../../services/paymentsInfoService";
+import API from "../../services/api";
 
 export default function PaymentsInfo() {
     const [data, setData] = useState([]);
@@ -15,14 +15,32 @@ export default function PaymentsInfo() {
     const [search, setSearch] = useState("");
     const [page, setPage] = useState(1);
     const limit = 10;
+
     const [modalOpen, setModalOpen] = useState(false);
     const [editData, setEditData] = useState(null);
     const [deleteData, setDeleteData] = useState(null);
+
+    const [invoiceStatusMap, setInvoiceStatusMap] = useState({}); // 🔥 مهم
+
     const { toast, showToast, hideToast } = useToast();
 
+    // 🔥 load payments + invoices
     const fetchData = async () => {
-        try { const res = await getPayments(); setData(res.data || []); } 
-        catch { showToast("Failed to load payments", "error"); }
+        try {
+            const res = await getPayments();
+            setData(res.data || []);
+
+            // 🔥 invoice status load
+            const invRes = await API.get("/invoices");
+            const map = {};
+            (invRes.data || []).forEach(inv => {
+                map[inv.invoice_id] = inv.invoice_status;
+            });
+            setInvoiceStatusMap(map);
+
+        } catch {
+            showToast("Failed to load payments", "error");
+        }
     };
 
     useEffect(() => { fetchData(); }, []);
@@ -33,24 +51,46 @@ export default function PaymentsInfo() {
             i.invoice_id.toString().includes(search) ||
             i.payment_method?.toLowerCase().includes(search.toLowerCase())
         );
-        setFiltered(f); setPage(1);
+        setFiltered(f);
+        setPage(1);
     }, [search, data]);
+
+    // 🔥 check editable (like POItems)
+    const isEditable = (invoiceId) => {
+        const status = invoiceStatusMap[invoiceId];
+        return status === "Pending" || status === "Partial";
+    };
 
     const start = (page - 1) * limit;
     const paginated = filtered.slice(start, start + limit);
 
     const submit = async form => {
         try {
-            if(editData) { await updatePayment(editData.payment_id, form); showToast("Updated successfully", "success"); }
-            else { await addPayment(form); showToast("Added successfully", "success"); }
-            setModalOpen(false); setEditData(null); fetchData();
-        } catch { showToast("Operation failed", "error"); }
+            if (editData) {
+                await updatePayment(editData.payment_id, form);
+                showToast("Updated successfully", "success");
+            } else {
+                await addPayment(form);
+                showToast("Added successfully", "success");
+            }
+            setModalOpen(false);
+            setEditData(null);
+            fetchData();
+        } catch {
+            showToast("Operation failed", "error");
+        }
     };
 
     const handleDelete = async () => {
-        try { await deletePayment(deleteData.payment_id); showToast("Deleted successfully", "success"); fetchData(); }
-        catch { showToast("Delete failed", "error"); }
-        finally { setDeleteData(null); }
+        try {
+            await deletePayment(deleteData.payment_id);
+            showToast("Deleted successfully", "success");
+            fetchData();
+        } catch {
+            showToast("Delete failed", "error");
+        } finally {
+            setDeleteData(null);
+        }
     };
 
     return (
@@ -59,7 +99,10 @@ export default function PaymentsInfo() {
                 <h2 className="text-2xl font-bold">Payments</h2>
                 <div className="flex gap-2">
                     <SearchBar value={search} onChange={setSearch} />
-                    <button onClick={() => { setModalOpen(true); setEditData(null); }} className="bg-green-500 text-white px-4 py-2 rounded flex items-center gap-2">
+                    <button
+                        onClick={() => { setModalOpen(true); setEditData(null); }}
+                        className="bg-green-500 text-white px-4 py-2 rounded flex items-center gap-2"
+                    >
                         <FiPlusCircle /> Add Payment
                     </button>
                 </div>
@@ -87,13 +130,41 @@ export default function PaymentsInfo() {
                                 <td>{i.payment_date}</td>
                                 <td>{i.payment_method}</td>
                                 <td>{i.payment_status}</td>
+
                                 <td className="p-2 flex justify-center gap-1.5">
-                                    <button onClick={() => { setEditData(i); setModalOpen(true); }} className="bg-yellow-500 text-white px-2 py-1 rounded">Edit</button>
-                                    <button onClick={() => setDeleteData(i)} className="bg-red-500 text-white px-2 py-1 rounded">Delete</button>
+                                    {/* 🔥 Edit */}
+                                    <button
+                                        onClick={() => { setEditData(i); setModalOpen(true); }}
+                                        disabled={!isEditable(i.invoice_id)}
+                                        className={`px-2 py-1 rounded ${
+                                            isEditable(i.invoice_id)
+                                                ? "bg-yellow-500 text-white"
+                                                : "bg-gray-400 text-gray-700 cursor-not-allowed"
+                                        }`}
+                                    >
+                                        Edit
+                                    </button>
+
+                                    {/* 🔥 Delete */}
+                                    <button
+                                        onClick={() => setDeleteData(i)}
+                                        disabled={!isEditable(i.invoice_id)}
+                                        className={`px-2 py-1 rounded ${
+                                            isEditable(i.invoice_id)
+                                                ? "bg-red-500 text-white"
+                                                : "bg-gray-400 text-gray-700 cursor-not-allowed"
+                                        }`}
+                                    >
+                                        Delete
+                                    </button>
                                 </td>
                             </tr>
                         )) : (
-                            <tr><td colSpan="7" className="p-4 text-gray-500">No payments found</td></tr>
+                            <tr>
+                                <td colSpan="7" className="p-4 text-gray-500">
+                                    No payments found
+                                </td>
+                            </tr>
                         )}
                     </tbody>
                 </table>
@@ -103,15 +174,24 @@ export default function PaymentsInfo() {
                 <Pagination page={page} total={filtered.length} limit={limit} onPageChange={setPage} />
             </div>
 
-            <PaymentsInfoModal isOpen={modalOpen} onClose={() => { setModalOpen(false); setEditData(null); }} onSubmit={submit} initialData={editData} />
+            <PaymentsInfoModal
+                isOpen={modalOpen}
+                onClose={() => { setModalOpen(false); setEditData(null); }}
+                onSubmit={submit}
+                initialData={editData}
+            />
 
             {deleteData && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
                     <div className="bg-white p-6 rounded w-96">
                         <p className="mb-4">Delete this payment?</p>
                         <div className="flex justify-end gap-2">
-                            <button onClick={() => setDeleteData(null)} className="bg-gray-300 px-4 py-2 rounded">Cancel</button>
-                            <button onClick={handleDelete} className="bg-red-500 text-white px-4 py-2 rounded">Delete</button>
+                            <button onClick={() => setDeleteData(null)} className="bg-gray-300 px-4 py-2 rounded">
+                                Cancel
+                            </button>
+                            <button onClick={handleDelete} className="bg-red-500 text-white px-4 py-2 rounded">
+                                Delete
+                            </button>
                         </div>
                     </div>
                 </div>

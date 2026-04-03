@@ -39,6 +39,7 @@ export default function Invoices() {
             i.project_id.toString().includes(search) ||
             i.client_id.toString().includes(search) ||
             i.invoice_status?.toLowerCase().includes(search.toLowerCase()) ||
+            i.invoice_type?.toLowerCase().includes(search.toLowerCase()) ||
             i.invoice_description?.toLowerCase().includes(search.toLowerCase()) ||
             i.invoice_status?.toLowerCase().includes(search.toLowerCase())
         );
@@ -98,6 +99,7 @@ export default function Invoices() {
                             <th className="p-2">ID</th>
                             <th className="p-2">Project</th>
                             <th className="p-2">Client</th>
+                            <th className="p-2">Type</th>
                             <th className="p-2">Amount</th>
                             <th className="p-2">Paid</th>
                             <th className="p-2">Due Date</th>
@@ -111,6 +113,7 @@ export default function Invoices() {
                                 <td className="p-2">{i.invoice_id}</td>
                                 <td className="p-2">{i.project_id}</td>
                                 <td className="p-2">{i.client_id}</td>
+                                <td className="p-2">{i.invoice_type}</td>
                                 <td className="p-2">{i.invoice_amount}</td>
                                 <td className="p-2">{i.paid_amount}</td>
                                 <td className="p-2">{i.invoice_due_date}</td>
