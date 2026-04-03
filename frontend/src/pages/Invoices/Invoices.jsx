@@ -99,6 +99,7 @@ export default function Invoices() {
                             <th className="p-2">Project</th>
                             <th className="p-2">Client</th>
                             <th className="p-2">Amount</th>
+                            <th className="p-2">Paid</th>
                             <th className="p-2">Due Date</th>
                             <th className="p-2">Status</th>
                             <th className="p-2">Actions</th>
@@ -111,6 +112,7 @@ export default function Invoices() {
                                 <td className="p-2">{i.project_id}</td>
                                 <td className="p-2">{i.client_id}</td>
                                 <td className="p-2">{i.invoice_amount}</td>
+                                <td className="p-2">{i.paid_amount}</td>
                                 <td className="p-2">{i.invoice_due_date}</td>
                                 <td className="p-2">{i.invoice_status}</td>
                                 <td className="p-2 flex justify-center gap-2">
@@ -120,7 +122,7 @@ export default function Invoices() {
                             </tr>
                         )) : (
                             <tr>
-                                <td colSpan="7" className="p-4 text-gray-500">No invoice records found</td>
+                                <td colSpan="8" className="p-4 text-gray-500">No invoice records found</td>
                             </tr>
                         )}
                     </tbody>
