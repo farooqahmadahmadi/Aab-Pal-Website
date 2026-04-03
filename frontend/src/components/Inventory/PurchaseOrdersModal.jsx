@@ -1,6 +1,3 @@
-
-
-
 import React, { useEffect, useState } from "react";
 import API from "../../services/api";
 
@@ -77,6 +74,22 @@ export default function PurchaseOrdersModal({ isOpen, onClose, onSubmit, initial
         onSubmit(payload);
     };
 
+    // ✅ Status options filtered based on po_type
+    const getStatusOptions = () => {
+        const options = [
+            { value: "Pending", label: "Pending" },
+            { value: "Approved", label: "Approved" },
+            { value: "Ordered", label: "Ordered" },
+            { value: "Received", label: "Received" },
+            { value: "Sent", label: "Sent" },
+            { value: "Cancelled", label: "Cancelled" }
+        ];
+
+        if (form.po_type === "In") return options.filter(o => o.value !== "Sent");
+        if (form.po_type === "Out") return options.filter(o => o.value !== "Received");
+        return options;
+    };
+
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
             <div className="bg-white p-6 rounded w-96">
@@ -105,12 +118,7 @@ export default function PurchaseOrdersModal({ isOpen, onClose, onSubmit, initial
                     <input type="number" name="total_amount" value={form.total_amount} readOnly className="w-full border p-2 rounded bg-gray-100" />
 
                     <select name="po_status" value={form.po_status} onChange={handleChange} className="w-full border p-2 rounded">
-                        <option value="Pending">Pending</option>
-                        <option value="Approved">Approved</option>
-                        <option value="Ordered">Ordered</option>
-                        <option value="Received">Received</option>
-                        <option value="Sent">Sent</option>
-                        <option value="Cancelled">Cancelled</option>
+                        {getStatusOptions().map(opt => <option key={opt.value} value={opt.value}>{opt.label}</option>)}
                     </select>
 
                     <div className="flex justify-end gap-2">

@@ -3,7 +3,7 @@ const PurchaseOrder = require("../models/PurchaseOrdersInfo");
 const PurchaseOrderItem = require("../models/PurchaseOrderItemsInfo");
 const Material = require("../models/MaterialsInfo");
 
-// 🔥 helper: update stock + avg price based on PO type (transaction-safe & bulk)
+// 🔥 helper: update stock + avg price based on PO type & status (transaction-safe & bulk)
 const updateStock = async (po_id, type = "add", t) => {
     const po = await PurchaseOrder.findByPk(po_id, { transaction: t });
     if (!po) return;
@@ -13,7 +13,7 @@ const updateStock = async (po_id, type = "add", t) => {
         transaction: t
     });
 
-    // د materials map د quantity او value سره
+    // map material quantities & values
     const materialMap = {};
     for (let i of items) {
         const matId = i.material_id;
@@ -42,12 +42,23 @@ const updateStock = async (po_id, type = "add", t) => {
         let newStock = currentStock;
         let newAvg = avgPrice;
 
-        if ((type === "add" && po.po_type === "In") || (type === "subtract" && po.po_type === "Out")) {
-            newStock = currentStock + qty;
-            newAvg = newStock === 0 ? 0 : ((currentStock * avgPrice) + value) / newStock;
-        } else if ((type === "subtract" && po.po_type === "In") || (type === "add" && po.po_type === "Out")) {
-            newStock = Math.max(currentStock - qty, 0);
-            newAvg = (newStock > 0 && currentStock > 0) ? ((currentStock * avgPrice) - value) / newStock : 0;
+        // ✅ logic for In, Out, Sent
+        if (po.po_type === "In") {
+            if (type === "add") newStock = currentStock + qty;
+            else if (type === "subtract") newStock = Math.max(currentStock - qty, 0);
+            newAvg = newStock === 0 ? 0 : ((currentStock * avgPrice) + (type === "add" ? value : -value)) / newStock;
+        } else if (po.po_type === "Out") {
+            if (po.po_status === "Sent") {
+                // Sent: materials leave warehouse
+                if (type === "add") newStock = Math.max(currentStock - qty, 0);
+                else if (type === "subtract") newStock = currentStock + qty;
+                newAvg = (newStock > 0 && currentStock > 0) ? ((currentStock * avgPrice) + (type === "subtract" ? value : -value)) / newStock : 0;
+            } else {
+                // Out but not Sent (reserve/other)
+                if (type === "add") newStock = currentStock - qty;
+                else if (type === "subtract") newStock = currentStock + qty;
+                newAvg = (newStock > 0 && currentStock > 0) ? ((currentStock * avgPrice) + (type === "subtract" ? value : -value)) / newStock : 0;
+            }
         }
 
         await material.update({ current_stock: newStock, average_price: newAvg }, { transaction: t });
@@ -66,9 +77,11 @@ exports.getOrders = async () => {
 exports.createOrder = async (data) => {
     return await db.sequelize.transaction(async (t) => {
         const order = await PurchaseOrder.create(data, { transaction: t });
-        if (order.po_status === "Received") {
+
+        if (order.po_status === "Received" || order.po_status === "Sent") {
             await updateStock(order.po_id, "add", t);
         }
+
         return order;
     });
 };
@@ -82,13 +95,17 @@ exports.updateOrder = async (id, data) => {
         const oldStatus = item.po_status;
         const newStatus = data.po_status;
 
-        if (oldStatus === "Received" && newStatus !== "Received") {
+        // undo old status if it was Received or Sent
+        if ((oldStatus === "Received" && newStatus !== "Received") ||
+            (oldStatus === "Sent" && newStatus !== "Sent")) {
             await updateStock(id, "subtract", t);
         }
 
         await item.update(data, { transaction: t });
 
-        if (newStatus === "Received" && oldStatus !== "Received") {
+        // apply new status if it is Received or Sent
+        if ((newStatus === "Received" && oldStatus !== "Received") ||
+            (newStatus === "Sent" && oldStatus !== "Sent")) {
             await updateStock(id, "add", t);
         }
 
@@ -102,7 +119,7 @@ exports.deleteOrder = async (id) => {
         const item = await PurchaseOrder.findOne({ where: { po_id: id, is_deleted: false }, transaction: t });
         if (!item) throw new Error("Order not found");
 
-        if (item.po_status === "Received") {
+        if (item.po_status === "Received" || item.po_status === "Sent") {
             await updateStock(id, "subtract", t);
         }
 
