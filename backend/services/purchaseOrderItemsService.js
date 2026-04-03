@@ -2,7 +2,7 @@ const PurchaseOrderItem = require("../models/PurchaseOrderItemsInfo");
 const PurchaseOrder = require("../models/PurchaseOrdersInfo");
 const Material = require("../models/MaterialsInfo");
 
-// 🔥 helper: update PO total
+// 🔥 Helper: Update PO total
 const updatePOTotal = async (po_id) => {
     const items = await PurchaseOrderItem.findAll({
         where: { po_id, is_deleted: false }
@@ -18,16 +18,15 @@ const updatePOTotal = async (po_id) => {
     );
 };
 
-// 🔥 helper: recalc Materials based on current PO items
+// 🔥 Helper: Recalculate Materials based on current PO items
 const recalcMaterials = async (po_id) => {
     const po = await PurchaseOrder.findOne({ where: { po_id } });
-    if (!po || po.po_status !== "Received") return; // یوازې که status Received وي
+    if (!po || po.po_status !== "Received") return;
 
     const items = await PurchaseOrderItem.findAll({
         where: { po_id, is_deleted: false }
     });
 
-    // map materials to calculate new stock and avgPrice
     const materialMap = {};
 
     for (let i of items) {
@@ -60,7 +59,14 @@ const recalcMaterials = async (po_id) => {
     }
 };
 
-// GET
+// 🔥 Helper: Check if PO is Pending
+const isPOPending = async (po_id) => {
+    const po = await PurchaseOrder.findByPk(po_id);
+    if (!po) throw new Error("PO not found");
+    return po.po_status === "Pending";
+};
+
+// GET all items
 exports.getItems = async () => {
     return await PurchaseOrderItem.findAll({
         where: { is_deleted: false },
@@ -68,23 +74,24 @@ exports.getItems = async () => {
     });
 };
 
-// CREATE
+// CREATE new item
 exports.createItem = async (data) => {
+    const pending = await isPOPending(data.po_id);
+    if (!pending) throw new Error("Cannot add item: PO is not Pending");
+
     data.total_amount =
         (parseFloat(data.po_item_quantity) || 0) *
         (parseFloat(data.po_item_unit_price) || 0);
 
     const item = await PurchaseOrderItem.create(data);
 
-    // ✅ update PO total
     await updatePOTotal(data.po_id);
-    // ✅ update Materials stock/average_price
     await recalcMaterials(data.po_id);
 
     return item;
 };
 
-// UPDATE
+// UPDATE existing item
 exports.updateItem = async (id, data) => {
     const item = await PurchaseOrderItem.findOne({
         where: { po_item_id: id, is_deleted: false }
@@ -92,21 +99,22 @@ exports.updateItem = async (id, data) => {
 
     if (!item) throw new Error("Item not found");
 
+    const pending = await isPOPending(item.po_id);
+    if (!pending) throw new Error("Cannot update item: PO is not Pending");
+
     data.total_amount =
         (parseFloat(data.po_item_quantity) || 0) *
         (parseFloat(data.po_item_unit_price) || 0);
 
     await item.update(data);
 
-    // ✅ update PO total
     await updatePOTotal(item.po_id);
-    // ✅ update Materials stock/average_price
     await recalcMaterials(item.po_id);
 
     return item;
 };
 
-// DELETE
+// DELETE existing item (soft delete)
 exports.deleteItem = async (id) => {
     const item = await PurchaseOrderItem.findOne({
         where: { po_item_id: id, is_deleted: false }
@@ -114,10 +122,11 @@ exports.deleteItem = async (id) => {
 
     if (!item) throw new Error("Item not found");
 
+    const pending = await isPOPending(item.po_id);
+    if (!pending) throw new Error("Cannot delete item: PO is not Pending");
+
     await item.update({ is_deleted: true });
 
-    // ✅ update PO total
     await updatePOTotal(item.po_id);
-    // ✅ update Materials stock/average_price
     await recalcMaterials(item.po_id);
 };

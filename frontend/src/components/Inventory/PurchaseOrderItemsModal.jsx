@@ -4,6 +4,7 @@ import API from "../../services/api";
 export default function PurchaseOrderItemsModal({ isOpen, onClose, onSubmit, initialData }) {
     const [materials, setMaterials] = useState([]);
     const [orders, setOrders] = useState([]);
+    const [poStatuses, setPoStatuses] = useState({}); // track PO status
 
     const [form, setForm] = useState({
         po_id: "",
@@ -11,6 +12,8 @@ export default function PurchaseOrderItemsModal({ isOpen, onClose, onSubmit, ini
         po_item_quantity: 0,
         po_item_unit_price: 0
     });
+
+    const [isPending, setIsPending] = useState(false); // track selected PO pending
 
     useEffect(() => {
         if (initialData) setForm(initialData);
@@ -30,10 +33,22 @@ export default function PurchaseOrderItemsModal({ isOpen, onClose, onSubmit, ini
 
                 setOrders(poRes.data);
                 setMaterials(matRes.data);
+
+                // save PO statuses
+                const statusMap = {};
+                poRes.data.forEach(po => {
+                    statusMap[po.po_id] = po.po_status;
+                });
+                setPoStatuses(statusMap);
             } catch { }
         };
         loadData();
     }, []);
+
+    // update isPending whenever po_id changes
+    useEffect(() => {
+        setIsPending(form.po_id ? poStatuses[form.po_id] === "Pending" : false);
+    }, [form.po_id, poStatuses]);
 
     if (!isOpen) return null;
 
@@ -48,6 +63,12 @@ export default function PurchaseOrderItemsModal({ isOpen, onClose, onSubmit, ini
             alert("Required fields missing");
             return;
         }
+
+        if (!isPending) {
+            alert("Cannot add or edit items: Selected PO is not Pending");
+            return;
+        }
+
         onSubmit(form);
     };
 
@@ -58,16 +79,28 @@ export default function PurchaseOrderItemsModal({ isOpen, onClose, onSubmit, ini
 
                 <form onSubmit={submit} className="space-y-3">
 
-                    <select name="po_id" value={form.po_id} onChange={handleChange} className="w-full border p-2 rounded">
+                    <select
+                        name="po_id"
+                        value={form.po_id}
+                        onChange={handleChange}
+                        className="w-full border p-2 rounded"
+                        disabled={initialData && !isPending} // read-only if PO not pending
+                    >
                         <option value="">Select PO</option>
                         {orders.map(o => (
                             <option key={o.po_id} value={o.po_id}>
-                                #{o.po_id}
+                                #{o.po_id} ({o.po_status})
                             </option>
                         ))}
                     </select>
 
-                    <select name="material_id" value={form.material_id} onChange={handleChange} className="w-full border p-2 rounded">
+                    <select
+                        name="material_id"
+                        value={form.material_id}
+                        onChange={handleChange}
+                        className="w-full border p-2 rounded"
+                        disabled={!isPending} // read-only if PO not pending
+                    >
                         <option value="">Select Material</option>
                         {materials.map(m => (
                             <option key={m.material_id} value={m.material_id}>
@@ -76,13 +109,46 @@ export default function PurchaseOrderItemsModal({ isOpen, onClose, onSubmit, ini
                         ))}
                     </select>
 
-                    <input type="number" name="po_item_quantity" value={form.po_item_quantity} onChange={handleChange} placeholder="Quantity" className="w-full border p-2 rounded" />
+                    <input
+                        type="number"
+                        name="po_item_quantity"
+                        value={form.po_item_quantity}
+                        onChange={handleChange}
+                        placeholder="Quantity"
+                        className="w-full border p-2 rounded"
+                        readOnly={!isPending}
+                    />
 
-                    <input type="number" name="po_item_unit_price" value={form.po_item_unit_price} onChange={handleChange} placeholder="Unit Price" className="w-full border p-2 rounded" />
+                    <input
+                        type="number"
+                        name="po_item_unit_price"
+                        value={form.po_item_unit_price}
+                        onChange={handleChange}
+                        placeholder="Unit Price"
+                        className="w-full border p-2 rounded"
+                        readOnly={!isPending}
+                    />
+
+                    {!isPending && form.po_id && (
+                        <p className="text-red-500 text-sm">
+                            Cannot add/edit items because this PO is not Pending.
+                        </p>
+                    )}
 
                     <div className="flex justify-end gap-2">
-                        <button type="button" onClick={onClose} className="bg-gray-300 px-4 py-2 rounded">Cancel</button>
-                        <button className="bg-green-500 text-white px-4 py-2 rounded">Save</button>
+                        <button
+                            type="button"
+                            onClick={onClose}
+                            className="bg-gray-300 px-4 py-2 rounded"
+                        >
+                            Cancel
+                        </button>
+                        <button
+                            className={`px-4 py-2 rounded ${isPending ? "bg-green-500 text-white" : "bg-gray-400 text-gray-700 cursor-not-allowed"}`}
+                            disabled={!isPending}
+                        >
+                            Save
+                        </button>
                     </div>
                 </form>
             </div>

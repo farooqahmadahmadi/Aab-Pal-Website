@@ -6,6 +6,7 @@ import Pagination from "../../components/common/Pagination";
 import Toast from "../../components/common/Toast";
 import useToast from "../../hooks/useToast";
 import SearchBar from "../../components/common/SearchBar";
+import API from "../../services/api";
 
 export default function PurchaseOrderItems() {
     const [data, setData] = useState([]);
@@ -20,10 +21,19 @@ export default function PurchaseOrderItems() {
 
     const { toast, showToast, hideToast } = useToast();
 
+    const [poStatuses, setPoStatuses] = useState({}); // PO status map
+
+    // fetch PO items and PO statuses
     const fetchData = async () => {
         try {
             const res = await getItems();
             setData(res.data || []);
+
+            // also fetch PO statuses
+            const poRes = await API.get("/purchase-orders");
+            const statusMap = {};
+            poRes.data.forEach(po => { statusMap[po.po_id] = po.po_status; });
+            setPoStatuses(statusMap);
         } catch {
             showToast("Load failed", "error");
         }
@@ -45,6 +55,12 @@ export default function PurchaseOrderItems() {
 
     const submit = async (formData) => {
         try {
+            const poStatus = poStatuses[formData.po_id];
+            if (poStatus !== "Pending") {
+                showToast("Cannot add or edit items: PO is not Pending", "error");
+                return;
+            }
+
             if (editData) {
                 await updateItem(editData.po_item_id, formData);
                 showToast("Updated successfully", "success");
@@ -52,6 +68,7 @@ export default function PurchaseOrderItems() {
                 await addItem(formData);
                 showToast("Added successfully", "success");
             }
+
             setModalOpen(false);
             setEditData(null);
             fetchData();
@@ -62,6 +79,13 @@ export default function PurchaseOrderItems() {
 
     const handleDelete = async () => {
         try {
+            const poStatus = poStatuses[deleteData.po_id];
+            if (poStatus !== "Pending") {
+                showToast("Cannot delete item: PO is not Pending", "error");
+                setDeleteData(null);
+                return;
+            }
+
             await deleteItem(deleteData.po_item_id);
             showToast("Deleted successfully", "success");
             fetchData();
@@ -79,8 +103,10 @@ export default function PurchaseOrderItems() {
 
                 <div className="flex gap-2">
                     <SearchBar value={search} onChange={setSearch} />
-                    <button onClick={() => { setModalOpen(true); setEditData(null); }}
-                        className="bg-green-500 text-white px-4 py-2 flex gap-2 items-center rounded">
+                    <button 
+                        onClick={() => { setModalOpen(true); setEditData(null); }}
+                        className="bg-green-500 text-white px-4 py-2 flex gap-2 items-center rounded"
+                    >
                         <FaPlus /> Add PO Items
                     </button>
                 </div>
@@ -101,21 +127,36 @@ export default function PurchaseOrderItems() {
                     </thead>
 
                     <tbody>
-                        {paginated.length ? paginated.map(i => (
-                            <tr key={i.po_item_id} className="border-t hover:bg-gray-50">
-                                <td>{i.po_item_id}</td>
-                                <td>{i.po_id}</td>
-                                <td>{i.material_id}</td>
-                                <td>{i.po_item_quantity}</td>
-                                <td>{i.po_item_unit_price}</td>
-                                <td>{i.total_amount}</td>
+                        {paginated.length ? paginated.map(i => {
+                            const pending = poStatuses[i.po_id] === "Pending";
+                            return (
+                                <tr key={i.po_item_id} className="border-t hover:bg-gray-50">
+                                    <td>{i.po_item_id}</td>
+                                    <td>{i.po_id}</td>
+                                    <td>{i.material_id}</td>
+                                    <td>{i.po_item_quantity}</td>
+                                    <td>{i.po_item_unit_price}</td>
+                                    <td>{i.total_amount}</td>
 
-                                <td className="flex justify-center gap-1.5 p-2">
-                                    <button onClick={() => { setEditData(i); setModalOpen(true); }} className="bg-yellow-500 px-2 py-1 text-white rounded">Edit</button>
-                                    <button onClick={() => setDeleteData(i)} className="bg-red-500 px-2 py-1 text-white rounded">Delete</button>
-                                </td>
-                            </tr>
-                        )) : (
+                                    <td className="flex justify-center gap-1.5 p-2">
+                                        <button 
+                                            onClick={() => { setEditData(i); setModalOpen(true); }} 
+                                            className={`px-2 py-1 text-white rounded ${pending ? "bg-yellow-500" : "bg-gray-400 cursor-not-allowed"}`}
+                                            disabled={!pending}
+                                        >
+                                            Edit
+                                        </button>
+                                        <button 
+                                            onClick={() => setDeleteData(i)} 
+                                            className={`px-2 py-1 text-white rounded ${pending ? "bg-red-500" : "bg-gray-400 cursor-not-allowed"}`}
+                                            disabled={!pending}
+                                        >
+                                            Delete
+                                        </button>
+                                    </td>
+                                </tr>
+                            );
+                        }) : (
                             <tr>
                                 <td colSpan="7" className="p-4 text-gray-500">No P.O Item records found</td>
                             </tr>
