@@ -19,6 +19,10 @@ const InvoicesInfo = sequelize.define('InvoicesInfo', {
         allowNull: false,
         defaultValue: 0
     },
+    paid_amount: {
+        type: DataTypes.DECIMAL(12, 2),
+        defaultValue: 0
+    },
     invoice_due_date: {
         type: DataTypes.DATEONLY
     },
@@ -26,8 +30,8 @@ const InvoicesInfo = sequelize.define('InvoicesInfo', {
         type: DataTypes.TEXT
     },
     invoice_status: {
-        type: DataTypes.ENUM('pending', 'paid', 'partial', 'overdue', 'cancelled'),
-        defaultValue: 'pending'
+        type: DataTypes.ENUM('Pending', 'Paid', 'Partial', 'Overdue', 'Cancelled'),
+        defaultValue: 'Pending'
     },
     is_deleted: {
         type: DataTypes.BOOLEAN,

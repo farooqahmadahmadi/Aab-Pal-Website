@@ -22,6 +22,10 @@ module.exports = {
           key: 'client_id'
         }
       },
+      paid_amount: {
+        type: Sequelize.DECIMAL(12, 2),
+        defaultValue: 0
+      },
       invoice_amount: {
         type: Sequelize.DECIMAL(12, 2),
         allowNull: false,
@@ -34,8 +38,8 @@ module.exports = {
         type: Sequelize.TEXT
       },
       invoice_status: {
-        type: Sequelize.ENUM('pending', 'paid', 'partial', 'overdue', 'cancelled'),
-        defaultValue: 'pending'
+        type: Sequelize.ENUM('Pending', 'Paid', 'Partial', 'Overdue', 'Cancelled'),
+        defaultValue: 'Pending'
       },
       is_deleted: {
         type: Sequelize.BOOLEAN,

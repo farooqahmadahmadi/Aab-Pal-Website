@@ -54,11 +54,11 @@ export default function InvoicesModal({ isOpen, onClose, onSubmit, initialData }
                     <textarea name="invoice_description" value={form.invoice_description} onChange={handleChange} placeholder="Description" className="w-full border p-2 rounded" />
 
                     <select name="invoice_status" value={form.invoice_status} onChange={handleChange} className="w-full border p-2 rounded">
-                        <option value="pending">Pending</option>
-                        <option value="paid">Paid</option>
-                        <option value="partial">Partial</option>
-                        <option value="overdue">Overdue</option>
-                        <option value="cancelled">Cancelled</option>
+                        <option value="Pending">Pending</option>
+                        <option value="Paid">Paid</option>
+                        <option value="Partial">Partial</option>
+                        <option value="Overdue">Overdue</option>
+                        <option value="Cancelled">Cancelled</option>
                     </select>
 
                     <div className="flex justify-end gap-2 mt-4">
