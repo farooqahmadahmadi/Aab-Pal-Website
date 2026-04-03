@@ -100,7 +100,7 @@ export default function Navbar({ sidebarOpen, role }) {
                 <motion.span
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
-                  className="absolute -top-0.5 -right-1 bg-red-500 text-white text-[10px] px-1 py-[1px] rounded-full"
+                  className="absolute -top-0.5 -right-1 bg-red-500 text-white text-[10px] px-1 py-[1px] rounded-full animate-pulse"
                 >
                   {unread.length}
                 </motion.span>
@@ -193,7 +193,7 @@ export default function Navbar({ sidebarOpen, role }) {
               onClick={() => setProfileOpen(!profileOpen)}
               className="flex items-center p-1.5 gap-1  hover:bg-gray-100 px-2 py-1 rounded-full cursor-pointer  "
             >
-              <FiUserCheck className="text-blue-500" />
+              <FiUserCheck size={20} />
               <span className="hidden md:inline text-sm text-red-500">{user?.user_name}</span>
             </div>
 
