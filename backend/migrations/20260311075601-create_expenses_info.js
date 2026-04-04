@@ -18,7 +18,7 @@ module.exports = {
         onDelete: 'RESTRICT'
       },
       expense_type: {
-        type: Sequelize.ENUM('material', 'labor', 'transport', 'equipment', 'other'),
+        type: Sequelize.ENUM('Material', 'Labor', 'Transport', 'Equipment', 'Other'),
         allowNull: false
       },
       expense_amount: {

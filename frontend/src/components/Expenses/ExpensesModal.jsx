@@ -65,11 +65,11 @@ export default function ExpensesModal({ isOpen, onClose, onSubmit, initialData }
                         required
                     >
                         <option value="">Select Type</option>
-                        <option value="material">Material</option>
-                        <option value="labor">Labor</option>
-                        <option value="transport">Transport</option>
-                        <option value="equipment">Equipment</option>
-                        <option value="other">Other</option>
+                        <option value="Material">Material</option>
+                        <option value="Labor">Labor</option>
+                        <option value="Transport">Transport</option>
+                        <option value="Equipment">Equipment</option>
+                        <option value="Other">Other</option>
                     </select>
 
                     <input

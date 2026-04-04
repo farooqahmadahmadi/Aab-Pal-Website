@@ -12,7 +12,7 @@ const ExpensesInfo = sequelize.define('ExpensesInfo', {
         allowNull: true
     },
     expense_type: {
-        type: DataTypes.ENUM('material', 'labor', 'transport', 'equipment', 'other')
+        type: DataTypes.ENUM('Material', 'Labor', 'Transport', 'Equipment', 'Other')
     },
     expense_amount: {
         type: DataTypes.DECIMAL(12, 2),
