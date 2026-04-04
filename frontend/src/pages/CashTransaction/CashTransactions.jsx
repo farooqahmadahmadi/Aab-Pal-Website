@@ -92,7 +92,7 @@ export default function CashTransactions() {
                 </div>
             </div>
 
-             <div className="bg-white shadow rounded overflow-x-auto">
+            <div className="bg-white shadow rounded overflow-x-auto">
                 <table className="w-full text-center text-sm">
                     <thead className="bg-gray-200 text-sm">
                         <tr>
@@ -106,19 +106,36 @@ export default function CashTransactions() {
                     </thead>
 
                     <tbody>
-                        {paginated.length ? paginated.map(i => (
-                            <tr key={i.transaction_id} className="border-t">
-                                <td>{i.transaction_id}</td>
-                                <td>{i.transaction_type}</td>
-                                <td>{i.amount}</td>
-                                <td className="p-2 text-left">{i.transaction_description}</td>
-                                <td>{i.transaction_date}</td>
-                                <td className="p-2 flex justify-center gap-1.5">
-                                    <button onClick={() => { setEditData(i); setModalOpen(true); }} className="bg-yellow-500 text-white px-2 py-1 rounded">Edit</button>
-                                    <button onClick={() => setDeleteData(i)} className="bg-red-500 text-white px-2 py-1 rounded">Delete</button>
-                                </td>
-                            </tr>
-                        )) : (
+                        {paginated.length ? paginated.map(i => {
+                            const isAuto = i.reference_type !== "Manual";
+
+                            return (
+                                <tr key={i.transaction_id} className="border-t hover:bg-gray-50">
+                                    <td>{i.transaction_id}</td>
+                                    <td>{i.transaction_type}</td>
+                                    <td>{i.amount}</td>
+                                    <td className="p-2 text-left">{i.transaction_description}</td>
+                                    <td>{i.transaction_date}</td>
+
+                                    <td className="p-2 flex justify-center gap-1.5">
+                                        <button
+                                            onClick={() => { setEditData(i); setModalOpen(true); }}
+                                            className="px-2 py-1 rounded text-white bg-yellow-500"
+                                        >
+                                        Edit
+                                        </button>
+
+                                        <button
+                                            onClick={() => !isAuto && setDeleteData(i)}
+                                            className={`px-2 py-1 rounded text-white ${isAuto ? "bg-gray-400 cursor-not-allowed" : "bg-red-500"}`}
+                                            disabled={isAuto}
+                                        >
+                                            Delete
+                                        </button>
+                                    </td>
+                                </tr>
+                            );
+                        }) : (
                             <tr>
                                 <td colSpan="6" className="p-4 text-gray-500">No cash transaction records found</td>
                             </tr>
@@ -133,7 +150,7 @@ export default function CashTransactions() {
 
             <CashTransactionModal
                 isOpen={modalOpen}
-                onClose={() => setModalOpen(false)}
+                onClose={() => { setModalOpen(false); setEditData(null); }}
                 onSubmit={submit}
                 initialData={editData}
             />
