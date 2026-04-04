@@ -18,13 +18,13 @@ module.exports = {
         onDelete: 'RESTRICT'
       },
       reference_type: {
-        type: Sequelize.ENUM('expense', 'invoice', 'payment', 'manual')
+        type: Sequelize.ENUM('Expense', 'Invoice', 'Payment', 'Manual')
       },
       reference_id: {
         type: Sequelize.INTEGER
       },
       transaction_type: {
-        type: Sequelize.ENUM('income', 'expense')
+        type: Sequelize.ENUM('Income', 'Expense')
       },
       amount: {
         type: Sequelize.DECIMAL(12, 2),
