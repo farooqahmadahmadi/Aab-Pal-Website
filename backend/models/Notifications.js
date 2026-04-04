@@ -8,9 +8,9 @@ const Notifications = sequelize.define('Notifications', {
         autoIncrement: true
     },
     notification_recipients: {
-        type: DataTypes.ENUM('Admin', 'Admins', 'HR', 'HRs',
-            'Financial', 'Financials', 'Project Manager', 'Project Managers',
-            'Employee', 'Employees', 'Client', 'Clients'),
+        type: DataTypes.ENUM('Admin', 'HR',
+            'Financial', 'PM',
+            'Employee', 'Client'),
         allowNull: false
     },
     user_id: {

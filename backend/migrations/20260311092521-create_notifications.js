@@ -9,12 +9,12 @@ module.exports = {
       },
       notification_recipients: {
         type: Sequelize.ENUM(
-          'Admin', 'Admins',
-          'HR', 'HRs',
-          'Financial', 'Financials',
-          'Project Manager', 'Project Managers',
-          'Employee', 'Employees',
-          'Client', 'Clients'
+          'Admin',
+          'HR',
+          'Financial',
+          'PM',
+          'Employee',
+          'Client'
         ),
         allowNull: false
       },
