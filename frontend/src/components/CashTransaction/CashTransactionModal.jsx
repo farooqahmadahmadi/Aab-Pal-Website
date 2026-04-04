@@ -12,13 +12,13 @@ export default function CashTransactionModal({ isOpen, onClose, onSubmit, initia
     });
 
     // 🔥 detect auto record
-    const isAuto = initialData && initialData.reference_type !== "manual";
+    const isAuto = initialData && initialData.reference_type !== "Manual";
 
     useEffect(() => {
         if (initialData) setForm({ ...initialData });
         else setForm({
             project_id: "",
-            reference_type: "manual",
+            reference_type: "Manual",
             reference_id: "",
             transaction_type: "",
             amount: "",
@@ -49,29 +49,25 @@ export default function CashTransactionModal({ isOpen, onClose, onSubmit, initia
 
                 <form onSubmit={submit} className="space-y-3">
 
-                    <input name="project_id" value={form.project_id} onChange={handleChange} placeholder="Project ID" className="w-full border p-2 rounded" readOnly={isAuto} />
+                    <input name="project_id" value={form.project_id} onChange={handleChange} title="Project ID" placeholder="Project ID" className="w-full border p-2 rounded" readOnly={isAuto} />
 
-                    <select name="reference_type" value={form.reference_type} onChange={handleChange} className="w-full border p-2 rounded" disabled={isAuto}>
-                        <option value="">Reference Type</option>
-                        <option value="Expense">Expense</option>
-                        <option value="Invoice">Invoice</option>
-                        <option value="Payment">Payment</option>
+                    <select name="reference_type" value={form.reference_type} onChange={handleChange} title="Reference Type" className="w-full border p-2 rounded" disabled={isAuto}>
                         <option value="Manual">Manual</option>
                     </select>
 
-                    <input name="reference_id" value={form.reference_id} onChange={handleChange} placeholder="Reference ID" className="w-full border p-2 rounded" readOnly={isAuto} />
+                    <input name="reference_id" value={form.reference_id} onChange={handleChange} title="Reference ID" placeholder="Reference ID" className="w-full border p-2 rounded" readOnly={isAuto} />
 
-                    <select name="transaction_type" value={form.transaction_type} onChange={handleChange} className="w-full border p-2 rounded" required disabled={isAuto}>
+                    <select name="transaction_type" value={form.transaction_type} onChange={handleChange} title="Transaction Type" className="w-full border p-2 rounded" required disabled={isAuto}>
                         <option value="">Transaction Type</option>
                         <option value="Income">Income</option>
                         <option value="Expense">Expense</option>
                     </select>
 
-                    <input name="amount" type="number" value={form.amount} onChange={handleChange} placeholder="Amount" className="w-full border p-2 rounded" required readOnly={isAuto} />
+                    <input name="amount" type="number" value={form.amount} onChange={handleChange} title="Amount" placeholder="Amount" className="w-full border p-2 rounded" required readOnly={isAuto} />
 
-                    <input name="transaction_description" value={form.transaction_description} onChange={handleChange} placeholder="Description" className="w-full border p-2 rounded" readOnly={isAuto} />
+                    <input name="transaction_description" value={form.transaction_description} title="Transaction Description" onChange={handleChange} placeholder="Description" className="w-full border p-2 rounded" readOnly={isAuto} />
 
-                    <input name="transaction_date" type="date" value={form.transaction_date} onChange={handleChange} className="w-full border p-2 rounded" readOnly={isAuto} />
+                    <input name="transaction_date" type="date" value={form.transaction_date} title="Transaction Date" onChange={handleChange} className="w-full border p-2 rounded" readOnly={isAuto} />
 
                     <div className="flex justify-end gap-2 mt-4">
                         <button onClick={onClose} type="button" className="bg-gray-300 hover:bg-gray-400 px-4 py-2 rounded">Close</button>
