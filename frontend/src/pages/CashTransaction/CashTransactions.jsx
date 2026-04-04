@@ -112,7 +112,9 @@ export default function CashTransactions() {
                             return (
                                 <tr key={i.transaction_id} className="border-t hover:bg-gray-50">
                                     <td>{i.transaction_id}</td>
-                                    <td>{i.transaction_type}</td>
+                                    <td>
+                                        <span className={`px-2 py-1 rounded-full text-xs font-semibold ${i.transaction_type === "Income" ? "bg-green-100 text-green-500" : "bg-red-100 text-red-500"}`}>{i.transaction_type}</span>
+                                    </td>
                                     <td>{i.amount}</td>
                                     <td className="p-2 text-left">{i.transaction_description}</td>
                                     <td>{i.transaction_date}</td>

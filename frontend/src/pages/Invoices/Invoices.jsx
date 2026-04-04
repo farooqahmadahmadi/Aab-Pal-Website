@@ -113,7 +113,9 @@ export default function Invoices() {
                                 <td className="p-2">{i.invoice_id}</td>
                                 <td className="p-2">{i.project_id}</td>
                                 <td className="p-2">{i.client_id}</td>
-                                <td className="p-2">{i.invoice_type}</td>
+                                <td>
+                                    <span className={`px-2 py-1 rounded-full text-xs font-semibold ${i.invoice_type === "In" ? "bg-green-100 text-green-500" : "bg-red-100 text-red-500"}`}>{i.invoice_type}</span>
+                                </td>
                                 <td className="p-2">{i.invoice_amount}</td>
                                 <td className="p-2">{i.paid_amount}</td>
                                 <td className="p-2">{i.invoice_due_date}</td>

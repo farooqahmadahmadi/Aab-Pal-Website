@@ -13,7 +13,6 @@ const updateStock = async (po_id, type = "add", t) => {
         transaction: t
     });
 
-    // map material quantities & values
     const materialMap = {};
     for (let i of items) {
         const matId = i.material_id;
@@ -46,22 +45,31 @@ const updateStock = async (po_id, type = "add", t) => {
         if (po.po_type === "In") {
             if (type === "add") newStock = currentStock + qty;
             else if (type === "subtract") newStock = Math.max(currentStock - qty, 0);
-            newAvg = newStock === 0 ? 0 : ((currentStock * avgPrice) + (type === "add" ? value : -value)) / newStock;
+
+            newAvg = newStock === 0 ? 0 :
+                ((currentStock * avgPrice) + (type === "add" ? value : -value)) / newStock;
+
         } else if (po.po_type === "Out") {
+
             if (po.po_status === "Sent") {
-                // Sent: materials leave warehouse
+                // 🔥 Sent = real خروج
                 if (type === "add") newStock = Math.max(currentStock - qty, 0);
                 else if (type === "subtract") newStock = currentStock + qty;
-                newAvg = (newStock > 0 && currentStock > 0) ? ((currentStock * avgPrice) + (type === "subtract" ? value : -value)) / newStock : 0;
+
+                newAvg = (newStock > 0 && currentStock > 0)
+                    ? ((currentStock * avgPrice) + (type === "subtract" ? value : -value)) / newStock
+                    : 0;
+
             } else {
-                // Out but not Sent (reserve/other)
-                if (type === "add") newStock = currentStock - qty;
-                else if (type === "subtract") newStock = currentStock + qty;
-                newAvg = (newStock > 0 && currentStock > 0) ? ((currentStock * avgPrice) + (type === "subtract" ? value : -value)) / newStock : 0;
+                // ❗ Not Sent → stock ته مه لاس وهه (Fix)
+                continue;
             }
         }
 
-        await material.update({ current_stock: newStock, average_price: newAvg }, { transaction: t });
+        await material.update(
+            { current_stock: newStock, average_price: newAvg },
+            { transaction: t }
+        );
     }
 };
 
@@ -89,13 +97,18 @@ exports.createOrder = async (data) => {
 // UPDATE
 exports.updateOrder = async (id, data) => {
     return await db.sequelize.transaction(async (t) => {
-        const item = await PurchaseOrder.findOne({ where: { po_id: id, is_deleted: false }, transaction: t });
+
+        const item = await PurchaseOrder.findOne({
+            where: { po_id: id, is_deleted: false },
+            transaction: t
+        });
+
         if (!item) throw new Error("Order not found");
 
         const oldStatus = item.po_status;
         const newStatus = data.po_status;
 
-        // undo old status if it was Received or Sent
+        // 🔻 undo old
         if ((oldStatus === "Received" && newStatus !== "Received") ||
             (oldStatus === "Sent" && newStatus !== "Sent")) {
             await updateStock(id, "subtract", t);
@@ -103,7 +116,7 @@ exports.updateOrder = async (id, data) => {
 
         await item.update(data, { transaction: t });
 
-        // apply new status if it is Received or Sent
+        // 🔺 apply new
         if ((newStatus === "Received" && oldStatus !== "Received") ||
             (newStatus === "Sent" && oldStatus !== "Sent")) {
             await updateStock(id, "add", t);
@@ -113,16 +126,33 @@ exports.updateOrder = async (id, data) => {
     });
 };
 
-// DELETE
+// DELETE (🔥 with items sync)
 exports.deleteOrder = async (id) => {
     return await db.sequelize.transaction(async (t) => {
-        const item = await PurchaseOrder.findOne({ where: { po_id: id, is_deleted: false }, transaction: t });
+
+        const item = await PurchaseOrder.findOne({
+            where: { po_id: id, is_deleted: false },
+            transaction: t
+        });
+
         if (!item) throw new Error("Order not found");
 
+        // 🔻 rollback stock first
         if (item.po_status === "Received" || item.po_status === "Sent") {
             await updateStock(id, "subtract", t);
         }
 
+        // ✅ child items soft delete
+        await PurchaseOrderItem.update(
+            { is_deleted: true },
+            {
+                where: { po_id: id, is_deleted: false },
+                transaction: t
+            }
+        );
+
+        // ✅ parent delete
         await item.update({ is_deleted: true }, { transaction: t });
+
     });
 };
