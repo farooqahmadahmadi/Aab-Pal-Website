@@ -18,7 +18,7 @@ module.exports = {
         onDelete: 'RESTRICT'
       },
       reference_type: {
-        type: Sequelize.ENUM('Expense', 'Invoice', 'Payment', 'Manual')
+        type: Sequelize.ENUM('Expense', 'InvoicePayment', 'SalaryPayment', 'Manual')
       },
       reference_id: {
         type: Sequelize.INTEGER

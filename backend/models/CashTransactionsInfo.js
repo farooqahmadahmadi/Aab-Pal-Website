@@ -12,7 +12,7 @@ const CashTransactions = sequelize.define('CashTransactionsInfo', {
         allowNull: true
     },
     reference_type: {
-        type: DataTypes.ENUM('Expense', 'Invoice', 'Manual')
+        type: DataTypes.ENUM('Expense', 'InvoicePayment','SalaryPayment', 'Manual')
     },
     reference_id: {
         type: DataTypes.INTEGER
