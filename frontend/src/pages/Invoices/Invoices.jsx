@@ -97,6 +97,8 @@ export default function Invoices() {
                     <thead className="bg-gray-200">
                         <tr>
                             <th className="p-2">ID</th>
+                              <th className="p-2">Refer</th>
+                                <th className="p-2">Ref ID</th>
                             <th className="p-2">Project</th>
                             <th className="p-2">Client</th>
                             <th className="p-2">Type</th>
@@ -104,6 +106,7 @@ export default function Invoices() {
                             <th className="p-2">Paid</th>
                             <th className="p-2">Due Date</th>
                             <th className="p-2">Status</th>
+                            
                             <th className="p-2">Actions</th>
                         </tr>
                     </thead>
@@ -111,6 +114,8 @@ export default function Invoices() {
                         {paginated.length ? paginated.map(i => (
                             <tr key={i.invoice_id} className="border-t">
                                 <td className="p-2">{i.invoice_id}</td>
+                                <td className="p-2">{i.reference_type}</td>
+                                <td className="p-2">{i.reference_id}</td>
                                 <td className="p-2">{i.project_id}</td>
                                 <td className="p-2">{i.client_id}</td>
                                 <td>

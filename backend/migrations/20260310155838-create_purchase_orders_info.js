@@ -1,60 +1,71 @@
-'use strict';
+"use strict";
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('purchase_orders_info', {
+    await queryInterface.createTable("purchase_orders_info", {
       po_id: {
         type: Sequelize.BIGINT.UNSIGNED,
         primaryKey: true,
         autoIncrement: true,
-        allowNull: false
+        allowNull: false,
       },
       supplier_id: {
         type: Sequelize.BIGINT.UNSIGNED,
         allowNull: true,
         references: {
-          model: 'suppliers_info',
-          key: 'supplier_id'
+          model: "suppliers_info",
+          key: "supplier_id",
         },
-        onUpdate: 'CASCADE',
-        onDelete: 'RESTRICT'
+        onUpdate: "CASCADE",
+        onDelete: "RESTRICT",
       },
       project_id: {
         type: Sequelize.BIGINT.UNSIGNED,
         allowNull: true,
         references: {
-          model: 'project_info',
-          key: 'project_id'
+          model: "project_info",
+          key: "project_id",
         },
-        onUpdate: 'CASCADE',
-        onDelete: 'RESTRICT'
+        onUpdate: "CASCADE",
+        onDelete: "RESTRICT",
       },
       order_date: {
         type: Sequelize.DATEONLY,
-        allowNull: false
+        allowNull: false,
       },
       total_amount: {
         type: Sequelize.DECIMAL(12, 2),
-        defaultValue: 0
+        defaultValue: 0,
       },
       po_type: {
-        type: Sequelize.ENUM('In', 'Out'),
+        type: Sequelize.ENUM("In", "Out"),
       },
       po_status: {
-        type: Sequelize.ENUM('Pending', 'Approved', 'Ordered', 'Received', 'Sent', 'Cancelled'),
+        type: Sequelize.ENUM(
+          "Pending",
+          "Approved",
+          "Ordered",
+          "Received",
+          "Sent",
+          "Cancelled",
+        ),
+      },
+      has_invoice: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: false,
       },
       is_deleted: {
         type: Sequelize.BOOLEAN,
-        defaultValue: false
+        defaultValue: false,
       },
       created_at: {
         type: Sequelize.DATE,
       },
       updated_at: {
         type: Sequelize.DATE,
-      }
+      },
     });
   },
   async down(queryInterface) {
-    await queryInterface.dropTable('purchase_orders_info');
-  }
+    await queryInterface.dropTable("purchase_orders_info");
+  },
 };
