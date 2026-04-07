@@ -2,16 +2,12 @@ import { useState, useEffect, useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
 import {
     FiHome, FiUsers, FiPieChart, FiSettings,
-    FiArrowLeftCircle,
-    FiArrowRightCircle,
     FiDollarSign,
     FiTruck,
     FiBox,
     FiShoppingBag,
     FiList,
     FiBookOpen,
-    FiSidebar,
-    FiUserMinus,
     FiMenu,
 } from "react-icons/fi";
 
@@ -135,8 +131,18 @@ export default function Sidebar({ role }) {
             }
         ],
 
+
+
+        // HR
         HR: [
             { name: "Dashboard", path: "/hr/dashboard", icon: <FiPieChart /> },
+            {
+                name: "HR", icon: <FiUsers />, submenu: [
+                    { name: "DEp", path: "/hr/departments/departments-inf" },
+                     { name: "Company Documents", path: "/hr/company/company-documents" },
+
+                ]
+            },
             {
                 name: "HR", icon: <FiUsers />, submenu: [
                     { name: "Employees", path: "/hr/employees/employee-info" },

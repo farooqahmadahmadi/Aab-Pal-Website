@@ -11,7 +11,7 @@ exports.authMiddleware = (req, res, next) => {
             user_id: decoded.id,
             employee_id: decoded.employee_id || null,
             client_id: decoded.client_id || null,
-            role: decoded.user_role || "Employee"
+            role: decoded.role || "Employee"
         };
         next();
     } catch {

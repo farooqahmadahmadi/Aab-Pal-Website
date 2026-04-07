@@ -52,10 +52,10 @@ exports.updateDocument = async (req, res) => {
 // ================= DELETE Document =================
 exports.deleteDocument = async (req, res) => {
     try {
-        const user_id = req.user?.user_id || 0;
+        const user = req.user; // Pass full user object
         const id = req.params.id;
 
-        await deleteDocument(id, user_id);
+        await deleteDocument(id, user);
 
         res.json({ message: "Document deleted successfully" });
     } catch (err) {

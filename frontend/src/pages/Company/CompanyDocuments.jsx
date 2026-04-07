@@ -6,8 +6,8 @@ import DocumentModal from "../../components/Company/DocumentModal";
 import SearchBar from "../../components/common/SearchBar";
 import Pagination from "../../components/common/Pagination";
 import { FiDownload, FiEdit3, FiEye, FiPlusCircle, FiTrash2, FiXCircle } from "react-icons/fi";
-export default function CompanyDocuments() {
 
+export default function CompanyDocuments() {
     const [documents, setDocuments] = useState([]);
     const [filteredDocs, setFilteredDocs] = useState([]);
     const [search, setSearch] = useState("");
@@ -41,14 +41,12 @@ export default function CompanyDocuments() {
     useEffect(() => {
         let data = [...documents];
 
-        // Search
         data = data.filter(doc =>
             doc.document_id?.toString().includes(search) ||
             doc.doc_name.toLowerCase().includes(search.toLowerCase()) ||
             (doc.doc_description || "").toLowerCase().includes(search.toLowerCase())
         );
 
-        // Sort
         data.sort((a, b) => {
             let valA = a[sortField];
             let valB = b[sortField];
@@ -56,8 +54,7 @@ export default function CompanyDocuments() {
             if (typeof valA === "string") valA = valA.toLowerCase();
             if (typeof valB === "string") valB = valB.toLowerCase();
 
-            if (sortOrder === "asc") return valA > valB ? 1 : -1;
-            else return valA < valB ? 1 : -1;
+            return sortOrder === "asc" ? (valA > valB ? 1 : -1) : (valA < valB ? 1 : -1);
         });
 
         setFilteredDocs(data);
@@ -96,8 +93,11 @@ export default function CompanyDocuments() {
     const confirmDelete = async () => {
         try {
             await API.delete(`/company-documents/${deleteData.document_id}`);
+
+            // ✅ Soft delete UI update: په documents state کې هغه حذف کړه
+            setDocuments(prevDocs => prevDocs.filter(doc => doc.document_id !== deleteData.document_id));
+
             showToast("Deleted successfully", "success");
-            fetchDocs();
         } catch {
             showToast("Delete failed", "error");
         } finally {
@@ -116,18 +116,15 @@ export default function CompanyDocuments() {
         try {
             const res = await fetch(`${BASE_URL}${doc.doc_file_url}`);
             const blob = await res.blob();
-
             const ext = doc.doc_file_url.split(".").pop();
             const safeName = doc.doc_name.replace(/\s+/g, "_");
             const fileName = `${doc.document_id}_${safeName}_${new Date(doc.updated_at).getTime()}.${ext}`;
-
             const url = window.URL.createObjectURL(blob);
             const link = document.createElement("a");
             link.href = url;
             link.download = fileName;
             link.click();
             window.URL.revokeObjectURL(url);
-
         } catch {
             showToast("Download failed", "error");
         }
@@ -145,11 +142,9 @@ export default function CompanyDocuments() {
 
     return (
         <div className="p-6 max-w-6xl mx-auto">
-
             {/* ===== TOP BAR ===== */}
             <div className="flex justify-between items-center mb-4">
                 <h2 className="text-2xl font-bold">Company Documents</h2>
-
                 <div className="flex gap-2">
                     <SearchBar value={search} onChange={setSearch} />
                     <button
@@ -172,7 +167,6 @@ export default function CompanyDocuments() {
                             <th className="p-2 text-center">Actions</th>
                         </tr>
                     </thead>
-
                     <tbody>
                         {paginatedDocs.length > 0 ? (
                             paginatedDocs.map(doc => (
@@ -180,7 +174,6 @@ export default function CompanyDocuments() {
                                     <td className="p-2 text-center">{doc.document_id}</td>
                                     <td className="p-2">{doc.doc_name}</td>
                                     <td className="p-2">{doc.doc_description}</td>
-
                                     <td className="p-2 flex justify-center gap-1.5">
                                         <button onClick={() => handlePreview(doc)} className="bg-purple-500 px-2 py-1 text-white rounded"><FiEye /></button>
                                         <button onClick={() => handleDownload(doc)} className="bg-blue-500 px-2 py-1 text-white rounded"><FiDownload /></button>
@@ -191,24 +184,16 @@ export default function CompanyDocuments() {
                             ))
                         ) : (
                             <tr>
-                                <td colSpan="4" className="text-center p-4 text-gray-500">
-                                    No records found
-                                </td>
+                                <td colSpan="4" className="text-center p-4 text-gray-500">No records found</td>
                             </tr>
                         )}
                     </tbody>
-
                 </table>
             </div>
 
             {/* ===== PAGINATION ===== */}
             <div className="mt-4 flex justify-center">
-                <Pagination
-                    page={page}
-                    total={filteredDocs.length}
-                    limit={limit}
-                    onPageChange={setPage}
-                />
+                <Pagination page={page} total={filteredDocs.length} limit={limit} onPageChange={setPage} />
             </div>
 
             {/* ===== PREVIEW MODAL ===== */}
@@ -217,18 +202,10 @@ export default function CompanyDocuments() {
                     <div className="bg-white p-2 rounded-2xl w-[50%] h-[80%] overflow-auto">
                         <div className="flex justify-between m-2">
                             <h3 className="font-bold">{previewData.doc_name}</h3>
-                            <span onClick={() => setPreviewData(null)} className="cursor-pointer text-red-500">
-                                <FiXCircle />
-                            </span>
+                            <span onClick={() => setPreviewData(null)} className="cursor-pointer text-red-500"><FiXCircle /></span>
                         </div>
-
-                        {getFileType(previewData.doc_file_url) === "image" && (
-                            <img src={`${BASE_URL}${previewData.doc_file_url}`} className="mx-auto" />
-                        )}
-
-                        {getFileType(previewData.doc_file_url) === "pdf" && (
-                            <iframe src={`${BASE_URL}${previewData.doc_file_url}`} className="w-full h-[90%]" />
-                        )}
+                        {getFileType(previewData.doc_file_url) === "image" && <img src={`${BASE_URL}${previewData.doc_file_url}`} className="mx-auto" />}
+                        {getFileType(previewData.doc_file_url) === "pdf" && <iframe src={`${BASE_URL}${previewData.doc_file_url}`} className="w-full h-[90%]" />}
                     </div>
                 </div>
             )}
@@ -237,41 +214,20 @@ export default function CompanyDocuments() {
             {deleteData && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
                     <div className="bg-white p-6 rounded w-96">
-                        <p>
-                            Delete <strong>{deleteData.doc_name}</strong>?
-                        </p>
-
+                        <p>Delete <strong>{deleteData.doc_name}</strong>?</p>
                         <div className="flex justify-end gap-2 mt-4">
-                            <button onClick={() => setDeleteData(null)} className="bg-gray-300 px-4 py-2 rounded">
-                                Cancel
-                            </button>
-
-                            <button onClick={confirmDelete} className="bg-red-500 text-white px-4 py-2 rounded">
-                                Delete
-                            </button>
+                            <button onClick={() => setDeleteData(null)} className="bg-gray-300 px-4 py-2 rounded">Cancel</button>
+                            <button onClick={confirmDelete} className="bg-red-500 text-white px-4 py-2 rounded">Delete</button>
                         </div>
                     </div>
                 </div>
             )}
 
             {/* ===== MODAL ===== */}
-            <DocumentModal
-                isOpen={modalOpen}
-                onClose={() => { setModalOpen(false); setEditData(null); }}
-                onSubmit={handleSubmit}
-                initialData={editData}
-            />
+            <DocumentModal isOpen={modalOpen} onClose={() => { setModalOpen(false); setEditData(null); }} onSubmit={handleSubmit} initialData={editData} />
 
             {/* ===== TOAST ===== */}
-            {toast && (
-                <Toast
-                    message={toast.message}
-                    type={toast.type}
-                    onClose={hideToast}
-                    position="top-right"
-                />
-            )}
-
+            {toast && <Toast message={toast.message} type={toast.type} onClose={hideToast} position="top-right" />}
         </div>
     );
 }
