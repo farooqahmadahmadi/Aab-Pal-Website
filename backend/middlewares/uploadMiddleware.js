@@ -12,6 +12,7 @@ const logoStorage = multer.diskStorage({
 });
 const uploadLogo = multer({ storage: logoStorage });
 
+
 // ===== Company Documents folder =====
 const companyDocDir = path.join(__dirname, "../uploads/documents/company");
 if (!fs.existsSync(companyDocDir)) fs.mkdirSync(companyDocDir, { recursive: true });

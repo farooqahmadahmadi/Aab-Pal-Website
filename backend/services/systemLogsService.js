@@ -1,18 +1,23 @@
-const SystemLogs = require('../models/SystemLogs');
+const SystemLogs = require("../models/SystemLogs");
 
-// get all logs
-async function getSystemLogs() {
-    return await SystemLogs.findAll({ order: [['created_at', 'DESC']] });
-}
-
-// delete log by id
-async function deleteSystemLog(log_id) {
-    const log = await SystemLogs.findByPk(log_id);
-    if (!log) throw new Error('Log not found');
-    await log.destroy();
-}
-
-module.exports = {
-    getSystemLogs,
-    deleteSystemLog
+exports.createLog = async ({
+  user_id,
+  action,
+  reference_table,
+  reference_record_id,
+  old_value,
+  new_value,
+}) => {
+  try {
+    await SystemLogs.create({
+      user_id: user_id || 0, // ✅ مهم fix
+      action,
+      reference_table,
+      reference_record_id,
+      old_value: old_value ? JSON.stringify(old_value) : null,
+      new_value: new_value ? JSON.stringify(new_value) : null,
+    });
+  } catch (err) {
+    console.error("LOG ERROR:", err.message);
+  }
 };
