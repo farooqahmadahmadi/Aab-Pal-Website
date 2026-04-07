@@ -10,7 +10,7 @@ exports.createLog = async ({
 }) => {
   try {
     await SystemLogs.create({
-      user_id: user_id || 0, // ✅ مهم fix
+      user_id: user_id || 0, 
       action,
       reference_table,
       reference_record_id,

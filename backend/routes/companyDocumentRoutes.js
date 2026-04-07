@@ -1,17 +1,24 @@
 const express = require("express");
 const router = express.Router();
+const { authMiddleware } = require("../middlewares/authMiddleware");
 const { uploadDoc } = require("../middlewares/uploadMiddleware");
 const {
-    getDocuments,
-    createDocument,
-    updateDocument,
-    deleteDocument,
+  getDocuments,
+  createDocument,
+  updateDocument,
+  deleteDocument,
 } = require("../controllers/companyDocumentController");
 
-// Routes
-router.get("/", getDocuments);
-router.post("/", uploadDoc.single("file"), createDocument);
-router.put("/:id", uploadDoc.single("file"), updateDocument);
-router.delete("/:id", deleteDocument);
+// GET all documents
+router.get("/", authMiddleware, getDocuments);
+
+// CREATE document
+router.post("/", authMiddleware, uploadDoc.single("file"), createDocument);
+
+// UPDATE document
+router.put("/:id", authMiddleware, uploadDoc.single("file"), updateDocument);
+
+// DELETE document
+router.delete("/:id", authMiddleware, deleteDocument);
 
 module.exports = router;

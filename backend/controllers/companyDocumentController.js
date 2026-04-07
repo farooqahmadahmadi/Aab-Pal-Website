@@ -1,66 +1,65 @@
-const fs = require("fs");
-const path = require("path");
-const CompanyDocument = require("../models/CompanyDocument");
+const {
+    getDocuments,
+    createDocument,
+    updateDocument,
+    deleteDocument,
+} = require("../services/companyDocumentService");
 
-// GET all
+// ================= GET Documents =================
 exports.getDocuments = async (req, res) => {
     try {
-        const docs = await CompanyDocument.findAll({ order: [["created_at", "DESC"]] });
+        const docs = await getDocuments();
         res.json(docs);
     } catch (err) {
-        res.status(500).json({ message: err.message });
+        console.error("GET DOCUMENTS ERROR:", err.message);
+        res.status(500).json({ message: "Failed to load documents" });
     }
 };
 
-// CREATE
+// ================= CREATE Document =================
 exports.createDocument = async (req, res) => {
     try {
-        const data = { ...req.body };
         if (!req.file) return res.status(400).json({ message: "File required" });
-        data.doc_file_url = `/uploads/documents/company/${req.file.filename}`;
-        const doc = await CompanyDocument.create(data);
+
+        const user_id = req.user?.user_id || 0;
+        const data = { ...req.body };
+
+        const doc = await createDocument(data, req.file, user_id);
+
         res.status(201).json(doc);
     } catch (err) {
-        res.status(400).json({ message: err.message });
+        console.error("CREATE DOCUMENT ERROR:", err.message);
+        res.status(400).json({ message: err.message || "Failed to create document" });
     }
 };
 
-// UPDATE
+// ================= UPDATE Document =================
 exports.updateDocument = async (req, res) => {
     try {
-        const doc = await CompanyDocument.findByPk(req.params.id);
-        if (!doc) return res.status(404).json({ message: "Document not found" });
-
+        const user_id = req.user?.user_id || 0;
+        const id = req.params.id;
         const data = { ...req.body };
-        if (req.file) {
-            if (doc.doc_file_url) {
-                const oldPath = path.join(__dirname, "../", doc.doc_file_url);
-                if (fs.existsSync(oldPath)) fs.unlinkSync(oldPath);
-            }
-            data.doc_file_url = `/uploads/documents/company/${req.file.filename}`;
-        }
 
-        await doc.update(data);
+        const doc = await updateDocument(id, data, req.file, user_id);
+
         res.json(doc);
     } catch (err) {
-        res.status(400).json({ message: err.message });
+        console.error("UPDATE DOCUMENT ERROR:", err.message);
+        res.status(400).json({ message: err.message || "Failed to update document" });
     }
 };
 
-// DELETE
+// ================= DELETE Document =================
 exports.deleteDocument = async (req, res) => {
     try {
-        const doc = await CompanyDocument.findByPk(req.params.id);
-        if (!doc) return res.status(404).json({ message: "Document not found" });
+        const user_id = req.user?.user_id || 0;
+        const id = req.params.id;
 
-        if (doc.doc_file_url) {
-            const filePath = path.join(__dirname, "../", doc.doc_file_url);
-            if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
-        }
+        await deleteDocument(id, user_id);
 
-        await doc.destroy();
         res.json({ message: "Document deleted successfully" });
     } catch (err) {
-        res.status(500).json({ message: err.message });
+        console.error("DELETE DOCUMENT ERROR:", err.message);
+        res.status(500).json({ message: err.message || "Failed to delete document" });
     }
 };
