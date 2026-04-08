@@ -231,6 +231,10 @@ export default function Sidebar({ role }) {
             name: "Attendance Shifts",
             path: "/hr/employees/attendance-shifts",
           },
+          {
+            name: "Employee Hiring",
+            path: "/hr/employees/employee-hiring-info",
+          },
         ],
       },
     ],

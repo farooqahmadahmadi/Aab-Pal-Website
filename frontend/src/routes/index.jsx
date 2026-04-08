@@ -550,7 +550,7 @@ export default function AppRoutes() {
             </ProtectedRoute>
           }
         />
-<Route
+        <Route
           path="/hr/employees/attendance-shifts"
           element={
             <ProtectedRoute allowedRoles={["HR"]}>
@@ -560,6 +560,17 @@ export default function AppRoutes() {
             </ProtectedRoute>
           }
         />
+        <Route
+          path="/hr/employees/employee-hiring-info"
+          element={
+            <ProtectedRoute allowedRoles={["HR"]}>
+              <HRLayout>
+                <EmployeeHiringInfo />
+              </HRLayout>
+            </ProtectedRoute>
+          }
+        />
+
 
 
 
