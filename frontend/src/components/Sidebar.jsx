@@ -138,16 +138,9 @@ export default function Sidebar({ role }) {
             { name: "Dashboard", path: "/hr/dashboard", icon: <FiPieChart /> },
             {
                 name: "HR", icon: <FiUsers />, submenu: [
-                    { name: "DEp", path: "/hr/departments/departments-inf" },
-                     { name: "Company Documents", path: "/hr/company/company-documents" },
-
-                ]
-            },
-            {
-                name: "HR", icon: <FiUsers />, submenu: [
-                    { name: "Employees", path: "/hr/employees/employee-info" },
-                    { name: "Attendance Checker", path: "/hr/employees/employee-attendance" },
-
+                    { name: "Department", path: "/hr/departments/departments-inf" },
+                     { name: "Employee", path: "/hr/employees/employee-info" },
+                     { name: "Employee Docuemnt", path: "/hr/employees/employee-education-info" },
                 ]
             }
         ],

@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from "../pages/Users/Login";
-import ProtectedRoute from "../components/ProtectedRoute"
+import ProtectedRoute from "../components/ProtectedRoute";
 
 // Imported Layouts
 import AdminLayout from "../layouts/AdminLayout";
@@ -68,388 +68,538 @@ import Notifications from "../pages/Notification/Notifications";
 import SystemLogs from "../pages/SystemLogs/SystemLogs";
 import SystemSettings from "../pages/Settings/SystemSettings";
 
-
 export default function AppRoutes() {
-    return (
-        <BrowserRouter>
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Login />} />
 
-            <Routes>
-                <Route path="/" element={<Login />} />
+        {/* Admin */}
+        <Route
+          path="/admin/dashboard"
+          element={
+            <ProtectedRoute allowedRoles={["Admin"]}>
+              <AdminLayout>
+                <AdminDashboard />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        />
 
-                {/* Admin */}
-                <Route path="/admin/dashboard" element={
-                    <ProtectedRoute allowedRoles={["Admin"]}>
-                        <AdminLayout>
-                            <AdminDashboard />
-                        </AdminLayout>
-                    </ProtectedRoute>
-                } />
+        {/* Company */}
+        <Route
+          path="/admin/company/company-info"
+          element={
+            <ProtectedRoute allowedRoles={["Admin"]}>
+              <AdminLayout>
+                <CompanyInfo />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/company/company-documents"
+          element={
+            <ProtectedRoute allowedRoles={["Admin"]}>
+              <AdminLayout>
+                <CompanyDocuments />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        />
 
-                {/* Company */}
-                <Route path="/admin/company/company-info" element={
-                    <ProtectedRoute allowedRoles={["Admin"]}>
-                        <AdminLayout>
-                            <CompanyInfo />
-                        </AdminLayout>
-                    </ProtectedRoute>
-                } />
-                <Route path="/admin/company/company-documents" element={
-                    <ProtectedRoute allowedRoles={["Admin"]}>
-                        <AdminLayout>
-                            <CompanyDocuments />
-                        </AdminLayout>
-                    </ProtectedRoute>
-                } />
+        {/* Department */}
+        <Route
+          path="/admin/departments/departments-info"
+          element={
+            <ProtectedRoute allowedRoles={["Admin"]}>
+              <AdminLayout>
+                <Departments />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        />
 
-                {/* Department */}
-                <Route path="/admin/departments/departments-info" element={
-                    <ProtectedRoute allowedRoles={["Admin"]}>
-                        <AdminLayout>
-                            <Departments />
-                        </AdminLayout>
-                    </ProtectedRoute>
-                } />
+        {/* Employees */}
+        <Route
+          path="/admin/employees/employee-info"
+          element={
+            <ProtectedRoute allowedRoles={["Admin"]}>
+              <AdminLayout>
+                <EmployeeInfo />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/employees/employee-education-info"
+          element={
+            <ProtectedRoute allowedRoles={["Admin"]}>
+              <AdminLayout>
+                <EmployeeEducation />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/employees/employee-documents"
+          element={
+            <ProtectedRoute allowedRoles={["Admin"]}>
+              <AdminLayout>
+                <EmployeeDocuments />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/employees/employee-salary-info"
+          element={
+            <ProtectedRoute allowedRoles={["Admin"]}>
+              <AdminLayout>
+                <EmployeeSalaryInfo />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/employees/attendance-shifts"
+          element={
+            <ProtectedRoute allowedRoles={["Admin"]}>
+              <AdminLayout>
+                <AttendanceShifts />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/employees/employee-hiring-info"
+          element={
+            <ProtectedRoute allowedRoles={["Admin"]}>
+              <AdminLayout>
+                <EmployeeHiringInfo />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/employees/employee-attendance-list"
+          element={
+            <ProtectedRoute allowedRoles={["Admin"]}>
+              <AdminLayout>
+                <EmployeeAttendanceList />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/employees/employee-attendance"
+          element={
+            <ProtectedRoute allowedRoles={["Admin"]}>
+              <AdminLayout>
+                <EmployeeAttendance />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/employees/employee-salary-payment"
+          element={
+            <ProtectedRoute allowedRoles={["Admin"]}>
+              <AdminLayout>
+                <EmpSalaryPayment />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        />
 
-                {/* Employees */}
-                <Route path="/admin/employees/employee-info" element={
-                    <ProtectedRoute allowedRoles={["Admin"]}>
-                        <AdminLayout>
-                            <EmployeeInfo />
-                        </AdminLayout>
-                    </ProtectedRoute>
-                } />
-                <Route path="/admin/employees/employee-education-info" element={
-                    <ProtectedRoute allowedRoles={["Admin"]}>
-                        <AdminLayout>
-                            <EmployeeEducation />
-                        </AdminLayout>
-                    </ProtectedRoute>
-                } />
-                <Route path="/admin/employees/employee-documents" element={
-                    <ProtectedRoute allowedRoles={["Admin"]}>
-                        <AdminLayout>
-                            <EmployeeDocuments />
-                        </AdminLayout>
-                    </ProtectedRoute>
-                } />
-                <Route path="/admin/employees/employee-salary-info" element={
-                    <ProtectedRoute allowedRoles={["Admin"]}>
-                        <AdminLayout>
-                            <EmployeeSalaryInfo />
-                        </AdminLayout>
-                    </ProtectedRoute>
-                } />
-                <Route path="/admin/employees/attendance-shifts" element={
-                    <ProtectedRoute allowedRoles={["Admin"]}>
-                        <AdminLayout>
-                            <AttendanceShifts />
-                        </AdminLayout>
-                    </ProtectedRoute>
-                } />
-                <Route path="/admin/employees/employee-hiring-info" element={
-                    <ProtectedRoute allowedRoles={["Admin"]}>
-                        <AdminLayout>
-                            <EmployeeHiringInfo />
-                        </AdminLayout>
-                    </ProtectedRoute>
-                } />
-                <Route path="/admin/employees/employee-attendance-list" element={
-                    <ProtectedRoute allowedRoles={["Admin"]}>
-                        <AdminLayout>
-                            <EmployeeAttendanceList />
-                        </AdminLayout>
-                    </ProtectedRoute>
-                } />
-                <Route path="/admin/employees/employee-attendance" element={
-                    <ProtectedRoute allowedRoles={["Admin"]}>
-                        <AdminLayout>
-                            <EmployeeAttendance />
-                        </AdminLayout>
-                    </ProtectedRoute>
-                } />
-                <Route path="/admin/employees/employee-salary-payment" element={
-                    <ProtectedRoute allowedRoles={["Admin"]}>
-                        <AdminLayout>
-                            <EmpSalaryPayment />
-                        </AdminLayout>
-                    </ProtectedRoute>
-                } />
+        {/* Project */}
+        <Route
+          path="/admin/clients/clients-info"
+          element={
+            <ProtectedRoute allowedRoles={["Admin"]}>
+              <AdminLayout>
+                <ClientInfo />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/projects/project-info"
+          element={
+            <ProtectedRoute allowedRoles={["Admin"]}>
+              <AdminLayout>
+                <ProjectInfo />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/projects/boq-items"
+          element={
+            <ProtectedRoute allowedRoles={["Admin"]}>
+              <AdminLayout>
+                <BoqItems />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/projects/project-phases-info"
+          element={
+            <ProtectedRoute allowedRoles={["Admin"]}>
+              <AdminLayout>
+                <ProjectPhasesInfo />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/projects/project-documents"
+          element={
+            <ProtectedRoute allowedRoles={["Admin"]}>
+              <AdminLayout>
+                <ProjectDocuments />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        />
 
-                {/* Project */}
-                <Route path="/admin/clients/clients-info" element={
-                    <ProtectedRoute allowedRoles={["Admin"]}>
-                        <AdminLayout>
-                            <ClientInfo />
-                        </AdminLayout>
-                    </ProtectedRoute>
-                } />
-                <Route path="/admin/projects/project-info" element={
-                    <ProtectedRoute allowedRoles={["Admin"]}>
-                        <AdminLayout>
-                            <ProjectInfo />
-                        </AdminLayout>
-                    </ProtectedRoute>
-                } />
-                <Route path="/admin/projects/boq-items" element={
-                    <ProtectedRoute allowedRoles={["Admin"]}>
-                        <AdminLayout>
-                            <BoqItems />
-                        </AdminLayout>
-                    </ProtectedRoute>
-                } />
-                <Route path="/admin/projects/project-phases-info" element={
-                    <ProtectedRoute allowedRoles={["Admin"]}>
-                        <AdminLayout>
-                            <ProjectPhasesInfo />
-                        </AdminLayout>
-                    </ProtectedRoute>
-                } />
-                <Route path="/admin/projects/project-documents" element={
-                    <ProtectedRoute allowedRoles={["Admin"]}>
-                        <AdminLayout>
-                            <ProjectDocuments />
-                        </AdminLayout>
-                    </ProtectedRoute>
-                } />
+        {/* Inventory */}
+        <Route
+          path="/admin/inventory/suppliers"
+          element={
+            <ProtectedRoute allowedRoles={["Admin"]}>
+              <AdminLayout>
+                <Suppliers />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/inventory/materials"
+          element={
+            <ProtectedRoute allowedRoles={["Admin"]}>
+              <AdminLayout>
+                <Materials />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/inventory/purchase-orders"
+          element={
+            <ProtectedRoute allowedRoles={["Admin"]}>
+              <AdminLayout>
+                <PurchaseOrders />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/inventory/purchase-order-items"
+          element={
+            <ProtectedRoute allowedRoles={["Admin"]}>
+              <AdminLayout>
+                <PurchaseOrderItems />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        />
 
-                {/* Inventory */}
-                <Route path="/admin/inventory/suppliers" element={
-                    <ProtectedRoute allowedRoles={["Admin"]}>
-                        <AdminLayout>
-                            <Suppliers />
-                        </AdminLayout>
-                    </ProtectedRoute>
-                } />
-                <Route path="/admin/inventory/materials" element={
-                    <ProtectedRoute allowedRoles={["Admin"]}>
-                        <AdminLayout>
-                            <Materials />
-                        </AdminLayout>
-                    </ProtectedRoute>
-                } />
-                <Route path="/admin/inventory/purchase-orders" element={
-                    <ProtectedRoute allowedRoles={["Admin"]}>
-                        <AdminLayout>
-                            <PurchaseOrders />
-                        </AdminLayout>
-                    </ProtectedRoute>
-                } />
-                <Route path="/admin/inventory/purchase-order-items" element={
-                    <ProtectedRoute allowedRoles={["Admin"]}>
-                        <AdminLayout>
-                            <PurchaseOrderItems />
-                        </AdminLayout>
-                    </ProtectedRoute>
-                } />
+        {/* Equipments / Machinery */}
+        <Route
+          path="/admin/equipments/equipments"
+          element={
+            <ProtectedRoute allowedRoles={["Admin"]}>
+              <AdminLayout>
+                <Equipments />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/equipments/equipments-documents"
+          element={
+            <ProtectedRoute allowedRoles={["Admin"]}>
+              <AdminLayout>
+                <EquipmentDocuments />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/equipments/equipments-usage"
+          element={
+            <ProtectedRoute allowedRoles={["Admin"]}>
+              <AdminLayout>
+                <EquipmentUsage />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/equipments/equipment-maintenance"
+          element={
+            <ProtectedRoute allowedRoles={["Admin"]}>
+              <AdminLayout>
+                <EquipmentMaintenance />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        />
 
+        {/* Contracts */}
+        <Route
+          path="/admin/contracts/contracts"
+          element={
+            <ProtectedRoute allowedRoles={["Admin"]}>
+              <AdminLayout>
+                <Contracts />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/contracts/contract-milestones"
+          element={
+            <ProtectedRoute allowedRoles={["Admin"]}>
+              <AdminLayout>
+                <ContractMilestones />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        />
 
-                {/* Equipments / Machinery */}
-                <Route path="/admin/equipments/equipments" element={
-                    <ProtectedRoute allowedRoles={["Admin"]}>
-                        <AdminLayout>
-                            <Equipments />
-                        </AdminLayout>
-                    </ProtectedRoute>
-                } />
-                <Route path="/admin/equipments/equipments-documents" element={
-                    <ProtectedRoute allowedRoles={["Admin"]}>
-                        <AdminLayout>
-                            <EquipmentDocuments />
-                        </AdminLayout>
-                    </ProtectedRoute>
-                } />
-                <Route path="/admin/equipments/equipments-usage" element={
-                    <ProtectedRoute allowedRoles={["Admin"]}>
-                        <AdminLayout>
-                            <EquipmentUsage />
-                        </AdminLayout>
-                    </ProtectedRoute>
-                } />
-                <Route path="/admin/equipments/equipment-maintenance" element={
-                    <ProtectedRoute allowedRoles={["Admin"]}>
-                        <AdminLayout>
-                            <EquipmentMaintenance />
-                        </AdminLayout>
-                    </ProtectedRoute>
-                } />
+        {/* Tasks Assignment */}
+        <Route
+          path="/admin/tasks/tasks-assignment"
+          element={
+            <ProtectedRoute allowedRoles={["Admin"]}>
+              <AdminLayout>
+                <TasksAssignment />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/site-daily-reports/site-daily-reports"
+          element={
+            <ProtectedRoute allowedRoles={["Admin"]}>
+              <AdminLayout>
+                <SiteDailyReports />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/safety-incident/safety-incident-info"
+          element={
+            <ProtectedRoute allowedRoles={["Admin"]}>
+              <AdminLayout>
+                <SafetyIncident />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        />
 
-                {/* Contracts */}
-                <Route path="/admin/contracts/contracts" element={
-                    <ProtectedRoute allowedRoles={["Admin"]}>
-                        <AdminLayout>
-                            <Contracts />
-                        </AdminLayout>
-                    </ProtectedRoute>
-                } />
-                <Route path="/admin/contracts/contract-milestones" element={
-                    <ProtectedRoute allowedRoles={["Admin"]}>
-                        <AdminLayout>
-                            <ContractMilestones />
-                        </AdminLayout>
-                    </ProtectedRoute>
-                } />
-                
+        {/* Financial */}
+        <Route
+          path="/admin/financial/expenses"
+          element={
+            <ProtectedRoute allowedRoles={["Admin"]}>
+              <AdminLayout>
+                <Expenses />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/financial/invoices"
+          element={
+            <ProtectedRoute allowedRoles={["Admin"]}>
+              <AdminLayout>
+                <Invoices />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/financial/cash-transactions"
+          element={
+            <ProtectedRoute allowedRoles={["Admin"]}>
+              <AdminLayout>
+                <CashTransactions />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/financial/payments-info"
+          element={
+            <ProtectedRoute allowedRoles={["Admin"]}>
+              <AdminLayout>
+                <PaymentsInfo />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        />
 
-                {/* Tasks Assignment */}
-                <Route path="/admin/tasks/tasks-assignment" element={
-                    <ProtectedRoute allowedRoles={["Admin"]}>
-                        <AdminLayout>
-                            <TasksAssignment />
-                        </AdminLayout>
-                    </ProtectedRoute>
-                } />
-                <Route path="/admin/site-daily-reports/site-daily-reports" element={
-                    <ProtectedRoute allowedRoles={["Admin"]}>
-                        <AdminLayout>
-                            <SiteDailyReports />
-                        </AdminLayout>
-                    </ProtectedRoute>
-                } />
-                <Route path="/admin/safety-incident/safety-incident-info" element={
-                    <ProtectedRoute allowedRoles={["Admin"]}>
-                        <AdminLayout>
-                            <SafetyIncident />
-                        </AdminLayout>
-                    </ProtectedRoute>
-                } />
+        {/* Users */}
+        <Route
+          path="/admin/users/user-list"
+          element={
+            <ProtectedRoute allowedRoles={["Admin"]}>
+              <AdminLayout>
+                <UsersList />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/system/notifications"
+          element={
+            <ProtectedRoute allowedRoles={["Admin"]}>
+              <AdminLayout>
+                <Notifications />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/system/system-settings"
+          element={
+            <ProtectedRoute allowedRoles={["Admin"]}>
+              <AdminLayout>
+                <SystemSettings />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/system/system-logs"
+          element={
+            <ProtectedRoute allowedRoles={["Admin"]}>
+              <AdminLayout>
+                <SystemLogs />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        />
 
+        {/* HR */}
+        <Route
+          path="/hr/dashboard"
+          element={
+            <ProtectedRoute allowedRoles={["HR"]}>
+              <HRLayout>
+                <HRDashboard />
+              </HRLayout>
+            </ProtectedRoute>
+          }
+        />
 
-                {/* Financial */}
-                <Route path="/admin/financial/expenses" element={
-                    <ProtectedRoute allowedRoles={["Admin"]}>
-                        <AdminLayout>
-                            <Expenses />
-                        </AdminLayout>
-                    </ProtectedRoute>
-                } />
-                <Route path="/admin/financial/invoices" element={
-                    <ProtectedRoute allowedRoles={["Admin"]}>
-                        <AdminLayout>
-                            <Invoices />
-                        </AdminLayout>
-                    </ProtectedRoute>
-                } />
-                <Route path="/admin/financial/cash-transactions" element={
-                    <ProtectedRoute allowedRoles={["Admin"]}>
-                        <AdminLayout>
-                            <CashTransactions />
-                        </AdminLayout>
-                    </ProtectedRoute>
-                } />
-                <Route path="/admin/financial/payments-info" element={
-                    <ProtectedRoute allowedRoles={["Admin"]}>
-                        <AdminLayout>
-                            <PaymentsInfo />
-                        </AdminLayout>
-                    </ProtectedRoute>
-                } />
+        <Route
+          path="/hr/departments/departments-inf"
+          element={
+            <ProtectedRoute allowedRoles={["HR"]}>
+              <HRLayout>
+                <Departments />
+              </HRLayout>
+            </ProtectedRoute>
+          }
+        />
 
+        <Route
+          path="/hr/employees/employee-info"
+          element={
+            <ProtectedRoute allowedRoles={["HR"]}>
+              <HRLayout>
+                <EmployeeInfo />
+              </HRLayout>
+            </ProtectedRoute>
+          }
+        />
 
-                {/* Users */}
-                <Route path="/admin/users/user-list" element={
-                    <ProtectedRoute allowedRoles={["Admin"]}>
-                        <AdminLayout>
-                            <UsersList />
-                        </AdminLayout>
-                    </ProtectedRoute>
-                } />
-                <Route path="/admin/system/notifications" element={
-                    <ProtectedRoute allowedRoles={["Admin"]}>
-                        <AdminLayout>
-                            <Notifications />
-                        </AdminLayout>
-                    </ProtectedRoute>
-                } />
-                <Route path="/admin/system/system-settings" element={
-                    <ProtectedRoute allowedRoles={["Admin"]}>
-                        <AdminLayout>
-                            <SystemSettings />
-                        </AdminLayout>
-                    </ProtectedRoute>
-                } />
-                <Route path="/admin/system/system-logs" element={
-                    <ProtectedRoute allowedRoles={["Admin"]}>
-                        <AdminLayout>
-                            <SystemLogs />
-                        </AdminLayout>
-                    </ProtectedRoute>
-                } />
+        <Route
+          path="/hr/employees/employee-education-info"
+          element={
+            <ProtectedRoute allowedRoles={["HR"]}>
+              <HRLayout>
+                <EmployeeEducation />
+              </HRLayout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/hr/employees/employee-documents"
+          element={
+            <ProtectedRoute allowedRoles={["HR"]}>
+              <HRLayout>
+                <EmployeeDocuments />
+              </HRLayout>
+            </ProtectedRoute>
+          }
+        />
 
+        {/* Financial */}
+        <Route
+          path="/financial/dashboard"
+          element={
+            <ProtectedRoute allowedRoles={["Financial"]}>
+              <FinancialLayout>
+                <FinancialDashboard />
+              </FinancialLayout>
+            </ProtectedRoute>
+          }
+        />
 
+        {/* PM */}
+        <Route
+          path="/pm/dashboard"
+          element={
+            <ProtectedRoute allowedRoles={["PM"]}>
+              <PMLayout>
+                <PMDashboard />
+              </PMLayout>
+            </ProtectedRoute>
+          }
+        />
 
+        {/* Employee */}
+        <Route
+          path="/employee/dashboard"
+          element={
+            <ProtectedRoute allowedRoles={["Employee"]}>
+              <EmployeeLayout>
+                <EmployeeDashboard />
+              </EmployeeLayout>
+            </ProtectedRoute>
+          }
+        />
 
-                {/* HR */}
-                <Route path="/hr/dashboard" element={
-                    <ProtectedRoute allowedRoles={["HR"]}>
-                        <HRLayout>
-                            <HRDashboard />
-                        </HRLayout>
-                    </ProtectedRoute>
-                } />
+        {/* Client */}
+        <Route
+          path="/client/dashboard"
+          element={
+            <ProtectedRoute allowedRoles={["Client"]}>
+              <ClientLayout>
+                <ClientDashboard />
+              </ClientLayout>
+            </ProtectedRoute>
+          }
+        />
 
-                 <Route path="/hr/company/company-documents" element={
-                    <ProtectedRoute allowedRoles={["HR"]}>
-                        <HRLayout>
-                            <CompanyDocuments />
-                        </HRLayout>
-                    </ProtectedRoute>
-                } />
-
-                <Route path="/hr/departments/departments-inf" element={
-                    <ProtectedRoute allowedRoles={["HR"]}>
-                        <HRLayout>
-                            <Departments />
-                        </HRLayout>
-                    </ProtectedRoute>
-                } />
-
-
-                {/* Financial */}
-                <Route path="/financial/dashboard" element={
-                    <ProtectedRoute allowedRoles={["Financial"]}>
-                        <FinancialLayout>
-                            <FinancialDashboard />
-                        </FinancialLayout>
-                    </ProtectedRoute>
-                } />
-
-                {/* PM */}
-                <Route path="/pm/dashboard" element={
-                    <ProtectedRoute allowedRoles={["PM"]}>
-                        <PMLayout>
-                            <PMDashboard />
-                        </PMLayout>
-                    </ProtectedRoute>
-                } />
-
-                {/* Employee */}
-                <Route path="/employee/dashboard" element={
-                    <ProtectedRoute allowedRoles={["Employee"]}>
-                        <EmployeeLayout>
-                            <EmployeeDashboard />
-                        </EmployeeLayout>
-                    </ProtectedRoute>
-                } />
-
-                {/* Client */}
-                <Route path="/client/dashboard" element={
-                    <ProtectedRoute allowedRoles={["Client"]}>
-                        <ClientLayout>
-                            <ClientDashboard />
-                        </ClientLayout>
-                    </ProtectedRoute>
-                } />
-
-                 <Route path="/client/system/notifications" element={
-                    <ProtectedRoute allowedRoles={["Client"]}>
-                        <ClientLayout>
-                            <Notifications />
-                        </ClientLayout>
-                    </ProtectedRoute>
-                } />
-
-
-            </Routes>
-        </BrowserRouter>
-    );
+        <Route
+          path="/client/system/notifications"
+          element={
+            <ProtectedRoute allowedRoles={["Client"]}>
+              <ClientLayout>
+                <Notifications />
+              </ClientLayout>
+            </ProtectedRoute>
+          }
+        />
+      </Routes>
+    </BrowserRouter>
+  );
 }
