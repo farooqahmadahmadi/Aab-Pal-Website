@@ -1,29 +1,29 @@
 const express = require("express");
 const router = express.Router();
+const { authMiddleware } = require("../middlewares/authMiddleware");
 const { upload } = require("../middlewares/uploadMiddleware");
 
 const {
-    listDocuments,
-    getDocument,
-    createDocument,
-    editDocument,
-    softDelete,
-    restore,
-    hardDelete
+  listDocuments,
+  getDocument,
+  createDocument,
+  editDocument,
+  deleteDocument,
 } = require("../controllers/employeeDocumentsController");
 
-// ===== ROUTES =====
-router.get("/", listDocuments);
-router.get("/:id", getDocument);
-router.post("/", upload.single("file"), createDocument);
-router.put("/:id", upload.single("file"), editDocument);
+// GET all documents
+router.get("/", authMiddleware, listDocuments);
 
-router.post("/soft-delete/:id", softDelete);
-router.post("/restore/:id", restore);
+// GET By ID
+router.get("/:id", authMiddleware, getDocument);
 
-router.delete("/:id", hardDelete);
+// CREATE document
+router.post("/", authMiddleware, upload.single("file"), createDocument);
+
+// UPDATE document
+router.put("/:id", authMiddleware, upload.single("file"), editDocument);
+
+// ONE DELETE (Auto Soft + Hard)
+router.delete("/:id", authMiddleware, deleteDocument);
 
 module.exports = router;
-
-
-

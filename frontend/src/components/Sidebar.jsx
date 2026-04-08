@@ -221,7 +221,7 @@ export default function Sidebar({ role }) {
           { name: "Employee", path: "/hr/employees/employee-info" },
           {
             name: "Employee Docuemnt",
-            path: "/hr/employees/employee-education-info",
+            path: "/hr/employees/employee-documents",
           },
         ],
       },

@@ -18,7 +18,7 @@ router.post("/", authMiddleware, uploadDoc.single("file"), createDocument);
 // UPDATE document
 router.put("/:id", authMiddleware, uploadDoc.single("file"), updateDocument);
 
-// DELETE document
+// ONE DELETE (Auto Soft + Hard)
 router.delete("/:id", authMiddleware, deleteDocument);
 
 module.exports = router;  

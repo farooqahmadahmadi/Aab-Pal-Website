@@ -3,82 +3,88 @@ const {
     getDocumentById,
     addDocument,
     updateDocument,
-    softDeleteDocument,
-    restoreDocument,
-    hardDeleteDocument
+    deleteDocument
 } = require("../services/employeeDocumentsService");
 
+// ===== GET ALL =====
 exports.listDocuments = async (req, res) => {
     try {
         const docs = await getAllDocuments();
         res.json(docs);
     } catch (err) {
-        console.error(err);
+        console.error("GET ERROR:", err.message);
         res.status(500).json({ message: "Failed to fetch documents" });
     }
 };
 
+// ===== GET BY ID =====
 exports.getDocument = async (req, res) => {
     try {
         const doc = await getDocumentById(req.params.id);
-        if (!doc) return res.status(404).json({ message: "Document not found" });
+
+        if (!doc)
+            return res.status(404).json({ message: "Document not found" });
+
         res.json(doc);
     } catch (err) {
-        console.error(err);
+        console.error("GET BY ID ERROR:", err.message);
         res.status(500).json({ message: "Failed to fetch document" });
     }
 };
 
+// ===== CREATE =====
 exports.createDocument = async (req, res) => {
     try {
-        const fileUrl = req.file ? `/uploads/documents/employees/${req.file.filename}` : null;
+        const fileUrl = req.file
+            ? `/uploads/documents/employees/${req.file.filename}`
+            : null;
+
         const data = { ...req.body, doc_file_url: fileUrl };
-        const doc = await addDocument(data);
+
+        const doc = await addDocument(data, req.user);
+
         res.status(201).json(doc);
     } catch (err) {
-        console.error(err);
-        res.status(500).json({ message: "Failed to add document" });
+        console.error("CREATE ERROR:", err.message);
+        res.status(400).json({
+            message: err.message || "Failed to add document",
+        });
     }
 };
 
+// ===== UPDATE =====
 exports.editDocument = async (req, res) => {
     try {
         const data = { ...req.body };
-        if (req.file) data.doc_file_url = `/uploads/documents/employees/${req.file.filename}`;
-        const doc = await updateDocument(req.params.id, data);
+
+        if (req.file)
+            data.doc_file_url = `/uploads/documents/employees/${req.file.filename}`;
+
+        const doc = await updateDocument(
+            req.params.id,
+            data,
+            req.user
+        );
+
         res.json(doc);
     } catch (err) {
-        console.error(err);
-        res.status(500).json({ message: "Failed to update document" });
+        console.error("UPDATE ERROR:", err.message);
+        res.status(400).json({
+            message: err.message || "Failed to update document",
+        });
     }
 };
 
-exports.softDelete = async (req, res) => {
+// ===== DELETE (Soft + Hard auto) =====
+exports.deleteDocument = async (req, res) => {
     try {
-        await softDeleteDocument(req.params.id);
-        res.json({ message: "Document soft deleted" });
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({ message: "Failed to soft delete document" });
-    }
-};
+        await deleteDocument(req.params.id, req.user);
 
-exports.restore = async (req, res) => {
-    try {
-        await restoreDocument(req.params.id);
-        res.json({ message: "Document restored" });
+        res.json({ message: "Document deleted successfully" });
     } catch (err) {
-        console.error(err);
-        res.status(500).json({ message: "Failed to restore document" });
-    }
-};
-
-exports.hardDelete = async (req, res) => {
-    try {
-        await hardDeleteDocument(req.params.id);
-        res.json({ message: "Document permanently deleted" });
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({ message: "Failed to hard delete document" });
+        console.error("DELETE ERROR:", err.message);
+        res.status(400).json({
+            message: err.message || "Failed to delete document",
+        });
     }
 };
