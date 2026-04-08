@@ -223,6 +223,10 @@ export default function Sidebar({ role }) {
             name: "Employee Docuemnt",
             path: "/hr/employees/employee-documents",
           },
+          {
+            name: "Employee Salary",
+            path: "/hr/employees/employee-salary-info",
+          },
         ],
       },
     ],

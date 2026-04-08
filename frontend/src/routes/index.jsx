@@ -540,6 +540,16 @@ export default function AppRoutes() {
             </ProtectedRoute>
           }
         />
+        <Route
+          path="/hr/employees/employee-salary-info"
+          element={
+            <ProtectedRoute allowedRoles={["HR"]}>
+              <HRLayout>
+                <EmployeeSalaryInfo />
+              </HRLayout>
+            </ProtectedRoute>
+          }
+        />
 
         {/* Financial */}
         <Route
