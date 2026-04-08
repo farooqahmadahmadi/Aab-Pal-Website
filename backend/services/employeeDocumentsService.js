@@ -2,6 +2,8 @@ const EmployeeDocuments = require("../models/EmployeeDocuments");
 const Employee = require("../models/EmployeeInfo");
 const { handleDelete } = require("../utils/deleteHelper");
 const logService = require("./systemLogsService");
+const fs = require("fs");
+const path = require("path");
 
 // ===== GET ALL DOCUMENTS =====
 exports.getAllDocuments = async () => {
@@ -69,7 +71,7 @@ exports.updateDocument = async (id, data, user = {}) => {
     return doc;
 };
 
-// ===== DELETE (Soft + Hard via helper) =====
+// ===== DELETE DOCUMENT (Soft + Hard + File removal) =====
 exports.deleteDocument = async (id, user = {}) => {
     const doc = await EmployeeDocuments.findByPk(id);
 
@@ -78,6 +80,15 @@ exports.deleteDocument = async (id, user = {}) => {
 
     const user_id = user.user_id || 0;
 
+    // If doc_file_url Exist and Admin Confirm delete operation
+    if (user?.role === "Admin" && doc.doc_file_url) {
+        const filePath = path.join(__dirname, "..", doc.doc_file_url);
+        fs.unlink(filePath, (err) => {
+            if (err) console.error("Failed to delete file:", err.message);
+        });
+    }
+
+    // Soft/Hard delete via helper
     await handleDelete(
         doc,
         user,
