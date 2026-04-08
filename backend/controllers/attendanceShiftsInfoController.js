@@ -1,55 +1,71 @@
 const attendanceService = require("../services/attendanceShiftsInfoService");
 
-const getShifts = async (req, res) => {
-    try {
-        const shifts = await attendanceService.getAllShifts();
-        res.json(shifts);
-    } catch (err) {
-        res.status(500).json({ message: "Failed to fetch shifts", error: err.message });
-    }
+// ===== GET ALL =====
+exports.getShifts = async (req, res) => {
+  try {
+    const shifts = await attendanceService.getAllShifts();
+    res.json(shifts);
+  } catch (err) {
+    console.error("GET SHIFTS ERROR:", err.message);
+    res.status(500).json({ message: "Failed to fetch shifts" });
+  }
 };
 
-const getShift = async (req, res) => {
-    try {
-        const shift = await attendanceService.getShiftById(req.params.id);
-        if (!shift) return res.status(404).json({ message: "Shift not found" });
-        res.json(shift);
-    } catch (err) {
-        res.status(500).json({ message: "Failed to fetch shift", error: err.message });
-    }
+// ===== GET BY ID =====
+exports.getShift = async (req, res) => {
+  try {
+    const shift = await attendanceService.getShiftById(req.params.id);
+    if (!shift) return res.status(404).json({ message: "Shift not found" });
+    res.json(shift);
+  } catch (err) {
+    console.error("GET SHIFT ERROR:", err.message);
+    res.status(500).json({ message: "Failed to fetch shift" });
+  }
 };
 
-const createShift = async (req, res) => {
-    try {
-        const shift = await attendanceService.createShift(req.body);
-        res.status(201).json(shift);
-    } catch (err) {
-        res.status(400).json({ message: "Failed to create shift", error: err.message });
-    }
+// ===== CREATE =====
+exports.createShift = async (req, res) => {
+  try {
+    const shift = await attendanceService.createShift(req.body, req.user);
+    res.status(201).json(shift);
+  } catch (err) {
+    console.error("CREATE SHIFT ERROR:", err.message);
+    res.status(400).json({
+      message: err.message || "Failed to create shift",
+    });
+  }
 };
 
-const updateShift = async (req, res) => {
-    try {
-        await attendanceService.updateShift(req.params.id, req.body);
-        res.json({ message: "Shift updated successfully" });
-    } catch (err) {
-        res.status(400).json({ message: "Failed to update shift", error: err.message });
-    }
+// ===== UPDATE =====
+exports.updateShift = async (req, res) => {
+  try {
+    const shift = await attendanceService.updateShift(
+      req.params.id,
+      req.body,
+      req.user,
+    );
+
+    res.json({
+      message: "Shift updated successfully",
+      shift,
+    });
+  } catch (err) {
+    console.error("UPDATE SHIFT ERROR:", err.message);
+    res.status(400).json({
+      message: err.message || "Failed to update shift",
+    });
+  }
 };
 
-const deleteShift = async (req, res) => {
-    try {
-        await attendanceService.deleteShift(req.params.id);
-        res.json({ message: "Shift deleted successfully" });
-    } catch (err) {
-        res.status(400).json({ message: "Failed to delete shift", error: err.message });
-    }
-};
-
-module.exports = {
-    getShifts,
-    getShift,
-    createShift,
-    updateShift,
-    deleteShift
+// ===== DELETE =====
+exports.deleteShift = async (req, res) => {
+  try {
+    await attendanceService.deleteShift(req.params.id, req.user);
+    res.json({ message: "Shift deleted successfully" });
+  } catch (err) {
+    console.error("DELETE SHIFT ERROR:", err.message);
+    res.status(400).json({
+      message: err.message || "Failed to delete shift",
+    });
+  }
 };
