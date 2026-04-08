@@ -1,41 +1,47 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../config/db");
 
-const EmpSalaryInfo = sequelize.define("EmpSalaryInfo", {
+const EmpSalaryInfo = sequelize.define(
+  "EmpSalaryInfo",
+  {
     employee_salary_id: {
-        type: DataTypes.BIGINT.UNSIGNED,
-        primaryKey: true,
-        autoIncrement: true
+      type: DataTypes.BIGINT.UNSIGNED,
+      primaryKey: true,
+      autoIncrement: true,
     },
     employee_id: {
-        type: DataTypes.BIGINT.UNSIGNED,
-        allowNull: false
+      type: DataTypes.BIGINT.UNSIGNED,
+      allowNull: false,
     },
     base_salary: {
-        type: DataTypes.DECIMAL(10, 2)
+      type: DataTypes.DECIMAL(10, 2),
+      defaultValue: 0,
     },
     allowance: {
-        type: DataTypes.DECIMAL(10, 2)
+      type: DataTypes.DECIMAL(10, 2),
+      defaultValue: 0,
     },
     effective_from: {
-        type: DataTypes.DATEONLY
+      type: DataTypes.DATEONLY,
     },
     effective_to: {
-        type: DataTypes.DATEONLY
+      type: DataTypes.DATEONLY,
     },
     is_active: {
-        type: DataTypes.BOOLEAN,
-        defaultValue: false
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
     },
     is_deleted: {
-        type: DataTypes.BOOLEAN,
-        defaultValue: false
-    }
-}, {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
+    },
+  },
+  {
     tableName: "emp_salary_info",
     timestamps: true,
     createdAt: "created_at",
-    updatedAt: "updated_at"
-});
+    updatedAt: "updated_at",
+  },
+);
 
 module.exports = EmpSalaryInfo;
