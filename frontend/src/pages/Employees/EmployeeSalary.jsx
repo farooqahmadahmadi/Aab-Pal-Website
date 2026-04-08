@@ -153,7 +153,7 @@ export default function EmployeeSalary() {
                                                 : "bg-red-100 text-red-600"
                                             }`}
                                     >
-                                        {r.is_active ? "Active" : "Inactive"}
+                                        {r.is_active ? "Active" : "InActive"}
                                     </span>
                                 </td>
 
