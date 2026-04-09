@@ -1,16 +1,34 @@
 const express = require("express");
 const router = express.Router();
-const { uploadProjectDoc } = require("../middlewares/uploadMiddleware");
-const {
-    getDocuments,
-    createDocument,
-    updateDocument,
-    deleteDocument,
-} = require("../controllers/projectDocumentController");
 
-router.get("/", getDocuments);
-router.post("/", uploadProjectDoc.single("file"), createDocument);
-router.put("/:id", uploadProjectDoc.single("file"), updateDocument);
-router.delete("/:id", deleteDocument);
+const { authMiddleware } = require("../middlewares/authMiddleware");
+const { uploadProjectDoc } = require("../middlewares/uploadMiddleware");
+
+const controller = require("../controllers/projectDocumentController");
+
+// ===== GET ALL =====
+router.get("/", authMiddleware, controller.getDocuments);
+
+// ===== GET BY ID =====
+router.get("/:id", authMiddleware, controller.getDocumentById);
+
+// ===== CREATE =====
+router.post(
+  "/",
+  authMiddleware,
+  uploadProjectDoc.single("file"),
+  controller.createDocument,
+);
+
+// ===== UPDATE =====
+router.put(
+  "/:id",
+  authMiddleware,
+  uploadProjectDoc.single("file"),
+  controller.updateDocument,
+);
+
+// ===== DELETE =====
+router.delete("/:id", authMiddleware, controller.deleteDocument);
 
 module.exports = router;
