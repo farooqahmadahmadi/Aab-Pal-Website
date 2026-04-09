@@ -5,27 +5,32 @@ async function handleDelete(record, user, tableName, user_id = 0) {
 
     const oldValue = record.toJSON();
 
+    // ✅ get primary key dynamically from Sequelize model
+    const primaryKey = record.constructor.primaryKeyAttributes[0];
+
+    const recordId = oldValue[primaryKey] || null;
+
     if (user?.role === "Admin") {
-        //  HARD DELETE
+        // 🔴 HARD DELETE
         await record.destroy();
 
         await logService.createLog({
             user_id,
             action: "HARD_DELETE",
             reference_table: tableName,
-            reference_record_id: oldValue.id || oldValue[`${tableName}_id`],
+            reference_record_id: recordId,
             old_value: oldValue,
             new_value: null,
         });
     } else {
-        //  SOFT DELETE
+        // 🟢 SOFT DELETE
         await record.update({ is_deleted: true });
 
         await logService.createLog({
             user_id,
             action: "SOFT_DELETE",
             reference_table: tableName,
-            reference_record_id: oldValue.id || oldValue[`${tableName}_id`],
+            reference_record_id: recordId,
             old_value: oldValue,
             new_value: null,
         });

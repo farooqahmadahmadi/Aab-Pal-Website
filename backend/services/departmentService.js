@@ -1,7 +1,8 @@
 const Department = require("../models/DepartmentInfo");
 const logService = require("./systemLogsService");
+const { handleDelete } = require("../utils/deleteHelper");
 
-// ===== GET all =====
+// ===== GET ALL =====
 exports.getDepartments = async () => {
     return await Department.findAll({
         where: { is_deleted: false },
@@ -9,15 +10,21 @@ exports.getDepartments = async () => {
     });
 };
 
+// ===== GET BY ID =====
+exports.getDepartmentById = async (id) => {
+    return await Department.findOne({
+        where: { department_id: id, is_deleted: false },
+    });
+};
+
 // ===== CREATE =====
 exports.createDepartment = async (data, user_id = 0) => {
     const dept = await Department.create(data);
 
-    // 🔥 LOG
     await logService.createLog({
-        user_id,
+        user_id: user_id,
         action: "CREATE",
-        reference_table: "departments",
+        reference_table: "department_info",
         reference_record_id: dept.department_id,
         old_value: null,
         new_value: dept.toJSON(),
@@ -35,57 +42,29 @@ exports.updateDepartment = async (id, data, user_id = 0) => {
     if (!dept) throw new Error("Department not found");
 
     const oldValue = dept.toJSON();
-    const updated = await dept.update(data);
+    await dept.update(data);
 
-    // 🔥 LOG
     await logService.createLog({
-        user_id,
+        user_id: user_id,
         action: "UPDATE",
-        reference_table: "departments",
+        reference_table: "department_info",
         reference_record_id: dept.department_id,
         old_value: oldValue,
-        new_value: updated.toJSON(),
+        new_value: dept.toJSON(),
     });
 
-    return updated;
+    return dept;
 };
 
-// ===== DELETE (Soft + Hard) =====
-exports.deleteDepartment = async (id, user, user_id = 0) => {
+// ===== DELETE (Soft + Hard via helper) =====
+exports.deleteDepartment = async (id, user) => {
     const dept = await Department.findOne({
         where: { department_id: id, is_deleted: false },
     });
 
     if (!dept) throw new Error("Department not found");
 
-    const oldValue = dept.toJSON();
-
-    // ✅ HardDelete only if role is exactly "Admin"
-    if (user?.role === "Admin") {
-        // 🔴 HARD DELETE
-        await dept.destroy();
-
-        await logService.createLog({
-            user_id,
-            action: "HARD_DELETE",
-            reference_table: "departments",
-            reference_record_id: id,
-            old_value: oldValue,
-            new_value: null,
-        });
-    } else {
-        // 🟢 SOFT DELETE
-        await dept.update({ is_deleted: true });
-
-        await logService.createLog({
-            user_id,
-            action: "SOFT_DELETE",
-            reference_table: "departments",
-            reference_record_id: id,
-            old_value: oldValue,
-            new_value: null,
-        });
-    }
+    await handleDelete(dept, user, "department_info", user?.user_id || 0);
 
     return true;
 };

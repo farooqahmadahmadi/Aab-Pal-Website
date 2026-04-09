@@ -1,54 +1,64 @@
-const {
-    getDepartments,
-    createDepartment,
-    updateDepartment,
-    deleteDepartment,
-} = require("../services/departmentService");
+const DepartmentService = require("../services/departmentService");
 
-// ================= GET =================
+// ===== GET ALL =====
 exports.getAll = async (req, res) => {
     try {
-        const data = await getDepartments();
+        const data = await DepartmentService.getDepartments();
         res.json(data);
     } catch (err) {
         console.error("GET DEPARTMENTS ERROR:", err.message);
-        res.status(500).json({ message: err.message });
+        res.status(500).json({ message: "Failed to fetch departments" });
     }
 };
 
-// ================= CREATE =================
+// ===== GET BY ID =====
+exports.getById = async (req, res) => {
+    try {
+        const dept = await DepartmentService.getDepartmentById(req.params.id);
+
+        if (!dept)
+            return res.status(404).json({ message: "Department not found" });
+
+        res.json(dept);
+    } catch (err) {
+        console.error("GET DEPARTMENT ERROR:", err.message);
+        res.status(500).json({ message: "Failed to fetch department" });
+    }
+};
+
+// ===== CREATE =====
 exports.create = async (req, res) => {
     try {
         const user_id = req.user?.user_id || 0;
-        const data = await createDepartment(req.body, user_id);
-        res.status(201).json(data);
+        const dept = await DepartmentService.createDepartment(req.body, user_id);
+
+        res.status(201).json(dept);
     } catch (err) {
         console.error("CREATE DEPARTMENT ERROR:", err.message);
         res.status(400).json({ message: err.message });
     }
 };
 
-// ================= UPDATE =================
+// ===== UPDATE =====
 exports.update = async (req, res) => {
     try {
         const user_id = req.user?.user_id || 0;
-        const data = await updateDepartment(req.params.id, req.body, user_id);
-        res.json(data);
+        const dept = await DepartmentService.updateDepartment(req.params.id, req.body, user_id);
+
+        res.json(dept);
     } catch (err) {
         console.error("UPDATE DEPARTMENT ERROR:", err.message);
         res.status(400).json({ message: err.message });
     }
 };
 
-// ================= DELETE =================
+// ===== DELETE =====
 exports.remove = async (req, res) => {
     try {
         const user = req.user;
-        const user_id = req.user?.user_id || 0;
+        await DepartmentService.deleteDepartment(req.params.id, user);
 
-        await deleteDepartment(req.params.id, user, user_id);
-
-        res.json({ message: "Deleted successfully" });
+        res.json({ message: "Department deleted successfully" });
     } catch (err) {
         console.error("DELETE DEPARTMENT ERROR:", err.message);
         res.status(400).json({ message: err.message });
