@@ -5,18 +5,18 @@ const { authMiddleware } = require("../middlewares/authMiddleware");
 const controller = require("../controllers/empHiringInfoController");
 
 // ===== GET ALL =====
-router.get("/", authMiddleware, controller.getAllHiring);
+router.get("/", authMiddleware, controller.getAll);
 
 // ===== GET BY ID =====
-router.get("/:id", authMiddleware, controller.getHiringById);
+router.get("/:id", authMiddleware, controller.getById);
 
 // ===== CREATE =====
-router.post("/", authMiddleware, controller.addHiring);
+router.post("/", authMiddleware, controller.create);
 
 // ===== UPDATE =====
-router.put("/:id", authMiddleware, controller.updateHiring);
+router.put("/:id", authMiddleware, controller.update);
 
-// ===== DELETE (Soft + Hard via deleteHelper) =====
-router.delete("/:id", authMiddleware, controller.deleteHiring);
+// ===== DELETE =====
+router.delete("/:id", authMiddleware, controller.delete);
 
 module.exports = router;

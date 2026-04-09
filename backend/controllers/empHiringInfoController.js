@@ -1,72 +1,75 @@
 const EmpHiringInfoService = require("../services/empHiringInfoService");
 
 // ===== GET ALL =====
-exports.getAllHiring = async (req, res) => {
+exports.getAll = async (req, res) => {
   try {
     const data = await EmpHiringInfoService.getAll();
     res.json(data);
   } catch (err) {
-    console.error("GET ALL ERROR:", err.message);
+    console.error("GET ALL HIRING INFO ERROR:", err.message);
     res.status(500).json({ message: "Failed to fetch hiring info" });
   }
 };
 
 // ===== GET BY ID =====
-exports.getHiringById = async (req, res) => {
+exports.getById = async (req, res) => {
   try {
-    const hiring = await EmpHiringInfoService.getById(req.params.id);
+    const record = await EmpHiringInfoService.getById(req.params.id);
 
-    if (!hiring) return res.status(404).json({ message: "Not found" });
+    if (!record)
+      return res.status(404).json({ message: "Hiring info not found" });
 
-    res.json(hiring);
+    res.json(record);
   } catch (err) {
-    console.error("GET BY ID ERROR:", err.message);
+    console.error("GET HIRING BY ID ERROR:", err.message);
     res.status(500).json({ message: "Failed to fetch hiring info" });
   }
 };
 
 // ===== CREATE =====
-exports.addHiring = async (req, res) => {
+exports.create = async (req, res) => {
   try {
-    const newHiring = await EmpHiringInfoService.create(req.body, req.user);
+    const user = req.user || {};
+    const record = await EmpHiringInfoService.create(req.body, user);
 
-    res.status(201).json(newHiring);
+    res.status(201).json(record);
   } catch (err) {
-    console.error("CREATE ERROR:", err.message);
-    res
-      .status(400)
-      .json({ message: err.message || "Failed to add hiring info" });
+    console.error("CREATE HIRING INFO ERROR:", err.message);
+    res.status(400).json({
+      message: "Failed to create hiring info",
+      error: err.message,
+    });
   }
 };
 
 // ===== UPDATE =====
-exports.updateHiring = async (req, res) => {
+exports.update = async (req, res) => {
   try {
-    const hiring = await EmpHiringInfoService.update(
-      req.params.id,
-      req.body,
-      req.user,
-    );
+    const user = req.user || {};
+    const record = await EmpHiringInfoService.update(req.params.id, req.body, user);
 
-    res.json(hiring);
+    res.json(record);
   } catch (err) {
-    console.error("UPDATE ERROR:", err.message);
-    res
-      .status(400)
-      .json({ message: err.message || "Failed to update hiring info" });
+    console.error("UPDATE HIRING INFO ERROR:", err.message);
+    res.status(400).json({
+      message: "Failed to update hiring info",
+      error: err.message,
+    });
   }
 };
 
 // ===== DELETE =====
-exports.deleteHiring = async (req, res) => {
+exports.delete = async (req, res) => {
   try {
-    await EmpHiringInfoService.delete(req.params.id, req.user);
+    const user = req.user || {};
+    await EmpHiringInfoService.delete(req.params.id, user);
 
-    res.json({ message: "Deleted successfully" });
+    res.json({ message: "Hiring info deleted successfully" });
   } catch (err) {
-    console.error("DELETE ERROR:", err.message);
-    res
-      .status(400)
-      .json({ message: err.message || "Failed to delete hiring info" });
+    console.error("DELETE HIRING INFO ERROR:", err.message);
+    res.status(400).json({
+      message: "Failed to delete hiring info",
+      error: err.message,
+    });
   }
 };

@@ -2,19 +2,20 @@ const EmpHiringInfo = require("../models/EmpHiringInfo");
 const { handleDelete } = require("../utils/deleteHelper");
 const logService = require("./systemLogsService");
 
+// ===== EMP HIRING INFO SERVICE =====
 const EmpHiringInfoService = {
   // ===== GET ALL =====
   getAll: async () => {
     return await EmpHiringInfo.findAll({
       where: { is_deleted: false },
-      order: [["hiring_id", "DESC"]], 
+      order: [["hiring_id", "DESC"]],
     });
   },
 
   // ===== GET BY ID =====
   getById: async (id) => {
     return await EmpHiringInfo.findOne({
-      where: { hiring_id: id, is_deleted: false }, 
+      where: { hiring_id: id, is_deleted: false },
     });
   },
 
@@ -26,7 +27,7 @@ const EmpHiringInfoService = {
       user_id: user.user_id || 0,
       action: "CREATE",
       reference_table: "emp_hiring_info",
-      reference_record_id: record.hiring_id, 
+      reference_record_id: record.hiring_id,
       old_value: null,
       new_value: record.toJSON(),
     });
@@ -36,33 +37,36 @@ const EmpHiringInfoService = {
 
   // ===== UPDATE =====
   update: async (id, data, user = {}) => {
-    const hiring = await EmpHiringInfo.findByPk(id);
+    const record = await EmpHiringInfo.findOne({
+      where: { hiring_id: id, is_deleted: false },
+    });
 
-    if (!hiring || hiring.is_deleted) throw new Error("Record not found");
+    if (!record) throw new Error("Record not found");
 
-    const oldValue = hiring.toJSON();
-
-    await hiring.update(data);
+    const oldValue = record.toJSON();
+    await record.update(data);
 
     await logService.createLog({
       user_id: user.user_id || 0,
       action: "UPDATE",
       reference_table: "emp_hiring_info",
-      reference_record_id: hiring.hiring_id,
+      reference_record_id: record.hiring_id,
       old_value: oldValue,
-      new_value: hiring.toJSON(),
+      new_value: record.toJSON(),
     });
 
-    return hiring;
+    return record;
   },
 
   // ===== DELETE =====
   delete: async (id, user = {}) => {
-    const hiring = await EmpHiringInfo.findByPk(id);
+    const record = await EmpHiringInfo.findOne({
+      where: { hiring_id: id, is_deleted: false },
+    });
 
-    if (!hiring || hiring.is_deleted) throw new Error("Record not found");
+    if (!record) throw new Error("Record not found");
 
-    await handleDelete(hiring, user, "emp_hiring_info", user.user_id || 0);
+    await handleDelete(record, user, "emp_hiring_info", user.user_id || 0);
 
     return true;
   },

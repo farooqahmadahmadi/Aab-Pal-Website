@@ -1,71 +1,70 @@
-'use strict';
+"use strict";
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('emp_hiring_info', {
+    await queryInterface.createTable("emp_hiring_info", {
       hiring_id: {
         type: Sequelize.BIGINT.UNSIGNED,
         primaryKey: true,
-        autoIncrement: true
+        autoIncrement: true,
       },
       employee_id: {
         type: Sequelize.BIGINT.UNSIGNED,
         allowNull: false,
         references: {
-          model: 'employee_info',
-          key: 'employee_id'
+          model: "employee_info",
+          key: "employee_id",
         },
-        onUpdate: 'CASCADE',
-        onDelete: 'CASCADE'
+        onUpdate: "CASCADE",
+        onDelete: "CASCADE",
       },
       department_id: {
         type: Sequelize.BIGINT.UNSIGNED,
         allowNull: false,
         references: {
-          model: 'department_info',
-          key: 'department_id'
+          model: "department_info",
+          key: "department_id",
         },
-        onUpdate: 'CASCADE',
-        onDelete: 'CASCADE'
+        onUpdate: "CASCADE",
+        onDelete: "CASCADE",
       },
       attendance_shift_id: {
         type: Sequelize.BIGINT.UNSIGNED,
         allowNull: false,
         references: {
-          model: 'attendance_shifts_info',
-          key: 'attendance_shift_id'
+          model: "attendance_shifts_info",
+          key: "attendance_shift_id",
         },
-        onUpdate: 'CASCADE',
-        onDelete: 'CASCADE'
-
+        onUpdate: "CASCADE",
+        onDelete: "CASCADE",
       },
       position: {
-        type: Sequelize.STRING(50)
+        type: Sequelize.STRING(50),
       },
       employment_type: {
-        type: Sequelize.STRING(50)
+        type: Sequelize.STRING(50),
       },
       hire_date: {
-        type: Sequelize.DATEONLY
+        type: Sequelize.DATEONLY,
       },
       end_date: {
-        type: Sequelize.DATEONLY
+        type: Sequelize.DATEONLY,
       },
       current_status: {
-        type: Sequelize.ENUM('Active', 'InActive', 'Other')
-      },
-      created_at: {
-        type: Sequelize.DATE
-      },
-      updated_at: {
-        type: Sequelize.DATE
+        type: Sequelize.ENUM("Active", "InActive", "Other"),
       },
       is_deleted: {
         type: Sequelize.BOOLEAN,
-        defaultValue: false
-      }
+        defaultValue: false,
+      },
+      created_at: {
+        type: Sequelize.DATE,
+      },
+      updated_at: {
+        type: Sequelize.DATE,
+      },
     });
   },
   async down(queryInterface) {
-    await queryInterface.dropTable('emp_hiring_info');
-  }
+    await queryInterface.dropTable("emp_hiring_info");
+  },
 };
