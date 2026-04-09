@@ -1,54 +1,69 @@
 const service = require("../services/equipmentDocumentsService");
 
-// GET ALL
+// ===== GET ALL =====
 exports.getAll = async (req, res) => {
-    try {
-        const data = await service.getDocuments();
-        res.json(data);
-    } catch (err) {
-        res.status(500).json({ message: err.message });
-    }
+  try {
+    const data = await service.getDocuments();
+    res.json(data);
+  } catch (err) {
+    console.error("GET DOCUMENTS ERROR:", err.message);
+    res.status(500).json({ message: err.message });
+  }
 };
 
-// CREATE
+// ===== CREATE =====
 exports.create = async (req, res) => {
-    try {
-        if (!req.file) return res.status(400).json({ message: "File required" });
+  try {
+    const user = req.user;
+    if (!req.file) return res.status(400).json({ message: "File required" });
 
-        const data = {
-            ...req.body,
-            doc_file_url: `/uploads/documents/equipments/${req.file.filename}`
-        };
+    const data = {
+      equipment_id: req.body.equipment_id,
+      document_name: req.body.doc_name,
+      document_description: req.body.doc_description || null,
+      document_file_url: `/uploads/documents/equipments/${req.file.filename}`,
+    };
 
-        const item = await service.createDocument(data);
-        res.status(201).json(item);
-    } catch (err) {
-        res.status(400).json({ message: err.message });
-    }
+    const item = await service.createDocument(data, user);
+    res.status(201).json(item);
+  } catch (err) {
+    console.error("CREATE DOCUMENT ERROR:", err.message);
+    res.status(400).json({ message: err.message });
+  }
 };
 
-// UPDATE
+// ===== UPDATE =====
 exports.update = async (req, res) => {
-    try {
-        const data = { ...req.body };
+  try {
+    const user = req.user;
 
-        if (req.file) {
-            data.doc_file_url = `/uploads/documents/equipments/${req.file.filename}`;
-        }
+    const data = {
+      equipment_id: req.body.equipment_id,
+      document_name: req.body.doc_name,
+      document_description: req.body.doc_description,
+    };
 
-        const item = await service.updateDocument(req.params.id, data);
-        res.json(item);
-    } catch (err) {
-        res.status(400).json({ message: err.message });
+    if (req.file) {
+      data.document_file_url = `/uploads/documents/equipments/${req.file.filename}`;
     }
+
+    const item = await service.updateDocument(req.params.id, data, user);
+    res.json(item);
+  } catch (err) {
+    console.error("UPDATE DOCUMENT ERROR:", err.message);
+    res.status(400).json({ message: err.message });
+  }
 };
 
-// DELETE
+// ===== DELETE =====
 exports.remove = async (req, res) => {
-    try {
-        await service.deleteDocument(req.params.id);
-        res.json({ message: "Deleted successfully" });
-    } catch (err) {
-        res.status(400).json({ message: err.message });
-    }
+  try {
+    const user = req.user;
+
+    await service.deleteDocument(req.params.id, user);
+    res.json({ message: "Deleted successfully" });
+  } catch (err) {
+    console.error("DELETE DOCUMENT ERROR:", err.message);
+    res.status(400).json({ message: err.message });
+  }
 };

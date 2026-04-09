@@ -2,16 +2,26 @@ import React, { useEffect, useState } from "react";
 import { FaPlus } from "react-icons/fa";
 
 export default function EquipmentDocumentsModal({ isOpen, onClose, onSubmit, initialData }) {
-    const [form, setForm] = useState({
+    const defaultForm = {
         equipment_id: "",
         doc_name: "",
         doc_description: "",
         doc_file: null
-    });
+    };
+
+    const [form, setForm] = useState(defaultForm);
 
     useEffect(() => {
-        if (initialData) setForm({ ...initialData, doc_file: null }); // doc_file نوي فایل لپاره null
-        else setForm({ equipment_id: "", doc_name: "", doc_description: "", doc_file: null });
+        if (initialData) {
+            setForm({
+                equipment_id: initialData.equipment_id || "",
+                doc_name: initialData.document_name || "",
+                doc_description: initialData.document_description || "",
+                doc_file: null
+            });
+        } else {
+            setForm(defaultForm);
+        }
     }, [initialData, isOpen]);
 
     if (!isOpen) return null;
@@ -30,7 +40,7 @@ export default function EquipmentDocumentsModal({ isOpen, onClose, onSubmit, ini
         formData.append("equipment_id", form.equipment_id);
         formData.append("doc_name", form.doc_name);
         formData.append("doc_description", form.doc_description);
-        if (form.doc_file) formData.append("doc_file", form.doc_file); // که نوی فایل وي
+        if (form.doc_file) formData.append("doc_file", form.doc_file);
 
         onSubmit(formData);
     };
@@ -40,9 +50,29 @@ export default function EquipmentDocumentsModal({ isOpen, onClose, onSubmit, ini
             <div className="bg-white p-6 rounded w-96 max-h-[90%] overflow-auto">
                 <h3 className="text-lg font-bold mb-4">{initialData ? "Edit Document" : "Add Document"}</h3>
                 <form onSubmit={submit} className="space-y-3">
-                    <input name="equipment_id" value={form.equipment_id} onChange={handleChange} placeholder="Equipment ID" className="w-full border p-2 rounded" required />
-                    <input name="doc_name" value={form.doc_name} onChange={handleChange} placeholder="Document Name" className="w-full border p-2 rounded" required />
-                    <input name="doc_description" value={form.doc_description} onChange={handleChange} placeholder="Description" className="w-full border p-2 rounded" />
+                    <input
+                        name="equipment_id"
+                        value={form.equipment_id}
+                        onChange={handleChange}
+                        placeholder="Equipment ID"
+                        className="w-full border p-2 rounded"
+                        required
+                    />
+                    <input
+                        name="doc_name"
+                        value={form.doc_name}
+                        onChange={handleChange}
+                        placeholder="Document Name"
+                        className="w-full border p-2 rounded"
+                        required
+                    />
+                    <input
+                        name="doc_description"
+                        value={form.doc_description}
+                        onChange={handleChange}
+                        placeholder="Description"
+                        className="w-full border p-2 rounded"
+                    />
 
                     <label className="block">
                         <span className="text-gray-700 mb-1">Choose File:</span>

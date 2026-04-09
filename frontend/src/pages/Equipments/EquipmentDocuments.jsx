@@ -41,7 +41,7 @@ export default function EquipmentDocuments() {
         let f = [...data];
         f = f.filter(i =>
             i.document_id.toString().includes(search) ||
-            i.doc_name?.toLowerCase().includes(search.toLowerCase())
+            i.document_name?.toLowerCase().includes(search.toLowerCase())
         );
         f.sort((a, b) => {
             let valA = a[sortField];
@@ -95,10 +95,10 @@ export default function EquipmentDocuments() {
     };
     const handleDownload = async (doc) => {
         try {
-            const res = await fetch(`${BASE_URL}${doc.doc_file_url}`);
+            const res = await fetch(`${BASE_URL}${doc.document_file_url}`);
             const blob = await res.blob();
             const ext = doc.doc_file_url.split(".").pop();
-            const safeName = doc.doc_name.replace(/\s+/g, "_");
+            const safeName = doc.document_name.replace(/\s+/g, "_");
             const fileName = `${doc.document_id}_${safeName}_${new Date(doc.updated_at).getTime()}.${ext}`;
             const url = window.URL.createObjectURL(blob);
             const link = document.createElement("a");
@@ -137,8 +137,8 @@ export default function EquipmentDocuments() {
                             <tr key={i.document_id} className="border-t hover:bg-gray-50">
                                 <td className="p-2">{i.document_id}</td>
                                 <td className="p-2">{i.equipment_id}</td>
-                                <td className="p-2 text-left">{i.doc_name}</td>
-                                <td className="p-2 text-left">{i.doc_description}</td>
+                                <td className="p-2 text-left">{i.document_name}</td>
+                                <td className="p-2 text-left">{i.document_description}</td>
 
                                 <td className="p-2 flex justify-center gap-1.5">
                                     <button onClick={() => handlePreview(i)} className="bg-purple-500 px-2 py-1 text-white rounded"><FiEye /></button>
@@ -170,7 +170,7 @@ export default function EquipmentDocuments() {
             {deleteData && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
                     <div className="bg-white p-6 rounded w-96">
-                        <p>Are you sure to delete <strong>{deleteData.doc_name || "record"}</strong>?</p>
+                        <p>Are you sure to delete <strong>{deleteData.document_name || "record"}</strong>?</p>
                         <div className="flex justify-end gap-2 mt-4">
                             <button onClick={() => setDeleteData(null)} className="bg-gray-300 px-4 py-2 rounded">Cancel</button>
                             <button onClick={handleDelete} className="bg-red-500 text-white px-4 py-2 rounded">Delete</button>
@@ -183,14 +183,14 @@ export default function EquipmentDocuments() {
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
                     <div className="bg-white p-2 rounded-2xl w-[50%] h-[80%] overflow-auto">
                         <div className="flex justify-between m-2">
-                            <h3 className="font-bold">{previewData.doc_name}</h3>
+                            <h3 className="font-bold">{previewData.document_name}</h3>
                             <span onClick={() => setPreviewData(null)} className="cursor-pointer text-red-500"><FiXCircle /></span>
                         </div>
-                        {getFileType(previewData.doc_file_url) === "image" && (
-                            <img src={`${BASE_URL}${previewData.doc_file_url}`} className="mx-auto" />
+                        {getFileType(previewData.document_file_url) === "image" && (
+                            <img src={`${BASE_URL}${previewData.document_file_url}`} className="mx-auto" />
                         )}
-                        {getFileType(previewData.doc_file_url) === "pdf" && (
-                            <iframe src={`${BASE_URL}${previewData.doc_file_url}`} className="w-full h-[90%]" />
+                        {getFileType(previewData.document_file_url) === "pdf" && (
+                            <iframe src={`${BASE_URL}${previewData.document_file_url}`} className="w-full h-[90%]" />
                         )}
                     </div>
                 </div>
