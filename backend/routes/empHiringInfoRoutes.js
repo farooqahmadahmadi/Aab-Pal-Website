@@ -1,8 +1,8 @@
 const express = require("express");
 const router = express.Router();
 
-const { authMiddleware } = require("../middlewares/authMiddleware");
 const controller = require("../controllers/empHiringInfoController");
+const { authMiddleware } = require("../middlewares/authMiddleware");
 
 // ===== GET ALL =====
 router.get("/", authMiddleware, controller.getAll);
