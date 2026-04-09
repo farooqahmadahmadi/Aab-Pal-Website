@@ -1,11 +1,22 @@
 const express = require("express");
 const router = express.Router();
+
+const { authMiddleware } = require("../middlewares/authMiddleware");
 const controller = require("../controllers/projectPhasesController");
 
-router.get("/", controller.getPhases);
-router.get("/:id", controller.getPhase);
-router.post("/", controller.createPhase);
-router.put("/:id", controller.updatePhase);
-router.delete("/:id", controller.deletePhase);
+// ===== GET ALL =====
+router.get("/", authMiddleware, controller.getPhases);
+
+// ===== GET BY ID =====
+router.get("/:id", authMiddleware, controller.getPhase);
+
+// ===== CREATE =====
+router.post("/", authMiddleware, controller.createPhase);
+
+// ===== UPDATE =====
+router.put("/:id", authMiddleware, controller.updatePhase);
+
+// ===== DELETE (Soft + Hard via deleteHelper) =====
+router.delete("/:id", authMiddleware, controller.deletePhase);
 
 module.exports = router;

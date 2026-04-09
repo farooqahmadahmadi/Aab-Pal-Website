@@ -1,34 +1,87 @@
 const ProjectPhasesInfo = require("../models/ProjectPhasesInfo");
+const logService = require("./systemLogsService");
+const { handleDelete } = require("../utils/deleteHelper");
 
-// Get all phases
+//  helper
+const getUserId = (user) => user?.user_id || user?.id || 0;
+
+// ===== GET ALL =====
 const getAllPhases = async () => {
-    return await ProjectPhasesInfo.findAll({ where: { is_deleted: false } });
+  return await ProjectPhasesInfo.findAll({
+    where: { is_deleted: false },
+    order: [["created_at", "DESC"]],
+  });
 };
 
-// Get phase by ID
-const getPhaseById = async (phase_id) => {
-    return await ProjectPhasesInfo.findOne({ where: { phase_id, is_deleted: false } });
+// ===== GET BY ID =====
+const getPhaseById = async (id) => {
+  return await ProjectPhasesInfo.findOne({
+    where: { phase_id: id, is_deleted: false },
+  });
 };
 
-// Add new phase
-const addPhase = async (data) => {
-    return await ProjectPhasesInfo.create(data);
+// ===== CREATE =====
+const addPhase = async (data, user = {}) => {
+  const phase = await ProjectPhasesInfo.create(data);
+
+  await logService.createLog({
+    user_id: getUserId(user),
+    action: "CREATE",
+    reference_table: "project_phases_info",
+    reference_record_id: phase.phase_id,
+    old_value: null,
+    new_value: phase.toJSON(),
+  });
+
+  return phase;
 };
 
-// Update phase
-const updatePhase = async (phase_id, data) => {
-    return await ProjectPhasesInfo.update(data, { where: { phase_id, is_deleted: false } });
+// ===== UPDATE =====
+const updatePhase = async (id, data, user = {}) => {
+  const phase = await ProjectPhasesInfo.findOne({
+    where: { phase_id: id, is_deleted: false },
+  });
+
+  if (!phase) throw new Error("Phase not found");
+
+  const oldValue = phase.toJSON();
+
+  await phase.update(data);
+
+  await logService.createLog({
+    user_id: getUserId(user),
+    action: "UPDATE",
+    reference_table: "project_phases_info",
+    reference_record_id: phase.phase_id,
+    old_value: oldValue,
+    new_value: phase.toJSON(),
+  });
+
+  return phase;
 };
 
-// Soft delete phase
-const deletePhase = async (phase_id) => {
-    return await ProjectPhasesInfo.update({ is_deleted: true }, { where: { phase_id } });
+// ===== DELETE (Soft + Hard via helper) =====
+const deletePhase = async (id, user = {}) => {
+  const phase = await ProjectPhasesInfo.findOne({
+    where: { phase_id: id, is_deleted: false },
+  });
+
+  if (!phase) throw new Error("Phase not found");
+
+  await handleDelete(
+    phase,
+    user,
+    "project_phases_info",
+    getUserId(user)
+  );
+
+  return true;
 };
 
 module.exports = {
-    getAllPhases,
-    getPhaseById,
-    addPhase,
-    updatePhase,
-    deletePhase
+  getAllPhases,
+  getPhaseById,
+  addPhase,
+  updatePhase,
+  deletePhase,
 };
