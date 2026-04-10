@@ -109,7 +109,7 @@ export default function Tasks() {
                                 <td className="p-2">{i.employee_id}</td>
                                 <td className="p-2">{i.task_title}</td>
                                 <td className="p-2">{i.task_status}</td>
-                                <td className="p-2 flex justify-center gap-1.5 p-2">
+                                <td className="p-2 flex justify-center gap-1.5">
                                     <button onClick={() => { setEditData(i); setModalOpen(true); }} className="bg-yellow-500 px-2 py-1 text-white rounded">Edit</button>
                                     <button onClick={() => setDeleteData(i)} className="bg-red-500 px-2 py-1 text-white rounded">Delete</button>
                                 </td>
