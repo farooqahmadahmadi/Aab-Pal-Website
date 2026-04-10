@@ -8,10 +8,9 @@ const { handleDelete } = require("../utils/deleteHelper");
 
 const JWT_SECRET = process.env.JWT_SECRET || "supersecretkey";
 
-// helper
 const getUserId = (user) => user?.user_id || user?.id || 0;
 
-// ---------------- LOGIN (WITH LOG) ----------------
+// ---------------- LOGIN ----------------
 exports.loginUser = async (email, password) => {
   const user = await Users.findOne({ where: { user_email: email } });
 
@@ -29,7 +28,6 @@ exports.loginUser = async (email, password) => {
 
   const match = await bcrypt.compare(password, user.password_hash);
 
-  // ❌ FAILED LOGIN
   if (!match) {
     user.failed_attempts += 1;
     await user.save();
@@ -40,16 +38,8 @@ exports.loginUser = async (email, password) => {
       reference_table: "users",
       reference_record_id: user.user_id,
       old_value: null,
-      new_value: {
-        failed_attempts: user.failed_attempts,
-      },
+      new_value: { failed_attempts: user.failed_attempts },
     });
-
-    if (user.failed_attempts === 3)
-      throw new Error("Too many wrong attempts, try after 30s");
-
-    if (user.failed_attempts === 5)
-      throw new Error("Too many wrong attempts, try after 60s");
 
     if (user.failed_attempts >= 6) {
       user.is_active = false;
@@ -70,7 +60,6 @@ exports.loginUser = async (email, password) => {
     throw new Error("Invalid credentials");
   }
 
-  // ✅ SUCCESS LOGIN
   const oldValue = user.toJSON();
 
   user.failed_attempts = 0;
@@ -99,27 +88,13 @@ exports.loginUser = async (email, password) => {
   return { user, token };
 };
 
-// ---------------- LIST ----------------
-exports.getUsersList = async ({
-  page = 1,
-  limit = 10,
-  search = "",
-  sortField = "user_id",
-  sortOrder = "ASC",
-}) => {
-  const offset = (page - 1) * limit;
-
-  const where = {};
-  if (search) where.user_name = { [Op.like]: `%${search}%` };
-
-  const { rows, count } = await Users.findAndCountAll({
-    where,
-    limit,
-    offset,
-    order: [[sortField, sortOrder]],
+// ---------------- GET ALL USERS (NO SEARCH, NO PAGINATION) ----------------
+exports.getUsersList = async () => {
+  const users = await Users.findAll({
+    order: [["user_id", "ASC"]],
   });
 
-  return { users: rows, total: count };
+  return { users };
 };
 
 // ---------------- GET BY ID ----------------
@@ -148,11 +123,11 @@ exports.updateUser = async (id, data, actor = {}) => {
   const user = await Users.findByPk(id);
   if (!user) throw new Error("User not found");
 
+  const oldValue = user.toJSON();
+
   delete data.created_at;
   delete data.last_login_at;
   delete data.failed_attempts;
-
-  const oldValue = user.toJSON();
 
   if (data.password) {
     data.password_hash = await bcrypt.hash(data.password, 10);
@@ -173,7 +148,7 @@ exports.updateUser = async (id, data, actor = {}) => {
   return user;
 };
 
-// ---------------- DELETE (SOFT + LOG) ----------------
+// ---------------- DELETE ----------------
 exports.deleteUser = async (id, actor = {}) => {
   const user = await Users.findByPk(id);
   if (!user) throw new Error("User not found");
@@ -183,7 +158,7 @@ exports.deleteUser = async (id, actor = {}) => {
   return true;
 };
 
-// ---------------- LOGOUT (WITH LOG) ----------------
+// ---------------- LOGOUT ----------------
 exports.logoutUser = async (id) => {
   const user = await Users.findByPk(id);
   if (!user) throw new Error("User not found");
@@ -199,9 +174,7 @@ exports.logoutUser = async (id) => {
     reference_table: "users",
     reference_record_id: user.user_id,
     old_value: oldValue,
-    new_value: {
-      login_status: "Offline",
-    },
+    new_value: { login_status: "Offline" },
   });
 
   return true;
