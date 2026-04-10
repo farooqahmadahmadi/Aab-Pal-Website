@@ -3,87 +3,206 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { Op } = require("sequelize");
 
+const logService = require("./systemLogsService");
+const { handleDelete } = require("../utils/deleteHelper");
+
 const JWT_SECRET = process.env.JWT_SECRET || "supersecretkey";
 
+// helper
+const getUserId = (user) => user?.user_id || user?.id || 0;
+
+// ---------------- LOGIN (WITH LOG) ----------------
 exports.loginUser = async (email, password) => {
-    const user = await Users.findOne({ where: { user_email: email } });
-    if (!user) throw new Error("Invalid credentials");
-    if (!user.is_active) throw new Error("User is inactive");
+  const user = await Users.findOne({ where: { user_email: email } });
 
-    const now = new Date();
-    const time = now.toTimeString().split(" ")[0];
-    if (user.access_time_start && user.access_time_end) {
-        if (!(time >= user.access_time_start && time <= user.access_time_end)) {
-            throw new Error("Login not allowed at this time");
-        }
+  if (!user) throw new Error("Invalid credentials");
+  if (!user.is_active) throw new Error("User is inactive");
+
+  const now = new Date();
+  const time = now.toTimeString().split(" ")[0];
+
+  if (user.access_time_start && user.access_time_end) {
+    if (!(time >= user.access_time_start && time <= user.access_time_end)) {
+      throw new Error("Login not allowed at this time");
     }
+  }
 
-    const match = await bcrypt.compare(password, user.password_hash);
-    if (!match) {
-        user.failed_attempts += 1;
-        await user.save();
+  const match = await bcrypt.compare(password, user.password_hash);
 
-        if (user.failed_attempts === 3) throw new Error("Too many wrong attempts, try after 30s");
-        if (user.failed_attempts === 5) throw new Error("Too many wrong attempts, try after 60s");
-        if (user.failed_attempts >= 6) {
-            user.is_active = false;
-            await user.save();
-            throw new Error("User deactivated by system");
-        }
-        throw new Error("Invalid credentials");
-    }
-
-    user.failed_attempts = 0;
-    user.login_status = "Online";
-    user.last_login_at = new Date();
+  // ❌ FAILED LOGIN
+  if (!match) {
+    user.failed_attempts += 1;
     await user.save();
 
-    const token = jwt.sign({ id: user.user_id, role: user.user_role }, JWT_SECRET, { expiresIn: "8h" });
-    return { user, token };
-};
-
-exports.getUsersList = async ({ page = 1, limit = 10, search = "", sortField = "user_id", sortOrder = "ASC" }) => {
-    const offset = (page - 1) * limit;
-
-    const where = {};
-    if (search) where.user_name = { [Op.like]: `%${search}%` };
-
-    const { rows, count } = await Users.findAndCountAll({
-        where,
-        limit,
-        offset,
-        order: [[sortField, sortOrder]],
+    await logService.createLog({
+      user_id: user.user_id,
+      action: "LOGIN_FAILED",
+      reference_table: "users",
+      reference_record_id: user.user_id,
+      old_value: null,
+      new_value: {
+        failed_attempts: user.failed_attempts,
+      },
     });
 
-    return { users: rows, total: count };
+    if (user.failed_attempts === 3)
+      throw new Error("Too many wrong attempts, try after 30s");
+
+    if (user.failed_attempts === 5)
+      throw new Error("Too many wrong attempts, try after 60s");
+
+    if (user.failed_attempts >= 6) {
+      user.is_active = false;
+      await user.save();
+
+      await logService.createLog({
+        user_id: user.user_id,
+        action: "USER_DEACTIVATED",
+        reference_table: "users",
+        reference_record_id: user.user_id,
+        old_value: null,
+        new_value: { is_active: false },
+      });
+
+      throw new Error("User deactivated by system");
+    }
+
+    throw new Error("Invalid credentials");
+  }
+
+  // ✅ SUCCESS LOGIN
+  const oldValue = user.toJSON();
+
+  user.failed_attempts = 0;
+  user.login_status = "Online";
+  user.last_login_at = new Date();
+  await user.save();
+
+  await logService.createLog({
+    user_id: user.user_id,
+    action: "LOGIN",
+    reference_table: "users",
+    reference_record_id: user.user_id,
+    old_value: oldValue,
+    new_value: {
+      login_status: "Online",
+      last_login_at: user.last_login_at,
+    },
+  });
+
+  const token = jwt.sign(
+    { id: user.user_id, role: user.user_role },
+    JWT_SECRET,
+    { expiresIn: "8h" },
+  );
+
+  return { user, token };
 };
 
+// ---------------- LIST ----------------
+exports.getUsersList = async ({
+  page = 1,
+  limit = 10,
+  search = "",
+  sortField = "user_id",
+  sortOrder = "ASC",
+}) => {
+  const offset = (page - 1) * limit;
+
+  const where = {};
+  if (search) where.user_name = { [Op.like]: `%${search}%` };
+
+  const { rows, count } = await Users.findAndCountAll({
+    where,
+    limit,
+    offset,
+    order: [[sortField, sortOrder]],
+  });
+
+  return { users: rows, total: count };
+};
+
+// ---------------- GET BY ID ----------------
 exports.getUserById = async (id) => await Users.findByPk(id);
 
-exports.addUser = async (data) => {
+// ---------------- CREATE + LOG ----------------
+exports.addUser = async (data, actor = {}) => {
+  data.password_hash = await bcrypt.hash(data.password, 10);
+
+  const newUser = await Users.create(data);
+
+  await logService.createLog({
+    user_id: getUserId(actor),
+    action: "CREATE",
+    reference_table: "users",
+    reference_record_id: newUser.user_id,
+    old_value: null,
+    new_value: newUser.toJSON(),
+  });
+
+  return newUser;
+};
+
+// ---------------- UPDATE + LOG ----------------
+exports.updateUser = async (id, data, actor = {}) => {
+  const user = await Users.findByPk(id);
+  if (!user) throw new Error("User not found");
+
+  delete data.created_at;
+  delete data.last_login_at;
+  delete data.failed_attempts;
+
+  const oldValue = user.toJSON();
+
+  if (data.password) {
     data.password_hash = await bcrypt.hash(data.password, 10);
-    return await Users.create(data);
+    delete data.password;
+  }
+
+  await user.update(data);
+
+  await logService.createLog({
+    user_id: getUserId(actor),
+    action: "UPDATE",
+    reference_table: "users",
+    reference_record_id: user.user_id,
+    old_value: oldValue,
+    new_value: user.toJSON(),
+  });
+
+  return user;
 };
 
-exports.updateUser = async (id, data) => {
-    const user = await Users.findByPk(id);
-    if (!user) throw new Error("User not found");
-    delete data.created_at;
-    delete data.last_login_at;
-    delete data.failed_attempts;
-    return await user.update(data);
+// ---------------- DELETE (SOFT + LOG) ----------------
+exports.deleteUser = async (id, actor = {}) => {
+  const user = await Users.findByPk(id);
+  if (!user) throw new Error("User not found");
+
+  await handleDelete(user, actor, "users", getUserId(actor));
+
+  return true;
 };
 
-exports.deleteUser = async (id) => {
-    const user = await Users.findByPk(id);
-    if (!user) throw new Error("User not found");
-    return await user.destroy();
-};
-
+// ---------------- LOGOUT (WITH LOG) ----------------
 exports.logoutUser = async (id) => {
-    const user = await Users.findByPk(id);
-    if (!user) throw new Error("User not found");
-    user.login_status = "Offline";
-    await user.save();
-    return true;
+  const user = await Users.findByPk(id);
+  if (!user) throw new Error("User not found");
+
+  const oldValue = user.toJSON();
+
+  user.login_status = "Offline";
+  await user.save();
+
+  await logService.createLog({
+    user_id: user.user_id,
+    action: "LOGOUT",
+    reference_table: "users",
+    reference_record_id: user.user_id,
+    old_value: oldValue,
+    new_value: {
+      login_status: "Offline",
+    },
+  });
+
+  return true;
 };

@@ -1,8 +1,22 @@
 const express = require("express");
 const router = express.Router();
+
 const { authMiddleware } = require("../middlewares/authMiddleware");
-const { login, logout, forgotPassword, resetPassword, getUsers,
-    getUserById, addUser, updateUser, deleteUser, changePassword, adminResetPassword } = require("../controllers/userController");
+
+const {
+  login,
+  logout,
+  forgotPassword,
+  resetPassword,
+  getUsers,
+  getUserById,
+  addUser,
+  updateUser,
+  deleteUser,
+  changePassword,
+  adminResetPassword,
+} = require("../controllers/userController");
+
 
 // Login route
 router.post("/login", login);
