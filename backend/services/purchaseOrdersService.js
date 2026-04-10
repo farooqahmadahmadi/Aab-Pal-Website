@@ -3,8 +3,16 @@ const PurchaseOrder = require("../models/PurchaseOrdersInfo");
 const PurchaseOrderItem = require("../models/PurchaseOrderItemsInfo");
 const Material = require("../models/MaterialsInfo");
 const Invoice = require("../models/InvoicesInfo");
+const logService = require("./systemLogsService");
 
-// 🔥 helper: create or restore invoice
+// helpers
+const getUserId = (user) => user?.user_id || user?.id || 0;
+const isAdmin = (user) => user?.role === "Admin";
+
+// ==============================
+// 🔥 INVOICE HELPERS
+// ==============================
+
 const upsertInvoiceFromPO = async (order, t) => {
   const invoice = await Invoice.findOne({
     where: {
@@ -22,11 +30,10 @@ const upsertInvoiceFromPO = async (order, t) => {
         invoice_amount: order.total_amount || 0,
         invoice_type: "Out",
       },
-      { transaction: t },
+      { transaction: t }
     );
 
     await order.update({ has_invoice: true }, { transaction: t });
-
     return invoice;
   }
 
@@ -39,7 +46,7 @@ const upsertInvoiceFromPO = async (order, t) => {
       reference_id: order.po_id,
       reference_type: "Purchase Order",
     },
-    { transaction: t },
+    { transaction: t }
   );
 
   await order.update({ has_invoice: true }, { transaction: t });
@@ -47,7 +54,6 @@ const upsertInvoiceFromPO = async (order, t) => {
   return newInvoice;
 };
 
-// 🔄 helper: update invoice
 const updateInvoiceFromPO = async (order, t) => {
   const invoice = await Invoice.findOne({
     where: {
@@ -64,11 +70,10 @@ const updateInvoiceFromPO = async (order, t) => {
       project_id: order.project_id || null,
       invoice_amount: order.total_amount || 0,
     },
-    { transaction: t },
+    { transaction: t }
   );
 };
 
-// ❌ helper: delete invoice (soft)
 const deleteInvoiceFromPO = async (order, t) => {
   const invoice = await Invoice.findOne({
     where: {
@@ -81,11 +86,13 @@ const deleteInvoiceFromPO = async (order, t) => {
   if (!invoice) return;
 
   await invoice.update({ is_deleted: true }, { transaction: t });
-
   await order.update({ has_invoice: false }, { transaction: t });
 };
 
-// 🔥 helper: update stock (UNCHANGED)
+// ==============================
+// 🔥 STOCK HELPER
+// ==============================
+
 const updateStock = async (po_id, type = "add", t) => {
   const po = await PurchaseOrder.findByPk(po_id, { transaction: t });
   if (!po) return;
@@ -96,19 +103,20 @@ const updateStock = async (po_id, type = "add", t) => {
   });
 
   const materialMap = {};
+
   for (let i of items) {
     const matId = i.material_id;
     const qty = parseFloat(i.po_item_quantity) || 0;
     const price = parseFloat(i.po_item_unit_price) || 0;
 
     if (!materialMap[matId]) materialMap[matId] = { qty: 0, totalValue: 0 };
+
     materialMap[matId].qty += qty;
     materialMap[matId].totalValue += qty * price;
   }
 
-  const matIds = Object.keys(materialMap);
   const materials = await Material.findAll({
-    where: { material_id: matIds },
+    where: { material_id: Object.keys(materialMap) },
     transaction: t,
   });
 
@@ -143,19 +151,20 @@ const updateStock = async (po_id, type = "add", t) => {
                 (type === "subtract" ? value : -value)) /
               newStock
             : 0;
-      } else {
-        continue;
       }
     }
 
     await material.update(
       { current_stock: newStock, average_price: newAvg },
-      { transaction: t },
+      { transaction: t }
     );
   }
 };
 
-// GET
+// ==============================
+// ✅ GET
+// ==============================
+
 exports.getOrders = async () => {
   return await PurchaseOrder.findAll({
     where: { is_deleted: false },
@@ -163,8 +172,11 @@ exports.getOrders = async () => {
   });
 };
 
-// CREATE
-exports.createOrder = async (data) => {
+// ==============================
+// ✅ CREATE
+// ==============================
+
+exports.createOrder = async (data, user = {}) => {
   return await db.sequelize.transaction(async (t) => {
     const order = await PurchaseOrder.create(data, { transaction: t });
 
@@ -172,12 +184,24 @@ exports.createOrder = async (data) => {
       await updateStock(order.po_id, "add", t);
     }
 
+    await logService.createLog({
+      user_id: getUserId(user),
+      action: "CREATE",
+      reference_table: "purchase_orders",
+      reference_record_id: order.po_id,
+      old_value: null,
+      new_value: order.toJSON(),
+    });
+
     return order;
   });
 };
 
-// UPDATE
-exports.updateOrder = async (id, data) => {
+// ==============================
+// ✅ UPDATE
+// ==============================
+
+exports.updateOrder = async (id, data, user = {}) => {
   return await db.sequelize.transaction(async (t) => {
     const item = await PurchaseOrder.findOne({
       where: { po_id: id, is_deleted: false },
@@ -186,10 +210,11 @@ exports.updateOrder = async (id, data) => {
 
     if (!item) throw new Error("Order not found");
 
+    const oldValue = item.toJSON();
+
     const oldStatus = item.po_status;
     const newStatus = data.po_status ?? oldStatus;
 
-    // 🔻 undo stock
     if (
       (oldStatus === "Received" && newStatus !== "Received") ||
       (oldStatus === "Sent" && newStatus !== "Sent")
@@ -199,7 +224,6 @@ exports.updateOrder = async (id, data) => {
 
     await item.update(data, { transaction: t });
 
-    // 🔺 apply stock
     if (
       (newStatus === "Received" && oldStatus !== "Received") ||
       (newStatus === "Sent" && oldStatus !== "Sent")
@@ -207,19 +231,14 @@ exports.updateOrder = async (id, data) => {
       await updateStock(id, "add", t);
     }
 
-    // 🔥 INVOICE LOGIC
-
-    // ✅ Pending / other → Approved
     if (oldStatus !== "Approved" && newStatus === "Approved") {
       await upsertInvoiceFromPO(item, t);
     }
 
-    // 🔄 sync if Approved
     if (newStatus === "Approved") {
       await updateInvoiceFromPO(item, t);
     }
 
-    // ❌ Approved → Pending / Cancelled
     if (
       oldStatus === "Approved" &&
       (newStatus === "Pending" || newStatus === "Cancelled")
@@ -227,12 +246,24 @@ exports.updateOrder = async (id, data) => {
       await deleteInvoiceFromPO(item, t);
     }
 
+    await logService.createLog({
+      user_id: getUserId(user),
+      action: "UPDATE",
+      reference_table: "purchase_orders",
+      reference_record_id: item.po_id,
+      old_value: oldValue,
+      new_value: item.toJSON(),
+    });
+
     return item;
   });
 };
 
-// DELETE
-exports.deleteOrder = async (id) => {
+// ==============================
+// ❌ DELETE (SMART)
+// ==============================
+
+exports.deleteOrder = async (id, user = {}) => {
   return await db.sequelize.transaction(async (t) => {
     const item = await PurchaseOrder.findOne({
       where: { po_id: id, is_deleted: false },
@@ -241,24 +272,54 @@ exports.deleteOrder = async (id) => {
 
     if (!item) throw new Error("Order not found");
 
-    // 🔻 rollback stock
+    const oldValue = item.toJSON();
+
     if (item.po_status === "Received" || item.po_status === "Sent") {
       await updateStock(id, "subtract", t);
     }
 
-    // 🔥 delete invoice
     await deleteInvoiceFromPO(item, t);
 
-    // child items
-    await PurchaseOrderItem.update(
-      { is_deleted: true },
-      {
-        where: { po_id: id, is_deleted: false },
+    if (isAdmin(user)) {
+      // HARD DELETE
+      await PurchaseOrderItem.destroy({
+        where: { po_id: id },
         transaction: t,
-      },
-    );
+      });
 
-    // parent
-    await item.update({ is_deleted: true }, { transaction: t });
+      await item.destroy({ transaction: t });
+
+      await logService.createLog({
+        user_id: getUserId(user),
+        action: "HARD_DELETE",
+        reference_table: "purchase_orders",
+        reference_record_id: id,
+        old_value: oldValue,
+        new_value: null,
+      });
+
+    } else {
+      // SOFT DELETE
+      await PurchaseOrderItem.update(
+        { is_deleted: true },
+        {
+          where: { po_id: id, is_deleted: false },
+          transaction: t,
+        }
+      );
+
+      await item.update({ is_deleted: true }, { transaction: t });
+
+      await logService.createLog({
+        user_id: getUserId(user),
+        action: "DELETE",
+        reference_table: "purchase_orders",
+        reference_record_id: id,
+        old_value: oldValue,
+        new_value: null,
+      });
+    }
+
+    return true;
   });
 };
