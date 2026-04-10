@@ -87,29 +87,29 @@ export default function ContractMilestones() {
                 </div>
             </div>
 
-            <div className="bg-white shadow rounded-lg overflow-x-auto">
-                <table className="w-full text-sm text-center">
-                    <thead className="bg-gray-200">
+             <div className="bg-white shadow rounded-lg overflow-x-auto">
+                <table className="w-full text-sm">
+                    <thead className="bg-gray-200 text-sm">
                         <tr>
-                            <th>ID</th>
-                            <th>Contract</th>
-                            <th className="text-left">Title</th>
-                            <th>Due Date</th>
-                            <th>Amount</th>
-                            <th>Status</th>
-                            <th>Actions</th>
+                            <th className="p-2">ID</th>
+                            <th className="p-2">Contract</th>
+                            <th className="p-2 text-left">Title</th>
+                            <th className="p-2">Due Date</th>
+                            <th className="p-2">Amount</th>
+                            <th className="p-2">Status</th>
+                            <th className="p-2">Actions</th>
                         </tr>
                     </thead>
 
                     <tbody>
                         {paginated.length ? paginated.map(i => (
                             <tr key={i.milestone_id} className="border-t hover:bg-gray-50">
-                                <td>{i.milestone_id}</td>
-                                <td>{i.contract_id}</td>
-                                <td className="text-left">{i.title}</td>
-                                <td>{i.due_date}</td>
-                                <td>{i.amount}</td>
-                                <td>{i.status}</td>
+                                <td className="p-2">{i.milestone_id}</td>
+                                <td className="p-2">{i.contract_id}</td>
+                                <td className="p-2 text-left">{i.title}</td>
+                                <td className="p-2">{i.due_date}</td>
+                                <td className="p-2">{i.amount}</td>
+                                <td className="p-2">{i.status}</td>
 
                                 <td className="flex justify-center gap-1.5 p-2">
                                     <button onClick={() => { setEditData(i); setModalOpen(true); }} className="bg-yellow-500 px-2 py-1 text-white rounded">Edit</button>
