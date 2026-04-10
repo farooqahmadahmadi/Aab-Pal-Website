@@ -4,6 +4,7 @@ const PurchaseOrderItem = require("../models/PurchaseOrderItemsInfo");
 const Material = require("../models/MaterialsInfo");
 const Invoice = require("../models/InvoicesInfo");
 const logService = require("./systemLogsService");
+const { handleDelete } = require("../utils/deleteHelper");
 
 // helpers
 const getUserId = (user) => user?.user_id || user?.id || 0;
@@ -15,10 +16,7 @@ const isAdmin = (user) => user?.role === "Admin";
 
 const upsertInvoiceFromPO = async (order, t) => {
   const invoice = await Invoice.findOne({
-    where: {
-      reference_id: order.po_id,
-      reference_type: "Purchase Order",
-    },
+    where: { reference_id: order.po_id, reference_type: "Purchase Order" },
     transaction: t,
   });
 
@@ -30,7 +28,7 @@ const upsertInvoiceFromPO = async (order, t) => {
         invoice_amount: order.total_amount || 0,
         invoice_type: "Out",
       },
-      { transaction: t }
+      { transaction: t },
     );
 
     await order.update({ has_invoice: true }, { transaction: t });
@@ -46,20 +44,16 @@ const upsertInvoiceFromPO = async (order, t) => {
       reference_id: order.po_id,
       reference_type: "Purchase Order",
     },
-    { transaction: t }
+    { transaction: t },
   );
 
   await order.update({ has_invoice: true }, { transaction: t });
-
   return newInvoice;
 };
 
 const updateInvoiceFromPO = async (order, t) => {
   const invoice = await Invoice.findOne({
-    where: {
-      reference_id: order.po_id,
-      reference_type: "Purchase Order",
-    },
+    where: { reference_id: order.po_id, reference_type: "Purchase Order" },
     transaction: t,
   });
 
@@ -70,16 +64,13 @@ const updateInvoiceFromPO = async (order, t) => {
       project_id: order.project_id || null,
       invoice_amount: order.total_amount || 0,
     },
-    { transaction: t }
+    { transaction: t },
   );
 };
 
 const deleteInvoiceFromPO = async (order, t) => {
   const invoice = await Invoice.findOne({
-    where: {
-      reference_id: order.po_id,
-      reference_type: "Purchase Order",
-    },
+    where: { reference_id: order.po_id, reference_type: "Purchase Order" },
     transaction: t,
   });
 
@@ -103,14 +94,11 @@ const updateStock = async (po_id, type = "add", t) => {
   });
 
   const materialMap = {};
-
   for (let i of items) {
     const matId = i.material_id;
     const qty = parseFloat(i.po_item_quantity) || 0;
     const price = parseFloat(i.po_item_unit_price) || 0;
-
     if (!materialMap[matId]) materialMap[matId] = { qty: 0, totalValue: 0 };
-
     materialMap[matId].qty += qty;
     materialMap[matId].totalValue += qty * price;
   }
@@ -124,7 +112,6 @@ const updateStock = async (po_id, type = "add", t) => {
     const matId = material.material_id;
     const currentStock = parseFloat(material.current_stock) || 0;
     const avgPrice = parseFloat(material.average_price) || 0;
-
     const qty = materialMap[matId].qty;
     const value = materialMap[matId].totalValue;
 
@@ -144,7 +131,6 @@ const updateStock = async (po_id, type = "add", t) => {
       if (po.po_status === "Sent") {
         if (type === "add") newStock = Math.max(currentStock - qty, 0);
         else if (type === "subtract") newStock = currentStock + qty;
-
         newAvg =
           newStock > 0 && currentStock > 0
             ? (currentStock * avgPrice +
@@ -156,7 +142,7 @@ const updateStock = async (po_id, type = "add", t) => {
 
     await material.update(
       { current_stock: newStock, average_price: newAvg },
-      { transaction: t }
+      { transaction: t },
     );
   }
 };
@@ -207,11 +193,9 @@ exports.updateOrder = async (id, data, user = {}) => {
       where: { po_id: id, is_deleted: false },
       transaction: t,
     });
-
     if (!item) throw new Error("Order not found");
 
     const oldValue = item.toJSON();
-
     const oldStatus = item.po_status;
     const newStatus = data.po_status ?? oldStatus;
 
@@ -260,7 +244,7 @@ exports.updateOrder = async (id, data, user = {}) => {
 };
 
 // ==============================
-// ❌ DELETE (SMART)
+// ❌ DELETE (SOFT/HARD for admin)
 // ==============================
 
 exports.deleteOrder = async (id, user = {}) => {
@@ -269,7 +253,6 @@ exports.deleteOrder = async (id, user = {}) => {
       where: { po_id: id, is_deleted: false },
       transaction: t,
     });
-
     if (!item) throw new Error("Order not found");
 
     const oldValue = item.toJSON();
@@ -282,11 +265,7 @@ exports.deleteOrder = async (id, user = {}) => {
 
     if (isAdmin(user)) {
       // HARD DELETE
-      await PurchaseOrderItem.destroy({
-        where: { po_id: id },
-        transaction: t,
-      });
-
+      await PurchaseOrderItem.destroy({ where: { po_id: id }, transaction: t });
       await item.destroy({ transaction: t });
 
       await logService.createLog({
@@ -297,17 +276,12 @@ exports.deleteOrder = async (id, user = {}) => {
         old_value: oldValue,
         new_value: null,
       });
-
     } else {
       // SOFT DELETE
       await PurchaseOrderItem.update(
         { is_deleted: true },
-        {
-          where: { po_id: id, is_deleted: false },
-          transaction: t,
-        }
+        { where: { po_id: id, is_deleted: false }, transaction: t },
       );
-
       await item.update({ is_deleted: true }, { transaction: t });
 
       await logService.createLog({
