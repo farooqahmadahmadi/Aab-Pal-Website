@@ -114,7 +114,7 @@ export default function SiteReports() {
           <tbody>
             {paginated.length ? (
               paginated.map((i) => (
-                <tr key={i.report_id} className="border-t">
+                <tr key={i.report_id} className="border-t text-center">
                   <td className="p-2">{i.report_id}</td>
                   <td className="p-2">{i.report_title}</td>
                   <td className="p-2">{i.report_date}</td>

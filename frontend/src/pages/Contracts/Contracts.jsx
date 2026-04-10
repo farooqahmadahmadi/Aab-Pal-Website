@@ -120,9 +120,9 @@ export default function Contracts() {
             </div>
 
             {/* Table */}
-            <div className="bg-white shadow rounded-lg overflow-x-auto">
-                <table className="w-full text-sm text-center">
-                    <thead className="bg-gray-200">
+             <div className="bg-white shadow rounded-lg overflow-x-auto">
+                <table className="w-full text-sm">
+                    <thead className="bg-gray-200 text-sm">
                         <tr>
                             <th className="p-2">ID</th>
                             <th className="p-2">Project</th>
@@ -137,7 +137,7 @@ export default function Contracts() {
 
                     <tbody>
                         {paginated.length ? paginated.map(i => (
-                            <tr key={i.contract_id} className="border-t hover:bg-gray-50">
+                            <tr key={i.contract_id} className="border-t hover:bg-gray-50 text-center">
                                 <td className="p-2">{i.contract_id}</td>
                                 <td className="p-2">{i.project_id}</td>
                                 <td className="p-2 text-left">{i.contract_name}</td>

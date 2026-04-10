@@ -103,7 +103,7 @@ export default function ContractMilestones() {
 
                     <tbody>
                         {paginated.length ? paginated.map(i => (
-                            <tr key={i.milestone_id} className="border-t hover:bg-gray-50">
+                            <tr key={i.milestone_id} className="border-t hover:bg-gray-50 text-center">
                                 <td className="p-2">{i.milestone_id}</td>
                                 <td className="p-2">{i.contract_id}</td>
                                 <td className="p-2 text-left">{i.title}</td>

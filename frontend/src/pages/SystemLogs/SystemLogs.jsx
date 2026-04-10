@@ -204,19 +204,19 @@ export default function SystemLogs() {
       )}
 
       {/* Table */}
-      <div className="bg-white shadow rounded-lg overflow-x-auto">
-        <table className="w-full text-sm">
-          <thead className="bg-gray-200 text-sm">
+       <div className="bg-white shadow rounded-lg overflow-x-auto">
+                <table className="w-full text-sm">
+                    <thead className="bg-gray-200 text-sm">
             <tr>
-              <th>ID</th>
-              <th>User</th>
-              <th>Action</th>
-              <th>Table</th>
-              <th>Record</th>
-              <th>Old Date</th>
-              <th>New Date</th>
-              <th>Created</th>
-              <th>Actions</th>
+              <th className="p-2">ID</th>
+              <th className="p-2">User</th>
+              <th className="p-2">Action</th>
+              <th className="p-2">Table</th>
+              <th className="p-2">Record</th>
+              <th className="p-2">Old Date</th>
+              <th className="p-2">New Date</th>
+              <th className="p-2">Created</th>
+              <th className="p-2">Actions</th>
             </tr>
           </thead>
 
@@ -230,14 +230,14 @@ export default function SystemLogs() {
                     onChange={() => toggleSelect(n.log_id)}
                   />
                 </td>
-                <td>{n.log_id}</td>
-                <td>{n.user_id}</td>
-                <td>{n.action}</td>
-                <td>{n.reference_table}</td>
-                <td>{n.reference_record_id}</td>
-                <td>{n.old_value}</td>
-                <td>{n.new_value}</td>
-                <td>{new Date(n.created_at).toLocaleString()}</td>
+                <td className="p-2">{n.log_id}</td>
+                <td className="p-2">{n.user_id}</td>
+                <td className="p-2">{n.action}</td>
+                <td className="p-2">{n.reference_table}</td>
+                <td className="p-2">{n.reference_record_id}</td>
+                <td className="p-2">{n.old_value}</td>
+                <td className="p-2">{n.new_value}</td>
+                <td className="p-2">{new Date(n.created_at).toLocaleString()}</td>
                 <td className="p-2 flex justify-center">
                   <button
                     onClick={() => setDeleteData(n)}

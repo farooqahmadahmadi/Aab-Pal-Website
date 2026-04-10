@@ -104,7 +104,7 @@ export default function SafetyIncidents() {
                     </thead>
                     <tbody>
                         {paginated.length ? paginated.map(i => (
-                            <tr key={i.incident_id} className="border-t">
+                            <tr key={i.incident_id} className="border-t text-center">
                                 <td className="p-2">{i.incident_id}</td>
                                 <td className="p-2">{i.project_id}</td>
                                 <td className="p-2">{i.incident_severity}</td>
