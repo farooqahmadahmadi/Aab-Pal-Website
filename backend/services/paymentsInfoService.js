@@ -2,7 +2,14 @@ const Payments = require("../models/PaymentsInfo");
 const Invoice = require("../models/InvoicesInfo");
 const CashTransaction = require("../models/CashTransactionsInfo");
 const db = require("../models");
+
 const { recalculateInvoice } = require("../services/invoicesService");
+
+const logService = require("./systemLogsService");
+const { handleDelete } = require("../utils/deleteHelper");
+
+// helper
+const getUserId = (user) => user?.user_id || user?.id || 0;
 
 // 🔥 helper: update invoice paid_amount
 const updateInvoicePaid = async (invoice_id, amount, type, t) => {
@@ -32,7 +39,7 @@ const validateInvoice = async (invoice_id, t) => {
   return invoice;
 };
 
-// 🔥 helper: create/update cash transaction (FIXED)
+// 🔥 helper: create/update cash transaction
 const upsertCashTransaction = async (payment, invoice, t) => {
   const type = invoice.invoice_type === "In" ? "Income" : "Expense";
 
@@ -85,7 +92,7 @@ exports.getAll = async () => {
 };
 
 // CREATE
-exports.create = async (data) => {
+exports.create = async (data, user = {}) => {
   return await db.sequelize.transaction(async (t) => {
     const invoice = await validateInvoice(data.invoice_id, t);
 
@@ -104,12 +111,23 @@ exports.create = async (data) => {
 
     await recalculateInvoice(payment.invoice_id, t);
 
+    // 🔥 LOG
+    await logService.createLog({
+      user_id: getUserId(user),
+      action: "CREATE",
+      reference_table: "payments_info",
+      reference_record_id: payment.payment_id,
+      old_value: null,
+      new_value: payment.toJSON(),
+      transaction: t,
+    });
+
     return payment;
   });
 };
 
 // UPDATE
-exports.update = async (id, data) => {
+exports.update = async (id, data, user = {}) => {
   return await db.sequelize.transaction(async (t) => {
     const item = await Payments.findOne({
       where: { payment_id: id, is_deleted: false },
@@ -124,6 +142,8 @@ exports.update = async (id, data) => {
     const newStatus = data.payment_status ?? oldStatus;
 
     const oldAmount = parseFloat(item.payment_amount) || 0;
+
+    const oldValue = item.toJSON();
 
     // 🔻 remove old effect
     if (oldStatus === "Completed") {
@@ -144,12 +164,23 @@ exports.update = async (id, data) => {
 
     await recalculateInvoice(item.invoice_id, t);
 
+    // 🔥 LOG
+    await logService.createLog({
+      user_id: getUserId(user),
+      action: "UPDATE",
+      reference_table: "payments_info",
+      reference_record_id: item.payment_id,
+      old_value: oldValue,
+      new_value: item.toJSON(),
+      transaction: t,
+    });
+
     return item;
   });
 };
 
-// DELETE (soft)
-exports.remove = async (id) => {
+// DELETE
+exports.remove = async (id, user = {}) => {
   return await db.sequelize.transaction(async (t) => {
     const item = await Payments.findOne({
       where: { payment_id: id, is_deleted: false },
@@ -162,13 +193,18 @@ exports.remove = async (id) => {
 
     const amount = parseFloat(item.payment_amount) || 0;
 
+    const oldValue = item.toJSON();
+
     if (item.payment_status === "Completed") {
       await updateInvoicePaid(item.invoice_id, amount, "subtract", t);
       await softDeleteCashTransaction(item.payment_id, t);
     }
 
-    await item.update({ is_deleted: true }, { transaction: t });
+    // 🔥 deleteHelper (soft delete + log)
+    await handleDelete(item, user, "payments_info", getUserId(user), t);
 
     await recalculateInvoice(item.invoice_id, t);
+
+    return true;
   });
 };
