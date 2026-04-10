@@ -105,10 +105,10 @@ export default function SafetyIncidents() {
                     <tbody>
                         {paginated.length ? paginated.map(i => (
                             <tr key={i.incident_id} className="border-t">
-                                <td>{i.incident_id}</td>
-                                <td>{i.project_id}</td>
-                                <td>{i.incident_severity}</td>
-                                <td>{i.incident_date}</td>
+                                <td className="p-2">{i.incident_id}</td>
+                                <td className="p-2">{i.project_id}</td>
+                                <td className="p-2">{i.incident_severity}</td>
+                                <td className="p-2">{i.incident_date}</td>
                                 <td className="p-2 flex justify-center gap-1.5">
                                     <button onClick={() => { setEditData(i); setModalOpen(true); }} className="bg-yellow-500 px-2 py-1 text-white rounded">Edit</button>
                                     <button onClick={() => setDeleteData(i)} className="bg-red-500 px-2 py-1 text-white rounded">Delete</button>

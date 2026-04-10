@@ -92,24 +92,24 @@ export default function Tasks() {
                 <table className="w-full text-center text-sm">
                     <thead className="bg-gray-200 text-sm">
                         <tr>
-                            <th>ID</th>
-                            <th>Project</th>
-                            <th>Employee</th>
-                            <th>Title</th>
-                            <th>Status</th>
-                            <th>Actions</th>
+                            <th className="p-2">ID</th>
+                            <th className="p-2">Project</th>
+                            <th className="p-2">Employee</th>
+                            <th className="p-2">Title</th>
+                            <th className="p-2">Status</th>
+                            <th className="p-2">Actions</th>
                         </tr>
                     </thead>
 
                     <tbody>
                         {paginated.length ? paginated.map(i => (
                             <tr key={i.task_assignment_id} className="border-t">
-                                <td>{i.task_assignment_id}</td>
-                                <td>{i.project_id}</td>
-                                <td>{i.employee_id}</td>
-                                <td>{i.task_title}</td>
-                                <td>{i.task_status}</td>
-                                <td className="p-2 flex justify-center gap-1.5">
+                                <td className="p-2">{i.task_assignment_id}</td>
+                                <td className="p-2">{i.project_id}</td>
+                                <td className="p-2">{i.employee_id}</td>
+                                <td className="p-2">{i.task_title}</td>
+                                <td className="p-2">{i.task_status}</td>
+                                <td className="p-2 flex justify-center gap-1.5 p-2">
                                     <button onClick={() => { setEditData(i); setModalOpen(true); }} className="bg-yellow-500 px-2 py-1 text-white rounded">Edit</button>
                                     <button onClick={() => setDeleteData(i)} className="bg-red-500 px-2 py-1 text-white rounded">Delete</button>
                                 </td>
