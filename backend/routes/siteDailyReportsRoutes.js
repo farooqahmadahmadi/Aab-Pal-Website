@@ -1,9 +1,18 @@
 const router = require("express").Router();
-const ctrl = require("../controllers/siteDailyReportsController");
 
-router.get("/", ctrl.getAll);
-router.post("/", ctrl.create);
-router.put("/:id", ctrl.update);
-router.delete("/:id", ctrl.delete);
+const ctrl = require("../controllers/siteDailyReportsController");
+const { authMiddleware } = require("../middlewares/authMiddleware");
+
+// ===== GET ALL =====
+router.get("/",authMiddleware, ctrl.getAll);
+
+// ===== CREATE =====
+router.post("/",authMiddleware, ctrl.create);
+
+// ===== UPDATE =====
+router.put("/:id",authMiddleware, ctrl.update);
+
+// ===== DELETE =====
+router.delete("/:id",authMiddleware, ctrl.delete);
 
 module.exports = router;
