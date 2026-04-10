@@ -107,8 +107,8 @@ export default function Invoices() {
       </div>
 
       <div className="bg-white shadow rounded-lg overflow-x-auto">
-        <table className="w-full text-center text-sm">
-          <thead className="bg-gray-200">
+                <table className="w-full text-center text-sm">
+                    <thead className="bg-gray-200 text-sm">
             <tr>
               <th className="p-2">ID</th>
               <th className="p-2">Refer</th>
