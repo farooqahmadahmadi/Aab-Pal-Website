@@ -1,11 +1,20 @@
 const express = require("express");
 const router = express.Router();
+
 const { uploadContract } = require("../middlewares/uploadMiddleware");
 const ctrl = require("../controllers/contractController");
+const { authMiddleware } = require("../middlewares/authMiddleware");
 
+// ===== GET ALL =====
 router.get("/", ctrl.getAll);
-router.post("/", uploadContract.single("file"), ctrl.create);
-router.put("/:id", uploadContract.single("file"), ctrl.update);
-router.delete("/:id", ctrl.remove);
+
+// ===== CREATE =====
+router.post("/", authMiddleware, uploadContract.single("file"), ctrl.create);
+
+// ===== UPDATE =====
+router.put("/:id", authMiddleware, uploadContract.single("file"), ctrl.update);
+
+// ===== DELETE =====
+router.delete("/:id", authMiddleware, ctrl.remove);
 
 module.exports = router;
