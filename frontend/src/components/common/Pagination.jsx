@@ -1,16 +1,30 @@
 import React from "react";
-
+import {
+  FaPlus,
+  FaEdit,
+  FaTrash,
+  FaNeos,
+  FaRibbon,
+  FaArrowAltCircleLeft,
+  FaArrowAltCircleRight,
+  FaRegArrowAltCircleRight,
+  FaArrowRight,
+  FaArrowsAlt,
+  FaArrowLeft,
+  FaRegArrowAltCircleLeft,
+} from "react-icons/fa";
 export default function Pagination({ page, totalPages, onPageChange }) {
   const pages = [];
   for (let i = 1; i <= totalPages; i++) pages.push(i);
 
   return (
-    <div className="flex gap-2 justify-center mt-4">
+    <div className="flex gap-1 justify-center mt-4">
       <button
         onClick={() => onPageChange(page - 1)}
         disabled={page === 1}
-        className="px-3 py-1 border rounded disabled:opacity-50 hover:bg-yellow-100"
+        className="flex items-center px-3 gap-1 py-1 border rounded-full disabled:opacity-50 hover:bg-gray-100 hover:text-blue-600 shadow-md"
       >
+        <FaRegArrowAltCircleLeft />
         Prev
       </button>
 
@@ -27,9 +41,10 @@ export default function Pagination({ page, totalPages, onPageChange }) {
       <button
         onClick={() => onPageChange(page + 1)}
         disabled={page === totalPages}
-        className="px-3 py-1 border rounded disabled:opacity-50 hover:bg-yellow-100"
+        className="flex items-center px-3 gap-1 py-1 border rounded-full disabled:opacity-50 hover:bg-gray-100 hover:text-blue-600 shadow-md "
       >
         Next
+        <FaRegArrowAltCircleRight />
       </button>
     </div>
   );
