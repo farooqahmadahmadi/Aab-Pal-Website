@@ -1,6 +1,12 @@
 const Invoices = require("../models/InvoicesInfo");
 
-// 🔹 helper: recalc invoice status
+const logService = require("./systemLogsService");
+const { handleDelete } = require("../utils/deleteHelper");
+
+// helper
+const getUserId = (user) => user?.user_id || user?.id || 0;
+
+//🔹 helper: recalc invoice status
 exports.recalculateInvoice = async (invoice_id, t = null) => {
   const invoice = await Invoices.findByPk(invoice_id, { transaction: t });
   if (!invoice) throw new Error("Invoice not found");
@@ -35,24 +41,36 @@ exports.getAll = async () => {
 };
 
 // CREATE
-exports.create = async (data) => {
-  // 🔹 normalize nullable fields
+exports.create = async (data, user = {}) => {
+  // normalize nullable fields
   if (!data.invoice_due_date) data.invoice_due_date = null;
   if (!data.reference_type || data.reference_type === "")
     data.reference_type = null;
   if (!data.reference_id || data.reference_id === "") data.reference_id = null;
 
-  return await Invoices.create(data);
+  const invoice = await Invoices.create(data);
+
+  // 🔥 LOG
+  await logService.createLog({
+    user_id: getUserId(user),
+    action: "CREATE",
+    reference_table: "invoices_info",
+    reference_record_id: invoice.invoice_id,
+    old_value: null,
+    new_value: invoice.toJSON(),
+  });
+
+  return invoice;
 };
 
 // UPDATE
-exports.update = async (id, data) => {
+exports.update = async (id, data, user = {}) => {
   const item = await Invoices.findOne({
     where: { invoice_id: id, is_deleted: false },
   });
   if (!item) throw new Error("Invoice not found");
 
-  // 🔹 normalize nullable fields
+  // normalize nullable fields
   if (!data.invoice_due_date) data.invoice_due_date = null;
   if (!data.reference_type || data.reference_type === "")
     data.reference_type = null;
@@ -60,21 +78,37 @@ exports.update = async (id, data) => {
 
   const manualStatus = data.invoice_status !== undefined;
 
+  const oldValue = item.toJSON();
+
   await item.update(data);
 
+  // 🔥 recalc 
   if (!manualStatus) {
     await exports.recalculateInvoice(item.invoice_id);
   }
 
+  // 🔥 LOG
+  await logService.createLog({
+    user_id: getUserId(user),
+    action: "UPDATE",
+    reference_table: "invoices_info",
+    reference_record_id: item.invoice_id,
+    old_value: oldValue,
+    new_value: item.toJSON(),
+  });
+
   return item;
 };
 
-// DELETE (soft)
-exports.remove = async (id) => {
+// DELETE
+exports.remove = async (id, user = {}) => {
   const item = await Invoices.findOne({
     where: { invoice_id: id, is_deleted: false },
   });
   if (!item) throw new Error("Invoice not found");
 
-  await item.update({ is_deleted: true });
+  // 🔥 deleteHelper (soft delete + log)
+  await handleDelete(item, user, "invoices_info", getUserId(user));
+
+  return true;
 };
