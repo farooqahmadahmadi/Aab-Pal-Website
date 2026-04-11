@@ -274,7 +274,7 @@ export default function SystemLogs() {
                       e.stopPropagation();
                       setDeleteData(n);
                     }}
-                    className="bg-red-500 text-white  px-2 py-1 rounded flex items-center gap-1"
+                    className="bg-red-500 text-white px-2 py-1 rounded flex items-center gap-1"
                   >
                     <FiTrash2 />
                   </button>
@@ -284,6 +284,30 @@ export default function SystemLogs() {
           </tbody>
         </table>
       </div>
+
+      {deleteData && (
+        <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
+          <div className="bg-white p-4 rounded w-80">
+            <h3 className="font-bold mb-3">Confirm Delete?</h3>
+
+            <div className="flex justify-end gap-2">
+              <button
+                onClick={() => setDeleteData(null)}
+                className="px-3 py-1 bg-gray-200 rounded"
+              >
+                Cancel
+              </button>
+
+              <button
+                onClick={deleteData.multi ? handleMultiDelete : handleDelete}
+                className="px-3 py-1 bg-red-500 text-white rounded"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* PAGINATION */}
       <div className="mt-4 flex justify-center">
@@ -366,6 +390,69 @@ export default function SystemLogs() {
                   {drawer.created_at}
                 </pre>
               </p>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* EXPORT MODAL */}
+      {exportModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
+          <div className="bg-white p-5 rounded-xl w-96 ">
+            <h3 className="font-bold mb-3">Export Logs</h3>
+
+            <div className="text-md">
+            <div>
+              <label htmlFor="" className="text-gray-500">
+                Start Date:
+              </label>
+              <input
+                type="date"
+                value={fromDate}
+                onChange={(e) => setFromDate(e.target.value)}
+                className="w-full mb-2 border p-2 rounded-md "
+              />
+            </div>
+            <div>
+              <label htmlFor="" className="text-gray-500">
+                End Date:
+              </label>
+              <input
+                type="date"
+                value={toDate}
+                onChange={(e) => setToDate(e.target.value)}
+                className="w-full mb-2 border p-2 rounded-md "
+              />
+            </div>
+
+            <div>
+              <label htmlFor="" className="text-gray-500">
+                File Name:
+              </label>
+              <input
+                type="text"
+                value={fileName}
+                onChange={(e) => setFileName(e.target.value)}
+                className="w-full mb-3 border p-2 rounded-md "
+              />
+            </div>
+
+            <div className="flex justify-end gap-2 ">
+              <button
+                onClick={() => setExportModal(false)}
+                type="button"
+                className="px-3 py-1 bg-gray-200 hover:bg-gray-300 rounded"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleExport}
+                type="submit"
+                className="px-3 py-1 bg-green-500 hover:bg-green-600 text-white rounded"
+              >
+                Export
+              </button>
+            </div>
             </div>
           </div>
         </div>
