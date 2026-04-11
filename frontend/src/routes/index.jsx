@@ -583,6 +583,16 @@ export default function AppRoutes() {
           }
         />
 
+        <Route
+          path="/hr/users/user-profile"
+          element={
+            <ProtectedRoute allowedRoles={["HR"]}>
+              <HRLayout>
+                <UserProfile />
+              </HRLayout>
+            </ProtectedRoute>
+          }
+        />
         {/* Financial */}
         <Route
           path="/financial/dashboard"

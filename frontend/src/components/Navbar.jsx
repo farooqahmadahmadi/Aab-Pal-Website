@@ -29,6 +29,7 @@ export default function Navbar({ sidebarOpen, role }) {
     const handleClick = (e) => {
       if (notifRef.current && !notifRef.current.contains(e.target))
         setNotifOpen(false);
+
       if (profileRef.current && !profileRef.current.contains(e.target))
         setProfileOpen(false);
     };
@@ -76,6 +77,24 @@ export default function Navbar({ sidebarOpen, role }) {
     }
   };
 
+  // ---------------- NAVIGATE BY ROLE ----------------
+  const getProfileRoute = (role) => {
+  switch (role) {
+    case "Admin":
+      return "/admin/users/user-profile";
+
+    case "HR":
+      return "/hr/users/user-profile";
+
+    case "PM":
+      return "/pm/user-profile";
+
+    default:
+      return "/user-profile";
+  }
+};
+
+
   const unread = notifications.filter((n) => !n.is_read);
   const read = notifications.filter((n) => n.is_read);
 
@@ -90,16 +109,20 @@ export default function Navbar({ sidebarOpen, role }) {
     navigate("/");
   };
 
-  // ---------------- USER HELPERS ----------------
+  // ---------------- USER STATUS ----------------
   const getStatusClass = (status) => {
     return status === "Online"
       ? "border-green-500 animate-pulse"
       : "border-gray-300";
   };
 
+  // ---------------- FIXED AVATAR (IMPORTANT) ----------------
   const getAvatar = (u) => {
-    if (!u?.client_photo_url) return defaultAvatar;
-    return `http://localhost:5000${u.client_photo_url}`;
+    const photo = u?.user_photo_url;
+
+    if (!photo) return defaultAvatar;
+
+    return `${import.meta.env.VITE_API_URL}${photo}?t=${Date.now()}`;
   };
 
   return (
@@ -138,7 +161,6 @@ export default function Navbar({ sidebarOpen, role }) {
                   exit={{ opacity: 0, y: -10 }}
                   className="absolute right-0 mt-1 w-80 max-h-[450px] bg-white shadow-lg rounded-lg border flex flex-col overflow-hidden z-50"
                 >
-                  {/* Tabs */}
                   <div className="flex border-b text-sm">
                     <div
                       onClick={() => setTab("unread")}
@@ -163,7 +185,6 @@ export default function Navbar({ sidebarOpen, role }) {
                     </div>
                   </div>
 
-                  {/* LIST */}
                   <div className="flex-1 overflow-y-auto">
                     {visible.length === 0 && (
                       <p className="text-center text-gray-400 py-4 text-sm">
@@ -180,21 +201,17 @@ export default function Navbar({ sidebarOpen, role }) {
                           className="p-3 border-b hover:bg-gray-50 text-sm"
                         >
                           <div className="flex gap-2">
-                            {/* AVATAR + STATUS BORDER */}
                             <div
-                              className={`relative rounded-full p-[2px] border-2 ${getStatusClass(nUser.login_status)}`}
+                              className={`relative rounded-full p-[2px]  ${getStatusClass(
+                                nUser.login_status,
+                              )}`}
                             >
                               <img
                                 src={getAvatar(nUser)}
-                                className="w-8 h-8 rounded object-cover"
+                                className="w-8 h-8 rounded-full object-cover"
                               />
-
-                              {nUser.login_status === "Online" && (
-                                <span className="absolute bottom-0 right-0 w-2 h-2 bg-green-500 rounded-full animate-ping"></span>
-                              )}
                             </div>
 
-                            {/* CONTENT */}
                             <div className="flex-1">
                               <div className="flex justify-between">
                                 <span className="font-semibold text-xs">
@@ -233,7 +250,7 @@ export default function Navbar({ sidebarOpen, role }) {
                         onClick={() => setLimit((l) => l + 10)}
                         className="text-center text-blue-500 text-xs py-2 cursor-pointer"
                       >
-                        More...
+                        More notifications...
                       </div>
                     )}
                   </div>
@@ -246,27 +263,22 @@ export default function Navbar({ sidebarOpen, role }) {
           <div className="relative" ref={profileRef}>
             <div
               onClick={() => setProfileOpen(!profileOpen)}
-              className="flex items-center gap-2 cursor-pointer hover:bg-gray-100 px-2 py-1 rounded-full"
+              className="flex items-center gap-2 cursor-pointer hover:bg-gray-100 px-1 py-1 rounded-full"
             >
               <img
                 src={getAvatar(user)}
                 className="w-8 h-8 rounded-full border object-cover"
               />
-
-              <span className="hidden md:inline text-sm">
-                {user?.user_name}
-              </span>
             </div>
 
             {profileOpen && (
               <motion.div
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
                 className="absolute right-0 mt-1 w-48 bg-white shadow-lg rounded-lg border z-50"
               >
                 <div
-                  onClick={() => navigate("/admin/users/user-profile")}
+                  onClick={() => navigate(getProfileRoute(role))}
                   className="p-2 hover:bg-gray-100 text-sm flex gap-2 cursor-pointer"
                 >
                   <FiUser /> Profile

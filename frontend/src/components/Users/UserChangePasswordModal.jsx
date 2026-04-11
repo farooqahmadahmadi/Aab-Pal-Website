@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import API from "../../services/api";
-import { FaTimes, FaSave, FaEye, FaEyeSlash } from "react-icons/fa";
+import { FaTimes, FaSave, FaEye, FaEyeSlash, FaStore } from "react-icons/fa";
 import Toast from "../common/Toast";
 import useToast from "../../hooks/useToast";
 
@@ -158,7 +158,7 @@ export default function UserChangePasswordModal({ onClose }) {
                 : "bg-gray-400 cursor-not-allowed"
                 }`}
             >
-              <FaSave /> {loading ? "Saving..." : "Save"}
+              {loading ? "Changing..." : "Change"}
             </button>
           </div>
         </div>
