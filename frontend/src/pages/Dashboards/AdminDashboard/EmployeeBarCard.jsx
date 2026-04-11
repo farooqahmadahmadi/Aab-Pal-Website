@@ -43,19 +43,24 @@ export default function EmployeeBarCard() {
   const female = employees.filter((e) => e.emp_gender === "Female").length;
 
   const single = employees.filter(
-    (e) => e.emp_marital_status === "Single",
-  ).length;
-  const married = employees.filter(
-    (e) => e.emp_marital_status === "Married",
+    (e) => e.emp_marital_status === "Single"
   ).length;
 
-  // ================= HIRING STATUS (FIXED HERE) =================
-  const active = hiring.filter((h) => h.current_status === "Active").length;
-  const inactive = hiring.filter((h) => h.current_status === "InActive").length;
+  const married = employees.filter(
+    (e) => e.emp_marital_status === "Married"
+  ).length;
+
+  // ================= HIRING STATUS =================
+  const active = hiring.filter(
+    (h) => h.current_status === "Active"
+  ).length;
+
+  const inactive = hiring.filter(
+    (h) => h.current_status === "InActive"
+  ).length;
 
   // ================= CHART DATA =================
   const chartData = [
-    // { name: "Total", value: total },
     { name: "Male", value: male },
     { name: "Female", value: female },
     { name: "Active", value: active },
@@ -71,18 +76,26 @@ export default function EmployeeBarCard() {
     "#10b981",
     "#ef4444",
     "#f59e0b",
-    "#3b82f6",
   ];
+
+  // ================= LEGEND DATA (SYNC WITH COLORS) =================
+  const legendData = chartData.map((item, index) => ({
+    ...item,
+    color: COLORS[index % COLORS.length],
+  }));
 
   return (
     <div className="bg-white rounded-2xl shadow-lg p-5 hover:shadow-xl transition">
+
       {/* HEADER */}
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-md font-bold text-gray-800">
           Employee Analytics Overview
         </h2>
 
-        <span className="text-sm text-gray-500">Total: {total}</span>
+        <span className="text-sm text-gray-500">
+          Total: {total}
+        </span>
       </div>
 
       {/* CHART */}
@@ -97,23 +110,26 @@ export default function EmployeeBarCard() {
 
             <Bar dataKey="value" radius={[8, 8, 0, 0]} barSize={35}>
               {chartData.map((_, index) => (
-                <Cell key={index} fill={COLORS[index % COLORS.length]} />
+                <Cell key={index} fill={COLORS[index]} />
               ))}
             </Bar>
           </BarChart>
         </ResponsiveContainer>
       </div>
 
-      {/* LEGEND */}
+      {/* ================= DYNAMIC LEGEND ================= */}
       <div className="flex flex-wrap gap-3 mt-4 text-sm text-gray-700 justify-center">
-        <span>🟦 Employees ({total})</span>
-        <span>🟢 Male ({male})</span>
-        <span>🩷 Female ({female})</span>
-        <span>🟩 Active ({active})</span>
-        <span>🔴 InActive ({inactive})</span>
-        <span>🟡 Single ({single})</span>
-        <span>🟣 Married ({married})</span>
+        {legendData.map((item, index) => (
+          <span key={index} className="flex items-center gap-2">
+            <span
+              className="w-3 h-3 rounded-full"
+              style={{ backgroundColor: item.color }}
+            />
+            {item.name} ({item.value})
+          </span>
+        ))}
       </div>
+
     </div>
   );
 }
