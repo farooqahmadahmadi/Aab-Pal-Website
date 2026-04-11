@@ -1,3 +1,7 @@
+
+const fs = require("fs");
+const path = require("path");
+
 const Users = require("../models/Users");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
@@ -30,7 +34,7 @@ exports.login = async (req, res) => {
         role: user.user_role,
       },
       JWT_SECRET,
-      { expiresIn: "1d" },
+      { expiresIn: "1d" }
     );
 
     res.json({
@@ -67,7 +71,8 @@ exports.forgotPassword = async (req, res) => {
   try {
     const user = await Users.findOne({ where: { user_email } });
 
-    if (!user) return res.status(404).json({ message: "User not found" });
+    if (!user)
+      return res.status(404).json({ message: "User not found" });
 
     const token = jwt.sign({ id: user.user_id }, JWT_SECRET, {
       expiresIn: "10m",
@@ -111,7 +116,8 @@ exports.resetPassword = async (req, res) => {
     const decoded = jwt.verify(token, JWT_SECRET);
 
     const user = await Users.findByPk(decoded.id);
-    if (!user) return res.status(404).json({ message: "User not found" });
+    if (!user)
+      return res.status(404).json({ message: "User not found" });
 
     const hash = await bcrypt.hash(new_password, 10);
 
@@ -132,7 +138,8 @@ exports.changePassword = async (req, res) => {
 
     const user = await Users.findByPk(userId);
 
-    if (!user) return res.status(404).json({ message: "User not found" });
+    if (!user)
+      return res.status(404).json({ message: "User not found" });
 
     const isMatch = await bcrypt.compare(old_password, user.password_hash);
 
@@ -170,7 +177,8 @@ exports.getUserById = async (req, res) => {
   try {
     const user = await getUserById(req.params.id);
 
-    if (!user) return res.status(404).json({ message: "User not found" });
+    if (!user)
+      return res.status(404).json({ message: "User not found" });
 
     res.json(user);
   } catch (err) {
@@ -179,13 +187,14 @@ exports.getUserById = async (req, res) => {
   }
 };
 
-// ================= ADD USER (WITH IMAGE) =================
+// ================= ADD USER =================
 exports.addUser = async (req, res) => {
   try {
     const data = req.body;
 
     if (req.file) {
-      data.user_photo_url = `/uploads/documents/users/${req.file.filename}`;
+      data.user_photo_url =
+        `/uploads/documents/users/${req.file.filename}`;
     }
 
     const newUser = await addUser(data, req.user);
@@ -197,13 +206,14 @@ exports.addUser = async (req, res) => {
   }
 };
 
-// ================= UPDATE USER (WITH IMAGE) =================
+// ================= UPDATE USER =================
 exports.updateUser = async (req, res) => {
   try {
     const data = req.body;
 
     if (req.file) {
-      data.user_photo_url = `/uploads/documents/users/${req.file.filename}`;
+      data.user_photo_url =
+        `/uploads/documents/users/${req.file.filename}`;
     }
 
     const updated = await updateUser(req.params.id, data, req.user);
@@ -232,7 +242,8 @@ exports.adminResetPassword = async (req, res) => {
   try {
     const user = await Users.findByPk(req.params.id);
 
-    if (!user) return res.status(404).json({ message: "User not found" });
+    if (!user)
+      return res.status(404).json({ message: "User not found" });
 
     const hash = await bcrypt.hash("12345", 10);
 
@@ -247,41 +258,47 @@ exports.adminResetPassword = async (req, res) => {
   }
 };
 
-// ================= PROFILE PHOTO ONLY =================
+// ================= PROFILE PHOTO ONLY (FINAL FIX) =================
 exports.uploadUserPhoto = async (req, res) => {
   try {
     const user = await Users.findByPk(req.params.id);
 
-    if (!user) return res.status(404).json({ message: "User not found" });
+    if (!user)
+      return res.status(404).json({ message: "User not found" });
 
     if (req.file) {
-      // ===== DELETE OLD FILE =====
-      if (user.user_photo_url) {
-        const oldPath = path.join(
-          __dirname,
-          "..",
-          user.user_photo_url.replace(/^\/+/, ""),
-        );
 
+      // ===== DELETE OLD IMAGE SAFELY =====
+      if (user.user_photo_url) {
         try {
-          if (fs.existsSync(oldPath)) fs.unlinkSync(oldPath);
+          const oldFile = user.user_photo_url.split("/uploads/")[1];
+          const oldPath = path.join(__dirname, "..", "uploads", oldFile);
+
+          if (fs.existsSync(oldPath)) {
+            fs.unlinkSync(oldPath);
+          }
         } catch (err) {
           console.error("DELETE ERROR:", err.message);
         }
       }
 
-      // ===== SAVE NEW FILE =====
-      user.user_photo_url = `/uploads/documents/users/${req.file.filename}`;
+      // ===== SAVE NEW IMAGE PATH =====
+      user.user_photo_url =
+        `/uploads/documents/users/${req.file.filename}`;
 
       await user.save();
+      await user.reload();
     }
 
     res.json({
       message: "Profile photo updated successfully",
       user_photo_url: user.user_photo_url,
     });
+
   } catch (err) {
     console.error(err);
-    res.status(500).json({ message: "Failed to upload photo" });
+    res.status(500).json({
+      message: "Failed to upload photo",
+    });
   }
 };

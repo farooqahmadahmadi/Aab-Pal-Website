@@ -102,9 +102,8 @@ const contractStorage = multer.diskStorage({
 
 const uploadContract = multer({ storage: contractStorage });
 
-
-
 // ===== User Profile Images folder =====
+
 const userDir = path.join(__dirname, "../uploads/documents/users");
 if (!fs.existsSync(userDir)) fs.mkdirSync(userDir, { recursive: true });
 
@@ -114,15 +113,15 @@ const userStorage = multer.diskStorage({
   filename: (req, file, cb) => {
     const ext = path.extname(file.originalname);
 
-    // use user id if exists (update/photo)
-    const userId = req.params.id || Date.now();
+    // ALWAYS stable unique + replace-safe name
+  const userId = req.params.id || "temp";
+     const timestamp = Date.now();
 
-    cb(null, `user-${userId}${ext}`);
+   cb(null, `user-${userId}-${timestamp}${ext}`);
   },
 });
 
 const uploadUser = multer({ storage: userStorage });
-
 
 // ===== Export all uploads =====
 module.exports = {
