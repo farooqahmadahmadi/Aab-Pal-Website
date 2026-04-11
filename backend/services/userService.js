@@ -17,15 +17,6 @@ exports.loginUser = async (email, password) => {
   if (!user) throw new Error("Invalid credentials");
   if (!user.is_active) throw new Error("User is inactive");
 
-  const now = new Date();
-  const time = now.toTimeString().split(" ")[0];
-
-  if (user.access_time_start && user.access_time_end) {
-    if (!(time >= user.access_time_start && time <= user.access_time_end)) {
-      throw new Error("Login not allowed at this time");
-    }
-  }
-
   const match = await bcrypt.compare(password, user.password_hash);
 
   if (!match) {
@@ -41,22 +32,6 @@ exports.loginUser = async (email, password) => {
       new_value: { failed_attempts: user.failed_attempts },
     });
 
-    if (user.failed_attempts >= 6) {
-      user.is_active = false;
-      await user.save();
-
-      await logService.createLog({
-        user_id: user.user_id,
-        action: "USER_DEACTIVATED",
-        reference_table: "users",
-        reference_record_id: user.user_id,
-        old_value: null,
-        new_value: { is_active: false },
-      });
-
-      throw new Error("User deactivated by system");
-    }
-
     throw new Error("Invalid credentials");
   }
 
@@ -65,6 +40,7 @@ exports.loginUser = async (email, password) => {
   user.failed_attempts = 0;
   user.login_status = "Online";
   user.last_login_at = new Date();
+
   await user.save();
 
   await logService.createLog({
@@ -82,13 +58,13 @@ exports.loginUser = async (email, password) => {
   const token = jwt.sign(
     { id: user.user_id, role: user.user_role },
     JWT_SECRET,
-    { expiresIn: "8h" },
+    { expiresIn: "8h" }
   );
 
   return { user, token };
 };
 
-// ---------------- GET ALL USERS (NO SEARCH, NO PAGINATION) ----------------
+// ---------------- USERS LIST ----------------
 exports.getUsersList = async () => {
   const users = await Users.findAll({
     order: [["user_id", "ASC"]],
@@ -98,9 +74,11 @@ exports.getUsersList = async () => {
 };
 
 // ---------------- GET BY ID ----------------
-exports.getUserById = async (id) => await Users.findByPk(id);
+exports.getUserById = async (id) => {
+  return await Users.findByPk(id);
+};
 
-// ---------------- CREATE + LOG ----------------
+// ---------------- ADD USER ----------------
 exports.addUser = async (data, actor = {}) => {
   data.password_hash = await bcrypt.hash(data.password, 10);
 
@@ -118,7 +96,7 @@ exports.addUser = async (data, actor = {}) => {
   return newUser;
 };
 
-// ---------------- UPDATE + LOG ----------------
+// ---------------- UPDATE USER ----------------
 exports.updateUser = async (id, data, actor = {}) => {
   const user = await Users.findByPk(id);
   if (!user) throw new Error("User not found");
@@ -148,13 +126,12 @@ exports.updateUser = async (id, data, actor = {}) => {
   return user;
 };
 
-// ---------------- DELETE ----------------
+// ---------------- DELETE USER ----------------
 exports.deleteUser = async (id, actor = {}) => {
   const user = await Users.findByPk(id);
   if (!user) throw new Error("User not found");
 
   await handleDelete(user, actor, "users", getUserId(actor));
-
   return true;
 };
 

@@ -28,15 +28,15 @@ module.exports = {
       client_photo_url: {
         type: Sequelize.STRING(255)
       },
+       is_deleted: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: false
+      },
       created_at: {
         type: Sequelize.DATE
       },
       updated_at: {
         type: Sequelize.DATE
-      },
-      is_deleted: {
-        type: Sequelize.BOOLEAN,
-        defaultValue: false
       }
     });
   },

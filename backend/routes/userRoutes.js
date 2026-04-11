@@ -3,6 +3,9 @@ const router = express.Router();
 
 const { authMiddleware } = require("../middlewares/authMiddleware");
 
+const uploadMiddleware = require("../middlewares/uploadMiddleware");
+const uploadUser = uploadMiddleware.uploadUser;
+
 const {
   login,
   logout,
@@ -15,28 +18,50 @@ const {
   deleteUser,
   changePassword,
   adminResetPassword,
+  uploadUserPhoto,
 } = require("../controllers/userController");
 
-
-// Login route
+// AUTH
 router.post("/login", login);
-// Logout route (protected)
 router.post("/logout", authMiddleware, logout);
-// Forgot password
+
+// PASSWORD
 router.post("/forgot-password", forgotPassword);
-// Reset password with token
 router.post("/reset-password/:token", resetPassword);
-// Change password (protected)
 router.post("/change-password", authMiddleware, changePassword);
 
-// Users List CRUD routes
+// USERS
 router.get("/", authMiddleware, getUsers);
 router.get("/:id", authMiddleware, getUserById);
-router.post("/", authMiddleware, addUser);
-router.put("/:id", authMiddleware, updateUser);
+
+// CREATE + PHOTO
+router.post(
+  "/",
+  authMiddleware,
+  uploadUser.single("user_photo_url"),
+  addUser
+);
+
+// UPDATE + PHOTO
+router.put(
+  "/:id",
+  authMiddleware,
+  uploadUser.single("user_photo_url"),
+  updateUser
+);
+
+// DELETE
 router.delete("/:id", authMiddleware, deleteUser);
 
-// ✅ Admin reset password to default 12345
+// ADMIN RESET
 router.post("/:id/reset-password", authMiddleware, adminResetPassword);
+
+// PROFILE PHOTO ONLY
+router.post(
+  "/:id/photo",
+  authMiddleware,
+  uploadUser.single("user_photo_url"),
+  uploadUserPhoto
+);
 
 module.exports = router;

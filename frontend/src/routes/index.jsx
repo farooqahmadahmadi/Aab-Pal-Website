@@ -20,6 +20,7 @@ import ClientDashboard from "../pages/Dashboards/ClientDashboard";
 
 // Imported Pages
 import UsersList from "../pages/Users/UsersList";
+import UserProfile from "../pages/Users/Profile";
 
 import CompanyInfo from "../pages/Company/CompanyInfo";
 import CompanyDocuments from "../pages/Company/CompanyDocuments";
@@ -456,6 +457,17 @@ export default function AppRoutes() {
           }
         />
         <Route
+          path="/admin/users/user-profile"
+          element={
+            <ProtectedRoute allowedRoles={["Admin"]}>
+              <AdminLayout>
+                <UserProfile />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
           path="/admin/system/notifications"
           element={
             <ProtectedRoute allowedRoles={["Admin"]}>
@@ -570,10 +582,6 @@ export default function AppRoutes() {
             </ProtectedRoute>
           }
         />
-  
-
-
-
 
         {/* Financial */}
         <Route

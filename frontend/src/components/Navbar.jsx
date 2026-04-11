@@ -1,12 +1,14 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import API from "../services/api";
-import { FiBell, FiUser, FiLogOut, FiCheck, FiUnlock, FiUserCheck, FiUsers, FiUserPlus, FiUserX } from "react-icons/fi";
+import { FiBell, FiUnlock, FiLogOut, FiCheck, FiUser } from "react-icons/fi";
+
 import UserChangePasswordModal from "../components/Users/UserChangePasswordModal";
 import { motion, AnimatePresence } from "framer-motion";
 
-export default function Navbar({ sidebarOpen, role }) {
+import defaultAvatar from "../assets/images/client-def-image.png";
 
+export default function Navbar({ sidebarOpen, role }) {
   const navigate = useNavigate();
 
   const [profileOpen, setProfileOpen] = useState(false);
@@ -22,28 +24,37 @@ export default function Navbar({ sidebarOpen, role }) {
 
   const user = JSON.parse(localStorage.getItem("user") || "{}");
 
-  // close on outside click
+  // ---------------- OUTSIDE CLICK ----------------
   useEffect(() => {
     const handleClick = (e) => {
-      if (notifRef.current && !notifRef.current.contains(e.target)) setNotifOpen(false);
-      if (profileRef.current && !profileRef.current.contains(e.target)) setProfileOpen(false);
+      if (notifRef.current && !notifRef.current.contains(e.target))
+        setNotifOpen(false);
+      if (profileRef.current && !profileRef.current.contains(e.target))
+        setProfileOpen(false);
     };
+
     document.addEventListener("mousedown", handleClick);
     return () => document.removeEventListener("mousedown", handleClick);
   }, []);
 
-  // fetch
+  // ---------------- FETCH NOTIFICATIONS ----------------
   const fetchNotifications = async () => {
     try {
       const res = await API.get("/notifications");
       const data = Array.isArray(res.data) ? res.data : [];
 
-      // filter personal + role
-      const filtered = data.filter(n =>
-        !n.user_id || n.user_id === user.user_id || n.notification_recipients === role
+      const filtered = data.filter(
+        (n) =>
+          !n.user_id ||
+          n.user_id === user.user_id ||
+          n.notification_recipients === role,
       );
 
-      setNotifications(filtered.sort((a,b) => new Date(b.created_at) - new Date(a.created_at)));
+      setNotifications(
+        filtered.sort(
+          (a, b) => new Date(b.created_at) - new Date(a.created_at),
+        ),
+      );
     } catch (err) {
       console.error(err);
     }
@@ -55,41 +66,52 @@ export default function Navbar({ sidebarOpen, role }) {
     return () => clearInterval(interval);
   }, []);
 
-  // mark as read
+  // ---------------- MARK AS READ ----------------
   const markAsRead = async (id) => {
     try {
-      await API.put(`/notifications/read/${id}`); 
+      await API.put(`/notifications/read/${id}`);
       fetchNotifications();
     } catch (err) {
       console.error(err);
     }
   };
 
-  const unread = notifications.filter(n => !n.is_read);
-  const read = notifications.filter(n => n.is_read);
+  const unread = notifications.filter((n) => !n.is_read);
+  const read = notifications.filter((n) => n.is_read);
 
   const currentList = tab === "unread" ? unread : read;
   const visible = currentList.slice(0, limit);
 
   const logout = async () => {
-    try { await API.post("/users/logout"); } catch {}
+    try {
+      await API.post("/users/logout");
+    } catch {}
     localStorage.clear();
     navigate("/");
+  };
+
+  // ---------------- USER HELPERS ----------------
+  const getStatusClass = (status) => {
+    return status === "Online"
+      ? "border-green-500 animate-pulse"
+      : "border-gray-300";
+  };
+
+  const getAvatar = (u) => {
+    if (!u?.client_photo_url) return defaultAvatar;
+    return `http://localhost:5000${u.client_photo_url}`;
   };
 
   return (
     <>
       <div
-        className="flex items-center justify-between bg-white shadow-sm px-4 py-1 relative w-dvw top-0 left-0 right-0 z-40 transition-all"
-        //left Space
+        className="flex items-center justify-between bg-white shadow-sm px-4 py-1 relative w-dvw z-40"
         style={{ marginLeft: sidebarOpen ? "16rem" : "" }}
       >
-
         <h1 className="font-bold text-lg ml-5">{role} Panel</h1>
 
         <div className="flex items-center gap-4">
-
-          {/* 🔔 Notifications */}
+          {/* ---------------- NOTIFICATIONS ---------------- */}
           <div className="relative" ref={notifRef}>
             <div
               onClick={() => setNotifOpen(!notifOpen)}
@@ -101,7 +123,7 @@ export default function Navbar({ sidebarOpen, role }) {
                 <motion.span
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
-                  className="absolute -top-0.5 -right-1 bg-red-500 text-white text-[10px] px-1 py-[1px] rounded-full animate-pulse"
+                  className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] px-1 rounded-full"
                 >
                   {unread.length}
                 </motion.span>
@@ -114,116 +136,161 @@ export default function Navbar({ sidebarOpen, role }) {
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
-                  className="absolute right-0 mt-1 w-72 max-h-[450px] bg-white shadow-lg rounded-lg border flex flex-col overflow-hidden z-50"
+                  className="absolute right-0 mt-1 w-80 max-h-[450px] bg-white shadow-lg rounded-lg border flex flex-col overflow-hidden z-50"
                 >
-
                   {/* Tabs */}
-                  <div className="flex border-b text-sm cursor-pointer" >
+                  <div className="flex border-b text-sm">
                     <div
                       onClick={() => setTab("unread")}
-                      className={`flex-1 py-2 text-center hover:bg-gray-100 ${tab === "unread" ? "border-b-2 border-blue-500 font-semibold text-blue-500" : ""}`}
+                      className={`flex-1 py-2 text-center cursor-pointer ${
+                        tab === "unread"
+                          ? "border-b-2 border-blue-500 text-blue-600 font-semibold"
+                          : ""
+                      }`}
                     >
-                      Unread ({unread.length})
+                      Unread
                     </div>
+
                     <div
                       onClick={() => setTab("read")}
-                      className={`flex-1 py-2 text-center hover:bg-gray-100 ${tab === "read" ? "border-b-2 border-blue-500 font-semibold text-blue-500" : ""}`}
+                      className={`flex-1 py-2 text-center cursor-pointer ${
+                        tab === "read"
+                          ? "border-b-2 border-blue-500 text-blue-600 font-semibold"
+                          : ""
+                      }`}
                     >
-                      Read ({read.length})
+                      Read
                     </div>
                   </div>
 
-                  {/* List */}
-                  <div className="overflow-y-auto overflow-x-hidden flex-1">
-
+                  {/* LIST */}
+                  <div className="flex-1 overflow-y-auto">
                     {visible.length === 0 && (
                       <p className="text-center text-gray-400 py-4 text-sm">
                         No notifications
                       </p>
                     )}
 
-                    {visible.map(n => (
-                      <div
-                        key={n.notification_id}
-                        className="p-3 border-b hover:bg-gray-50 text-sm space-y-1"
-                      >
-                        <div className="flex justify-between items-start gap-2">
-                          <span className="font-semibold break-words">
-                            {n.notification_title}
-                          </span>
+                    {visible.map((n) => {
+                      const nUser = n.user || {};
 
-                          {!n.is_read && (
+                      return (
+                        <div
+                          key={n.notification_id}
+                          className="p-3 border-b hover:bg-gray-50 text-sm"
+                        >
+                          <div className="flex gap-2">
+                            {/* AVATAR + STATUS BORDER */}
                             <div
-                              onClick={() => markAsRead(n.notification_id)}
-                              className="text-gray-600 bg-green-200 rounded-full p-0.5 font-semibold hover:bg-blue-300 cursor-pointer"
+                              className={`relative rounded-full p-[2px] border-2 ${getStatusClass(nUser.login_status)}`}
                             >
-                              <FiCheck />
+                              <img
+                                src={getAvatar(nUser)}
+                                className="w-8 h-8 rounded object-cover"
+                              />
+
+                              {nUser.login_status === "Online" && (
+                                <span className="absolute bottom-0 right-0 w-2 h-2 bg-green-500 rounded-full animate-ping"></span>
+                              )}
                             </div>
-                          )}
+
+                            {/* CONTENT */}
+                            <div className="flex-1">
+                              <div className="flex justify-between">
+                                <span className="font-semibold text-xs">
+                                  {n.notification_title}
+                                </span>
+
+                                {!n.is_read && (
+                                  <FiCheck
+                                    onClick={() =>
+                                      markAsRead(n.notification_id)
+                                    }
+                                    className="cursor-pointer text-green-600"
+                                  />
+                                )}
+                              </div>
+
+                              <p className="text-xs text-gray-600">
+                                {n.notification_message}
+                              </p>
+
+                              <p className="text-[10px] text-gray-500">
+                                By: {nUser.user_name || "System"}
+                              </p>
+
+                              <span className="text-[10px] text-gray-400">
+                                {new Date(n.created_at).toLocaleString()}
+                              </span>
+                            </div>
+                          </div>
                         </div>
+                      );
+                    })}
 
-                        <p className="text-gray-600 break-words whitespace-pre-wrap text-xs">
-                          {n.notification_message}
-                        </p>
-
-                        <span className="text-[10px] text-gray-400">
-                          {new Date(n.created_at).toLocaleString()}
-                        </span>
-                      </div>
-                    ))}
-
-                    {/* More */}
                     {visible.length < currentList.length && (
                       <div
-                        onClick={() => setLimit(prev => prev + 10)}
-                        className="w-full text-center text-blue-500 text-xs py-2 hover:bg-gray-50 cursor-pointer"
+                        onClick={() => setLimit((l) => l + 10)}
+                        className="text-center text-blue-500 text-xs py-2 cursor-pointer"
                       >
                         More...
                       </div>
                     )}
-
                   </div>
                 </motion.div>
               )}
             </AnimatePresence>
           </div>
 
-          {/* 👤 Profile */}
+          {/* ---------------- PROFILE ---------------- */}
           <div className="relative" ref={profileRef}>
             <div
               onClick={() => setProfileOpen(!profileOpen)}
-              className="flex items-center p-1.5 gap-1  hover:bg-gray-100 px-2 py-1 rounded-full cursor-pointer  "
+              className="flex items-center gap-2 cursor-pointer hover:bg-gray-100 px-2 py-1 rounded-full"
             >
-              <FiUserCheck size={20} />
-              <span className="hidden md:inline text-sm text-red-500">{user?.user_name}</span>
+              <img
+                src={getAvatar(user)}
+                className="w-8 h-8 rounded-full border object-cover"
+              />
+
+              <span className="hidden md:inline text-sm">
+                {user?.user_name}
+              </span>
             </div>
 
             {profileOpen && (
               <motion.div
                 initial={{ opacity: 0, y: -10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                className="absolute right-0 mt-1 w-44 max-h-[450px] bg-white shadow-lg rounded-lg border flex flex-col overflow-hidden z-50"
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                className="absolute right-0 mt-1 w-48 bg-white shadow-lg rounded-lg border z-50"
               >
                 <div
-                  onClick={() => { setShowChangePass(true); setProfileOpen(false); }}
-                  className="w-full flex gap-2 text-left p-2 hover:bg-gray-100 text-sm font-semibold"
-                  
+                  onClick={() => navigate("/admin/users/user-profile")}
+                  className="p-2 hover:bg-gray-100 text-sm flex gap-2 cursor-pointer"
                 >
-                  <FiUnlock/> Change Password
+                  <FiUser /> Profile
+                </div>
+
+                <div
+                  onClick={() => {
+                    setShowChangePass(true);
+                    setProfileOpen(false);
+                  }}
+                  className="p-2 hover:bg-gray-100 text-sm flex gap-2 cursor-pointer"
+                >
+                  <FiUnlock /> Change Password
                 </div>
 
                 <div
                   onClick={logout}
-                  className="w-full flex gap-2 text-left p-2 hover:bg-red-100 text-red-600 text-sm font-semibold"
+                  className="p-2 hover:bg-red-100 text-sm text-red-600 flex gap-2 cursor-pointer"
                 >
-                  <FiLogOut/>Logout
-
+                  <FiLogOut /> Logout
                 </div>
               </motion.div>
             )}
           </div>
-
         </div>
       </div>
 

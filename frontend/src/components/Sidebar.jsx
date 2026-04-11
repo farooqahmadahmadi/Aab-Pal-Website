@@ -202,6 +202,7 @@ export default function Sidebar({ role }) {
         icon: <FiSettings className="animate-spin" />,
         submenu: [
           { name: "User Accounts", path: "/admin/users/user-list" },
+           { name: "User Profile", path: "/admin/users/user-profile" },
           { name: "Notification Center", path: "/admin/system/notifications" },
           { name: "Settings", path: "/admin/system/system-settings" },
           { name: "System Logs", path: "/admin/system/system-logs" },

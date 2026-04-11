@@ -1,82 +1,92 @@
-'use strict';
+"use strict";
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('users', {
+    await queryInterface.createTable("users", {
       user_id: {
         type: Sequelize.BIGINT.UNSIGNED,
         primaryKey: true,
-        autoIncrement: true
+        autoIncrement: true,
       },
       user_name: {
         type: Sequelize.STRING(100),
         allowNull: false,
-        unique: true
+        unique: true,
       },
       user_email: {
         type: Sequelize.STRING(150),
         allowNull: false,
-        unique: true
+        unique: true,
       },
       password_hash: {
         type: Sequelize.STRING(255),
-        allowNull: false
+        allowNull: false,
       },
-       employee_id: {
+      employee_id: {
         type: Sequelize.BIGINT.UNSIGNED,
         allowNull: true,
         references: {
-          model: 'employee_info',
-          key: 'employee_id'
+          model: "employee_info",
+          key: "employee_id",
         },
-        onUpdate: 'CASCADE',
-        onDelete: 'SET NULL'
+        onUpdate: "CASCADE",
+        onDelete: "SET NULL",
       },
       client_id: {
         type: Sequelize.BIGINT.UNSIGNED,
         allowNull: true,
         references: {
-          model: 'client_info',
-          key: 'client_id'
+          model: "client_info",
+          key: "client_id",
         },
-        onUpdate: 'CASCADE',
-        onDelete: 'SET NULL'
+        onUpdate: "CASCADE",
+        onDelete: "SET NULL",
       },
       user_role: {
-        type: Sequelize.ENUM('Admin', 'HR', 'Financial', 'PM', 'Employee', 'Client'),
-        allowNull: false
+        type: Sequelize.ENUM(
+          "Admin",
+          "HR",
+          "Financial",
+          "PM",
+          "Employee",
+          "Client",
+        ),
+        allowNull: false,
       },
       login_status: {
-        type: Sequelize.ENUM('Online', 'Offline'),
-        defaultValue: 'Offline'
+        type: Sequelize.ENUM("Online", "Offline"),
+        defaultValue: "Offline",
       },
       last_login_at: {
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       failed_attempts: {
         type: Sequelize.INTEGER,
-        defaultValue: 0
+        defaultValue: 0,
       },
       access_time_start: {
-        type: Sequelize.TIME
+        type: Sequelize.TIME,
       },
       access_time_end: {
-        type: Sequelize.TIME
+        type: Sequelize.TIME,
+      },
+      user_photo_url: {
+        type: Sequelize.STRING(255),
       },
       is_active: {
         type: Sequelize.BOOLEAN,
-        defaultValue: false
+        defaultValue: false,
       },
       created_at: {
         type: Sequelize.DATE,
-        defaultValue: Sequelize.NOW
+        defaultValue: Sequelize.NOW,
       },
       updated_at: {
         type: Sequelize.DATE,
-        defaultValue: Sequelize.NOW
-      }
+        defaultValue: Sequelize.NOW,
+      },
     });
   },
   async down(queryInterface) {
-    await queryInterface.dropTable('users');
-  }
+    await queryInterface.dropTable("users");
+  },
 };
