@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { getExpenses } from "../../../services/expensesService";
-
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from "recharts";
 
 export default function ExpensesPieCard() {
@@ -70,7 +69,7 @@ export default function ExpensesPieCard() {
   ];
 
   return (
-    <div className="bg-white rounded-2xl shadow-lg p-5">
+    <div className="bg-white rounded-2xl shadow-lg p-5 hover:shadow-xl transition">
       {/* HEADER */}
       <div className="flex justify-between mb-4">
         <h2 className="font-bold text-gray-800">Today Expenses</h2>

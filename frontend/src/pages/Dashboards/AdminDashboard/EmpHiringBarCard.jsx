@@ -116,10 +116,10 @@ export default function EmpHiringBarCard() {
           <BarChart data={chartData}>
             <CartesianGrid strokeDasharray="3 3" opacity={0.2} />
             <XAxis dataKey="name" tick={{ fontSize: 12 }} />
-            <YAxis />
+            <YAxis tick={{ fontSize: 12 }} />
             <Tooltip />
 
-            <Bar dataKey="value" radius={[8, 8, 0, 0]} barSize={30}>
+            <Bar dataKey="value" radius={[8, 8, 0, 0]} barSize={20}>
               {chartData.map((entry, index) => (
                 <Cell
                   key={index}

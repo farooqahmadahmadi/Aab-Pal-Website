@@ -104,11 +104,11 @@ export default function EmployeeBarCard() {
           <BarChart data={chartData}>
             <CartesianGrid strokeDasharray="3 3" opacity={0.2} />
             <XAxis dataKey="name" tick={{ fontSize: 12 }} />
-            <YAxis />
+            <YAxis tick={{ fontSize: 12 }}/>
             <Tooltip />
             <Legend />
 
-            <Bar dataKey="value" radius={[8, 8, 0, 0]} barSize={35}>
+            <Bar dataKey="value" radius={[8, 8, 0, 0]} barSize={20}>
               {chartData.map((_, index) => (
                 <Cell key={index} fill={COLORS[index]} />
               ))}

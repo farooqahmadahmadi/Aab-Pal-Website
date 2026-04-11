@@ -92,7 +92,7 @@ export default function ExpensesBarCard() {
   ];
 
   return (
-    <div className="bg-white rounded-2xl shadow-lg p-5">
+    <div className="bg-white rounded-2xl shadow-lg p-5 hover:shadow-xl transition">
       <div className="flex justify-between mb-4">
         <h2 className="font-bold">Expenses Overview</h2>
 
@@ -112,8 +112,8 @@ export default function ExpensesBarCard() {
         <ResponsiveContainer width="100%" height="100%">
           <BarChart data={chartData}>
             <CartesianGrid opacity={0.2} />
-            <XAxis dataKey="name" />
-            <YAxis />
+            <XAxis dataKey="name" tick={{ fontSize: 12 }} />
+            <YAxis tick={{ fontSize: 12 }} />
             <Tooltip />
 
             <Bar dataKey="value">
