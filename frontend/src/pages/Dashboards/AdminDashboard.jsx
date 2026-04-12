@@ -5,6 +5,7 @@ import ExpensesBarCard from "./AdminDashboard/ExpensesBarCard";
 import ExpensesPieCard from "./AdminDashboard/ExpensesPieCard";
 import ClientsPieCard from "./AdminDashboard/ClientsPieCard";
 import ProjectBarCard from "./AdminDashboard/ProjectBarCard";
+import ProjectTimelineChart from "./AdminDashboard/ProjectTimelineChart";
 
 export default function AdminDashboard() {
   return (
@@ -23,6 +24,7 @@ export default function AdminDashboard() {
         <ExpensesPieCard />
         <ClientsPieCard />
         <ProjectBarCard />
+        <ProjectTimelineChart />
       </div>
     </div>
   );
