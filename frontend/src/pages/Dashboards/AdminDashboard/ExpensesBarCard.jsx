@@ -92,7 +92,7 @@ export default function ExpensesBarCard() {
   ];
 
   return (
-    <div className="bg-white rounded-2xl shadow-lg p-5 hover:shadow-xl transition">
+    <div className="bg-white rounded-2xl shadow-lg p-5 hover:shadow-xl transition h-full flex flex-col">
       <div className="flex justify-between mb-4">
         <h2 className="font-bold">Expenses Overview</h2>
 
@@ -116,7 +116,7 @@ export default function ExpensesBarCard() {
             <YAxis tick={{ fontSize: 12 }} />
             <Tooltip />
 
-            <Bar dataKey="value">
+            <Bar dataKey="value" radius={[8, 8, 0, 0]} barSize={20}>
               {chartData.map((_, i) => (
                 <Cell key={i} fill={COLORS[i % COLORS.length]} />
               ))}

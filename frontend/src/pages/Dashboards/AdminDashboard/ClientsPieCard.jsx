@@ -57,8 +57,8 @@ export default function ClientsPieCard() {
   }));
 
   return (
-    <div className="bg-white rounded-2xl shadow-lg p-5 hover:shadow-xl transition">
-
+     <div className="bg-white rounded-2xl shadow-lg p-5 hover:shadow-xl transition h-full flex flex-col">
+      
       {/* HEADER */}
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-md font-bold text-gray-800">

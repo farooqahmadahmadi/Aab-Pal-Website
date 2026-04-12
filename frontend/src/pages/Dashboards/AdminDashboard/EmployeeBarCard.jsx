@@ -85,7 +85,7 @@ export default function EmployeeBarCard() {
   }));
 
   return (
-    <div className="bg-white rounded-2xl shadow-lg p-5 hover:shadow-xl transition">
+     <div className="bg-white rounded-2xl shadow-lg p-5 hover:shadow-xl transition h-full flex flex-col">
 
       {/* HEADER */}
       <div className="flex justify-between items-center mb-4">

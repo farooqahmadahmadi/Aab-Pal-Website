@@ -74,7 +74,7 @@ export default function UsersPieCard() {
   ];
 
   return (
-    <div className="bg-white rounded-2xl shadow-md p-5 hover:shadow-lg transition">
+     <div className="bg-white rounded-2xl shadow-lg p-5 hover:shadow-xl transition h-full flex flex-col">
       {/* HEADER */}
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-md font-bold">Users Overview</h2>

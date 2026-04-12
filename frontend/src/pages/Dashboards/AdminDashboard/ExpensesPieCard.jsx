@@ -69,7 +69,7 @@ export default function ExpensesPieCard() {
   ];
 
   return (
-    <div className="bg-white rounded-2xl shadow-lg p-5 hover:shadow-xl transition">
+     <div className="bg-white rounded-2xl shadow-lg p-5 hover:shadow-xl transition h-full flex flex-col">
       {/* HEADER */}
       <div className="flex justify-between mb-4">
         <h2 className="font-bold text-gray-800">Today Expenses</h2>
