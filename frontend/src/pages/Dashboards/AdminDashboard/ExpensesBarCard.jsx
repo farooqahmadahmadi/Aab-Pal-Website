@@ -100,7 +100,7 @@ export default function ExpensesBarCard() {
         <select
           value={filter}
           onChange={(e) => setFilter(e.target.value)}
-          className="border px-2 py-1 text-sm rounded"
+          className="border px-2 py-1 text-sm rounded-full"
         >
           <option value="week">Week</option>
           <option value="month">Month</option>

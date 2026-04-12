@@ -30,6 +30,9 @@ const ClientInfo = sequelize.define(
         client_photo_url: {
             type: DataTypes.STRING(255)
         },
+        client_status: {
+        type: DataTypes.ENUM('Pending', 'ACtive', 'InActive')
+    },
         is_deleted: {
             type: DataTypes.BOOLEAN,
             defaultValue: false

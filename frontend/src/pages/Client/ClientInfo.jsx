@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import { getClients, addClient, updateClient, deleteClient } from "../../services/clientInfoService";
 import ClientInfoModal from "../../components/Client/ClientInfoModal";
@@ -45,6 +44,7 @@ export default function ClientInfoPage() {
             c.client_name?.toLowerCase().includes(search.toLowerCase()) ||
             c.client_email?.toLowerCase().includes(search.toLowerCase()) ||
             c.client_phone?.toLowerCase().includes(search.toLowerCase()) ||
+            c.client_status?.toLowerCase().includes(search.toLowerCase()) ||
             c.client_nid_number?.toLowerCase().includes(search.toLowerCase())
         );
         setFiltered(f);
@@ -103,6 +103,7 @@ export default function ClientInfoPage() {
                             <th className="p-2 ">NID</th>
                             <th className="p-2 ">Phone</th>
                             <th className="p-2 ">Email</th>
+                            <th className="p-2 ">Status</th>
                             <th className="p-2">Photo</th>
                             <th className="p-2 text-center">Actions</th>
                         </tr>
@@ -114,8 +115,9 @@ export default function ClientInfoPage() {
                                     <td className="p-2 text-center">{c.client_id}</td>
                                     <td className="p-2">{c.client_name}</td>
                                     <td className="p-2 ">{c.client_nid_number}</td>
-                                    <td className="p-2 "> {c.client_phone}</td>
+                                    <td className="p-2 ">{c.client_phone}</td>
                                     <td className="p-2 "><a href="mailto:">{c.client_email}</a></td>
+                                    <td className="p-2 ">{c.client_status}</td>                                    
                                     <td>
                                         <img
                                             src={c.client_photo_url
@@ -133,7 +135,7 @@ export default function ClientInfoPage() {
                             ))
                         ) : (
                             <tr>
-                                <td colSpan="7" className="text-center p-4 text-gray-500">
+                                <td colSpan="8" className="text-center p-4 text-gray-500">
                                     No records found
                                 </td>
                             </tr>
