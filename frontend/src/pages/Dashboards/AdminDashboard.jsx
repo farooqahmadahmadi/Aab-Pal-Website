@@ -1,11 +1,14 @@
 import UsersPieCard from "./AdminDashboard/UsersPieCard";
 import EmployeeBarCard from "./AdminDashboard/EmployeeBarCard";
 import EmpHiringBarCard from "./AdminDashboard/EmpHiringBarCard";
-import ExpensesBarCard from "./AdminDashboard/ExpensesBarCard";
-import ExpensesPieCard from "./AdminDashboard/ExpensesPieCard";
+
 import ClientsPieCard from "./AdminDashboard/ClientsPieCard";
 import ProjectBarCard from "./AdminDashboard/ProjectBarCard";
 import ProjectTimelineChart from "./AdminDashboard/ProjectTimelineChart";
+
+import ExpensesBarCard from "./AdminDashboard/ExpensesBarCard";
+import ExpensesPieCard from "./AdminDashboard/ExpensesPieCard";
+import CashTransactionsChart from "./AdminDashboard/CashTransactionsChart";
 
 export default function AdminDashboard() {
   return (
@@ -20,11 +23,14 @@ export default function AdminDashboard() {
         <UsersPieCard />
         <EmployeeBarCard />
         <EmpHiringBarCard />
-        <ExpensesBarCard />
-        <ExpensesPieCard />
+
         <ClientsPieCard />
         <ProjectBarCard />
         <ProjectTimelineChart />
+
+        <ExpensesBarCard />
+        <ExpensesPieCard />
+        <CashTransactionsChart />
       </div>
     </div>
   );
