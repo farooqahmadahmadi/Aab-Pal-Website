@@ -105,7 +105,7 @@ export default function UsersPieCard() {
       </div>
 
       {/* SINGLE CLEAN LEGEND */}
-      <div className="flex flex-wrap gap-3 mt-4 text-sm justify-center">
+      <div className="flex flex-wrap gap-3 mt-4 text-xs justify-center">
         <div className="flex items-center gap-2">
           <span className="w-3 h-3 bg-blue-500 rounded-full"></span>
           Active ({active})

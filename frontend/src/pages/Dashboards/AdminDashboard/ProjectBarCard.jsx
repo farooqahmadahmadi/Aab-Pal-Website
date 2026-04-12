@@ -112,7 +112,7 @@ export default function ProjectBarCard() {
       </div>
 
       {/* LEGEND (DYNAMIC) */}
-      <div className="flex flex-wrap gap-3 mt-4 text-sm text-gray-700 justify-center">
+      <div className="flex flex-wrap gap-3 mt-4 text-xs text-gray-700 justify-center">
         {chartData.map((item, index) => (
           <span key={index} className="flex items-center gap-2">
             <span

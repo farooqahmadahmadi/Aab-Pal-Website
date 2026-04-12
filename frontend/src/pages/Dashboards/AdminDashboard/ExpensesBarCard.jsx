@@ -126,7 +126,7 @@ export default function ExpensesBarCard() {
       </div>
 
       {/* LEGEND */}
-      <div className="flex flex-wrap gap-3 mt-4 text-sm justify-center">
+      <div className="flex flex-wrap gap-3 mt-4 text-xs justify-center">
         {chartData.map((item, i) => (
           <span key={i} className="flex items-center gap-2">
             <span

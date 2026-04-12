@@ -132,7 +132,7 @@ export default function EmpHiringBarCard() {
       </div>
 
       {/* ================= DYNAMIC LEGEND ================= */}
-      <div className="flex flex-wrap gap-3 mt-4 text-sm text-gray-700 justify-around">
+      <div className="flex flex-wrap gap-3 mt-4 text-xs text-gray-700 justify-around">
 
         {chartData.map((item, index) => (
           <span key={index} className="flex items-center gap-2">

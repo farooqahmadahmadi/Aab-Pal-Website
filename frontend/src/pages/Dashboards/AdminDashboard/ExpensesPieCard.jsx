@@ -105,7 +105,7 @@ export default function ExpensesPieCard() {
           </div>
 
           {/* LEGEND */}
-          <div className="flex flex-wrap gap-3 mt-4 text-sm text-gray-700 justify-center">
+          <div className="flex flex-wrap gap-3 mt-4 text-xs text-gray-700 justify-center">
             {chartData.map((item, i) => (
               <span key={i} className="flex items-center gap-2">
                 <span
