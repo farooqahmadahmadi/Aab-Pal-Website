@@ -4,50 +4,70 @@ import {
   FiHome,
   FiUsers,
   FiPieChart,
-  FiSettings,
   FiDollarSign,
-  FiTruck,
+  FiChevronsDown,
+  FiChevronsUp,
   FiBox,
   FiShoppingBag,
-  FiList,
+  FiTruck,
   FiBookOpen,
-  FiMenu,
+  FiList,
+  FiSettings,
 } from "react-icons/fi";
+
+import defaultAvatar from "../assets/images/client-def-image.png";
 
 export default function Sidebar({ role }) {
   const location = useLocation();
   const sidebarRef = useRef();
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-  const [sidebarOpen, setSidebarOpen] = useState(true);
-  const [popupMenu, setPopupMenu] = useState(null);
 
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [openMenu, setOpenMenu] = useState(null);
+
+  const [indicatorStyle, setIndicatorStyle] = useState({
+    top: 0,
+    height: 0,
+  });
+
+  const itemRefs = useRef({});
+
+  const user = JSON.parse(localStorage.getItem("user") || "{}");
+  const BASE_URL = import.meta.env.VITE_API_URL;
+
+  // ================= RESPONSIVE =================
   useEffect(() => {
-    const handleResize = () => setWindowWidth(window.innerWidth);
+    const handleResize = () => {
+      if (window.innerWidth < 768) setSidebarOpen(false);
+      else setSidebarOpen(true);
+    };
+
+    handleResize();
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  // ================= ACTIVE TRACKING =================
   useEffect(() => {
-    if (windowWidth < 768) setSidebarOpen(false);
-    else setSidebarOpen(true);
-    setPopupMenu(null);
-  }, [windowWidth]);
+    const el = itemRefs.current[location.pathname];
 
-  useEffect(() => {
-    const handleClickOutside = (e) => {
-      if (sidebarRef.current && !sidebarRef.current.contains(e.target)) {
-        setPopupMenu(null);
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
+    if (el) {
+      setIndicatorStyle({
+        top: el.offsetTop,
+        height: el.offsetHeight,
+      });
+    }
+  }, [location.pathname, sidebarOpen, openMenu]);
 
-  const togglePopup = (menu) =>
-    setPopupMenu((prev) => (prev === menu ? null : menu));
-  const isActiveParent = (item) => {
-    if (!item.submenu) return location.pathname === item.path;
-    return item.submenu.some((sub) => sub.path === location.pathname);
+  const getAvatar = () => {
+    if (!user?.user_photo_url) return defaultAvatar;
+    if (user.user_photo_url.startsWith("http")) return user.user_photo_url;
+    return `${BASE_URL}${user.user_photo_url}`;
+  };
+
+  const isActive = (path) => location.pathname === path;
+
+  const toggleMenu = (name) => {
+    setOpenMenu(openMenu === name ? null : name);
   };
 
   const menuItems = {
@@ -202,7 +222,7 @@ export default function Sidebar({ role }) {
         icon: <FiSettings className="animate-spin" />,
         submenu: [
           { name: "User Accounts", path: "/admin/users/user-list" },
-           { name: "User Profile", path: "/admin/users/user-profile" },
+          { name: "User Profile", path: "/admin/users/user-profile" },
           { name: "Notification Center", path: "/admin/system/notifications" },
           { name: "Settings", path: "/admin/system/system-settings" },
           { name: "System Logs", path: "/admin/system/system-logs" },
@@ -299,104 +319,147 @@ export default function Sidebar({ role }) {
     ],
   };
 
-  const renderMenu = (items) =>
-    items.map((item, idx) => {
-      const activeParent = isActiveParent(item);
-
-      if (!item.submenu) {
-        return (
-          <Link
-            key={idx}
-            to={item.path}
-            className={`flex items-center justify-center mb-2 p-2 rounded text-black hover:bg-gray-200 hover:text-black transition-all duration-300
-            ${activeParent ? "bg-gray-200 text-blue-700 font-semibold shadow-md" : ""}`}
-          >
-            <span className="text-xl relative">
-              {item.icon}
-              {!sidebarOpen && (
-                <span className="absolute left-16 top-1/2 -translate-y-1/2 bg-gray-900 text-white text-xs px-3 py-1 rounded shadow-lg opacity-0 group-hover:opacity-100 transition-all duration-300 whitespace-nowrap z-50">
-                  {item.name}
-                </span>
-              )}
-            </span>
-          </Link>
-        );
-      }
-
-      return (
-        <div key={idx} className="relative group">
-          <div
-            className={`flex items-center justify-center mb-3 p-2  rounded hover:bg-gray-200 transition-all duration-300 cursor-pointer
-            ${activeParent ? "bg-gray-200 text-blue-700 font-semibold shadow-md" : ""}`}
-            onClick={() => togglePopup(item.name)}
-          >
-            <span className="text-xl relative">
-              {item.icon}
-              {!sidebarOpen && (
-                <span className="absolute left-16 top-1/2 -translate-y-1/2 bg-white text-black text-xs px-2 py-1 rounded shadow-lg opacity-0 group-hover:opacity-100 transition-all duration-300 whitespace-nowrap z-50">
-                  {item.name}
-                </span>
-              )}
-            </span>
-          </div>
-
-          {/* Sub menu */}
-          {popupMenu === item.name && (
-            <div className="absolute top-0 left-full ml-0 w-48 text-sm bg-white rounded shadow-lg py-2 z-50 transition-transform duration-300 transform scale-95 opacity-0 animate-popup">
-              {item.submenu.map((sub, subIdx) => (
-                <Link
-                  key={subIdx}
-                  to={sub.path}
-                  className="flex items-center px-3 py-2 rounded text-black hover:bg-gray-200 hover:text-black transition-all duration-300"
-                  onClick={() => {
-                    setPopupMenu(null);
-                    if (windowWidth < 768) setSidebarOpen(false);
-                  }}
-                >
-                  <span>{sub.name}</span>
-                </Link>
-              ))}
-            </div>
-          )}
-        </div>
-      );
-    });
+  // ================= CHECK ACTIVE IN SUBMENU =================
+  const isAnyChildActive = (item) => {
+    if (!item.submenu) return false;
+    return item.submenu.some((sub) => sub.path === location.pathname);
+  };
 
   return (
     <>
-      <div className=" fixed top-2.5 left-1 z-50">
-        <div
-          onClick={() => setSidebarOpen((prev) => !prev)}
-          className="p-1 bg-white text-black font-bold rounded-full hover:bg-gray-200 transition-all duration-300 cursor-pointer animate-bounce"
-        >
-          {sidebarOpen ? <FiMenu size={20} /> : <FiMenu size={20} />}
-        </div>
+      {/* ================= TOGGLE BUTTON ================= */}
+      <div
+        onClick={() => setSidebarOpen(!sidebarOpen)}
+        className="
+          fixed top-3 z-[9999]
+          w-5 h-5 p-2.5 
+          flex items-center justify-center
+          bg-white border shadow-sm rounded-full
+          transition-all duration-300
+          text-center font-semibold font-mono hover:bg-gray-100 hover:p-3
+        "
+        style={{
+          left: sidebarOpen ? "13.5rem" : "0.3rem",
+        }}
+      >
+        {sidebarOpen ? "<" : ">"}
       </div>
 
-      {sidebarOpen && windowWidth < 768 && (
+      {/* ================= BACKDROP ================= */}
+      {sidebarOpen && (
         <div
-          className="fixed inset-0 bg-black bg-opacity-50 z-30"
           onClick={() => setSidebarOpen(false)}
+          className="fixed inset-0 bg-black/10 md:hidden z-40"
         />
       )}
 
+      {/* ================= SIDEBAR ================= */}
       <div
         ref={sidebarRef}
-        className={`fixed top-0 left-0 h-screen w-9 bg-white text-black z-40 transform shadow-lg transition-all duration-500 ease-in-out
-          ${sidebarOpen ? "translate-x-0 w-20" : "-translate-x-full w-20"}`}
+        className="fixed pb-4 top-0 left-0 h-screen bg-white shadow-lg z-50 overflow-hidden transition-all duration-300"
+        style={{ width: sidebarOpen ? "14.5rem" : "0rem" }}
       >
-        <div className="p-4 mt-16 flex flex-col items-center">
-          {menuItems[role] && renderMenu(menuItems[role])}
+        {/* HEADER */}
+        <div className="p-3 border-b flex items-center gap-3 bg-zinc-100 rounded">
+          <img
+            src={getAvatar()}
+            onError={(e) => (e.target.src = defaultAvatar)}
+            className="w-12 h-12 rounded-full object-fill border-gray-200 border-1 shadow-md "
+          />
+
+          <div className="flex flex-col min-w-0">
+            <h1 className="text-sm font-bold text-blue-600">CC-MIS</h1>
+            <p className="text-sm font-semibold text-gray-800 truncate max-w-[160px]">
+              {user.user_name}
+            </p>
+            <p className="text-[11px] text-gray-500 truncate max-w-[160px]">
+              {user.user_email}
+            </p>
+          </div>
+        </div>
+
+        {/* MENU */}
+        <div className="relative p-2 text-sm space-y-1 overflow-y-auto h-[calc(100%-80px)]">
+          {/* ACTIVE LINE */}
+          <div
+            className="absolute left-0 w-1 bg-blue-500 rounded-full transition-all duration-300"
+            style={{
+              top: indicatorStyle.top,
+              height: indicatorStyle.height,
+            }}
+          />
+
+          {menuItems[role]?.map((item, i) => (
+            <div key={i}>
+              {/* SINGLE ITEM */}
+              {item.path ? (
+                <Link
+                  ref={(el) => (itemRefs.current[item.path] = el)}
+                  to={item.path}
+                  className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition
+                    ${
+                      isActive(item.path)
+                        ? "bg-blue-50 text-blue-600 font-semibold"
+                        : "hover:bg-gray-100"
+                    }`}
+                >
+                  <span className="text-lg">{item.icon}</span>
+                  <span>{item.name}</span>
+                </Link>
+              ) : (
+                <>
+                  {/* PARENT */}
+                  <div
+                    ref={(el) => {
+                      if (isAnyChildActive(item)) {
+                        itemRefs.current[item.name] = el;
+                      }
+                    }}
+                    onClick={() => toggleMenu(item.name)}
+                    className={`flex items-center gap-3 px-3 py-2 rounded-lg cursor-pointer transition
+                      ${
+                        isAnyChildActive(item)
+                          ? "bg-blue-50 text-blue-600 font-semibold"
+                          : "hover:bg-gray-100"
+                      }`}
+                  >
+                    <span className="text-lg text-gray-600">{item.icon}</span>
+                    <span className="flex-1">{item.name}</span>
+                    <span className="text-xs">
+                      {openMenu === item.name ? (
+                        <FiChevronsUp />
+                      ) : (
+                        <FiChevronsDown />
+                      )}
+                    </span>
+                  </div>
+
+                  {/* SUBMENU */}
+                  {openMenu === item.name && (
+                    <div className="ml-8 mt-1 space-y-1">
+                      {item.submenu.map((sub, j) => (
+                        <Link
+                          key={j}
+                          ref={(el) => (itemRefs.current[sub.path] = el)}
+                          to={sub.path}
+                          className={`block text-sm font-normal px-2 py-1 rounded transition text-gray-600
+                            ${
+                              isActive(sub.path)
+                                ? "bg-gray-100 text-blue-600 font-semibold"
+                                : "hover:bg-gray-100"
+                            }`}
+                        >
+                          {sub.name}
+                        </Link>
+                      ))}
+                    </div>
+                  )}
+                </>
+              )}
+            </div>
+          ))}
         </div>
       </div>
-
-      <style>{`
-        @keyframes popup {
-          0% { opacity: 0; transform: scale(0.95) translateX(-10px); }
-          100% { opacity: 1; transform: scale(1) translateX(0); }
-        }
-        .animate-popup { animation: popup 0.25s forwards; }
-      `}</style>
     </>
   );
 }
