@@ -1,16 +1,6 @@
 import React from "react";
 import {
-  FaPlus,
-  FaEdit,
-  FaTrash,
-  FaNeos,
-  FaRibbon,
-  FaArrowAltCircleLeft,
-  FaArrowAltCircleRight,
   FaRegArrowAltCircleRight,
-  FaArrowRight,
-  FaArrowsAlt,
-  FaArrowLeft,
   FaRegArrowAltCircleLeft,
 } from "react-icons/fa";
 export default function Pagination({ page, totalPages, onPageChange }) {
@@ -18,7 +8,7 @@ export default function Pagination({ page, totalPages, onPageChange }) {
   for (let i = 1; i <= totalPages; i++) pages.push(i);
 
   return (
-    <div className="flex gap-1 justify-center mt-4">
+    <div className="flex gap-1 justify-center mt-4 text-sm">
       <button
         onClick={() => onPageChange(page - 1)}
         disabled={page === 1}
