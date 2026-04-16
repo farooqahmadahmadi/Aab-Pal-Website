@@ -1,5 +1,4 @@
-// frontend/pages/SystemLogs/SystemLogs.jsx
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { FiTrash2, FiExternalLink, FiX, FiXCircle } from "react-icons/fi";
 
 import Pagination from "../../components/common/Pagination";
@@ -12,12 +11,14 @@ import {
   deleteSystemLog,
 } from "../../services/systemLogsService";
 
+import { io } from "socket.io-client";
+
 export default function SystemLogs() {
   const [data, setData] = useState([]);
   const [filtered, setFiltered] = useState([]);
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
-  const limit = 10;
+  const limit = 100;
 
   const [selected, setSelected] = useState([]);
   const [deleteData, setDeleteData] = useState(null);
@@ -30,6 +31,7 @@ export default function SystemLogs() {
   const [drawer, setDrawer] = useState(null);
 
   const { toast, showToast, hideToast } = useToast();
+  const socketRef = useRef(null);
 
   // ---------------- FETCH ----------------
   const fetchData = async () => {
@@ -48,8 +50,30 @@ export default function SystemLogs() {
     }
   };
 
+  // ---------------- SOCKET ----------------
   useEffect(() => {
     fetchData();
+
+    const socket = io(import.meta.env.VITE_API_URL, {
+      transports: ["websocket"],
+    });
+
+    socketRef.current = socket;
+
+    // NEW LOG (optional backend emit)
+    socket.on("system_log_created", (log) => {
+      setData((prev) => [log, ...prev]);
+    });
+
+    // DELETE LOG
+    socket.on("system_log_deleted", ({ id }) => {
+      setData((prev) => prev.filter((l) => l.log_id !== id));
+      setSelected((prev) => prev.filter((i) => i !== id));
+    });
+
+    return () => {
+      socket.disconnect();
+    };
   }, []);
 
   // ---------------- SEARCH ----------------
@@ -402,57 +426,57 @@ export default function SystemLogs() {
             <h3 className="font-bold mb-3">Export Logs</h3>
 
             <div className="text-md">
-            <div>
-              <label htmlFor="" className="text-gray-500">
-                Start Date:
-              </label>
-              <input
-                type="date"
-                value={fromDate}
-                onChange={(e) => setFromDate(e.target.value)}
-                className="w-full mb-2 border p-2 rounded-md "
-              />
-            </div>
-            <div>
-              <label htmlFor="" className="text-gray-500">
-                End Date:
-              </label>
-              <input
-                type="date"
-                value={toDate}
-                onChange={(e) => setToDate(e.target.value)}
-                className="w-full mb-2 border p-2 rounded-md "
-              />
-            </div>
+              <div>
+                <label htmlFor="" className="text-gray-500">
+                  Start Date:
+                </label>
+                <input
+                  type="date"
+                  value={fromDate}
+                  onChange={(e) => setFromDate(e.target.value)}
+                  className="w-full mb-2 border p-2 rounded-md "
+                />
+              </div>
+              <div>
+                <label htmlFor="" className="text-gray-500">
+                  End Date:
+                </label>
+                <input
+                  type="date"
+                  value={toDate}
+                  onChange={(e) => setToDate(e.target.value)}
+                  className="w-full mb-2 border p-2 rounded-md "
+                />
+              </div>
 
-            <div>
-              <label htmlFor="" className="text-gray-500">
-                File Name:
-              </label>
-              <input
-                type="text"
-                value={fileName}
-                onChange={(e) => setFileName(e.target.value)}
-                className="w-full mb-3 border p-2 rounded-md "
-              />
-            </div>
+              <div>
+                <label htmlFor="" className="text-gray-500">
+                  File Name:
+                </label>
+                <input
+                  type="text"
+                  value={fileName}
+                  onChange={(e) => setFileName(e.target.value)}
+                  className="w-full mb-3 border p-2 rounded-md "
+                />
+              </div>
 
-            <div className="flex justify-end gap-2 ">
-              <button
-                onClick={() => setExportModal(false)}
-                type="button"
-                className="px-3 py-1 bg-gray-200 hover:bg-gray-300 rounded"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={handleExport}
-                type="submit"
-                className="px-3 py-1 bg-green-500 hover:bg-green-600 text-white rounded"
-              >
-                Export
-              </button>
-            </div>
+              <div className="flex justify-end gap-2 ">
+                <button
+                  onClick={() => setExportModal(false)}
+                  type="button"
+                  className="px-3 py-1 bg-gray-200 hover:bg-gray-300 rounded"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleExport}
+                  type="submit"
+                  className="px-3 py-1 bg-green-500 hover:bg-green-600 text-white rounded"
+                >
+                  Export
+                </button>
+              </div>
             </div>
           </div>
         </div>
