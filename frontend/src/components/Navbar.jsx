@@ -7,6 +7,7 @@ import UserChangePasswordModal from "../components/Users/UserChangePasswordModal
 import { motion, AnimatePresence } from "framer-motion";
 
 import defaultAvatar from "../assets/images/client-def-image.png";
+import { io } from "socket.io-client";
 
 export default function Navbar({ sidebarOpen, role }) {
   const navigate = useNavigate();
@@ -21,17 +22,20 @@ export default function Navbar({ sidebarOpen, role }) {
 
   const notifRef = useRef();
   const profileRef = useRef();
+  const socketRef = useRef(null);
 
   const user = JSON.parse(localStorage.getItem("user") || "{}");
 
   // ---------------- OUTSIDE CLICK ----------------
   useEffect(() => {
     const handleClick = (e) => {
-      if (notifRef.current && !notifRef.current.contains(e.target))
+      if (notifRef.current && !notifRef.current.contains(e.target)) {
         setNotifOpen(false);
+      }
 
-      if (profileRef.current && !profileRef.current.contains(e.target))
+      if (profileRef.current && !profileRef.current.contains(e.target)) {
         setProfileOpen(false);
+      }
     };
 
     document.addEventListener("mousedown", handleClick);
@@ -57,14 +61,37 @@ export default function Navbar({ sidebarOpen, role }) {
         ),
       );
     } catch (err) {
-      console.error(err);
+      console.error("Notification fetch error:", err);
     }
   };
 
+  // ---------------- SOCKET ----------------
   useEffect(() => {
     fetchNotifications();
-    const interval = setInterval(fetchNotifications, 60000);
-    return () => clearInterval(interval);
+
+    const socket = io(import.meta.env.VITE_API_URL, {
+      transports: ["websocket"],
+    });
+
+    socketRef.current = socket;
+
+    socket.on("new_notification", (notification) => {
+      setNotifications((prev) => [notification, ...prev]);
+    });
+
+    socket.on("delete_notification", ({ id }) => {
+      setNotifications((prev) => prev.filter((n) => n.notification_id !== id));
+    });
+
+    socket.on("notification_read", ({ id }) => {
+      setNotifications((prev) =>
+        prev.map((n) => (n.notification_id === id ? { ...n, is_read: 1 } : n)),
+      );
+    });
+
+    return () => {
+      socket.disconnect();
+    };
   }, []);
 
   // ---------------- MARK AS READ ----------------
@@ -77,23 +104,19 @@ export default function Navbar({ sidebarOpen, role }) {
     }
   };
 
-  // ---------------- NAVIGATE BY ROLE ----------------
+  // ---------------- PROFILE ROUTE ----------------
   const getProfileRoute = (role) => {
-  switch (role) {
-    case "Admin":
-      return "/admin/users/user-profile";
-
-    case "HR":
-      return "/hr/users/user-profile";
-
-    case "PM":
-      return "/pm/user-profile";
-
-    default:
-      return "/user-profile";
-  }
-};
-
+    switch (role) {
+      case "Admin":
+        return "/admin/users/user-profile";
+      case "HR":
+        return "/hr/users/user-profile";
+      case "PM":
+        return "/pm/user-profile";
+      default:
+        return "/user-profile";
+    }
+  };
 
   const unread = notifications.filter((n) => !n.is_read);
   const read = notifications.filter((n) => n.is_read);
@@ -109,21 +132,20 @@ export default function Navbar({ sidebarOpen, role }) {
     navigate("/");
   };
 
-  // ---------------- USER STATUS ----------------
-  const getStatusClass = (status) => {
-    return status === "Online"
-      ? "border-green-500 animate-pulse"
-      : "border-gray-300";
-  };
-
-  // ---------------- FIXED AVATAR (IMPORTANT) ----------------
+  // ---------------- AVATAR (FIXED) ----------------
   const getAvatar = (u) => {
     const photo = u?.user_photo_url;
 
     if (!photo) return defaultAvatar;
 
-    return `${import.meta.env.VITE_API_URL}${photo}?t=${Date.now()}`;
+    const isFullUrl = photo.startsWith("http");
+    const base = import.meta.env.VITE_API_URL;
+
+    return isFullUrl ? photo : `${base}${photo}?t=${Date.now()}`;
   };
+
+  const getStatusClass = (status) =>
+    status === "Online" ? "border-green-500 animate-pulse" : "border-gray-300";
 
   return (
     <>
@@ -202,7 +224,7 @@ export default function Navbar({ sidebarOpen, role }) {
                         >
                           <div className="flex gap-2">
                             <div
-                              className={`relative rounded-full p-[2px]  ${getStatusClass(
+                              className={`relative rounded-full p-[2px] ${getStatusClass(
                                 nUser.login_status,
                               )}`}
                             >

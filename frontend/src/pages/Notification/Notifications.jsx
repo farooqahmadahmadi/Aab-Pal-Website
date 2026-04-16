@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { FiPlusCircle, FiCheck, FiCheckCircle, FiTrash2, FiEye, FiEyeOff } from "react-icons/fi";
+import { FiPlusCircle, FiTrash2, FiEye, FiEyeOff } from "react-icons/fi";
 import NotificationsModal from "../../components/Notification/NotificationsModal";
 import Pagination from "../../components/common/Pagination";
 import Toast from "../../components/common/Toast";
@@ -12,21 +12,24 @@ import {
     deleteNotification
 } from "../../services/notificationsService";
 
+// 🔥 GLOBAL SOCKET
+import getSocket from "../../services/socket";
+
 export default function NotificationsPage() {
 
     const [data, setData] = useState([]);
     const [filtered, setFiltered] = useState([]);
     const [search, setSearch] = useState("");
     const [page, setPage] = useState(1);
-    const limit = 10;
+    const limit = 50;
 
     const [modalOpen, setModalOpen] = useState(false);
     const [selected, setSelected] = useState([]);
-    const [deleteData, setDeleteData] = useState(null); // single or multiple
+    const [deleteData, setDeleteData] = useState(null);
 
     const { toast, showToast, hideToast } = useToast();
 
-    // fetch notifications
+    // ================= FETCH =================
     const fetchData = async () => {
         try {
             const res = await getNotifications();
@@ -37,9 +40,31 @@ export default function NotificationsPage() {
         }
     };
 
-    useEffect(() => { fetchData(); }, []);
+    // ================= INIT =================
+    useEffect(() => {
+        fetchData();
 
-    // search filter
+        const socket = getSocket();
+
+        // 🔥 REAL-TIME NEW
+        socket.on("notification:new", (notification) => {
+            setData(prev => [notification, ...prev]);
+        });
+
+        // 🔥 REAL-TIME DELETE
+        socket.on("notification:delete", ({ id }) => {
+            setData(prev =>
+                prev.filter(n => n.notification_id !== id)
+            );
+        });
+
+        return () => {
+            socket.off("notification:new");
+            socket.off("notification:delete");
+        };
+    }, []);
+
+    // ================= SEARCH =================
     useEffect(() => {
         const f = data.filter(n =>
             n.notification_title.toLowerCase().includes(search.toLowerCase()) ||
@@ -52,7 +77,7 @@ export default function NotificationsPage() {
     const start = (page - 1) * limit;
     const paginated = filtered.slice(start, start + limit);
 
-    // select toggle
+    // ================= SELECT =================
     const toggleSelect = (id) => {
         setSelected(prev =>
             prev.includes(id)
@@ -64,32 +89,31 @@ export default function NotificationsPage() {
     const selectAll = () => setSelected(paginated.map(n => n.notification_id));
     const clearSelection = () => setSelected([]);
 
-    // add notification
+    // ================= ADD =================
     const submit = async (form) => {
         try {
             await addNotification(form);
             showToast("Added successfully", "success");
             setModalOpen(false);
-            fetchData();
+            fetchData(); // fallback safety
         } catch {
             showToast("Failed", "error");
         }
     };
 
-    // delete single or multiple
+    // ================= DELETE =================
     const handleDelete = async () => {
         try {
             if (Array.isArray(deleteData)) {
-                // multiple delete
                 await Promise.all(deleteData.map(id => deleteNotification(id)));
                 showToast("Selected deleted", "success");
                 setSelected([]);
             } else {
-                // single delete
                 await deleteNotification(deleteData.notification_id);
                 showToast("Deleted successfully", "success");
             }
-            fetchData();
+
+            fetchData(); // fallback safety
         } catch {
             showToast("Delete failed", "error");
         } finally {
@@ -100,7 +124,7 @@ export default function NotificationsPage() {
     return (
         <div className="p-3 sm:p-4 md:p-6 w-dvw max-w-5xl mx-auto">
 
-            {/* Header */}
+            {/* HEADER */}
             <div className="flex flex-col md:flex-row justify-between gap-2 mb-4">
                 <h2 className="text-xl md:text-2xl font-bold">Notifications</h2>
 
@@ -125,23 +149,24 @@ export default function NotificationsPage() {
                 </div>
             </div>
 
-            {/* Select Actions */}
+            {/* SELECT ACTION */}
             {paginated.length > 0 && (
                 <div className="flex justify-between items-center mb-2 text-xs">
-                    <div onClick={selectAll} className="text-blue-500 bg-gray-100 px-1 py-1 rounded-full font-semibold  cursor-pointer hover:bg-gray-200">Select Page</div>
-                    <div onClick={clearSelection} className="text-gray-500 bg-gray-100 px-1 py-1 rounded-full font-semibold  cursor-pointer hover:bg-gray-200" >Clear</div>
+                    <div onClick={selectAll} className="text-blue-500 bg-gray-100 px-2 py-1 rounded cursor-pointer">
+                        Select Page
+                    </div>
+                    <div onClick={clearSelection} className="text-gray-500 bg-gray-100 px-2 py-1 rounded cursor-pointer">
+                        Clear
+                    </div>
                 </div>
             )}
 
-            {/* Notification List */}
-            <div className="bg-white shadow  rounded divide-y-2">
-
+            {/* LIST */}
+            <div className="bg-white shadow rounded divide-y-2">
                 {paginated.length ? paginated.map(n => (
                     <div key={n.notification_id} className="p-4 hover:bg-gray-50">
 
-                        {/* Line 1 */}
                         <div className="flex justify-between items-start gap-2">
-
                             <div className="flex items-center gap-2 flex-wrap">
                                 <input
                                     type="checkbox"
@@ -149,45 +174,36 @@ export default function NotificationsPage() {
                                     onChange={() => toggleSelect(n.notification_id)}
                                 />
 
-                                <span className="font-bold text-sm break-words">
+                                <span className="font-bold text-sm">
                                     #{n.notification_id} - {n.notification_title}
                                 </span>
                             </div>
 
                             <div
                                 onClick={() => setDeleteData(n)}
-                                className="text-red-500 text-sm bg-red-200 p-2 rounded-full hover:bg-red-400 hover:text-white"
+                                className="text-red-500 p-2 rounded-full hover:bg-red-400 hover:text-white cursor-pointer"
                             >
                                 <FiTrash2 />
                             </div>
-
                         </div>
 
-                        {/* Line 2 */}
-                        <p className="text-sm text-gray-700 break-words whitespace-pre-wrap mt-1">
+                        <p className="text-sm text-gray-700 mt-1">
                             {n.notification_message}
                         </p>
 
-                        {/* Line 3 */}
-                        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mt-2 text-xs text-gray-500 gap-2">
-
-                            <div className="break-words">
-                                <span className="font-semibold">Recipient:</span>{" "}
+                        <div className="flex justify-between mt-2 text-xs text-gray-500">
+                            <div>
                                 {n.notification_recipients}
-                                {n.user_id && ` (${n.user_id})`}
                             </div>
 
-                            <div className="flex items-center gap-3 flex-wrap">
+                            <div className="flex items-center gap-3">
                                 {n.is_read ? (
-                                    
-                                    <FiEye className="text-blue-600 text-sm" title="Read" />
+                                    <FiEye className="text-blue-600" />
                                 ) : (
-                                    <FiEyeOff  className="text-sm" title="Unread" />
+                                    <FiEyeOff />
                                 )}
-
                                 <span>{new Date(n.created_at).toLocaleString()}</span>
                             </div>
-
                         </div>
 
                     </div>
@@ -196,10 +212,9 @@ export default function NotificationsPage() {
                         No notifications found
                     </p>
                 )}
-
             </div>
 
-            {/* Pagination */}
+            {/* PAGINATION */}
             <div className="mt-4 flex justify-center">
                 <Pagination
                     page={page}
@@ -209,18 +224,18 @@ export default function NotificationsPage() {
                 />
             </div>
 
-            {/* Modal */}
+            {/* MODAL */}
             <NotificationsModal
                 isOpen={modalOpen}
                 onClose={() => setModalOpen(false)}
                 onSubmit={submit}
             />
 
-            {/* Delete Confirmation Modal */}
+            {/* DELETE MODAL */}
             {deleteData && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
                     <div className="bg-white p-6 rounded w-96">
-                        <p className="text-gray-700 font-semibold">
+                        <p className="font-semibold">
                             {Array.isArray(deleteData)
                                 ? `Delete ${deleteData.length} selected notifications?`
                                 : "Delete this notification?"}

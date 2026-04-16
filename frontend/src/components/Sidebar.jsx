@@ -46,7 +46,7 @@ export default function Sidebar({ role }) {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // ================= ACTIVE TRACKING =================
+  // ================= ACTIVE INDICATOR =================
   useEffect(() => {
     const el = itemRefs.current[location.pathname];
 
@@ -67,8 +67,14 @@ export default function Sidebar({ role }) {
   const isActive = (path) => location.pathname === path;
 
   const toggleMenu = (name) => {
-    setOpenMenu(openMenu === name ? null : name);
+    setOpenMenu((prev) => (prev === name ? null : name));
   };
+
+  // ================= FUTURE SOCKET SAFE HOOK =================
+  useEffect(() => {
+    // reserved for socket integration later
+    // prevents future breaking changes
+  }, []);
 
   const menuItems = {
     // >>>>>>>>>>>>>>>> Sidebar for Admin Role:
@@ -319,7 +325,6 @@ export default function Sidebar({ role }) {
     ],
   };
 
-  // ================= CHECK ACTIVE IN SUBMENU =================
   const isAnyChildActive = (item) => {
     if (!item.submenu) return false;
     return item.submenu.some((sub) => sub.path === location.pathname);
@@ -327,25 +332,16 @@ export default function Sidebar({ role }) {
 
   return (
     <>
-      {/* ================= TOGGLE BUTTON ================= */}
+      {/* TOGGLE */}
       <div
         onClick={() => setSidebarOpen(!sidebarOpen)}
-        className="
-          fixed top-3 z-[9999]
-          w-5 h-5 p-2.5 
-          flex items-center justify-center
-          bg-white border shadow-sm rounded-full
-          transition-all duration-300
-          text-center font-semibold font-mono hover:bg-gray-100 hover:p-3
-        "
-        style={{
-          left: sidebarOpen ? "13.5rem" : "0.3rem",
-        }}
+        className="fixed top-3 z-[9999] w-6 h-6 p-2 flex items-center justify-center bg-white border shadow-sm rounded-full"
+        style={{ left: sidebarOpen ? "13.5rem" : "0.3rem" }}
       >
         {sidebarOpen ? "<" : ">"}
       </div>
 
-      {/* ================= BACKDROP ================= */}
+      {/* BACKDROP */}
       {sidebarOpen && (
         <div
           onClick={() => setSidebarOpen(false)}
@@ -353,10 +349,10 @@ export default function Sidebar({ role }) {
         />
       )}
 
-      {/* ================= SIDEBAR ================= */}
+      {/* SIDEBAR */}
       <div
         ref={sidebarRef}
-        className="fixed pb-4 top-0 left-0 h-screen bg-white shadow-lg z-50 overflow-hidden transition-all duration-300"
+        className="fixed top-0 left-0 h-screen bg-white shadow-lg z-50 overflow-hidden transition-all duration-300"
         style={{ width: sidebarOpen ? "14.5rem" : "0rem" }}
       >
         {/* HEADER */}
@@ -364,15 +360,13 @@ export default function Sidebar({ role }) {
           <img
             src={getAvatar()}
             onError={(e) => (e.target.src = defaultAvatar)}
-            className="w-12 h-12 rounded-full object-fill border-gray-200 border-1 shadow-md "
+            className="w-12 h-12 rounded-full object-cover border shadow"
           />
 
           <div className="flex flex-col min-w-0">
             <h1 className="text-sm font-bold text-blue-600">CC-MIS</h1>
-            <p className="text-sm font-semibold text-gray-800 truncate max-w-[160px]">
-              {user.user_name}
-            </p>
-            <p className="text-[11px] text-gray-500 truncate max-w-[160px]">
+            <p className="text-sm font-semibold truncate">{user.user_name}</p>
+            <p className="text-[11px] text-gray-500 truncate">
               {user.user_email}
             </p>
           </div>
@@ -380,7 +374,6 @@ export default function Sidebar({ role }) {
 
         {/* MENU */}
         <div className="relative p-2 text-sm space-y-1 overflow-y-auto h-[calc(100%-80px)]">
-          {/* ACTIVE LINE */}
           <div
             className="absolute left-0 w-1 bg-blue-500 rounded-full transition-all duration-300"
             style={{
@@ -391,24 +384,21 @@ export default function Sidebar({ role }) {
 
           {menuItems[role]?.map((item, i) => (
             <div key={i}>
-              {/* SINGLE ITEM */}
               {item.path ? (
                 <Link
                   ref={(el) => (itemRefs.current[item.path] = el)}
                   to={item.path}
-                  className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition
-                    ${
-                      isActive(item.path)
-                        ? "bg-blue-50 text-blue-600 font-semibold"
-                        : "hover:bg-gray-100"
-                    }`}
+                  className={`flex items-center gap-3 px-3 py-2 rounded-lg ${
+                    isActive(item.path)
+                      ? "bg-blue-50 text-blue-600 font-semibold"
+                      : "hover:bg-gray-100"
+                  }`}
                 >
-                  <span className="text-lg">{item.icon}</span>
+                  {item.icon}
                   <span>{item.name}</span>
                 </Link>
               ) : (
                 <>
-                  {/* PARENT */}
                   <div
                     ref={(el) => {
                       if (isAnyChildActive(item)) {
@@ -416,25 +406,21 @@ export default function Sidebar({ role }) {
                       }
                     }}
                     onClick={() => toggleMenu(item.name)}
-                    className={`flex items-center gap-3 px-3 py-2 rounded-lg cursor-pointer transition
-                      ${
-                        isAnyChildActive(item)
-                          ? "bg-blue-50 text-blue-600 font-semibold"
-                          : "hover:bg-gray-100"
-                      }`}
+                    className={`flex items-center gap-3 px-3 py-2 rounded-lg cursor-pointer ${
+                      isAnyChildActive(item)
+                        ? "bg-blue-50 text-blue-600 font-semibold"
+                        : "hover:bg-gray-100"
+                    }`}
                   >
-                    <span className="text-lg text-gray-600">{item.icon}</span>
+                    {item.icon}
                     <span className="flex-1">{item.name}</span>
-                    <span className="text-xs">
-                      {openMenu === item.name ? (
-                        <FiChevronsUp />
-                      ) : (
-                        <FiChevronsDown />
-                      )}
-                    </span>
+                    {openMenu === item.name ? (
+                      <FiChevronsUp />
+                    ) : (
+                      <FiChevronsDown />
+                    )}
                   </div>
 
-                  {/* SUBMENU */}
                   {openMenu === item.name && (
                     <div className="ml-8 mt-1 space-y-1">
                       {item.submenu.map((sub, j) => (
@@ -442,12 +428,11 @@ export default function Sidebar({ role }) {
                           key={j}
                           ref={(el) => (itemRefs.current[sub.path] = el)}
                           to={sub.path}
-                          className={`block text-sm font-normal px-2 py-1 rounded transition text-gray-600
-                            ${
-                              isActive(sub.path)
-                                ? "bg-gray-100 text-blue-600 font-semibold"
-                                : "hover:bg-gray-100"
-                            }`}
+                          className={`block px-2 py-1 rounded ${
+                            isActive(sub.path)
+                              ? "bg-gray-100 text-blue-600 font-semibold"
+                              : "hover:bg-gray-100"
+                          }`}
                         >
                           {sub.name}
                         </Link>

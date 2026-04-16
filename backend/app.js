@@ -40,30 +40,36 @@ const invoicesRoutes = require("./routes/invoicesRoutes");
 const cashTransactionsRoutes = require("./routes/cashTransactionsRoutes");
 const paymentsRoutes = require("./routes/paymentsInfoRoutes");
 const notificationsRoutes = require("./routes/notificationsRoutes");
-const systemLogsRoutes = require('./routes/systemLogsRoutes');
-const systemSettingsRoutes = require('./routes/systemSettingsRoutes');
-
+const systemLogsRoutes = require("./routes/systemLogsRoutes");
+const systemSettingsRoutes = require("./routes/systemSettingsRoutes");
 
 const app = express();
 
 // Security
 app.use(helmet({ crossOriginResourcePolicy: { policy: "cross-origin" } }));
-app.use(cors({
-  origin: process.env.FRONTEND_URL,
-  methods: ["GET", "POST", "PUT", "DELETE"],
-  credentials: true
-}));
-
+app.use(
+  cors({
+    origin: process.env.FRONTEND_URL,
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true,
+  }),
+);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Rate limit
-app.use(rateLimit({ windowMs: 15 * 60 * 1000, max: 100 }));
+app.use(
+  rateLimit({
+    windowMs: 15 * 60 * 1000,
+    max: 1000,
+    standardHeaders: true,
+    legacyHeaders: false,
+  }),
+);
 
 // Static files
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
-
 
 // Routes
 app.use("/api/users", userRoutes);
@@ -101,12 +107,8 @@ app.use("/api/invoices", invoicesRoutes);
 app.use("/api/cash-transactions", cashTransactionsRoutes);
 app.use("/api/finance-payments", paymentsRoutes);
 app.use("/api/notifications", notificationsRoutes);
-app.use('/api/system-logs', systemLogsRoutes);
-app.use('/api/system-settings', systemSettingsRoutes);
-
-
-
-
+app.use("/api/system-logs", systemLogsRoutes);
+app.use("/api/system-settings", systemSettingsRoutes);
 
 // Error handler
 app.use((err, req, res, next) => {

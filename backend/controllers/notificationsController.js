@@ -21,6 +21,13 @@ exports.createNotification = async (req, res) => {
         }
 
         const notification = await NotificationsService.createNotification(req.body);
+
+        // 🔥 REAL-TIME EMIT (SAFE)
+        const io = req.app.get("io");
+        if (io) {
+            io.emit("notification:new", notification);
+        }
+
         res.status(201).json(notification);
     } catch (err) {
         console.error("CREATE ERROR:", err);
@@ -35,6 +42,13 @@ exports.markAsRead = async (req, res) => {
         if (!id) return res.status(400).json({ message: "Invalid ID" });
 
         const notification = await NotificationsService.markAsRead(id);
+
+        // 🔥 REAL-TIME EMIT
+        const io = req.app.get("io");
+        if (io) {
+            io.emit("notification:read", { id });
+        }
+
         res.json(notification);
     } catch (err) {
         console.error("READ ERROR:", err);
@@ -49,10 +63,16 @@ exports.deleteNotification = async (req, res) => {
         if (!id) return res.status(400).json({ message: "Invalid ID" });
 
         await NotificationsService.deleteNotification(id, req.user);
+
+        // 🔥 REAL-TIME EMIT
+        const io = req.app.get("io");
+        if (io) {
+            io.emit("notification:delete", { id });
+        }
+
         res.json({ message: "Notification deleted successfully" });
     } catch (err) {
         console.error("DELETE ERROR:", err);
         res.status(500).json({ message: err.message || "Server Error" });
     }
 };
-
