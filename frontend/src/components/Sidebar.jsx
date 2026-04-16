@@ -335,7 +335,7 @@ export default function Sidebar({ role }) {
       {/* TOGGLE */}
       <div
         onClick={() => setSidebarOpen(!sidebarOpen)}
-        className="fixed top-3 z-[9999] w-6 h-6 p-2 flex items-center justify-center bg-white border shadow-sm rounded-full"
+        className="fixed top-3 z-[9999] w-6 h-6 p-2 flex items-center justify-center bg-white border shadow-sm rounded-full font-mono cursor-pointer"
         style={{ left: sidebarOpen ? "13.5rem" : "0.3rem" }}
       >
         {sidebarOpen ? "<" : ">"}
@@ -366,8 +366,8 @@ export default function Sidebar({ role }) {
           <div className="flex flex-col min-w-0">
             <h1 className="text-sm font-bold text-blue-600">CC-MIS</h1>
             <p className="text-sm font-semibold truncate">{user.user_name}</p>
-            <p className="text-[11px] text-gray-500 truncate">
-              {user.user_email}
+            <p className="text-[11px] truncate">
+              <a href="mailto:" className="text-gray-500">{user.user_email}</a>
             </p>
           </div>
         </div>
