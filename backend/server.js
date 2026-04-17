@@ -14,26 +14,32 @@ const server = http.createServer(app);
 // socket config
 const io = new Server(server, {
   cors: {
-    origin: process.env.FRONTEND_URL,
+    origin: [
+      "http://localhost:5173",
+      "http://127.0.0.1:5173",
+      "http://10.127.253.132:5173",
+    ], // IMPORTANT for LAN/mobile testing (safe for dev)
+    
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   },
 });
+
 app.set("io", io);
 
 // socket connection
 io.on("connection", (socket) => {
-  console.log("🟢 User connected:", socket.id);
+  console.log("🟢 connected:", socket.id);
 
   socket.on("disconnect", () => {
-    console.log("🔴 User disconnected:", socket.id);
+    console.log("🔴 disconnected:", socket.id);
   });
 });
 
 // start server
 sequelize.sync().then(() => {
-  server.listen(PORT, () => {
-    console.log(`🚀 Server running on port ${PORT}`);
+  server.listen(PORT, "0.0.0.0", () => {
+    console.log(`🚀 Server running on http://0.0.0.0:${PORT}`);
   });
 });
 

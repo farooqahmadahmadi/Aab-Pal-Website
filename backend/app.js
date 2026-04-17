@@ -45,15 +45,70 @@ const systemSettingsRoutes = require("./routes/systemSettingsRoutes");
 
 const app = express();
 
-// Security
-app.use(helmet({ crossOriginResourcePolicy: { policy: "cross-origin" } }));
+// Security - Helmet (FIXED for images & downloads)
+app.use(
+  helmet({
+    crossOriginResourcePolicy: { policy: "cross-origin" }, // مهم 👈
+  }),
+);
+
+// CORS - flexible but controlled
+const allowedOrigins = process.env.FRONTEND_URL
+  ? process.env.FRONTEND_URL.split(",")
+  : [];
+
 app.use(
   cors({
-    origin: process.env.FRONTEND_URL,
-    methods: ["GET", "POST", "PUT", "DELETE"],
+    origin: function (origin, callback) {
+      // allow requests with no origin (mobile apps, postman)
+      if (!origin) return callback(null, true);
+
+      // allow defined frontend URLs
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+
+      // allow local/LAN development
+      if (
+        origin.startsWith("http://192.168.") ||
+        origin.startsWith("http://10.") ||
+        origin.startsWith("http://127.0.0.1") ||
+        origin.startsWith("http://localhost")
+      ) {
+        return callback(null, true);
+      }
+
+      // block unknown origins (more secure than before)
+      return callback(new Error("Not allowed by CORS"));
+    },
     credentials: true,
   }),
 );
+
+// // Security
+// const allowedOrigins = process.env.FRONTEND_URL.split(",");
+
+// app.use(
+//   cors({
+//     origin: function (origin, callback) {
+//       // allow server-to-server / mobile apps / postman
+//       if (!origin) return callback(null, true);
+
+//       // exact match
+//       if (allowedOrigins.includes(origin)) {
+//         return callback(null, true);
+//       }
+
+//       // LAN support (important fix)
+//       if (origin.startsWith("http://192.168.") || origin.startsWith("http://10.") || origin.startsWith("http://127.0.0.1") || origin.startsWith("http://localhost")) {
+//         return callback(null, true);
+//       }
+
+//       return callback(null, true); // dev-friendly fallback
+//     },
+//     credentials: true,
+//   })
+// );
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
