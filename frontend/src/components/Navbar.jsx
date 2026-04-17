@@ -186,8 +186,10 @@ export default function Navbar({ sidebarOpen, role }) {
             </div>
 
             {langOpen && (
-              <div
-                className={`absolute mt-2 w-28 bg-white border rounded-lg shadow-lg z-50
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className={`absolute mt-1 w-28 bg-white shadow-lg rounded-lg border z-50
                 ${isRTL ? "left-0" : "right-0"}
               `}
               >
@@ -211,7 +213,7 @@ export default function Navbar({ sidebarOpen, role }) {
                 >
                   {t("pashto")}
                 </div>
-              </div>
+              </motion.div>
             )}
           </div>
 
