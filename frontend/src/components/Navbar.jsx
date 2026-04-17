@@ -168,7 +168,7 @@ export default function Navbar({ sidebarOpen, role }) {
                 <motion.span
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
-                  className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] px-1 rounded-full"
+                  className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] px-1 rounded-full animate-pulse"
                 >
                   {unread.length}
                 </motion.span>
@@ -240,13 +240,16 @@ export default function Navbar({ sidebarOpen, role }) {
                                   {n.notification_title}
                                 </span>
 
+                                {/* Mark as read button */}
                                 {!n.is_read && (
-                                  <FiCheck
+                                  <div
+                                    className=" p-2 rounded-full text-green-600 text-xs hover:bg-gray-200 hover:text-red-500 cursor-pointer"
                                     onClick={() =>
                                       markAsRead(n.notification_id)
                                     }
-                                    className="cursor-pointer text-green-600"
-                                  />
+                                  >
+                                    Mark Read
+                                  </div>
                                 )}
                               </div>
 

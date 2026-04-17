@@ -13,6 +13,8 @@ import {
   FiBookOpen,
   FiList,
   FiSettings,
+  FiChevronLeft,
+  FiChevronRight,
 } from "react-icons/fi";
 
 import defaultAvatar from "../assets/images/client-def-image.png";
@@ -335,10 +337,14 @@ export default function Sidebar({ role }) {
       {/* TOGGLE */}
       <div
         onClick={() => setSidebarOpen(!sidebarOpen)}
-        className="fixed top-3 z-[9999] w-6 h-6 p-2 flex items-center justify-center bg-white border shadow-sm rounded-full font-mono cursor-pointer"
+        className="fixed top-3 z-[9999] w-7 h-7  flex items-center justify-center bg-white border shadow-sm rounded-full cursor-pointer hover:bg-blue-100 "
         style={{ left: sidebarOpen ? "13.5rem" : "0.3rem" }}
       >
-        {sidebarOpen ? "<" : ">"}
+        {sidebarOpen ? (
+          <FiChevronLeft size={18} />
+        ) : (
+          <FiChevronRight size={18} />
+        )}
       </div>
 
       {/* BACKDROP */}
@@ -367,7 +373,9 @@ export default function Sidebar({ role }) {
             <h1 className="text-sm font-bold text-blue-600">CC-MIS</h1>
             <p className="text-sm font-semibold truncate">{user.user_name}</p>
             <p className="text-[11px] truncate">
-              <a href="mailto:" className="text-gray-500">{user.user_email}</a>
+              <a href="mailto:" className="text-gray-500">
+                {user.user_email}
+              </a>
             </p>
           </div>
         </div>
