@@ -1,7 +1,14 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import API from "../services/api";
-import { FiBell, FiUnlock, FiLogOut, FiCheck, FiUser } from "react-icons/fi";
+import {
+  FiBell,
+  FiUnlock,
+  FiLogOut,
+  FiCheck,
+  FiUser,
+  FiGlobe,
+} from "react-icons/fi";
 
 import UserChangePasswordModal from "../components/Users/UserChangePasswordModal";
 import { motion, AnimatePresence } from "framer-motion";
@@ -9,11 +16,15 @@ import { motion, AnimatePresence } from "framer-motion";
 import defaultAvatar from "../assets/images/client-def-image.png";
 import { io } from "socket.io-client";
 
+import { useTranslation } from "react-i18next";
+
 export default function Navbar({ sidebarOpen, role }) {
   const navigate = useNavigate();
+  const { i18n } = useTranslation();
 
   const [profileOpen, setProfileOpen] = useState(false);
   const [notifOpen, setNotifOpen] = useState(false);
+  const [langOpen, setLangOpen] = useState(false);
   const [showChangePass, setShowChangePass] = useState(false);
 
   const [notifications, setNotifications] = useState([]);
@@ -22,6 +33,7 @@ export default function Navbar({ sidebarOpen, role }) {
 
   const notifRef = useRef();
   const profileRef = useRef();
+  const langRef = useRef();
   const socketRef = useRef(null);
 
   const user = JSON.parse(localStorage.getItem("user") || "{}");
@@ -36,11 +48,33 @@ export default function Navbar({ sidebarOpen, role }) {
       if (profileRef.current && !profileRef.current.contains(e.target)) {
         setProfileOpen(false);
       }
+
+      if (langRef.current && !langRef.current.contains(e.target)) {
+        setLangOpen(false);
+      }
     };
 
     document.addEventListener("mousedown", handleClick);
     return () => document.removeEventListener("mousedown", handleClick);
   }, []);
+
+  // ---------------- SET RTL ON LOAD ----------------
+  useEffect(() => {
+    const lang = localStorage.getItem("lang") || "en";
+    document.documentElement.dir =
+      lang === "fa" || lang === "ps" ? "rtl" : "ltr";
+  }, []);
+
+  // ---------------- LANGUAGE CHANGE ----------------
+  const changeLanguage = (lng) => {
+    i18n.changeLanguage(lng);
+    localStorage.setItem("lang", lng);
+
+    document.documentElement.dir =
+      lng === "fa" || lng === "ps" ? "rtl" : "ltr";
+
+    setLangOpen(false);
+  };
 
   // ---------------- FETCH NOTIFICATIONS ----------------
   const fetchNotifications = async () => {
@@ -64,7 +98,7 @@ export default function Navbar({ sidebarOpen, role }) {
       console.error("Notification fetch error:", err);
     }
   };
-
+  
   // ---------------- SOCKET ----------------
   useEffect(() => {
     fetchNotifications();
@@ -94,7 +128,6 @@ export default function Navbar({ sidebarOpen, role }) {
     };
   }, []);
 
-  // ---------------- MARK AS READ ----------------
   const markAsRead = async (id) => {
     try {
       await API.put(`/notifications/read/${id}`);
@@ -104,7 +137,6 @@ export default function Navbar({ sidebarOpen, role }) {
     }
   };
 
-  // ---------------- PROFILE ROUTE ----------------
   const getProfileRoute = (role) => {
     switch (role) {
       case "Admin":
@@ -132,15 +164,11 @@ export default function Navbar({ sidebarOpen, role }) {
     navigate("/");
   };
 
-  // ---------------- AVATAR (FIXED) ----------------
   const getAvatar = (u) => {
     const photo = u?.user_photo_url;
-
     if (!photo) return defaultAvatar;
-
     const isFullUrl = photo.startsWith("http");
     const base = import.meta.env.VITE_API_URL;
-
     return isFullUrl ? photo : `${base}${photo}?t=${Date.now()}`;
   };
 
@@ -156,6 +184,42 @@ export default function Navbar({ sidebarOpen, role }) {
         <h1 className="font-bold text-lg ml-5">{role} Panel</h1>
 
         <div className="flex items-center gap-4">
+          {/* LANGUAGE DROPDOWN */}
+          <div className="relative" ref={langRef}>
+            <div
+              onClick={() => setLangOpen(!langOpen)}
+              className="p-1.5 rounded-full hover:bg-gray-100 cursor-pointer flex items-center gap-1 text-xs"
+            >
+              <FiGlobe size={18} />
+              <span className="hidden sm:block uppercase">{i18n.language}</span>
+            </div>
+
+            {langOpen && (
+              <div className="absolute right-0 mt-2 w-28 bg-white border rounded-lg shadow-lg z-50">
+                <div
+                  onClick={() => changeLanguage("en")}
+                  className="px-3 py-2 hover:bg-gray-100 text-sm cursor-pointer"
+                >
+                  English
+                </div>
+
+                <div
+                  onClick={() => changeLanguage("fa")}
+                  className="px-3 py-2 hover:bg-gray-100 text-sm cursor-pointer"
+                >
+                  فارسی
+                </div>
+
+                <div
+                  onClick={() => changeLanguage("ps")}
+                  className="px-3 py-2 hover:bg-gray-100 text-sm cursor-pointer"
+                >
+                  پښتو
+                </div>
+              </div>
+            )}
+          </div>
+
           {/* ---------------- NOTIFICATIONS ---------------- */}
           <div className="relative" ref={notifRef}>
             <div
@@ -175,6 +239,7 @@ export default function Navbar({ sidebarOpen, role }) {
               )}
             </div>
 
+            {/* 🔴 THIS WHOLE NOTIFICATION BLOCK IS EXACTLY UNCHANGED */}
             <AnimatePresence>
               {notifOpen && (
                 <motion.div
@@ -240,7 +305,6 @@ export default function Navbar({ sidebarOpen, role }) {
                                   {n.notification_title}
                                 </span>
 
-                                {/* Mark as read button */}
                                 {!n.is_read && (
                                   <div
                                     className=" p-2 rounded-full text-green-600 text-xs hover:bg-gray-200 hover:text-red-500 cursor-pointer"

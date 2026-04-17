@@ -1,0 +1,58 @@
+{
+  "dashboard": "داشبورد",
+
+  "company": "شرکت",
+  "company_info": "اطلاعات شرکت",
+  "company_documents": "اسناد شرکت",
+  "departments": "شعبات",
+
+  "hr": "منابع بشری",
+  "employees": "کارکنان",
+  "employee_education": "تحصیلات کارمند",
+  "employee_documents": "اسناد کارمند",
+  "employee_salary": "معاش کارمند",
+  "attendance_shifts": "اوقات حاضری",
+  "employee_hiring": "استخدام کارمند",
+  "employee_attendance_list": "لیست حاضری",
+  "attendance_checker": "ثبت حاضری",
+  "salary_payment": "پرداخت معاش",
+
+  "projects": "پروژه ها",
+  "clients": "مشتریان",
+  "boq_items": "BOQ Items",
+  "projects_phases": "فاز های پروژه",
+  "projects_documents": "اسناد پروژه",
+
+  "financial": "بخش مالی",
+  "expenses": "مصارف",
+  "invoices": "انوایس ها",
+  "cash_transactions": "ترانزکشن های پول",
+  "payments_info": "اطلاعات پرداخت ها",
+
+  "inventory": "انبار",
+  "suppliers": "عرضه کننده ها",
+  "materials": "مواد",
+  "purchase_orders": "فرمایشات خریداری",
+  "po_items": "P.O مواد",
+
+  "equipments": "وسایط (ماشین آلات)",
+  "equipments_documents": "اسناد وسایط",
+  "equipments_usage": "استفاده از وسایط",
+  "equipments_maintenance": "محافظت از وسایط",
+
+  "contracts": "قرارداد ها",
+  "contracts_milestones": "اجزای قرارداد ها",
+
+  "tasks": "وظایف",
+  "tasks_assignment": "ایجاد وظایف",
+  "site_reports": "ګزارش های ساحوی",
+  "safety_incident": "ګزارش های حادثات",
+
+  "system": "سیستم",
+  "user_accounts": "حساب های کاربران",
+  "user_profile": "نمایه کابر",
+  "notifications_center": "مرکز اعلان ها",
+  "settings": "تنظمیات",
+  "system_logs": "تاریخچه سیستم",
+  "database_backup": "پیشتیبانی از سیستم"
+}

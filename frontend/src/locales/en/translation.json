@@ -1,0 +1,58 @@
+{
+  "dashboard": "Dashboard",
+
+  "company": "Company",
+  "company_info": "Company Info",
+  "company_documents": "Company Documents",
+  "departments": "Departments",
+
+  "hr": "HR",
+  "employees": "Employees",
+  "employee_education": "Employee Education",
+  "employee_documents": "Employee Documents",
+  "employee_salary": "Employee Salary",
+  "attendance_shifts": "Attendance Shifts",
+  "employee_hiring": "Employee Hiring",
+  "employee_attendance_list": "Employee Attendance List",
+  "attendance_checker": "Attendance Checker",
+  "salary_payment": "Salary Payment",
+
+  "projects": "Projects",
+  "clients": "Clients",
+  "boq_items": "BOQ Items",
+  "projects_phases": "Project Phases",
+  "projects_documents": "Project Documents",
+
+  "financial": "Financial",
+  "expenses": "Expenses",
+  "invoices": "Invoices",
+  "cash_transactions": "Cash Transactions",
+  "payments_info": "Payments Info",
+
+  "inventory": "Inventory",
+  "suppliers": "Suppliers",
+  "materials": "Materials",
+  "purchase_orders": "Purcahse Orders",
+  "po_items": "P.O Items",
+
+  "equipments": "Equipments (Machinery)",
+  "equipments_documents": "Equipments Documents",
+  "equipments_usage": "Equipments Usage",
+  "equipments_maintenance": "Equipments Maintenance",
+
+  "contracts": "Contracts",
+  "contracts_milestones": "Contracts Milestones",
+
+  "tasks": "Tasks",
+  "tasks_assignment": "Tasks Assignment",
+  "site_reports": "Site Reports",
+  "safety_incident": "Safety Incident",
+
+  "system": "System",
+  "user_accounts": "User Accounts",
+  "user_profile": "User Profile",
+  "notifications_center": "Notifications Center",
+  "settings": "Settings",
+  "system_logs": "System Logs",
+  "database_backup": "Database Backup"
+}

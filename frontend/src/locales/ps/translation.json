@@ -1,0 +1,58 @@
+{
+  "dashboard": "ډاشبورډ",
+
+  "company": "کمپنۍ",
+  "company_info": "د کمپنۍ معلومات",
+  "company_documents": "د کمپنۍ اسناد",
+  "departments": "څانګې",
+
+  "hr": "بشري سرچیني",
+  "employees": "کارمندان",
+  "employee_education": "د کارمندانو زده کړي",
+  "employee_documents": "د کارمندانو اسناد",
+  "employee_salary": "د کارمندانو معاش",
+  "attendance_shifts": "د حاضری وختونه",
+  "employee_hiring": "د کارمند ګمارنه",
+  "employee_attendance_list": "د حاضری لیست",
+  "attendance_checker": "د حاضری ثبتول",
+  "salary_payment": "د معاش تادیه",
+
+  "projects": "پروژي",
+  "clients": "پیریدونکې",
+  "boq_items": "BOQ Items",
+  "projects_phases": "د پروژو فازونه",
+  "projects_documents": "د پرژو اسناد",
+
+  "financial": "مالي څانګه",
+  "expenses": "لګښتونه",
+  "invoices": "انوایسونه",
+  "cash_transactions": "د پیسو ترانزکشنونه",
+  "payments_info": "د تادیاتو معلومات",
+
+  "inventory": "ګودام",
+  "suppliers": "عرضه کوونکي",
+  "materials": "مواد",
+  "purchase_orders": "د خرید ارډرونه",
+  "po_items": "P.O مواد",
+
+  "equipments": "وسایل (ماشینونه)",
+  "equipments_documents": "د وسایلو اسناد",
+  "equipments_usage": "د وسایلو کارونه",
+  "equipments_maintenance": "د وسایلو ساتنه",
+
+  "contracts": "تړون لیکونه",
+  "contracts_milestones": "د تړون لیکونو برخې",
+
+  "tasks": "دندې",
+  "tasks_assignment": "د دندې زیاتول",
+  "site_reports": "ساحوی راپورونه",
+  "safety_incident": "د حادثاتو راپورونه",
+
+  "system": "سیسټم",
+  "user_accounts": "د کاروونکو حسابونه",
+  "user_profile": "د کاروونکې پروفایل",
+  "notifications_center": "د خبرتیاوو مرکز",
+  "settings": "تنظمیات",
+  "system_logs": "د سیسټم مخینه (لاګونه)",
+  "database_backup": "د سیسټم ملاتړ"
+}

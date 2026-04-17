@@ -1,5 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+
 import {
   FiHome,
   FiUsers,
@@ -22,6 +24,9 @@ import defaultAvatar from "../assets/images/client-def-image.png";
 export default function Sidebar({ role }) {
   const location = useLocation();
   const sidebarRef = useRef();
+  const { t, i18n } = useTranslation();
+
+  const isRTL = i18n.language === "fa" || i18n.language === "ps";
 
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [openMenu, setOpenMenu] = useState(null);
@@ -82,159 +87,165 @@ export default function Sidebar({ role }) {
     // >>>>>>>>>>>>>>>> Sidebar for Admin Role:
     Admin: [
       {
-        name: "Dashboard",
+        name: "dashboard",
         path: "/admin/dashboard",
-        icon: <FiPieChart className=" animate-bounce" />,
+        icon: <FiPieChart className="animate-bounce" />,
       },
       {
-        name: "Company",
-        icon: <FiHome className=" animate-bounce" />,
+        name: "company",
+        icon: <FiHome className="animate-bounce" />,
         submenu: [
-          { name: "Company Info", path: "/admin/company/company-info" },
           {
-            name: "Company Documents",
+            name: "company_info",
+            path: "/admin/company/company-info",
+          },
+          {
+            name: "company_documents",
             path: "/admin/company/company-documents",
           },
-          { name: "Departments", path: "/admin/departments/departments-info" },
+          {
+            name: "departments",
+            path: "/admin/departments/departments-info",
+          },
         ],
       },
       {
-        name: "HR",
+        name: "hr",
         icon: <FiUsers className=" animate-bounce" />,
         submenu: [
-          { name: "Employees", path: "/admin/employees/employee-info" },
+          { name: "employees", path: "/admin/employees/employee-info" },
           {
-            name: "Employee Education",
+            name: "employee_education",
             path: "/admin/employees/employee-education-info",
           },
           {
-            name: "Employee Documents",
+            name: "employee_documents",
             path: "/admin/employees/employee-documents",
           },
           {
-            name: "Employee Salary",
+            name: "employee_salary",
             path: "/admin/employees/employee-salary-info",
           },
           {
-            name: "Attendance Shifts",
+            name: "attendance_shifts",
             path: "/admin/employees/attendance-shifts",
           },
           {
-            name: "Employee Hiring",
+            name: "employee_hiring",
             path: "/admin/employees/employee-hiring-info",
           },
           {
-            name: "Employee Attendance List",
+            name: "employee_attendance_list",
             path: "/admin/employees/employee-attendance-list",
           },
           {
-            name: "Attendance Checker",
+            name: "attendance_checker",
             path: "/admin/employees/employee-attendance",
           },
           {
-            name: "Salary Payment",
+            name: "salary_payment",
             path: "/admin/employees/employee-salary-payment",
           },
         ],
       },
       {
-        name: "Projects",
+        name: "projects",
         icon: <FiBox className=" animate-bounce" />,
         submenu: [
-          { name: "Clients", path: "/admin/clients/clients-info" },
-          { name: "Projects", path: "/admin/projects/project-info" },
-          { name: "BOQ Items", path: "/admin/projects/boq-items" },
+          { name: "clients", path: "/admin/clients/clients-info" },
+          { name: "projects", path: "/admin/projects/project-info" },
+          { name: "boq_items", path: "/admin/projects/boq-items" },
           {
-            name: "Projects Phases",
+            name: "projects_phases",
             path: "/admin/projects/project-phases-info",
           },
           {
-            name: "Projects Documents",
+            name: "projects_documents",
             path: "/admin/projects/project-documents",
           },
         ],
       },
       {
-        name: "Financial",
+        name: "financial",
         icon: <FiDollarSign className=" animate-bounce" />,
         submenu: [
-          { name: "Expenses", path: "/admin/financial/expenses" },
-          { name: "Invoices", path: "/admin/financial/invoices" },
+          { name: "expenses", path: "/admin/financial/expenses" },
+          { name: "invoices", path: "/admin/financial/invoices" },
           {
-            name: "Cash Transactions",
+            name: "cash_transactions",
             path: "/admin/financial/cash-transactions",
           },
-          { name: "Payments Info", path: "/admin/financial/payments-info" },
+          { name: "payments_info", path: "/admin/financial/payments-info" },
         ],
       },
       {
-        name: "Inventory",
+        name: "inventory",
         icon: <FiShoppingBag className=" animate-bounce" />,
         submenu: [
-          { name: "Suppliers", path: "/admin/inventory/suppliers" },
-          { name: "Materials", path: "/admin/inventory/materials" },
-          { name: "Purchase Orders", path: "/admin/inventory/purchase-orders" },
-          { name: "P.O Items", path: "/admin/inventory/purchase-order-items" },
+          { name: "suppliers", path: "/admin/inventory/suppliers" },
+          { name: "materials", path: "/admin/inventory/materials" },
+          { name: "purchase_orders", path: "/admin/inventory/purchase-orders" },
+          { name: "po_items", path: "/admin/inventory/purchase-order-items" },
         ],
       },
       {
-        name: "Equipments",
+        name: "equipments",
         icon: <FiTruck className=" animate-bounce" />,
         submenu: [
           {
-            name: "Equipments (Machinery)",
+            name: "equipments",
             path: "/admin/equipments/equipments",
           },
           {
-            name: "Equipments Documents",
+            name: "equipments_documents",
             path: "/admin/equipments/equipments-documents",
           },
           {
-            name: "Equipments Usage",
+            name: "equipments_usage",
             path: "/admin/equipments/equipments-usage",
           },
           {
-            name: "Equipments Maintenance",
+            name: "equipments_maintenance",
             path: "/admin/equipments/equipment-maintenance",
           },
         ],
       },
       {
-        name: "Contracts",
+        name: "contracts",
         icon: <FiBookOpen className=" animate-bounce" />,
         submenu: [
-          { name: "Contracts", path: "/admin/contracts/contracts" },
+          { name: "contracts", path: "/admin/contracts/contracts" },
           {
-            name: "Contract Milestones",
+            name: "contracts_milestones",
             path: "/admin/contracts/contract-milestones",
           },
         ],
       },
       {
-        name: "Tasks",
+        name: "tasks",
         icon: <FiList className="animate-bounce" />,
         submenu: [
-          { name: "Tasks Assignment", path: "/admin/tasks/tasks-assignment" },
+          { name: "tasks_assignment", path: "/admin/tasks/tasks-assignment" },
           {
-            name: "Site Reports",
+            name: "site_reports",
             path: "/admin/site-daily-reports/site-daily-reports",
           },
           {
-            name: "Safety Incident",
+            name: "safety_incident",
             path: "/admin/safety-incident/safety-incident-info",
           },
         ],
       },
       {
-        name: "System",
+        name: "system",
         icon: <FiSettings className="animate-spin" />,
         submenu: [
-          { name: "User Accounts", path: "/admin/users/user-list" },
-          { name: "User Profile", path: "/admin/users/user-profile" },
-          { name: "Notification Center", path: "/admin/system/notifications" },
-          { name: "Settings", path: "/admin/system/system-settings" },
-          { name: "System Logs", path: "/admin/system/system-logs" },
-          { name: "Database Backup", path: "/admin/users/user-list" },
+          { name: "user_accounts", path: "/admin/users/user-list" },
+          { name: "user_profile", path: "/admin/users/user-profile" },
+          { name: "notifications_center", path: "/admin/system/notifications" },
+          { name: "settings", path: "/admin/system/system-settings" },
+          { name: "system_logs", path: "/admin/system/system-logs" },
+          { name: "database_backup", path: "/admin/users/user-list" },
         ],
       },
     ],
@@ -331,16 +342,24 @@ export default function Sidebar({ role }) {
     if (!item.submenu) return false;
     return item.submenu.some((sub) => sub.path === location.pathname);
   };
-
   return (
     <>
       {/* TOGGLE */}
       <div
         onClick={() => setSidebarOpen(!sidebarOpen)}
-        className="fixed top-3 z-[9999] w-7 h-7  flex items-center justify-center bg-white border shadow-sm rounded-full cursor-pointer hover:bg-blue-100 "
-        style={{ left: sidebarOpen ? "13.5rem" : "0.3rem" }}
+        className="fixed top-3 z-[9999] w-7 h-7 flex items-center justify-center bg-white border shadow-sm rounded-full cursor-pointer hover:bg-blue-100"
+        style={{
+          left: !isRTL ? (sidebarOpen ? "13.5rem" : "0.3rem") : "auto",
+          right: isRTL ? (sidebarOpen ? "13.5rem" : "0.3rem") : "auto",
+        }}
       >
         {sidebarOpen ? (
+          isRTL ? (
+            <FiChevronRight size={18} />
+          ) : (
+            <FiChevronLeft size={18} />
+          )
+        ) : isRTL ? (
           <FiChevronLeft size={18} />
         ) : (
           <FiChevronRight size={18} />
@@ -358,8 +377,12 @@ export default function Sidebar({ role }) {
       {/* SIDEBAR */}
       <div
         ref={sidebarRef}
-        className="fixed top-0 left-0 h-screen bg-white shadow-lg z-50 overflow-hidden transition-all duration-300"
-        style={{ width: sidebarOpen ? "14.5rem" : "0rem" }}
+        className="fixed top-0 h-screen bg-white shadow-lg z-50 overflow-hidden transition-all duration-300"
+        style={{
+          width: sidebarOpen ? "14.5rem" : "0rem",
+          left: isRTL ? "auto" : 0,
+          right: isRTL ? 0 : "auto",
+        }}
       >
         {/* HEADER */}
         <div className="p-3 border-b flex items-center gap-3 bg-zinc-100 rounded">
@@ -372,10 +395,8 @@ export default function Sidebar({ role }) {
           <div className="flex flex-col min-w-0">
             <h1 className="text-sm font-bold text-blue-600">CC-MIS</h1>
             <p className="text-sm font-semibold truncate">{user.user_name}</p>
-            <p className="text-[11px] truncate">
-              <a href="mailto:" className="text-gray-500">
-                {user.user_email}
-              </a>
+            <p className="text-[11px] truncate text-gray-500">
+              {user.user_email}
             </p>
           </div>
         </div>
@@ -383,10 +404,12 @@ export default function Sidebar({ role }) {
         {/* MENU */}
         <div className="relative p-2 text-sm space-y-1 overflow-y-auto h-[calc(100%-80px)]">
           <div
-            className="absolute left-0 w-1 bg-blue-500 rounded-full transition-all duration-300"
+            className="absolute w-1 bg-blue-500 rounded-full transition-all duration-300"
             style={{
               top: indicatorStyle.top,
               height: indicatorStyle.height,
+              left: isRTL ? "auto" : 0,
+              right: isRTL ? 0 : "auto",
             }}
           />
 
@@ -403,7 +426,7 @@ export default function Sidebar({ role }) {
                   }`}
                 >
                   {item.icon}
-                  <span>{item.name}</span>
+                  <span>{t(item.name)}</span>
                 </Link>
               ) : (
                 <>
@@ -421,7 +444,7 @@ export default function Sidebar({ role }) {
                     }`}
                   >
                     {item.icon}
-                    <span className="flex-1">{item.name}</span>
+                    <span className="flex-1">{t(item.name)}</span>
                     {openMenu === item.name ? (
                       <FiChevronsUp />
                     ) : (
@@ -430,7 +453,9 @@ export default function Sidebar({ role }) {
                   </div>
 
                   {openMenu === item.name && (
-                    <div className="ml-8 mt-1 space-y-1">
+                    <div
+                      className={`mt-1 space-y-1 ${isRTL ? "mr-8" : "ml-8"}`}
+                    >
                       {item.submenu.map((sub, j) => (
                         <Link
                           key={j}
@@ -442,7 +467,7 @@ export default function Sidebar({ role }) {
                               : "hover:bg-gray-100"
                           }`}
                         >
-                          {sub.name}
+                          {t(sub.name)}
                         </Link>
                       ))}
                     </div>
