@@ -109,7 +109,7 @@ export default function ExpensesBarCard() {
       </div>
 
      {/* CHART */}
-     <div className="w-full h-[280px]">
+     <div className="w-full h-[300px]">
   <ResponsiveContainer width="100%" height="100%">
     <BarChart data={chartData}>
       <CartesianGrid opacity={0.2} />

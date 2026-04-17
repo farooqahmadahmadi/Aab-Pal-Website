@@ -202,7 +202,7 @@ export default function ProjectTimelineChart() {
         </ResponsiveContainer>
       </div>
 
-      {/* ✅ LEGEND (BOTTOM) */}
+      {/* LEGEND (BOTTOM) */}
       <div className="flex flex-wrap justify-center gap-3 mt-3 text-xs text-gray-600">
         {filtered.map((p, i) => (
           <span key={i} className="flex items-center gap-2">

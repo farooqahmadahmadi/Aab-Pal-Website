@@ -59,13 +59,13 @@ export default function ClientsPieCard() {
       </div>
 
       {/* CHART */}
-      <div className="w-full h-[260px]">
+      <div className="w-full h-[300px]">
         <ResponsiveContainer width="100%" height="100%">
           <PieChart>
             <Pie
               data={chartData}
-              innerRadius={60}
               outerRadius={100}
+              innerRadius={50}
               dataKey="value"
             >
               {chartData.map((_, index) => (

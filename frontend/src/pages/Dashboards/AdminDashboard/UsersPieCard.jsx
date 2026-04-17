@@ -74,7 +74,7 @@ export default function UsersPieCard() {
   ];
 
   return (
-     <div className="bg-white rounded-2xl shadow-lg p-5 hover:shadow-xl transition h-full flex flex-col">
+    <div className="bg-white rounded-2xl shadow-lg p-5 hover:shadow-xl transition h-full flex flex-col">
       {/* HEADER */}
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-md font-bold">Users Overview</h2>
@@ -82,27 +82,27 @@ export default function UsersPieCard() {
       </div>
 
       {/* CHART */}
-<div className="w-full h-[300px]">
-  <ResponsiveContainer width="100%" height="100%">
-    <PieChart>
-      <Pie
-        data={chartData}
-        cx="50%"
-        cy="50%"
-        outerRadius={100}
-        innerRadius={50}
-        paddingAngle={2}
-        dataKey="value"
-      >
-        {chartData.map((entry, index) => (
-          <Cell key={index} fill={COLORS[index % COLORS.length]} />
-        ))}
-      </Pie>
+      <div className="w-full h-[300px]">
+        <ResponsiveContainer width="100%" height="100%">
+          <PieChart>
+            <Pie
+              data={chartData}
+              cx="50%"
+              cy="50%"
+              outerRadius={100}
+              innerRadius={50}
+              paddingAngle={2}
+              dataKey="value"
+            >
+              {chartData.map((entry, index) => (
+                <Cell key={index} fill={COLORS[index % COLORS.length]} />
+              ))}
+            </Pie>
 
-      <Tooltip />
-    </PieChart>
-  </ResponsiveContainer>
-</div>
+            <Tooltip />
+          </PieChart>
+        </ResponsiveContainer>
+      </div>
 
       {/* SINGLE CLEAN LEGEND */}
       <div className="flex flex-wrap gap-3 mt-4 text-xs justify-center">

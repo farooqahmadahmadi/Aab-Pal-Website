@@ -71,8 +71,8 @@ export default function ExpensesPieCard() {
   return (
     <div className="bg-white rounded-2xl shadow-lg p-5 hover:shadow-xl transition h-full flex flex-col">
       {/* HEADER */}
-      <div className="flex justify-between mb-4">
-        <h2 className="font-bold text-gray-800">Today Expenses</h2>
+      <div className="flex justify-between items-center mb-4">
+        <h2 className="text-md font-bold text-gray-800">Today Expenses</h2>
         <span className="text-sm text-gray-500">
           {todayExpenses.length} Records
         </span>
@@ -87,12 +87,12 @@ export default function ExpensesPieCard() {
         <>
           {/* PIE CHART */}
           <div className="w-full h-[240px]">
-            <ResponsiveContainer>
+            <ResponsiveContainer width="100%" height="100%">
               <PieChart>
                 <Pie
                   data={chartData}
-                  innerRadius={60}
                   outerRadius={100}
+                  innerRadius={50}
                   dataKey="value"
                 >
                   {chartData.map((_, i) => (
