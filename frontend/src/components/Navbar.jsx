@@ -170,7 +170,7 @@ export default function Navbar({ sidebarOpen, role }) {
           marginLeft: sidebarOpen ? "16rem" : "",
         }}
       >
-        <h1 className="font-bold text-lg ml-5">
+        <h1 className="font-bold text-lg ml-6 mr-6">
           {role} {t("panel")}
         </h1>
 
