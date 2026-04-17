@@ -54,5 +54,17 @@
   "notifications_center": "Notifications Center",
   "settings": "Settings",
   "system_logs": "System Logs",
-  "database_backup": "Database Backup"
+  "database_backup": "Database Backup",
+
+  "english": "English",
+  "pashto": "Pashto",
+  "persian": "Persian",
+  "read": "Read",
+  "unread": "Unread",
+  "mark_read": "Mark Read",
+  "more_notifications": "More Notifications ...",
+  "no_notifications": "No notifications",
+  "profile": "Profile",
+  "change_password": "Change Password",
+  "logout": "Log Out"
 }

@@ -54,5 +54,17 @@
   "notifications_center": "مرکز اعلان ها",
   "settings": "تنظمیات",
   "system_logs": "تاریخچه سیستم",
-  "database_backup": "پیشتیبانی از سیستم"
+  "database_backup": "پیشتیبانی از سیستم",
+
+  "english": "انګلیسی",
+  "pashto": "پښتو",
+  "persian": "دری",
+  "read": "خوانده شده",
+  "unread": "نا خوانده شده",
+  "mark_read": "به عنوان خوانده شده",
+  "more_notifications": "اعلان های بیشتر ...",
+  "no_notifications": "اعلان ها وجود ندارد",
+  "profile": "نمایه کابر",
+  "change_password": "تغیر رمز عبور",
+  "logout": "خروج"
 }

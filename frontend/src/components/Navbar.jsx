@@ -1,28 +1,22 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import API from "../services/api";
-import {
-  FiBell,
-  FiUnlock,
-  FiLogOut,
-  FiCheck,
-  FiUser,
-  FiGlobe,
-} from "react-icons/fi";
+import { FiBell, FiUnlock, FiLogOut, FiUser, FiGlobe } from "react-icons/fi";
 
 import UserChangePasswordModal from "../components/Users/UserChangePasswordModal";
 import { motion, AnimatePresence } from "framer-motion";
 
 import defaultAvatar from "../assets/images/client-def-image.png";
 import { io } from "socket.io-client";
-
 import { useTranslation } from "react-i18next";
 
 export default function Navbar({ sidebarOpen, role }) {
   const navigate = useNavigate();
-  const { i18n } = useTranslation();
+  const { i18n, t } = useTranslation();
+
   const isRTL = i18n.language === "fa" || i18n.language === "ps";
 
+  // ---------------- STATES ----------------
   const [profileOpen, setProfileOpen] = useState(false);
   const [notifOpen, setNotifOpen] = useState(false);
   const [langOpen, setLangOpen] = useState(false);
@@ -32,6 +26,7 @@ export default function Navbar({ sidebarOpen, role }) {
   const [tab, setTab] = useState("unread");
   const [limit, setLimit] = useState(6);
 
+  // ---------------- REFS ----------------
   const notifRef = useRef();
   const profileRef = useRef();
   const langRef = useRef();
@@ -39,34 +34,76 @@ export default function Navbar({ sidebarOpen, role }) {
 
   const user = JSON.parse(localStorage.getItem("user") || "{}");
 
-  // ---------------- OUTSIDE CLICK ----------------
+  // ---------------- HELPERS (MISSING FIXED) ----------------
+  const getAvatar = (u) => {
+    if (!u?.user_photo_url) return defaultAvatar;
+    if (u.user_photo_url.startsWith("http")) return u.user_photo_url;
+    return `${import.meta.env.VITE_API_URL}${u.user_photo_url}`;
+  };
+
+  const getStatusClass = (status) =>
+    status === "Online" ? "border-green-500 animate-pulse" : "border-gray-300";
+
+  const getProfileRoute = (role) => {
+    switch (role) {
+      case "Admin":
+        return "/admin/users/user-profile";
+      case "HR":
+        return "/hr/users/user-profile";
+      case "PM":
+        return "/pm/user-profile";
+      default:
+        return "/user-profile";
+    }
+  };
+
+  const logout = async () => {
+    try {
+      await API.post("/users/logout");
+    } catch {}
+    localStorage.clear();
+    navigate("/");
+  };
+
+  const markAsRead = async (id) => {
+    try {
+      await API.put(`/notifications/read/${id}`);
+      fetchNotifications();
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  // ---------------- DERIVED ----------------
+  const unread = notifications.filter((n) => !n.is_read);
+  const read = notifications.filter((n) => n.is_read);
+
+  const currentList = tab === "unread" ? unread : read;
+  const visible = currentList.slice(0, limit);
+
+  // ---------------- CLICK OUTSIDE ----------------
   useEffect(() => {
     const handleClick = (e) => {
-      if (notifRef.current && !notifRef.current.contains(e.target)) {
+      if (notifRef.current && !notifRef.current.contains(e.target))
         setNotifOpen(false);
-      }
-
-      if (profileRef.current && !profileRef.current.contains(e.target)) {
+      if (profileRef.current && !profileRef.current.contains(e.target))
         setProfileOpen(false);
-      }
-
-      if (langRef.current && !langRef.current.contains(e.target)) {
+      if (langRef.current && !langRef.current.contains(e.target))
         setLangOpen(false);
-      }
     };
 
     document.addEventListener("mousedown", handleClick);
     return () => document.removeEventListener("mousedown", handleClick);
   }, []);
 
-  // ---------------- SET RTL ON LOAD ----------------
+  // ---------------- RTL ----------------
   useEffect(() => {
     const lang = localStorage.getItem("lang") || "en";
     document.documentElement.dir =
       lang === "fa" || lang === "ps" ? "rtl" : "ltr";
   }, []);
 
-  // ---------------- LANGUAGE CHANGE ----------------
+  // ---------------- LANGUAGE ----------------
   const changeLanguage = (lng) => {
     i18n.changeLanguage(lng);
     localStorage.setItem("lang", lng);
@@ -95,11 +132,10 @@ export default function Navbar({ sidebarOpen, role }) {
         ),
       );
     } catch (err) {
-      console.error("Notification fetch error:", err);
+      console.error(err);
     }
   };
 
-  // ---------------- SOCKET ----------------
   useEffect(() => {
     fetchNotifications();
 
@@ -109,8 +145,8 @@ export default function Navbar({ sidebarOpen, role }) {
 
     socketRef.current = socket;
 
-    socket.on("new_notification", (notification) => {
-      setNotifications((prev) => [notification, ...prev]);
+    socket.on("new_notification", (data) => {
+      setNotifications((prev) => [data, ...prev]);
     });
 
     socket.on("delete_notification", ({ id }) => {
@@ -123,68 +159,23 @@ export default function Navbar({ sidebarOpen, role }) {
       );
     });
 
-    return () => {
-      socket.disconnect();
-    };
+    return () => socket.disconnect();
   }, []);
-
-  const markAsRead = async (id) => {
-    try {
-      await API.put(`/notifications/read/${id}`);
-      fetchNotifications();
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  const getProfileRoute = (role) => {
-    switch (role) {
-      case "Admin":
-        return "/admin/users/user-profile";
-      case "HR":
-        return "/hr/users/user-profile";
-      case "PM":
-        return "/pm/user-profile";
-      default:
-        return "/user-profile";
-    }
-  };
-
-  const unread = notifications.filter((n) => !n.is_read);
-  const read = notifications.filter((n) => n.is_read);
-
-  const currentList = tab === "unread" ? unread : read;
-  const visible = currentList.slice(0, limit);
-
-  const logout = async () => {
-    try {
-      await API.post("/users/logout");
-    } catch {}
-    localStorage.clear();
-    navigate("/");
-  };
-
-  const getAvatar = (u) => {
-    const photo = u?.user_photo_url;
-    if (!photo) return defaultAvatar;
-    const isFullUrl = photo.startsWith("http");
-    const base = import.meta.env.VITE_API_URL;
-    return isFullUrl ? photo : `${base}${photo}?t=${Date.now()}`;
-  };
-
-  const getStatusClass = (status) =>
-    status === "Online" ? "border-green-500 animate-pulse" : "border-gray-300";
 
   return (
     <>
       <div
         className="flex items-center justify-between bg-white shadow-sm px-4 py-1 relative w-dvw z-40"
-        style={{ marginLeft: sidebarOpen ? "16rem" : "" }}
+        style={{
+          marginLeft: sidebarOpen ? "16rem" : "",
+        }}
       >
-        <h1 className="font-bold text-lg ml-5">{role} Panel</h1>
+        <h1 className="font-bold text-lg ml-5">
+          {role} {t("panel")}
+        </h1>
 
         <div className="flex items-center gap-4">
-          {/* LANGUAGE DROPDOWN */}
+          {/* ---------------- LANGUAGE ---------------- */}
           <div className="relative" ref={langRef}>
             <div
               onClick={() => setLangOpen(!langOpen)}
@@ -195,26 +186,30 @@ export default function Navbar({ sidebarOpen, role }) {
             </div>
 
             {langOpen && (
-              <div className="absolute right-0 mt-2 w-28 bg-white border rounded-lg shadow-lg z-50">
+              <div
+                className={`absolute mt-2 w-28 bg-white border rounded-lg shadow-lg z-50
+                ${isRTL ? "left-0" : "right-0"}
+              `}
+              >
                 <div
                   onClick={() => changeLanguage("en")}
                   className="px-3 py-2 hover:bg-gray-100 text-sm cursor-pointer"
                 >
-                  English
+                  {t("english")}
                 </div>
 
                 <div
                   onClick={() => changeLanguage("fa")}
                   className="px-3 py-2 hover:bg-gray-100 text-sm cursor-pointer"
                 >
-                  فارسی
+                  {t("persian")}
                 </div>
 
                 <div
                   onClick={() => changeLanguage("ps")}
                   className="px-3 py-2 hover:bg-gray-100 text-sm cursor-pointer"
                 >
-                  پښتو
+                  {t("pashto")}
                 </div>
               </div>
             )}
@@ -239,7 +234,6 @@ export default function Navbar({ sidebarOpen, role }) {
               )}
             </div>
 
-            {/*  THIS WHOLE NOTIFICATION BLOC */}
             <AnimatePresence>
               {notifOpen && (
                 <motion.div
@@ -247,9 +241,10 @@ export default function Navbar({ sidebarOpen, role }) {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
                   className={`absolute mt-1 w-80 max-h-[450px] bg-white shadow-lg rounded-lg border flex flex-col overflow-hidden z-50
-    ${isRTL ? "left-0" : "right-0"}
-  `}
+                  ${isRTL ? "left-0" : "right-0"}
+                `}
                 >
+                  {/* Tabs */}
                   <div className="flex border-b text-sm">
                     <div
                       onClick={() => setTab("unread")}
@@ -259,7 +254,7 @@ export default function Navbar({ sidebarOpen, role }) {
                           : ""
                       }`}
                     >
-                      Unread
+                      {t("unread")}
                     </div>
 
                     <div
@@ -270,78 +265,79 @@ export default function Navbar({ sidebarOpen, role }) {
                           : ""
                       }`}
                     >
-                      Read
+                      {t("read")}
                     </div>
                   </div>
 
+                  {/* LIST */}
                   <div className="flex-1 overflow-y-auto">
-                    {visible.length === 0 && (
+                    {visible.length === 0 ? (
                       <p className="text-center text-gray-400 py-4 text-sm">
-                        No notifications
+                        {t("no_notifications")}
                       </p>
-                    )}
+                    ) : (
+                      visible.map((n) => {
+                        const nUser = n.user || {};
 
-                    {visible.map((n) => {
-                      const nUser = n.user || {};
-
-                      return (
-                        <div
-                          key={n.notification_id}
-                          className="p-3 border-b hover:bg-gray-50 text-sm"
-                        >
-                          <div className="flex gap-2">
-                            <div
-                              className={`relative rounded-full p-[2px] ${getStatusClass(
-                                nUser.login_status,
-                              )}`}
-                            >
-                              <img
-                                src={getAvatar(nUser)}
-                                className="w-8 h-8 rounded-full object-cover"
-                              />
-                            </div>
-
-                            <div className="flex-1">
-                              <div className="flex justify-between">
-                                <span className="font-semibold text-xs">
-                                  {n.notification_title}
-                                </span>
-
-                                {!n.is_read && (
-                                  <div
-                                    className=" p-2 rounded-full text-green-600 text-xs hover:bg-gray-200 hover:text-red-500 cursor-pointer"
-                                    onClick={() =>
-                                      markAsRead(n.notification_id)
-                                    }
-                                  >
-                                    Mark Read
-                                  </div>
-                                )}
+                        return (
+                          <div
+                            key={n.notification_id}
+                            className="p-3 border-b hover:bg-gray-50 text-sm"
+                          >
+                            <div className="flex gap-2">
+                              <div
+                                className={`relative rounded-full p-[2px] ${getStatusClass(
+                                  nUser.login_status,
+                                )}`}
+                              >
+                                <img
+                                  src={getAvatar(nUser)}
+                                  className="w-8 h-8 rounded-full object-cover"
+                                />
                               </div>
 
-                              <p className="text-xs text-gray-600">
-                                {n.notification_message}
-                              </p>
+                              <div className="flex-1">
+                                <div className="flex justify-between">
+                                  <span className="font-semibold text-xs">
+                                    {n.notification_title}
+                                  </span>
 
-                              <p className="text-[10px] text-gray-500">
-                                By: {nUser.user_name || "System"}
-                              </p>
+                                  {!n.is_read && (
+                                    <div
+                                      onClick={() =>
+                                        markAsRead(n.notification_id)
+                                      }
+                                      className="p-2 rounded-full text-green-600 text-xs hover:bg-gray-200 hover:text-red-500 cursor-pointer"
+                                    >
+                                      {t("mark_read")}
+                                    </div>
+                                  )}
+                                </div>
 
-                              <span className="text-[10px] text-gray-400">
-                                {new Date(n.created_at).toLocaleString()}
-                              </span>
+                                <p className="text-xs text-gray-600">
+                                  {n.notification_message}
+                                </p>
+
+                                <p className="text-[10px] text-gray-500">
+                                  {t("by")}: {nUser.user_name || "System"}
+                                </p>
+
+                                <span className="text-[10px] text-gray-400">
+                                  {new Date(n.created_at).toLocaleString()}
+                                </span>
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      );
-                    })}
+                        );
+                      })
+                    )}
 
                     {visible.length < currentList.length && (
                       <div
                         onClick={() => setLimit((l) => l + 10)}
                         className="text-center text-blue-500 text-xs py-2 cursor-pointer"
                       >
-                        More notifications...
+                        {t("more_notifications")}
                       </div>
                     )}
                   </div>
@@ -367,14 +363,14 @@ export default function Navbar({ sidebarOpen, role }) {
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
                 className={`absolute mt-1 w-48 bg-white shadow-lg rounded-lg border z-50
-    ${isRTL ? "left-0" : "right-0"}
-  `}
+                ${isRTL ? "left-0" : "right-0"}
+              `}
               >
                 <div
                   onClick={() => navigate(getProfileRoute(role))}
                   className="p-2 hover:bg-gray-100 text-sm flex gap-2 cursor-pointer"
                 >
-                  <FiUser /> Profile
+                  <FiUser /> {t("profile")}
                 </div>
 
                 <div
@@ -384,14 +380,14 @@ export default function Navbar({ sidebarOpen, role }) {
                   }}
                   className="p-2 hover:bg-gray-100 text-sm flex gap-2 cursor-pointer"
                 >
-                  <FiUnlock /> Change Password
+                  <FiUnlock /> {t("change_password")}
                 </div>
 
                 <div
                   onClick={logout}
                   className="p-2 hover:bg-red-100 text-sm text-red-600 flex gap-2 cursor-pointer"
                 >
-                  <FiLogOut /> Logout
+                  <FiLogOut /> {t("logout")}
                 </div>
               </motion.div>
             )}
@@ -399,6 +395,7 @@ export default function Navbar({ sidebarOpen, role }) {
         </div>
       </div>
 
+      {/* CHANGE PASSWORD MODAL */}
       <AnimatePresence>
         {showChangePass && (
           <UserChangePasswordModal onClose={() => setShowChangePass(false)} />
