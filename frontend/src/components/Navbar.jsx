@@ -21,6 +21,7 @@ import { useTranslation } from "react-i18next";
 export default function Navbar({ sidebarOpen, role }) {
   const navigate = useNavigate();
   const { i18n } = useTranslation();
+  const isRTL = i18n.language === "fa" || i18n.language === "ps";
 
   const [profileOpen, setProfileOpen] = useState(false);
   const [notifOpen, setNotifOpen] = useState(false);
@@ -70,8 +71,7 @@ export default function Navbar({ sidebarOpen, role }) {
     i18n.changeLanguage(lng);
     localStorage.setItem("lang", lng);
 
-    document.documentElement.dir =
-      lng === "fa" || lng === "ps" ? "rtl" : "ltr";
+    document.documentElement.dir = lng === "fa" || lng === "ps" ? "rtl" : "ltr";
 
     setLangOpen(false);
   };
@@ -98,7 +98,7 @@ export default function Navbar({ sidebarOpen, role }) {
       console.error("Notification fetch error:", err);
     }
   };
-  
+
   // ---------------- SOCKET ----------------
   useEffect(() => {
     fetchNotifications();
@@ -239,14 +239,16 @@ export default function Navbar({ sidebarOpen, role }) {
               )}
             </div>
 
-            {/* 🔴 THIS WHOLE NOTIFICATION BLOCK IS EXACTLY UNCHANGED */}
+            {/*  THIS WHOLE NOTIFICATION BLOC */}
             <AnimatePresence>
               {notifOpen && (
                 <motion.div
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
-                  className="absolute right-0 mt-1 w-80 max-h-[450px] bg-white shadow-lg rounded-lg border flex flex-col overflow-hidden z-50"
+                  className={`absolute mt-1 w-80 max-h-[450px] bg-white shadow-lg rounded-lg border flex flex-col overflow-hidden z-50
+    ${isRTL ? "left-0" : "right-0"}
+  `}
                 >
                   <div className="flex border-b text-sm">
                     <div
@@ -364,7 +366,9 @@ export default function Navbar({ sidebarOpen, role }) {
               <motion.div
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="absolute right-0 mt-1 w-48 bg-white shadow-lg rounded-lg border z-50"
+                className={`absolute mt-1 w-48 bg-white shadow-lg rounded-lg border z-50
+    ${isRTL ? "left-0" : "right-0"}
+  `}
               >
                 <div
                   onClick={() => navigate(getProfileRoute(role))}
