@@ -58,8 +58,7 @@ export default function EmpHiringBarCard() {
   const positionCount = {};
   hiring.forEach((h) => {
     if (h.position) {
-      positionCount[h.position] =
-        (positionCount[h.position] || 0) + 1;
+      positionCount[h.position] = (positionCount[h.position] || 0) + 1;
     }
   });
 
@@ -97,21 +96,18 @@ export default function EmpHiringBarCard() {
   ];
 
   return (
-     <div className="bg-white rounded-2xl shadow-lg p-5 hover:shadow-xl transition h-full flex flex-col">
-
+    <div className="bg-white rounded-2xl shadow-lg p-5 hover:shadow-xl transition h-full flex flex-col">
       {/* HEADER */}
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-md font-bold text-gray-800">
           Hiring Structure Overview
         </h2>
 
-        <span className="text-sm text-gray-500">
-          Total: {hiring.length}
-        </span>
+        <span className="text-sm text-gray-500">Total: {hiring.length}</span>
       </div>
 
       {/* CHART */}
-      <div className="w-full h-[420px]">
+      <div className="w-full h-[300px]">
         <ResponsiveContainer width="100%" height="100%">
           <BarChart data={chartData}>
             <CartesianGrid strokeDasharray="3 3" opacity={0.2} />
@@ -121,10 +117,7 @@ export default function EmpHiringBarCard() {
 
             <Bar dataKey="value" radius={[8, 8, 0, 0]} barSize={20}>
               {chartData.map((entry, index) => (
-                <Cell
-                  key={index}
-                  fill={COLORS[index % COLORS.length]}
-                />
+                <Cell key={index} fill={COLORS[index % COLORS.length]} />
               ))}
             </Bar>
           </BarChart>
@@ -133,7 +126,6 @@ export default function EmpHiringBarCard() {
 
       {/* ================= DYNAMIC LEGEND ================= */}
       <div className="flex flex-wrap gap-3 mt-4 text-xs text-gray-700 justify-around">
-
         {chartData.map((item, index) => (
           <span key={index} className="flex items-center gap-2">
             <span
@@ -142,14 +134,10 @@ export default function EmpHiringBarCard() {
                 backgroundColor: COLORS[index % COLORS.length],
               }}
             ></span>
-
-            {item.name.replace("Dept: ", "").replace("Pos: ", "")}
-            ({item.value})
+            {item.name.replace("Dept: ", "").replace("Pos: ", "")}({item.value})
           </span>
         ))}
-
       </div>
-
     </div>
   );
 }

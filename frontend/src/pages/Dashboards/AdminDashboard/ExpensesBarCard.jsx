@@ -108,22 +108,23 @@ export default function ExpensesBarCard() {
         </select>
       </div>
 
-      <div className="w-full h-[380px]">
-        <ResponsiveContainer width="100%" height="100%">
-          <BarChart data={chartData}>
-            <CartesianGrid opacity={0.2} />
-            <XAxis dataKey="name" tick={{ fontSize: 12 }} />
-            <YAxis tick={{ fontSize: 12 }} />
-            <Tooltip />
+     {/* CHART */}
+     <div className="w-full h-[280px]">
+  <ResponsiveContainer width="100%" height="100%">
+    <BarChart data={chartData}>
+      <CartesianGrid opacity={0.2} />
+      <XAxis dataKey="name" tick={{ fontSize: 12 }} />
+      <YAxis tick={{ fontSize: 12 }} />
+      <Tooltip />
 
-            <Bar dataKey="value" radius={[8, 8, 0, 0]} barSize={20}>
-              {chartData.map((_, i) => (
-                <Cell key={i} fill={COLORS[i % COLORS.length]} />
-              ))}
-            </Bar>
-          </BarChart>
-        </ResponsiveContainer>
-      </div>
+      <Bar dataKey="value" radius={[8, 8, 0, 0]} barSize={20}>
+        {chartData.map((_, i) => (
+          <Cell key={i} fill={COLORS[i % COLORS.length]} />
+        ))}
+      </Bar>
+    </BarChart>
+  </ResponsiveContainer>
+</div>
 
       {/* LEGEND */}
       <div className="flex flex-wrap gap-3 mt-4 text-xs justify-center">

@@ -129,7 +129,7 @@ export default function ProjectTimelineChart() {
       </div>
 
       {/* CHART */}
-      <div className="w-full h-[400px]">
+      <div className="w-full h-[300px]">
         <ResponsiveContainer>
           <ScatterChart>
             <CartesianGrid stroke="#f1f5f9" />
@@ -158,7 +158,7 @@ export default function ProjectTimelineChart() {
               }}
             />
 
-            <YAxis type="number" dataKey="y" tick={{ fontSize: 12 }}/>
+            <YAxis type="number" dataKey="y" tick={{ fontSize: 12 }} />
 
             <Tooltip content={<CustomTooltip />} />
 
@@ -166,9 +166,7 @@ export default function ProjectTimelineChart() {
               data={chartData}
               line={{
                 strokeWidth: 2,
-                style: {
-                  transition: "all 0.4s ease",
-                },
+                style: { transition: "all 0.4s ease" },
               }}
               shape={(props) => {
                 const { cx, cy, payload } = props;

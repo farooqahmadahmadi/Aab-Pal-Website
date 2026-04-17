@@ -136,40 +136,39 @@ export default function CashTransactionsChart() {
         </select>
       </div>
 
-      {/* CHART */}
-      <div className="w-full h-[400px]">
-        <ResponsiveContainer>
-          <LineChart data={chartData}>
-            <CartesianGrid strokeDasharray="3 3" opacity={0.2} />
+     {/* CHART */}
+<div className="w-full h-[300px]">
+  <ResponsiveContainer>
+    <LineChart data={chartData}>
+      <CartesianGrid strokeDasharray="3 3" opacity={0.2} />
 
-            <XAxis dataKey="date" tick={{ fontSize: 12 }} />
-            <YAxis tick={{ fontSize: 12 }} />
+      <XAxis dataKey="date" tick={{ fontSize: 12 }} />
+      <YAxis tick={{ fontSize: 12 }} />
 
-            <Tooltip content={<CustomTooltip />} />
-            {/* <Legend /> */}
+      <Tooltip content={<CustomTooltip />} />
 
-            {/* INCOME */}
-            <Line
-              type="monotone"
-              dataKey="income"
-              stroke="#22c55e"
-              strokeWidth={3}
-              dot={{ r: 4 }}
-              activeDot={{ r: 7 }}
-            />
+      {/* INCOME */}
+      <Line
+        type="monotone"
+        dataKey="income"
+        stroke="#22c55e"
+        strokeWidth={3}
+        dot={{ r: 4 }}
+        activeDot={{ r: 7 }}
+      />
 
-            {/* EXPENSE */}
-            <Line
-              type="monotone"
-              dataKey="expense"
-              stroke="#ef4444"
-              strokeWidth={3}
-              dot={{ r: 4 }}
-              activeDot={{ r: 7 }}
-            />
-          </LineChart>
-        </ResponsiveContainer>
-      </div>
+      {/* EXPENSE */}
+      <Line
+        type="monotone"
+        dataKey="expense"
+        stroke="#ef4444"
+        strokeWidth={3}
+        dot={{ r: 4 }}
+        activeDot={{ r: 7 }}
+      />
+    </LineChart>
+  </ResponsiveContainer>
+</div>
 
       {/* LEGEND (FINAL FIXED) */}
       <div className="flex justify-center gap-6 mt-3 text-sm">

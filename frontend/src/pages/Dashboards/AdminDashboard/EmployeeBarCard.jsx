@@ -43,21 +43,17 @@ export default function EmployeeBarCard() {
   const female = employees.filter((e) => e.emp_gender === "Female").length;
 
   const single = employees.filter(
-    (e) => e.emp_marital_status === "Single"
+    (e) => e.emp_marital_status === "Single",
   ).length;
 
   const married = employees.filter(
-    (e) => e.emp_marital_status === "Married"
+    (e) => e.emp_marital_status === "Married",
   ).length;
 
   // ================= HIRING STATUS =================
-  const active = hiring.filter(
-    (h) => h.current_status === "Active"
-  ).length;
+  const active = hiring.filter((h) => h.current_status === "Active").length;
 
-  const inactive = hiring.filter(
-    (h) => h.current_status === "InActive"
-  ).length;
+  const inactive = hiring.filter((h) => h.current_status === "InActive").length;
 
   // ================= CHART DATA =================
   const chartData = [
@@ -85,28 +81,24 @@ export default function EmployeeBarCard() {
   }));
 
   return (
-     <div className="bg-white rounded-2xl shadow-lg p-5 hover:shadow-xl transition h-full flex flex-col">
-
+    <div className="bg-white rounded-2xl shadow-lg p-5 hover:shadow-xl transition h-full flex flex-col">
       {/* HEADER */}
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-md font-bold text-gray-800">
           Employee Analytics Overview
         </h2>
 
-        <span className="text-sm text-gray-500">
-          Total: {total}
-        </span>
+        <span className="text-sm text-gray-500">Total: {total}</span>
       </div>
 
       {/* CHART */}
-      <div className="w-full h-[420px]">
+      <div className="w-full h-[300px]">
         <ResponsiveContainer width="100%" height="100%">
           <BarChart data={chartData}>
             <CartesianGrid strokeDasharray="3 3" opacity={0.2} />
             <XAxis dataKey="name" tick={{ fontSize: 12 }} />
-            <YAxis tick={{ fontSize: 12 }}/>
+            <YAxis tick={{ fontSize: 12 }} />
             <Tooltip />
-            <Legend />
 
             <Bar dataKey="value" radius={[8, 8, 0, 0]} barSize={20}>
               {chartData.map((_, index) => (
@@ -116,7 +108,6 @@ export default function EmployeeBarCard() {
           </BarChart>
         </ResponsiveContainer>
       </div>
-
       {/* ================= DYNAMIC LEGEND ================= */}
       <div className="flex flex-wrap gap-3 mt-4 text-xs text-gray-700 justify-center">
         {legendData.map((item, index) => (
@@ -129,7 +120,6 @@ export default function EmployeeBarCard() {
           </span>
         ))}
       </div>
-
     </div>
   );
 }

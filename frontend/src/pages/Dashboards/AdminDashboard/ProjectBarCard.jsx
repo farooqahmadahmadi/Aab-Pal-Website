@@ -27,8 +27,8 @@ export default function ProjectBarCard() {
         Array.isArray(res.data)
           ? res.data
           : Array.isArray(res.data.data)
-          ? res.data.data
-          : []
+            ? res.data.data
+            : [],
       );
     } catch (err) {
       console.error(err);
@@ -78,39 +78,31 @@ export default function ProjectBarCard() {
 
   return (
     <div className="bg-white rounded-2xl shadow-lg p-5 hover:shadow-xl transition h-full flex flex-col">
-
       {/* HEADER */}
       <div className="flex justify-between items-center mb-4">
-        <h2 className="text-md font-bold text-gray-800">
-          Project Analytics
-        </h2>
+        <h2 className="text-md font-bold text-gray-800">Project Analytics</h2>
 
-        <span className="text-sm text-gray-500">
-          Total: {projects.length}
-        </span>
+        <span className="text-sm text-gray-500">Total: {projects.length}</span>
       </div>
 
       {/* CHART */}
-      <div className="flex-1 min-h-[300px]">
+      <div className="flex-1 min-h-[240px]">
         <ResponsiveContainer width="100%" height="100%">
           <BarChart data={chartData}>
             <CartesianGrid strokeDasharray="3 3" opacity={0.2} />
             <XAxis dataKey="name" tick={{ fontSize: 12 }} />
-            <YAxis tick={{ fontSize: 12 }}/>
+            <YAxis tick={{ fontSize: 12 }} />
             <Tooltip />
 
             <Bar dataKey="value" radius={[8, 8, 0, 0]} barSize={20}>
               {chartData.map((_, index) => (
-                <Cell
-                  key={index}
-                  fill={COLORS[index % COLORS.length]}
-                />
+                <Cell key={index} fill={COLORS[index % COLORS.length]} />
               ))}
             </Bar>
           </BarChart>
         </ResponsiveContainer>
       </div>
-
+      
       {/* LEGEND (DYNAMIC) */}
       <div className="flex flex-wrap gap-3 mt-4 text-xs text-gray-700 justify-center">
         {chartData.map((item, index) => (
@@ -125,7 +117,6 @@ export default function ProjectBarCard() {
           </span>
         ))}
       </div>
-
     </div>
   );
 }

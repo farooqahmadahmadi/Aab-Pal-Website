@@ -1,13 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { getClients } from "../../../services/clientInfoService";
 
-import {
-  PieChart,
-  Pie,
-  Cell,
-  Tooltip,
-  ResponsiveContainer,
-} from "recharts";
+import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from "recharts";
 
 export default function ClientsPieCard() {
   const [clients, setClients] = useState([]);
@@ -23,8 +17,8 @@ export default function ClientsPieCard() {
       const data = Array.isArray(res.data)
         ? res.data
         : Array.isArray(res.data.data)
-        ? res.data.data
-        : [];
+          ? res.data.data
+          : [];
 
       setClients(data);
     } catch (err) {
@@ -45,10 +39,9 @@ export default function ClientsPieCard() {
     { name: "Pending", value: pending },
     { name: "Active", value: active },
     { name: "InActive", value: inactive },
-    
   ];
 
-  const COLORS = ["#f59e0b","#22c55e", "#ef4444"];
+  const COLORS = ["#f59e0b", "#22c55e", "#ef4444"];
 
   // ================= LEGEND =================
   const legendData = chartData.map((item, index) => ({
@@ -57,21 +50,16 @@ export default function ClientsPieCard() {
   }));
 
   return (
-     <div className="bg-white rounded-2xl shadow-lg p-5 hover:shadow-xl transition h-full flex flex-col">
-      
+    <div className="bg-white rounded-2xl shadow-lg p-5 hover:shadow-xl transition h-full flex flex-col">
       {/* HEADER */}
       <div className="flex justify-between items-center mb-4">
-        <h2 className="text-md font-bold text-gray-800">
-          Clients Overview
-        </h2>
+        <h2 className="text-md font-bold text-gray-800">Clients Overview</h2>
 
-        <span className="text-sm text-gray-500">
-          Total: {total}
-        </span>
+        <span className="text-sm text-gray-500">Total: {total}</span>
       </div>
 
       {/* CHART */}
-      <div className="w-full h-[320px]">
+      <div className="w-full h-[260px]">
         <ResponsiveContainer width="100%" height="100%">
           <PieChart>
             <Pie
