@@ -161,18 +161,18 @@ export default function EmployeeEducationModal({
           </div>
 
           {/* Actions */}
-          <div className="md:col-span-2 flex justify-end gap-2 pt-2 border-t">
+          <div className="sm:col-span-2 flex flex-col sm:flex-row justify-end gap-2 pt-2">
             <button
               type="button"
               onClick={onClose}
-              className="bg-gray-300 hover:bg-gray-400 px-4 py-2 rounded"
+              className="w-full sm:w-auto bg-gray-400 hover:bg-gray-500 text-white px-5 py-2 rounded-lg"
             >
               {t("cancel")}
             </button>
 
             <button
               type="submit"
-              className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded"
+              className="w-full sm:w-auto bg-green-500 hover:bg-green-600 text-white px-5 py-2 rounded-lg"
             >
               {initialData ? t("update") : t("save")}
             </button>
