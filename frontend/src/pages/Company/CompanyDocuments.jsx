@@ -181,124 +181,131 @@ export default function CompanyDocuments() {
         </div>
       </div>
 
-      {/* ===== MOBILE CARDS ===== */}
-      <div className="block md:hidden space-y-3">
-        {paginatedDocs.length > 0 ? (
-          paginatedDocs.map((doc) => (
-            <div
-              key={doc.document_id}
-              className="bg-white shadow rounded-xl p-3 border"
-            >
-              <div className="flex justify-between items-center mb-2">
-                <span className="text-xs text-gray-500">
-                  {t("id")}: {doc.document_id}
-                </span>
-              </div>
-
-              <div className="mb-1">
-                <p className="text-xs text-gray-400">{t("file_name")}</p>
-                <p className="font-semibold text-sm truncate">{doc.doc_name}</p>
-              </div>
-
-              <div className="mb-2">
-                <p className="text-xs text-gray-400">{t("description")}</p>
-                <p className="text-sm text-gray-700 line-clamp-2">
-                  {doc.doc_description}
-                </p>
-              </div>
-
-              {/* Actions */}
-              <div className="flex justify-end gap-2 pt-2 border-t">
-                <button
-                  onClick={() => handlePreview(doc)}
-                  className="bg-purple-500 p-2 text-white rounded-lg"
-                >
-                  <FiEye size={16} />
-                </button>
-
-                <button
-                  onClick={() => handleDownload(doc)}
-                  className="bg-blue-500 p-2 text-white rounded-lg"
-                >
-                  <FiDownload size={16} />
-                </button>
-
-                <button
-                  onClick={() => handleEdit(doc)}
-                  className="bg-yellow-500 p-2 text-white rounded-lg"
-                >
-                  <FiEdit3 size={16} />
-                </button>
-
-                <button
-                  onClick={() => setDeleteData(doc)}
-                  className="bg-red-500 p-2 text-white rounded-lg"
-                >
-                  <FiTrash2 size={16} />
-                </button>
-              </div>
-            </div>
-          ))
-        ) : (
-          <p className="text-center text-gray-500">{t("no_records")}</p>
-        )}
-      </div>
-
-      {/* ===== DESKTOP TABLE ===== */}
-      <div className="hidden md:block bg-white shadow rounded-lg overflow-hidden">
-        <div className="w-full overflow-x-auto">
-          <table className="w-full text-sm min-w-[500px]">
-            <thead className="bg-gray-200">
-              <tr>
-                <th className="p-2">{t("id")}</th>
-                <th className="p-2">{t("file_name")}</th>
-                <th className="p-2">{t("description")}</th>
-                <th className="p-2 text-center">{t("actions")}</th>
-              </tr>
-            </thead>
-
-            <tbody>
-              {paginatedDocs.map((doc) => (
-                <tr key={doc.document_id} className="border-t hover:bg-gray-50">
-                  <td className="p-2 text-center">{doc.document_id}</td>
-                  <td className="p-2">{doc.doc_name}</td>
-                  <td className="p-2">{doc.doc_description}</td>
-
-                  <td className="p-2">
-                    <div className="flex justify-center gap-2">
-                      <button
-                        onClick={() => handlePreview(doc)}
-                        className="bg-purple-500 p-1 text-white rounded"
-                      >
-                        <FiEye />
-                      </button>
-
-                      <button
-                        onClick={() => handleDownload(doc)}
-                        className="bg-blue-500 p-1 text-white rounded"
-                      >
-                        <FiDownload />
-                      </button>
-
-                      <button
-                        onClick={() => handleEdit(doc)}
-                        className="bg-yellow-500 p-1 text-white rounded"
-                      >
-                        <FiEdit3 />
-                      </button>
-
-                      <button
-                        onClick={() => setDeleteData(doc)}
-                        className="bg-red-500 p-1 text-white rounded"
-                      >
-                        <FiTrash2 />
-                      </button>
-                    </div>
-                  </td>
+      {/* ===== TABLE / MOBILE VIEW ===== */}
+      <div className="bg-white shadow rounded-lg overflow-hidden">
+        {/* ===== DESKTOP TABLE ===== */}
+        <div className="hidden md:block bg-white shadow rounded-lg overflow-hidden">
+          <div className="w-full overflow-x-auto">
+            <table className="w-full text-sm min-w-[500px]">
+              <thead className="bg-gray-200">
+                <tr>
+                  <th className="p-2">{t("id")}</th>
+                  <th className="p-2">{t("file_name")}</th>
+                  <th className="p-2">{t("description")}</th>
+                  <th className="p-2 text-center">{t("actions")}</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+
+              <tbody>
+                {paginatedDocs.map((doc) => (
+                  <tr
+                    key={doc.document_id}
+                    className="border-t hover:bg-gray-50"
+                  >
+                    <td className="p-2 text-center">{doc.document_id}</td>
+                    <td className="p-2">{doc.doc_name}</td>
+                    <td className="p-2">{doc.doc_description}</td>
+
+                    <td className="p-2">
+                      <div className="flex justify-center gap-2">
+                        <button
+                          onClick={() => handlePreview(doc)}
+                          className="bg-purple-500 p-1 text-white rounded"
+                        >
+                          <FiEye />
+                        </button>
+
+                        <button
+                          onClick={() => handleDownload(doc)}
+                          className="bg-blue-500 p-1 text-white rounded"
+                        >
+                          <FiDownload />
+                        </button>
+
+                        <button
+                          onClick={() => handleEdit(doc)}
+                          className="bg-yellow-500 p-1 text-white rounded"
+                        >
+                          <FiEdit3 />
+                        </button>
+
+                        <button
+                          onClick={() => setDeleteData(doc)}
+                          className="bg-red-500 p-1 text-white rounded"
+                        >
+                          <FiTrash2 />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        {/* ===== MOBILE CARDS ===== */}
+        <div className="md:hidden p-2 space-y-3">
+          {paginatedDocs.length > 0 ? (
+            paginatedDocs.map((doc) => (
+              <div
+                key={doc.document_id}
+                className="border rounded-lg p-3 shadow-sm bg-gray-50"
+              >
+                <div className="flex justify-between text-sm">
+                  <span className="font-semibold">{t("id")}</span>
+                  <span>{doc.document_id}</span>
+                </div>
+
+                <div className="flex justify-between text-sm">
+                  <span className="font-semibold">{t("file_name")}</span>
+                  <span className="truncate max-w-[60%] text-right">
+                    {doc.doc_name}
+                  </span>
+                </div>
+
+                {/* Description full width */}
+                <div className="text-sm mt-2">
+                  <span className="font-semibold">{t("description")}</span>
+                  <p className="text-gray-600 mt-1 break-words">
+                    {doc.doc_description || "-"}
+                  </p>
+                </div>
+                {/* Actions */}
+                <div className="flex justify-end gap-2 pt-2 border-t mt-4">
+                  <button
+                    onClick={() => handlePreview(doc)}
+                    className="bg-purple-500 p-2 text-white rounded"
+                  >
+                    <FiEye size={16} />
+                  </button>
+
+                  <button
+                    onClick={() => handleDownload(doc)}
+                    className="bg-blue-500 p-2 text-white rounded"
+                  >
+                    <FiDownload size={16} />
+                  </button>
+
+                  <button
+                    onClick={() => handleEdit(doc)}
+                    className="bg-yellow-500 p-2 text-white rounded"
+                  >
+                    <FiEdit3 size={16} />
+                  </button>
+
+                  <button
+                    onClick={() => setDeleteData(doc)}
+                    className="bg-red-500 p-2 text-white rounded"
+                  >
+                    <FiTrash2 size={16} />
+                  </button>
+                </div>
+              </div>
+            ))
+          ) : (
+            <p className="text-center text-gray-500">{t("no_records")}</p>
+          )}
         </div>
       </div>
 
