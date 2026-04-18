@@ -169,29 +169,42 @@ export default function Employees() {
                 key={e.employee_id}
                 className="border rounded-lg p-3 shadow-sm bg-gray-50"
               >
-                <p>
-                  <strong>{t("id")}:</strong> {e.employee_id}
-                </p>
-                <p>
-                  <strong>{t("full_name")}:</strong> {e.emp_full_name}
-                </p>
-                <p>
-                  <strong>{t("father_name")}:</strong> {e.emp_father_name}
-                </p>
-                <p>
-                  <strong>{t("nid")}:</strong> {e.emp_nid_number}
-                </p>
-                <p>
-                  <strong>{t("gender")}:</strong> {e.emp_gender}
-                </p>
-                <p>
-                  <strong>{t("phone")}:</strong> {e.emp_phone}
-                </p>
-                <p>
-                  <strong>{t("email")}:</strong> {e.emp_email}
-                </p>
+                <div className="flex justify-between text-sm">
+                  <span className="font-semibold">{t("id")}</span>
+                  <span>{e.employee_id}</span>
+                </div>
 
-                <div className="flex justify-end gap-2 mt-2">
+                <div className="flex justify-between text-sm">
+                  <span className="font-semibold">{t("full_name")}</span>
+                  <span>{e.emp_full_name}</span>
+                </div>
+
+                <div className="flex justify-between text-sm">
+                  <span className="font-semibold">{t("father_name")}</span>
+                  <span>{e.emp_father_name}</span>
+                </div>
+
+                <div className="flex justify-between text-sm">
+                  <span className="font-semibold">{t("nid")}</span>
+                  <span>{e.emp_nid_number}</span>
+                </div>
+
+                <div className="flex justify-between text-sm">
+                  <span className="font-semibold">{t("gender")}</span>
+                  <span>{e.emp_gender}</span>
+                </div>
+
+                <div className="flex justify-between text-sm">
+                  <span className="font-semibold">{t("phone")}</span>
+                  <span>{e.emp_phone}</span>
+                </div>
+
+                <div className="flex justify-between text-sm">
+                  <span className="font-semibold">{t("email")}</span>
+                  <span>{e.emp_email}</span>
+                </div>
+
+                <div className="flex justify-end gap-2 pt-2 border-t mt-4">
                   <button
                     onClick={() => {
                       setEditData(e);

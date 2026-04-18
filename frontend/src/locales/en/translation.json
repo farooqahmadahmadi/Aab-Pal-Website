@@ -137,5 +137,17 @@
   "other": "Other",
   "select_status": "Select Status",
   "single": "Single",
-  "married": "Married"
+  "married": "Married",
+
+  "add_new": "Add New",
+  "edu_id": "Education ID",
+  "emp_id": "Employee ID",
+  "emp_name": "Employee Name",
+  "degree": "Degree",
+  "institution": "Institution",
+  "field": "Field of Study",
+  "graduation": "Graduation Date",
+  "add_employee_education": "Add Employee Education",
+  "update_employee_education": "Update Employee Education",
+  "failed_fetch": "Failed to fetch records"
 }

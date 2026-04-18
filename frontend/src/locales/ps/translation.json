@@ -137,5 +137,17 @@
   "other": "نور",
   "select_status": "حالت ټاکل",
   "single": "مجرد",
-  "married": "متهل"
+  "married": "متهل",
+
+  "add_new": "نوی اضافه کول",
+  "edu_id": "ای ډي",
+  "emp_id": "کارمند",
+  "emp_name": "نوم",
+  "degree": "زده کړو کچه",
+  "institution": "پوهنتون/ښوونخی",
+  "field": "پوهنځی/څانګه",
+  "graduation": "د فراغت نېټه",
+  "add_employee_education": "د کارمند زده کړی اضافه کول",
+  "update_employee_education": "د کارمند زده کړی تغیر کول",
+  "failed_fetch": "معلوماتو ته لاسرسی ناکام شو"
 }

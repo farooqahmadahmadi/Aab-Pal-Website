@@ -137,5 +137,17 @@
   "other": "دیګر",
   "select_status": "انتخاب حالت",
   "single": "مجرد",
-  "married": "متهل"
+  "married": "متهل",
+
+  "add_new": "افزودن جدید",
+  "edu_id": "ای دی",
+  "emp_id": "کارمند",
+  "emp_name": "اسم",
+  "degree": "درجه تحصیل",
+  "institution": "پوهنتون/مکتب",
+  "field": "پوهنځی/رشته",
+  "graduation": "تاریخ فراغت",
+  "add_employee_education": "افزودن تحصیلات کارمند",
+  "update_employee_education": "ویرایش تحصیلات کارمند",
+  "failed_fetch": "دسترس به اطلاعات ناموفق بود"
 }
