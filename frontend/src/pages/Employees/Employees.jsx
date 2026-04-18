@@ -6,6 +6,8 @@ import SearchBar from "../../components/common/SearchBar";
 import Pagination from "../../components/common/Pagination";
 import EmployeeModal from "../../components/Employees/EmployeeModal";
 import { FiEdit3, FiPlusCircle, FiTrash2 } from "react-icons/fi";
+import MobileCard from "../../components/common/MobileCard";
+import CardRow from "../../components/common/CardRow";
 import { useTranslation } from "react-i18next";
 
 export default function Employees() {
@@ -172,72 +174,48 @@ export default function Employees() {
         </div>
 
         {/* ===== MOBILE CARDS ===== */}
-        <div className="md:hidden p-2 space-y-3">
-          {paginated.length > 0 ? (
-            paginated.map((e) => (
-              <div
-                key={e.employee_id}
-                className="border rounded-lg p-3 shadow-sm bg-gray-50"
-              >
-                <div className="flex justify-between text-sm">
-                  <span className="font-semibold">{t("id")}</span>
-                  <span>{e.employee_id}</span>
-                </div>
+<div className="md:hidden p-2 space-y-3">
+  {paginated.length > 0 ? (
+    paginated.map((e) => (
+      <MobileCard
+        key={e.employee_id}
+        id={e.employee_id}
+        actions={
+          <>
+            <button
+              onClick={() => {
+                setEditData(e);
+                setModalOpen(true);
+              }}
+              className="bg-yellow-500 hover:bg-yellow-600 p-2 text-white rounded"
+            >
+              <FiEdit3 />
+            </button>
 
-                <div className="flex justify-between text-sm">
-                  <span className="font-semibold">{t("full_name")}</span>
-                  <span>{e.emp_full_name}</span>
-                </div>
+            <button
+              onClick={() => setDeleteData(e)}
+              className="bg-red-500 hover:bg-red-600 p-2 text-white rounded"
+            >
+              <FiTrash2 />
+            </button>
+          </>
+        }
+      >
+        <CardRow label={t("full_name")} value={e.emp_full_name} />
+        <CardRow label={t("father_name")} value={e.emp_father_name} />
+        <CardRow label={t("nid")} value={e.emp_nid_number} />
+        <CardRow label={t("gender")} value={e.emp_gender} />
+        <CardRow label={t("phone")} value={e.emp_phone} />
+        <CardRow label={t("email")} value={e.emp_email} />
+      </MobileCard>
+    ))
+  ) : (
+    <p className="text-center text-gray-500">
+      {t("no_employees")}
+    </p>
+  )}
+</div>
 
-                <div className="flex justify-between text-sm">
-                  <span className="font-semibold">{t("father_name")}</span>
-                  <span>{e.emp_father_name}</span>
-                </div>
-
-                <div className="flex justify-between text-sm">
-                  <span className="font-semibold">{t("nid")}</span>
-                  <span>{e.emp_nid_number}</span>
-                </div>
-
-                <div className="flex justify-between text-sm">
-                  <span className="font-semibold">{t("gender")}</span>
-                  <span>{e.emp_gender}</span>
-                </div>
-
-                <div className="flex justify-between text-sm">
-                  <span className="font-semibold">{t("phone")}</span>
-                  <span>{e.emp_phone}</span>
-                </div>
-
-                <div className="flex justify-between text-sm">
-                  <span className="font-semibold">{t("email")}</span>
-                  <span>{e.emp_email}</span>
-                </div>
-
-                <div className="flex justify-end gap-2 pt-2 border-t mt-4">
-                  <button
-                    onClick={() => {
-                      setEditData(e);
-                      setModalOpen(true);
-                    }}
-                    className="bg-yellow-500 p-2 text-white rounded"
-                  >
-                    <FiEdit3 />
-                  </button>
-
-                  <button
-                    onClick={() => setDeleteData(e)}
-                    className="bg-red-500 p-2 text-white rounded"
-                  >
-                    <FiTrash2 />
-                  </button>
-                </div>
-              </div>
-            ))
-          ) : (
-            <p className="text-center text-gray-500">{t("no_employees")}</p>
-          )}
-        </div>
       </div>
 
       {/* ===== PAGINATION ===== */}

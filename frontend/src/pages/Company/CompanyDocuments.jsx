@@ -13,6 +13,8 @@ import {
   FiTrash2,
   FiXCircle,
 } from "react-icons/fi";
+import MobileCard from "../../components/common/MobileCard";
+import CardRow from "../../components/common/CardRow";
 import { useTranslation } from "react-i18next";
 
 export default function CompanyDocuments() {
@@ -248,60 +250,50 @@ export default function CompanyDocuments() {
         <div className="md:hidden p-2 space-y-3">
           {paginatedDocs.length > 0 ? (
             paginatedDocs.map((doc) => (
-              <div
+              <MobileCard
                 key={doc.document_id}
-                className="border rounded-lg p-3 shadow-sm bg-gray-50"
+                id={doc.document_id}
+                actions={
+                  <>
+                    <button
+                      onClick={() => handlePreview(doc)}
+                      className="bg-purple-500 p-2 text-white rounded"
+                    >
+                      <FiEye size={16} />
+                    </button>
+
+                    <button
+                      onClick={() => handleDownload(doc)}
+                      className="bg-blue-500 p-2 text-white rounded"
+                    >
+                      <FiDownload size={16} />
+                    </button>
+
+                    <button
+                      onClick={() => handleEdit(doc)}
+                      className="bg-yellow-500 p-2 text-white rounded"
+                    >
+                      <FiEdit3 size={16} />
+                    </button>
+
+                    <button
+                      onClick={() => setDeleteData(doc)}
+                      className="bg-red-500 p-2 text-white rounded"
+                    >
+                      <FiTrash2 size={16} />
+                    </button>
+                  </>
+                }
               >
-                <div className="flex justify-between text-sm">
-                  <span className="font-semibold">{t("id")}</span>
-                  <span>{doc.document_id}</span>
-                </div>
+                <CardRow label={t("file_name")} value={doc.doc_name} />
 
-                <div className="flex justify-between text-sm">
-                  <span className="font-semibold">{t("file_name")}</span>
-                  <span className="truncate max-w-[60%] text-right">
-                    {doc.doc_name}
-                  </span>
-                </div>
-
-                {/* Description full width */}
                 <div className="text-sm mt-2">
-                  <span className="font-semibold">{t("description")}</span>
+                  <span className="font-semibold">{t("description")}:</span>
                   <p className="text-gray-600 mt-1 break-words">
                     {doc.doc_description || "-"}
                   </p>
                 </div>
-                {/* Actions */}
-                <div className="flex justify-end gap-2 pt-2 border-t mt-4">
-                  <button
-                    onClick={() => handlePreview(doc)}
-                    className="bg-purple-500 p-2 text-white rounded"
-                  >
-                    <FiEye size={16} />
-                  </button>
-
-                  <button
-                    onClick={() => handleDownload(doc)}
-                    className="bg-blue-500 p-2 text-white rounded"
-                  >
-                    <FiDownload size={16} />
-                  </button>
-
-                  <button
-                    onClick={() => handleEdit(doc)}
-                    className="bg-yellow-500 p-2 text-white rounded"
-                  >
-                    <FiEdit3 size={16} />
-                  </button>
-
-                  <button
-                    onClick={() => setDeleteData(doc)}
-                    className="bg-red-500 p-2 text-white rounded"
-                  >
-                    <FiTrash2 size={16} />
-                  </button>
-                </div>
-              </div>
+              </MobileCard>
             ))
           ) : (
             <p className="text-center text-gray-500">{t("no_records")}</p>

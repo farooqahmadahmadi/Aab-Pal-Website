@@ -6,6 +6,8 @@ import SearchBar from "../../components/common/SearchBar";
 import Pagination from "../../components/common/Pagination";
 import DepartmentModal from "../../components/Departments/DepartmentModal";
 import { FiEdit3, FiPlusCircle, FiTrash2 } from "react-icons/fi";
+import MobileCard from "../../components/common/MobileCard";
+import CardRow from "../../components/common/CardRow";
 import { useTranslation } from "react-i18next";
 
 export default function Departments() {
@@ -174,49 +176,39 @@ export default function Departments() {
         <div className="sm:hidden p-2 space-y-3">
           {paginated.length > 0 ? (
             paginated.map((d) => (
-              <div
+              <MobileCard
                 key={d.department_id}
-                className="border rounded-lg p-3 shadow-sm bg-gray-50"
+                id={d.department_id}
+                actions={
+                  <>
+                    <button
+                      onClick={() => {
+                        setEditData(d);
+                        setModalOpen(true);
+                      }}
+                      className="bg-yellow-500 p-2 text-white rounded"
+                    >
+                      <FiEdit3 />
+                    </button>
+
+                    <button
+                      onClick={() => setDeleteData(d)}
+                      className="bg-red-500 p-2 text-white rounded"
+                    >
+                      <FiTrash2 />
+                    </button>
+                  </>
+                }
               >
-                {/* Header */}
-                <div className="flex justify-between text-sm">
-                  <span className="font-semibold">{t("id")}</span>
-                  <span>{d.department_id}</span>
-                </div>
+                <CardRow label={t("name")} value={d.department_name} />
 
-                {/* Name */}
-                <div className="flex justify-between text-sm">
-                  <span className="font-semibold">{t("name")}</span>
-                  <span className="text-right">{d.department_name}</span>
-                </div>
-
-                {/* Description */}
                 <div className="mt-2 text-sm">
                   <span className="font-semibold">{t("description")}:</span>
                   <p className="text-gray-600 mt-1 break-words">
                     {d.department_description || "-"}
                   </p>
                 </div>
-
-                <div className="flex justify-end gap-2 pt-2 border-t mt-4">
-                  <button
-                    onClick={() => {
-                      setEditData(d);
-                      setModalOpen(true);
-                    }}
-                    className="bg-yellow-500 p-2 text-white rounded"
-                  >
-                    <FiEdit3 />
-                  </button>
-
-                  <button
-                    onClick={() => setDeleteData(d)}
-                    className="bg-red-500 p-2 text-white rounded"
-                  >
-                    <FiTrash2 />
-                  </button>
-                </div>
-              </div>
+              </MobileCard>
             ))
           ) : (
             <div className="text-center text-gray-500 py-4">

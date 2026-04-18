@@ -5,13 +5,14 @@ import {
   updateEmployeeEducation,
   deleteEmployeeEducation,
 } from "../../services/employeeEducationService";
-
 import Toast from "../../components/common/Toast";
 import useToast from "../../hooks/useToast";
 import EmployeeEducationModal from "../../components/Employees/EmployeeEducationModal";
 import Pagination from "../../components/common/Pagination";
 import SearchBar from "../../components/common/SearchBar";
 import { FiEdit3, FiPlusCircle, FiTrash2 } from "react-icons/fi";
+import MobileCard from "../../components/common/MobileCard";
+import CardRow from "../../components/common/CardRow";
 import { useTranslation } from "react-i18next";
 
 export default function EmployeeEducation() {
@@ -191,44 +192,42 @@ export default function EmployeeEducation() {
         <div className="md:hidden p-2 space-y-3">
           {paginated.length > 0 ? (
             paginated.map((r) => (
-              <div
+              <MobileCard
                 key={r.eei_id}
-                className="border rounded-lg p-3 shadow-sm bg-gray-50"
+                id={r.eei_id}
+                actions={
+                  <>
+                    <button
+                      onClick={() => {
+                        setEditData(r);
+                        setModalOpen(true);
+                      }}
+                      className="bg-yellow-500 hover:bg-yellow-600 p-2 text-white rounded"
+                    >
+                      <FiEdit3 />
+                    </button>
+
+                    <button
+                      onClick={() => setDeleteData(r)}
+                      className="bg-red-500 hover:bg-red-600 p-2 text-white rounded"
+                    >
+                      <FiTrash2 />
+                    </button>
+                  </>
+                }
               >
-                <div className="flex justify-between text-sm">
-                  <span className="font-semibold">{t("edu_id")}</span>
-                  <span>{r.eei_id}</span>
-                </div>
-
-                <div className="flex justify-between text-sm">
-                  <span className="font-semibold">{t("emp_id")}</span>
-                  <span>{r.employee_id}</span>
-                </div>
-
-                <div className="flex justify-between text-sm">
-                  <span className="font-semibold">{t("emp_name")}</span>
-                  <span>{r.EmployeeInfo?.emp_full_name || "-"}</span>
-                </div>
-
-                <div className="flex justify-between text-sm">
-                  <span className="font-semibold">{t("degree")}</span>
-                  <span>{r.educational_degree}</span>
-                </div>
-
-                <div className="flex justify-between text-sm">
-                  <span className="font-semibold">{t("institution")}</span>
-                  <span>{r.educational_institution}</span>
-                </div>
-
-                <div className="flex justify-between text-sm">
-                  <span className="font-semibold">{t("field")}</span>
-                  <span>{r.educational_field}</span>
-                </div>
-
-                <div className="flex justify-between text-sm">
-                  <span className="font-semibold">{t("graduation")}</span>
-                  <span>{r.graduation_date || "-"}</span>
-                </div>
+                <CardRow label={t("emp_id")} value={r.employee_id} />
+                <CardRow
+                  label={t("emp_name")}
+                  value={r.EmployeeInfo?.emp_full_name}
+                />
+                <CardRow label={t("degree")} value={r.educational_degree} />
+                <CardRow
+                  label={t("institution")}
+                  value={r.educational_institution}
+                />
+                <CardRow label={t("field")} value={r.educational_field} />
+                <CardRow label={t("graduation")} value={r.graduation_date} />
 
                 {/* Description full width */}
                 <div className="text-sm mt-2">
@@ -237,27 +236,7 @@ export default function EmployeeEducation() {
                     {r.description || "-"}
                   </p>
                 </div>
-
-                {/* Actions */}
-                <div className="flex justify-end gap-2 pt-2 border-t mt-3">
-                  <button
-                    onClick={() => {
-                      setEditData(r);
-                      setModalOpen(true);
-                    }}
-                    className="bg-yellow-500 p-2 text-white rounded"
-                  >
-                    <FiEdit3 />
-                  </button>
-
-                  <button
-                    onClick={() => setDeleteData(r)}
-                    className="bg-red-500 p-2 text-white rounded"
-                  >
-                    <FiTrash2 />
-                  </button>
-                </div>
-              </div>
+              </MobileCard>
             ))
           ) : (
             <div className="text-center text-gray-500 py-4">
