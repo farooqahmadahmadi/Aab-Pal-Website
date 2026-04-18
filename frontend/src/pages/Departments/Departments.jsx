@@ -128,8 +128,14 @@ export default function Departments() {
                     className="border-t hover:bg-gray-50"
                   >
                     <td className="p-2 text-center">{d.department_id}</td>
-                    <td className="p-2">{d.department_name}</td>
-                    <td className="p-2">{d.department_description}</td>
+
+                    <td className="p-2 whitespace-nowrap">
+                      {d.department_name}
+                    </td>
+
+                    <td className="p-2 max-w-[250px] truncate">
+                      {d.department_description || "-"}
+                    </td>
 
                     <td className="p-2">
                       <div className="flex justify-center gap-2">
@@ -138,14 +144,14 @@ export default function Departments() {
                             setEditData(d);
                             setModalOpen(true);
                           }}
-                          className="bg-yellow-500 p-2 text-white rounded-lg"
+                          className="bg-yellow-500 hover:bg-yellow-600 p-2 text-white rounded-lg"
                         >
                           <FiEdit3 />
                         </button>
 
                         <button
                           onClick={() => setDeleteData(d)}
-                          className="bg-red-500 p-2 text-white rounded-lg"
+                          className="bg-red-500 hover:bg-red-600 p-2 text-white rounded-lg"
                         >
                           <FiTrash2 />
                         </button>
@@ -165,42 +171,50 @@ export default function Departments() {
         </div>
 
         {/* ================= MOBILE CARDS ================= */}
-        <div className="sm:hidden p-3 space-y-3">
+        <div className="sm:hidden p-2 space-y-3">
           {paginated.length > 0 ? (
             paginated.map((d) => (
               <div
                 key={d.department_id}
                 className="border rounded-lg p-3 shadow-sm bg-gray-50"
               >
-                <div className="flex justify-between items-center mb-2">
-                  <span className="text-xs text-gray-500">
-                    #{d.department_id}
-                  </span>
-
-                  <div className="flex gap-2">
-                    <button
-                      onClick={() => {
-                        setEditData(d);
-                        setModalOpen(true);
-                      }}
-                      className="bg-yellow-500 p-2 text-white rounded"
-                    >
-                      <FiEdit3 />
-                    </button>
-
-                    <button
-                      onClick={() => setDeleteData(d)}
-                      className="bg-red-500 p-2 text-white rounded"
-                    >
-                      <FiTrash2 />
-                    </button>
-                  </div>
+                {/* Header */}
+                <div className="flex justify-between text-sm">
+                  <span className="font-semibold">{t("id")}</span>
+                  <span>{d.department_id}</span>
                 </div>
 
-                <div className="text-sm font-semibold">{d.department_name}</div>
+                {/* Name */}
+                <div className="flex justify-between text-sm">
+                  <span className="font-semibold">{t("name")}</span>
+                  <span className="text-right">{d.department_name}</span>
+                </div>
 
-                <div className="text-xs text-gray-600 mt-1">
-                  {d.department_description}
+                {/* Description */}
+                <div className="mt-2 text-sm">
+                  <span className="font-semibold">{t("description")}:</span>
+                  <p className="text-gray-600 mt-1 break-words">
+                    {d.department_description || "-"}
+                  </p>
+                </div>
+
+                <div className="flex justify-end gap-2 pt-2 border-t mt-4">
+                  <button
+                    onClick={() => {
+                      setEditData(d);
+                      setModalOpen(true);
+                    }}
+                    className="bg-yellow-500 p-2 text-white rounded"
+                  >
+                    <FiEdit3 />
+                  </button>
+
+                  <button
+                    onClick={() => setDeleteData(d)}
+                    className="bg-red-500 p-2 text-white rounded"
+                  >
+                    <FiTrash2 />
+                  </button>
                 </div>
               </div>
             ))
