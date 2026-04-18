@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 const emptyForm = {
   emp_full_name: "",
@@ -20,6 +21,7 @@ export default function EmployeeModal({
   onSubmit,
   initialData,
 }) {
+  const { t } = useTranslation();
   const [form, setForm] = useState(emptyForm);
 
   useEffect(() => {
@@ -53,127 +55,196 @@ export default function EmployeeModal({
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-      <div className="bg-white p-6 rounded w-96 max-h-[90%] overflow-auto">
-        <h3 className="text-lg font-bold mb-4">
-          {initialData ? "Edit Employee" : "Add Employee"}
+    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-3">
+
+      <div className="bg-white w-full max-w-3xl max-h-[90vh] overflow-y-auto rounded-2xl shadow-lg p-5">
+
+        {/* TITLE */}
+        <h3 className="text-xl font-bold mb-5 text-center">
+          {initialData ? t("edit_employee") : t("add_employee")}
         </h3>
 
-        <form onSubmit={submit} className="space-y-3">
-          <input
-            name="emp_full_name"
-            value={form.emp_full_name || ""}
-            onChange={handleChange}
-            placeholder="Full Name"
-            className="w-full border p-2 rounded"
-            required
-          />
+        {/* FORM */}
+        <form
+          onSubmit={submit}
+          className="grid grid-cols-1 sm:grid-cols-2 gap-4"
+        >
 
-          <input
-            name="emp_father_name"
-            value={form.emp_father_name || ""}
-            onChange={handleChange}
-            placeholder="Father Name"
-            className="w-full border p-2 rounded"
-          />
+          {/* FULL NAME */}
+          <div className="sm:col-span-2">
+            <label className="text-sm font-medium">
+              {t("full_name")}
+            </label>
+            <input
+              name="emp_full_name"
+              value={form.emp_full_name}
+              onChange={handleChange}
+              className="w-full border p-3 rounded-lg focus:ring-2 focus:ring-green-400"
+              required
+            />
+          </div>
 
-          <input
-            type="date"
-            name="emp_dob"
-            value={form.emp_dob || ""}
-            onChange={handleChange}
-            className="w-full border p-2 rounded"
-          />
+          {/* FATHER NAME */}
+          <div>
+            <label className="text-sm font-medium">
+              {t("father_name")}
+            </label>
+            <input
+              name="emp_father_name"
+              value={form.emp_father_name}
+              onChange={handleChange}
+              className="w-full border p-3 rounded-lg"
+            />
+          </div>
 
-          <input
-            name="emp_nid_number"
-            value={form.emp_nid_number || ""}
-            onChange={handleChange}
-            placeholder="NID Number"
-            className="w-full border p-2 rounded"
-            required
-          />
+          {/* DOB */}
+          <div>
+            <label className="text-sm font-medium">
+              {t("emp_dob")}
+            </label>
+            <input
+              type="date"
+              name="emp_dob"
+              value={form.emp_dob}
+              onChange={handleChange}
+              className="w-full border p-3 rounded-lg"
+            />
+          </div>
 
-          <select
-            name="emp_gender"
-            value={form.emp_gender || ""}
-            onChange={handleChange}
-            className="w-full border p-2 rounded"
-          >
-            <option value="">Select Gender</option>
-            <option value="Male">Male</option>
-            <option value="Female">Female</option>
-            <option value="Other">Other</option>
-          </select>
+          {/* NID */}
+          <div>
+            <label className="text-sm font-medium">
+              {t("emp_nid_number")}
+            </label>
+            <input
+              name="emp_nid_number"
+              value={form.emp_nid_number}
+              onChange={handleChange}
+              className="w-full border p-3 rounded-lg"
+              required
+            />
+          </div>
 
-          <select
-            name="emp_marital_status"
-            value={form.emp_marital_status || ""}
-            onChange={handleChange}
-            className="w-full border p-2 rounded"
-          >
-            <option value="">Select Marital Status</option>
-            <option value="Single">Single</option>
-            <option value="Married">Married</option>
-            <option value="Other">Other</option>
-          </select>
+          {/* GENDER */}
+          <div>
+            <label className="text-sm font-medium">
+              {t("gender")}
+            </label>
+            <select
+              name="emp_gender"
+              value={form.emp_gender}
+              onChange={handleChange}
+              className="w-full border p-3 rounded-lg"
+            >
+              <option value="">{t("select_gender")}</option>
+              <option value="Male">{t("male")}</option>
+              <option value="Female">{t("female")}</option>
+              <option value="Other">{t("other")}</option>
+            </select>
+          </div>
 
-          <input
-            name="emp_phone"
-            value={form.emp_phone || ""}
-            onChange={handleChange}
-            placeholder="Phone"
-            className="w-full border p-2 rounded"
-          />
+          {/* MARITAL */}
+          <div>
+            <label className="text-sm font-medium">
+              {t("emp_marital_status")}
+            </label>
+            <select
+              name="emp_marital_status"
+              value={form.emp_marital_status}
+              onChange={handleChange}
+              className="w-full border p-3 rounded-lg"
+            >
+              <option value="">{t("select_status")}</option>
+              <option value="Single">{t("single")}</option>
+              <option value="Married">{t("married")}</option>
+              <option value="Other">{t("other")}</option>
+            </select>
+          </div>
 
-          <input
-            name="emp_email"
-            value={form.emp_email || ""}
-            onChange={handleChange}
-            placeholder="Email"
-            className="w-full border p-2 rounded"
-          />
+          {/* PHONE */}
+          <div>
+            <label className="text-sm font-medium">
+              {t("phone")}
+            </label>
+            <input
+              name="emp_phone"
+              value={form.emp_phone}
+              onChange={handleChange}
+              className="w-full border p-3 rounded-lg"
+            />
+          </div>
 
-          <input
-            name="emp_permanent_address"
-            value={form.emp_permanent_address || ""}
-            onChange={handleChange}
-            placeholder="Permanent Address"
-            className="w-full border p-2 rounded"
-          />
+          {/* EMAIL */}
+          <div>
+            <label className="text-sm font-medium">
+              {t("email")}
+            </label>
+            <input
+              name="emp_email"
+              value={form.emp_email}
+              onChange={handleChange}
+              className="w-full border p-3 rounded-lg"
+            />
+          </div>
 
-          <input
-            name="emp_current_address"
-            value={form.emp_current_address || ""}
-            onChange={handleChange}
-            placeholder="Current Address"
-            className="w-full border p-2 rounded"
-          />
+          {/* ADDRESS */}
+          <div className="sm:col-span-2">
+            <label className="text-sm font-medium">
+              {t("emp_permanent_address")}
+            </label>
+            <input
+              name="emp_permanent_address"
+              value={form.emp_permanent_address}
+              onChange={handleChange}
+              className="w-full border p-3 rounded-lg"
+            />
+          </div>
 
-          <input
-            name="emp_bank_account"
-            value={form.emp_bank_account || ""}
-            onChange={handleChange}
-            placeholder="Bank Account"
-            className="w-full border p-2 rounded"
-          />
+          <div className="sm:col-span-2">
+            <label className="text-sm font-medium">
+              {t("emp_current_address")}
+            </label>
+            <input
+              name="emp_current_address"
+              value={form.emp_current_address}
+              onChange={handleChange}
+              className="w-full border p-3 rounded-lg"
+            />
+          </div>
 
-          <div className="flex justify-end gap-2">
+          {/* BANK */}
+          <div className="sm:col-span-2">
+            <label className="text-sm font-medium">
+              {t("emp_bank_account")}
+            </label>
+            <input
+              name="emp_bank_account"
+              value={form.emp_bank_account}
+              onChange={handleChange}
+              className="w-full border p-3 rounded-lg"
+            />
+          </div>
+
+          {/* BUTTONS */}
+          <div className="sm:col-span-2 flex flex-col sm:flex-row justify-end gap-2 pt-2">
+
             <button
               type="button"
               onClick={onClose}
-              className="bg-gray-300 px-4 py-2 rounded"
+              className="w-full sm:w-auto bg-gray-400 hover:bg-gray-500 text-white px-5 py-2 rounded-lg"
             >
-              Cancel
+              {t("cancel")}
             </button>
 
             <button
               type="submit"
-              className="bg-green-500 text-white px-4 py-2 rounded"
+              className="w-full sm:w-auto bg-green-500 hover:bg-green-600 text-white px-5 py-2 rounded-lg"
             >
-              {initialData ? "Update" : "Save"}
+              {initialData ? t("update") : t("save")}
             </button>
+
           </div>
+
         </form>
       </div>
     </div>
