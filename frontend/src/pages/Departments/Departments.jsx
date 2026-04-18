@@ -114,8 +114,8 @@ export default function Departments() {
             <thead className="bg-gray-200 text-sm">
               <tr>
                 <th className="p-2 text-center">{t("id")}</th>
-                <th className="p-2 text-left">{t("name")}</th>
-                <th className="p-2 text-left">{t("description")}</th>
+                <th className="p-2">{t("name")}</th>
+                <th className="p-2 ">{t("description")}</th>
                 <th className="p-2 text-center">{t("actions")}</th>
               </tr>
             </thead>
@@ -129,7 +129,7 @@ export default function Departments() {
                   >
                     <td className="p-2 text-center">{d.department_id}</td>
 
-                    <td className="p-2 whitespace-nowrap">
+                    <td className="p-2 whitespace-nowrap text-center">
                       {d.department_name}
                     </td>
 
@@ -144,14 +144,14 @@ export default function Departments() {
                             setEditData(d);
                             setModalOpen(true);
                           }}
-                          className="bg-yellow-500 hover:bg-yellow-600 p-2 text-white rounded-lg"
+                          className="bg-yellow-500 p-1 text-white rounded"
                         >
                           <FiEdit3 />
                         </button>
 
                         <button
                           onClick={() => setDeleteData(d)}
-                          className="bg-red-500 hover:bg-red-600 p-2 text-white rounded-lg"
+                          className="bg-red-500 p-1 text-white rounded"
                         >
                           <FiTrash2 />
                         </button>
