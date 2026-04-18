@@ -1,6 +1,7 @@
 import UsersPieCard from "./AdminDashboard/UsersPieCard";
 import EmployeeBarCard from "./AdminDashboard/EmployeeBarCard";
 import EmpHiringBarCard from "./AdminDashboard/EmpHiringBarCard";
+import EmployeeAttendanceChart from "./AdminDashboard/EmployeeAttendanceChart";
 
 import ClientsPieCard from "./AdminDashboard/ClientsPieCard";
 import ProjectBarCard from "./AdminDashboard/ProjectBarCard";
@@ -23,6 +24,7 @@ export default function AdminDashboard() {
         <UsersPieCard />
         <EmployeeBarCard />
         <EmpHiringBarCard />
+        <EmployeeAttendanceChart />
 
         <ClientsPieCard />
         <ProjectBarCard />
