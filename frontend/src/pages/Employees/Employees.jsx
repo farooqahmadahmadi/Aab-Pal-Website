@@ -127,36 +127,46 @@ export default function Employees() {
             </thead>
 
             <tbody>
-              {paginated.map((e) => (
-                <tr key={e.employee_id} className="border-t hover:bg-gray-50">
-                  <td className="p-2">{e.employee_id}</td>
-                  <td className="p-2">{e.emp_full_name}</td>
-                  <td className="p-2">{e.emp_father_name}</td>
-                  <td className="p-2">{e.emp_nid_number}</td>
-                  <td className="p-2">{e.emp_gender}</td>
-                  <td className="p-2">{e.emp_phone}</td>
-                  <td className="p-2">{e.emp_email}</td>
+              {paginated.length > 0 ? (
+                paginated.map((e) => (
+                  <tr key={e.employee_id} className="border-t hover:bg-gray-50">
+                    <td className="p-2">{e.employee_id}</td>
+                    <td className="p-2">{e.emp_full_name}</td>
+                    <td className="p-2">{e.emp_father_name}</td>
+                    <td className="p-2">{e.emp_nid_number}</td>
+                    <td className="p-2">{e.emp_gender}</td>
+                    <td className="p-2">{e.emp_phone}</td>
+                    <td className="p-2">{e.emp_email}</td>
 
-                  <td className="p-2 flex justify-center gap-2">
-                    <button
-                      onClick={() => {
-                        setEditData(e);
-                        setModalOpen(true);
-                      }}
-                      className="bg-yellow-500 p-1 text-white rounded"
-                    >
-                      <FiEdit3 />
-                    </button>
+                    <td className="p-2">
+                      <div className="flex justify-center gap-2">
+                        <button
+                          onClick={() => {
+                            setEditData(e);
+                            setModalOpen(true);
+                          }}
+                          className="bg-yellow-500 p-1 text-white rounded"
+                        >
+                          <FiEdit3 />
+                        </button>
 
-                    <button
-                      onClick={() => setDeleteData(e)}
-                      className="bg-red-500 p-1 text-white rounded"
-                    >
-                      <FiTrash2 />
-                    </button>
+                        <button
+                          onClick={() => setDeleteData(e)}
+                          className="bg-red-500 p-1 text-white rounded"
+                        >
+                          <FiTrash2 />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="8" className="text-center p-4 text-gray-500">
+                    {t("no_records")}
                   </td>
                 </tr>
-              ))}
+              )}
             </tbody>
           </table>
         </div>

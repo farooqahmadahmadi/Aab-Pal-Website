@@ -103,8 +103,10 @@ export default function EmployeeEducation() {
   return (
     <div className="p-3 sm:p-6 max-w-7xl mx-auto">
       {/* ===== TOP BAR ===== */}
-      <div className="flex flex-col md:flex-row justify-between gap-3 mb-4">
-        <h2 className="text-xl font-bold">{t("employee_education")}</h2>
+      <div className="flex flex-col md:flex-row justify-between items-center gap-3 mb-4">
+        <h2 className="text-xl sm:text-2xl font-bold">
+          {t("employee_education")}
+        </h2>
 
         <div className="flex flex-col sm:flex-row gap-2 w-full md:w-auto">
           <SearchBar value={search} onChange={setSearch} />
@@ -122,148 +124,147 @@ export default function EmployeeEducation() {
       </div>
 
       {/* ===== TABLE / CARD VIEW ===== */}
+      <div className="bg-white shadow rounded-lg overflow-hidden">
+        {/* ===== DESKTOP TABLE ===== */}
+        <div className="hidden md:block">
+          <table className="w-full text-sm">
+            <thead className="bg-gray-200">
+              <tr>
+                <th className="p-2 text-center">{t("edu_id")}</th>
+                <th className="p-2">{t("emp_id")}</th>
+                <th className="p-2">{t("emp_name")}</th>
+                <th className="p-2">{t("degree")}</th>
+                <th className="p-2">{t("institution")}</th>
+                <th className="p-2">{t("field")}</th>
+                <th className="p-2">{t("graduation")}</th>
+                <th className="p-2">{t("description")}</th>
+                <th className="p-2 text-center">{t("actions")}</th>
+              </tr>
+            </thead>
 
-      {/* Desktop Table */}
-      <div className="hidden md:block bg-white shadow rounded-lg overflow-x-auto">
-        <table className="w-full min-w-[900px] text-sm">
-          <thead className="bg-gray-200">
-            <tr>
-              <th className="p-2 text-center">{t("edu_id")}</th>
-              <th className="p-2">{t("emp_id")}</th>
-              <th className="p-2">{t("emp_name")}</th>
-              <th className="p-2">{t("degree")}</th>
-              <th className="p-2">{t("institution")}</th>
-              <th className="p-2">{t("field")}</th>
-              <th className="p-2">{t("graduation")}</th>
-              <th className="p-2">{t("description")}</th>
-              <th className="p-2 text-center">{t("actions")}</th>
-            </tr>
-          </thead>
+            <tbody>
+              {paginated.length > 0 ? (
+                paginated.map((e) => (
+                  <tr key={e.employee_id} className="border-t hover:bg-gray-50">
+                    <td className="p-2">{e.employee_id}</td>
+                    <td className="p-2">{e.emp_full_name}</td>
+                    <td className="p-2">{e.emp_father_name}</td>
+                    <td className="p-2">{e.emp_nid_number}</td>
+                    <td className="p-2">{e.emp_gender}</td>
+                    <td className="p-2">{e.emp_phone}</td>
+                    <td className="p-2">{e.emp_email}</td>
 
-          <tbody>
-            {paginated.length > 0 ? (
-              paginated.map((r) => (
-                <tr key={r.eei_id} className="border-t hover:bg-gray-50">
-                  <td className="p-2 text-center">{r.eei_id}</td>
-                  <td className="p-2">{r.employee_id}</td>
-                  <td className="p-2">
-                    {r.EmployeeInfo?.emp_full_name || "-"}
-                  </td>
-                  <td className="p-2">{r.educational_degree}</td>
-                  <td className="p-2">{r.educational_institution}</td>
-                  <td className="p-2">{r.educational_field}</td>
-                  <td className="p-2">{r.graduation_date || "-"}</td>
-                  <td className="p-2">{r.description}</td>
+                    <td className="p-2">
+                      <div className="flex justify-center gap-2">
+                        <button
+                          onClick={() => {
+                            setEditData(e);
+                            setModalOpen(true);
+                          }}
+                          className="bg-yellow-500 p-1 text-white rounded"
+                        >
+                          <FiEdit3 />
+                        </button>
 
-                  <td className="p-2">
-                    <div className="flex justify-center gap-2">
-                      <button
-                        onClick={() => {
-                          setEditData(r);
-                          setModalOpen(true);
-                        }}
-                        className="bg-yellow-500 hover:bg-yellow-600 p-2 text-white rounded"
-                      >
-                        <FiEdit3 />
-                      </button>
-
-                      <button
-                        onClick={() => setDeleteData(r)}
-                        className="bg-red-500 hover:bg-red-600 p-2 text-white rounded"
-                      >
-                        <FiTrash2 />
-                      </button>
-                    </div>
+                        <button
+                          onClick={() => setDeleteData(e)}
+                          className="bg-red-500 p-1 text-white rounded"
+                        >
+                          <FiTrash2 />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="8" className="text-center p-4 text-gray-500">
+                    {t("no_records")}
                   </td>
                 </tr>
-              ))
-            ) : (
-              <tr>
-                <td colSpan="9" className="text-center p-4 text-gray-500">
-                  {t("no_records")}
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
-      </div>
+              )}
+            </tbody>
+          </table>
+        </div>
 
-      {/* Mobile Cards */}
-      <div className="md:hidden space-y-3">
-        {paginated.length > 0 ? (
-          paginated.map((r) => (
-            <div
-              key={r.eei_id}
-              className="bg-white shadow rounded-xl p-3 border space-y-2"
-            >
-              <div className="flex justify-between text-sm">
-                <span className="font-semibold">{t("edu_id")}</span>
-                <span>{r.eei_id}</span>
+        {/* ===== MOBILE CARDS ===== */}
+        <div className="md:hidden p-2 space-y-3">
+          {paginated.length > 0 ? (
+            paginated.map((r) => (
+              <div
+                key={r.eei_id}
+                className="border rounded-lg p-3 shadow-sm bg-gray-50"
+              >
+                <div className="flex justify-between text-sm">
+                  <span className="font-semibold">{t("edu_id")}</span>
+                  <span>{r.eei_id}</span>
+                </div>
+
+                <div className="flex justify-between text-sm">
+                  <span className="font-semibold">{t("emp_id")}</span>
+                  <span>{r.employee_id}</span>
+                </div>
+
+                <div className="flex justify-between text-sm">
+                  <span className="font-semibold">{t("emp_name")}</span>
+                  <span>{r.EmployeeInfo?.emp_full_name || "-"}</span>
+                </div>
+
+                <div className="flex justify-between text-sm">
+                  <span className="font-semibold">{t("degree")}</span>
+                  <span>{r.educational_degree}</span>
+                </div>
+
+                <div className="flex justify-between text-sm">
+                  <span className="font-semibold">{t("institution")}</span>
+                  <span>{r.educational_institution}</span>
+                </div>
+
+                <div className="flex justify-between text-sm">
+                  <span className="font-semibold">{t("field")}</span>
+                  <span>{r.educational_field}</span>
+                </div>
+
+                <div className="flex justify-between text-sm">
+                  <span className="font-semibold">{t("graduation")}</span>
+                  <span>{r.graduation_date || "-"}</span>
+                </div>
+
+                {/* Description full width */}
+                <div className="text-sm mt-2">
+                  <span className="font-semibold">{t("description")}:</span>
+                  <p className="text-gray-600 mt-1 break-words">
+                    {r.description || "-"}
+                  </p>
+                </div>
+
+                {/* Actions */}
+                <div className="flex justify-end gap-2 pt-2 border-t mt-3">
+                  <button
+                    onClick={() => {
+                      setEditData(r);
+                      setModalOpen(true);
+                    }}
+                    className="bg-yellow-500 p-2 text-white rounded"
+                  >
+                    <FiEdit3 />
+                  </button>
+
+                  <button
+                    onClick={() => setDeleteData(r)}
+                    className="bg-red-500 p-2 text-white rounded"
+                  >
+                    <FiTrash2 />
+                  </button>
+                </div>
               </div>
-
-              <div className="flex justify-between text-sm">
-                <span className="font-semibold">{t("emp_id")}</span>
-                <span>{r.employee_id}</span>
-              </div>
-
-              <div className="flex justify-between text-sm">
-                <span className="font-semibold">{t("emp_name")}</span>
-                <span>{r.EmployeeInfo?.emp_full_name || "-"}</span>
-              </div>
-
-              <div className="flex justify-between text-sm">
-                <span className="font-semibold">{t("degree")}</span>
-                <span>{r.educational_degree}</span>
-              </div>
-
-              <div className="flex justify-between text-sm">
-                <span className="font-semibold">{t("institution")}</span>
-                <span>{r.educational_institution}</span>
-              </div>
-
-              <div className="flex justify-between text-sm">
-                <span className="font-semibold">{t("field")}</span>
-                <span>{r.educational_field}</span>
-              </div>
-
-              <div className="flex justify-between text-sm">
-                <span className="font-semibold">{t("graduation")}</span>
-                <span>{r.graduation_date || "-"}</span>
-              </div>
-
-              <div className="text-sm">
-                <span className="font-semibold">{t("description")}:</span>
-                <p className="text-gray-600 mt-1 break-words">
-                  {r.description || "-"}
-                </p>
-              </div>
-
-              {/* Actions */}
-              <div className="flex justify-end gap-2 pt-2 border-t">
-                <button
-                  onClick={() => {
-                    setEditData(r);
-                    setModalOpen(true);
-                  }}
-                  className="bg-yellow-500 p-2 text-white rounded"
-                >
-                  <FiEdit3 />
-                </button>
-
-                <button
-                  onClick={() => setDeleteData(r)}
-                  className="bg-red-500 p-2 text-white rounded"
-                >
-                  <FiTrash2 />
-                </button>
-              </div>
+            ))
+          ) : (
+            <div className="text-center text-gray-500 py-4">
+              {t("no_records")}
             </div>
-          ))
-        ) : (
-          <div className="text-center text-gray-500 py-4">
-            {t("no_records")}
-          </div>
-        )}
+          )}
+        </div>
       </div>
 
       {/* ===== PAGINATION ===== */}
