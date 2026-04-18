@@ -67,5 +67,18 @@
   "no_notifications": "اعلان ها وجود ندارد",
   "profile": "نمایه کابر",
   "change_password": "تغیر رمز عبور",
-  "logout": "خروج"
+  "logout": "خروج",
+
+  "company_information": "اطلاعات شرکت",
+  "company_name": "اسم شرکت",
+  "license_number": "نمبر جواز",
+  "license_expire_date": "تاریخ انقضاء جواز",
+  "phone": "شماره تماس",
+  "email": "ایمیل ادرس",
+  "address": "آدرس",
+  "edit": "ویرایش",
+  "save": "ذخیره",
+  "company_load_error": "بارګیری اطلاعات موفقانه نبود",
+  "company_update_success": "موفقانه ویرایش شد",
+  "company_update_error": "اشتباه در پروسه ویرایش"
 }

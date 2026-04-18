@@ -67,5 +67,18 @@
   "no_notifications": "No notifications",
   "profile": "Profile",
   "change_password": "Change Password",
-  "logout": "Log Out"
+  "logout": "Log Out",
+
+  "company_information": "Company Information",
+  "company_name": "Company Name",
+  "license_number": "License Number",
+  "license_expire_date": "License Expire Date",
+  "phone": "Phone",
+  "email": "Email",
+  "address": "Address",
+  "edit": "Edit",
+  "save": "Save",
+  "company_load_error": "Failed to load company info",
+  "company_update_success": "Company updated successfully",
+  "company_update_error": "Failed to update company info"
 }

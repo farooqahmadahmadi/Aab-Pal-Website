@@ -3,30 +3,34 @@ import API from "../../services/api";
 import { FaEdit, FaSave, FaCamera } from "react-icons/fa";
 import Toast from "../../components/common/Toast";
 import useToast from "../../hooks/useToast";
+import { useTranslation } from "react-i18next";
 
 const BASE_URL = import.meta.env.VITE_API_URL;
 
 export default function CompanyInfo() {
+  const { t, i18n } = useTranslation();
+  const isRTL = i18n.language === "fa" || i18n.language === "ps";
+
   const [data, setData] = useState({});
   const [editMode, setEditMode] = useState(false);
-  const [logoPreview, setLogoPreview] = useState("/default-logo.png"); // fallback
+  const [logoPreview, setLogoPreview] = useState("/default-logo.png");
   const { toast, showToast, hideToast } = useToast();
 
   // ===== Fetch =====
   const fetchData = async () => {
     try {
       const res = await API.get("/company");
-      const companyData = res.data || {}; // default empty object
+      const companyData = res.data || {};
       setData(companyData);
 
       if (companyData?.company_logo_url) {
         setLogoPreview(`${BASE_URL}${companyData.company_logo_url}`);
       } else {
-        setLogoPreview("/default-logo.png"); //  default logo
+        setLogoPreview("/default-logo.png");
       }
     } catch (err) {
-      showToast("Failed to load company info", "error");
-      setData({}); // ensure data is always object
+      showToast(t("company_load_error"), "error");
+      setData({});
       setLogoPreview("/default-logo.png");
     }
   };
@@ -41,7 +45,7 @@ export default function CompanyInfo() {
     setData({ ...data, [name]: value });
   };
 
-  // ===== Logo Upload Preview =====
+  // ===== Logo Upload =====
   const handleLogoChange = (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -54,6 +58,7 @@ export default function CompanyInfo() {
   const handleSave = async () => {
     try {
       const formData = new FormData();
+
       Object.keys(data).forEach((key) => {
         if (key !== "logoFile") formData.append(key, data[key]);
       });
@@ -64,141 +69,166 @@ export default function CompanyInfo() {
         headers: { "Content-Type": "multipart/form-data" },
       });
 
-      showToast("Company info updated successfully", "success");
+      showToast(t("company_update_success"), "success");
       setEditMode(false);
       fetchData();
     } catch (err) {
       console.error(err);
-      showToast("Failed to update company info", "error");
+      showToast(t("company_update_error"), "error");
     }
   };
 
   return (
     <>
-      <div className="p-2 flex justify-center">
-        <div className="bg-white backdrop-blur-md shadow-xl rounded-2xl p-4 w-full max-w-2xl relative border">
-
-          {/* Edit / Save */}
-          <div className="absolute top-3 right-3">
+      <div className="p-3 flex justify-center">
+        <div className="bg-white shadow-xl rounded-2xl p-5 w-full max-w-4xl relative border">
+          {/* ===== Edit / Save ===== */}
+          <div className={`absolute top-3 ${isRTL ? "left-3" : "right-3"}`}>
             {!editMode ? (
-              // div as button
               <div
                 onClick={() => setEditMode(true)}
-                title="Edit"
-                className="bg-yellow-500 hover:bg-yellow-600 text-white px-2 py-2 rounded-full flex items-center gap-2"
+                className="bg-yellow-500 hover:bg-yellow-600 text-white p-2 rounded-full cursor-pointer"
+                title={t("edit")}
               >
                 <FaEdit />
               </div>
             ) : (
-              // div as button
               <div
                 onClick={handleSave}
-                title="Save"
-                className="bg-green-500 hover:bg-green-600 text-white px-2 py-2  rounded-full flex items-center gap-2"
+                className="bg-green-500 hover:bg-green-600 text-white p-2 rounded-full cursor-pointer"
+                title={t("save")}
               >
                 <FaSave />
               </div>
             )}
           </div>
 
-          {/* ===== Fancy Logo ===== */}
-          <div className="flex justify-center mb-5">
-            <div className="relative group w-48 h-48 rounded-full p-[5px]
-              bg-gradient-to-r from-red-400 via-orange-400 via-yellow-300 via-green-400 via-blue-400 via-indigo-400 via-purple-400 to-pink-400
-              animate-[gradientShift_12s_linear_infinite] 
-              animate-[spin_25s_linear_infinite]">
+          {/* ===== Logo ===== */}
+          <div className="flex justify-center mb-6">
+            <div className="relative group w-40 h-40 rounded-full border-4 border-gray-200 overflow-hidden">
+              <img
+                src={logoPreview}
+                alt="logo"
+                className="w-full h-full object-cover"
+              />
 
-              <div className="w-full h-full rounded-full bg-white flex items-center justify-center overflow-hidden
-                animate-[pulse_3s_ease-in-out_infinite] scale-100 hover:scale-110 transition-transform duration-600">
-
-                <img
-                  src={logoPreview}
-                  alt="Company Logo"
-                  className="w-44 h-44 rounded-full object-cover border-4 border-gray-100 shadow-lg"
-                />
-
-                {editMode && (
-                  <label className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-40 rounded-full cursor-pointer opacity-0 group-hover:opacity-100 transition">
-                    <FaCamera className="text-white text-xl" />
-                    <input
-                      type="file"
-                      accept="image/*"
-                      onChange={handleLogoChange}
-                      className="hidden"
-                    />
-                  </label>
-                )}
-
-              </div>
+              {editMode && (
+                <label className="absolute inset-0 flex items-center justify-center bg-black/50 cursor-pointer opacity-0 group-hover:opacity-100 transition">
+                  <FaCamera className="text-white text-xl" />
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleLogoChange}
+                    className="hidden"
+                  />
+                </label>
+              )}
             </div>
           </div>
 
-          {/* Title */}
-          <h2 className="text-2xl font-bold text-center mb-6">Company Information</h2>
+          {/* ===== Title ===== */}
+          <h2 className="text-2xl font-bold text-center mb-6">
+            {t("company_information")}
+          </h2>
 
-          {/* Form */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-            <input
-              name="company_name"
-              value={data.company_name || ""}
-              onChange={handleChange}
-              disabled={!editMode}
-              placeholder="Company Name"
-              className="border p-3 rounded w-full"
-            />
+          {/* ===== FORM ===== */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {/* Company Name */}
+            <div>
+              <label className="text-sm font-medium mb-1 block">
+                {t("company_name")}
+              </label>
+              <input
+                name="company_name"
+                value={data.company_name || ""}
+                onChange={handleChange}
+                disabled={!editMode}
+                className="border p-3 rounded w-full"
+              />
+            </div>
 
-            <input
-              name="license_number"
-              value={data.license_number || ""}
-              onChange={handleChange}
-              disabled={!editMode}
-              placeholder="License Number"
-              className="border p-3 rounded w-full"
-            />
+            {/* License Number */}
+            <div>
+              <label className="text-sm font-medium mb-1 block">
+                {t("license_number")}
+              </label>
+              <input
+                name="license_number"
+                value={data.license_number || ""}
+                onChange={handleChange}
+                disabled={!editMode}
+                className="border p-3 rounded w-full"
+              />
+            </div>
 
-            <input
-              type="date"
-              name="license_expire_date"
-              value={data.license_expire_date?.slice(0, 10) || ""}
-              onChange={handleChange}
-              required
-              disabled={!editMode}
-              className="border p-3 rounded w-full"
-            />
+            {/* Expire Date */}
+            <div>
+              <label className="text-sm font-medium mb-1 block">
+                {t("license_expire_date")}
+              </label>
+              <input
+                type="date"
+                name="license_expire_date"
+                value={data.license_expire_date?.slice(0, 10) || ""}
+                onChange={handleChange}
+                disabled={!editMode}
+                className="border p-3 rounded w-full"
+              />
+            </div>
 
-            <input
-              name="company_phone"
-              value={data.company_phone || ""}
-              onChange={handleChange}
-              disabled={!editMode}
-              placeholder="Phone"
-              className="border p-3 rounded w-full"
-            />
+            {/* Phone */}
+            <div>
+              <label className="text-sm font-medium mb-1 block">
+                {t("phone")}
+              </label>
+              <input
+                name="company_phone"
+                value={data.company_phone || ""}
+                onChange={handleChange}
+                disabled={!editMode}
+                className="border p-3 rounded w-full"
+              />
+            </div>
 
-            <input
-              name="company_email"
-              value={data.company_email || ""}
-              onChange={handleChange}
-              disabled={!editMode}
-              placeholder="Email"
-              className="border p-3 rounded w-full col-span-2"
-            />
+            {/* Email */}
+            <div className="md:col-span-2">
+              <label className="text-sm font-medium mb-1 block">
+                {t("email")}
+              </label>
+              <input
+                name="company_email"
+                value={data.company_email || ""}
+                onChange={handleChange}
+                disabled={!editMode}
+                className="border p-3 rounded w-full"
+              />
+            </div>
 
-            <input
-              name="company_address"
-              value={data.company_address || ""}
-              onChange={handleChange}
-              disabled={!editMode}
-              placeholder="Address"
-              className="border p-3 rounded w-full col-span-2"
-            />
+            {/* Address */}
+            <div className="md:col-span-2">
+              <label className="text-sm font-medium mb-1 block">
+                {t("address")}
+              </label>
+              <input
+                name="company_address"
+                value={data.company_address || ""}
+                onChange={handleChange}
+                disabled={!editMode}
+                className="border p-3 rounded w-full"
+              />
+            </div>
           </div>
         </div>
       </div>
 
       {/* Toast */}
       {toast && (
-        <Toast message={toast.message} type={toast.type} onClose={hideToast} position="center" />
+        <Toast
+          message={toast.message}
+          type={toast.type}
+          onClose={hideToast}
+          position="center"
+        />
       )}
     </>
   );
