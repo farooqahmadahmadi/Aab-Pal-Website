@@ -80,5 +80,28 @@
   "save": "ذخیره",
   "company_load_error": "بارګیری اطلاعات موفقانه نبود",
   "company_update_success": "موفقانه ویرایش شد",
-  "company_update_error": "اشتباه در پروسه ویرایش"
+  "company_update_error": "اشتباه در پروسه ویرایش",
+
+  "add_document": "افزودن اسناد",
+  "id": "ای دی",
+  "file_name": "اسم سند",
+  "description": "جزیات",
+  "actions": "عمل",
+  "no_records": "هیچ اطلاعات دریافت نشد",
+  "delete_confirm": "حذف",
+  "cancel": "لغو",
+  "delete": "حذف",
+  "added_success": "موفقانه اضافه شد",
+  "updated_success": "موفقانه ویرایش ګردید",
+  "deleted_success": "موفقانه حذف ګردید",
+  "save_failed": "ذخیره ناموفق بود",
+  "delete_failed": "حذف ناموفق بود",
+  "download_failed": "بارګیری ناموفق بود",
+  "load_documents_error": "دسترس به اسناد ناموفق بود",
+
+  "edit_document": "ویرایش سند",
+  "document_name": "اسم سند",
+  "choose_file": "انتخاب فایل",
+  "select_file": "انتخاب فایل ...",
+  "update": "ویرایش"
 }

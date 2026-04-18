@@ -80,5 +80,28 @@
   "save": "Save",
   "company_load_error": "Failed to load company info",
   "company_update_success": "Company updated successfully",
-  "company_update_error": "Failed to update company info"
+  "company_update_error": "Failed to update company info",
+
+  "add_document": "Add Document",
+  "id": "ID",
+  "file_name": "File Name",
+  "description": "Description",
+  "actions": "Actions",
+  "no_records": "No records found",
+  "delete_confirm": "Delete",
+  "cancel": "Cancel",
+  "delete": "Delete",
+  "added_success": "Added successfully",
+  "updated_success": "Updated successfully",
+  "deleted_success": "Deleted successfully",
+  "save_failed": "Save failed",
+  "delete_failed": "Delete failed",
+  "download_failed": "Download failed",
+  "load_documents_error": "Failed to load documents",
+
+  "edit_document": "Edit Document",
+  "document_name": "Document Name",
+  "choose_file": "Choose File",
+  "select_file": "Select a file...",
+  "update": "Update"
 }

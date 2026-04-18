@@ -80,5 +80,28 @@
   "save": "ساتل",
   "company_load_error": "د کمپنۍ معلومات ترلاسه نشول",
   "company_update_success": "په بریالیتوب سره تغیر شول",
-  "company_update_error": "د تغیر پروسه بریالۍ نه وه"
+  "company_update_error": "د تغیر پروسه بریالۍ نه وه",
+
+  "add_document": "سند اضافه کول",
+  "id": "ای ډي",
+  "file_name": "د سند نوم",
+  "description": "جزیات",
+  "actions": "عمل",
+  "no_records": "هیڅ معلومات پیدا نشول",
+  "delete_confirm": "حذف",
+  "cancel": "لغو",
+  "delete": "حذف",
+  "added_success": "په بریالیتوب سره اضافه شو",
+  "updated_success": "په بریالیتوب سره تغیر شو",
+  "deleted_success": "په بریالیتوب سره حذف شو",
+  "save_failed": "ذخیره کول ناکام شول",
+  "delete_failed": "حذف کول ناکم شول",
+  "download_failed": "ډانلوډ کول ناکام شول",
+  "load_documents_error": "اسنادو ته لاسرسی ناکام شو",
+
+  "edit_document": "د سند تغیر کول",
+  "document_name": "د سند نوم",
+  "choose_file": "فایل ټاکل",
+  "select_file": "د فایل ټاکل ....",
+  "update": "تغیر"
 }
