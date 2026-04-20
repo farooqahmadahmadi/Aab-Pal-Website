@@ -272,6 +272,19 @@ export default function Login() {
             >
               {t("signup")}
             </p>
+
+            <p className="text-center text-sm text-gray-400 mt-6">
+              © {new Date().getFullYear()}{" - "}
+              <a
+                href="https://nexora-link.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-yellow-500 hover:text-blue-500 transition animate-pulse"
+              >
+                Nexora-Link
+              </a>
+              . All rights reserved.
+            </p>
           </div>
         </div>
       </div>
