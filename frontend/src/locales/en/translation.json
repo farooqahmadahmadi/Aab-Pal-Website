@@ -321,5 +321,32 @@
   "send_reset": "Send Reset Link",
   "signup": "Sign Up",
   "singup_ok": "OK",
-  "contact_admin_signup": "To get a user account, please contact the system administrator."
+  "contact_admin_signup": "To get a user account, please contact the system administrator.",
+
+  "notifications": "Notifications",
+  "add_notification": "Add Notification",
+  "select_page": "Select All",
+  "clear": "Clear",
+
+  "export": "Export",
+  "select": "Select",
+  "user": "User",
+  "action": "Action",
+  "table": "Table",
+  "old": "Old",
+  "new": "New",
+  "created": "Created",
+  "log_details": "Log Details",
+  "log_id": "Log ID",
+  "reference_table": "Reference Table",
+  "record_id": "Record ID",
+  "old_value": "Old Value",
+  "new_value": "New Value",
+  "export_logs": "Export Logs",
+  "confirm_delete": "Confirm Delete",
+  "selected_deleted": "Selected deleted",
+  "select_date_range": "Select date range",
+  "no_data_found": "No data found",
+  "export_success": "Export successful",
+  "failed_load_logs": "Failed to load logs"
 }

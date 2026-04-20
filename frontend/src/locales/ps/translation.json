@@ -318,5 +318,32 @@
   "send_reset": "د ریسیټ لینک لیږل",
   "signup": "د حساب جوړول",
   "singup_ok": "سمه ده",
-  "contact_admin_signup": "د حساب د ترلاسه کولو لپاره د سیسټم له مدیر سره اړیکه ونیسئ."
+  "contact_admin_signup": "د حساب د ترلاسه کولو لپاره د سیسټم له مدیر سره اړیکه ونیسئ.",
+
+  "notifications": "خبرتیاوي",
+  "add_notification": "خبرتیا اضافه کول",
+  "select_page": "ټول ټاکل",
+  "clear": "نه ټاکل",
+
+  "export": "صادر کول",
+  "select": "ټاکل",
+  "user": "کاروونکی",
+  "action": "عمل",
+  "table": "جدول",
+  "old": "مخکیني",
+  "new": "نوي",
+  "created": "جوړیدو وخت",
+  "log_details": "د لاګ جزیات",
+  "log_id": "ای ډی",
+  "reference_table": "سرچیني جدول",
+  "record_id": "ریکارډ",
+  "old_value": "مخکیني معلومات",
+  "new_value": "نوی معلومات",
+  "export_logs": "لاګ صادرول",
+  "confirm_delete": "حذف تایید کول",
+  "selected_deleted": "ټاکل شوي حذف شول",
+  "select_date_range": "نېټه وټاکئ",
+  "no_data_found": "هیح معلومات پیدا نشول",
+  "export_success": "په بریالیتوبسره صادر شول",
+  "failed_load_logs": "معلوماتو ته لاسرسی ناکام شو"
 }

@@ -318,5 +318,32 @@
   "send_reset": "ارسال لینک باز یابی",
   "signup": "ایجاد حساب",
   "singup_ok": "درست است",
-  "contact_admin_signup": "برای اخذ حساب کاربری با مدیر سیستم در تماس شوید."
+  "contact_admin_signup": "برای اخذ حساب کاربری با مدیر سیستم در تماس شوید.",
+
+  "notifications": "اعلان ها",
+  "add_notification": "افزودن اعلان",
+  "select_page": "انتخاب همه",
+  "clear": "لغو انتخاب",
+
+  "export": "صادر کردن",
+  "select": "انتخاب",
+  "user": "کاربر",
+  "action": "عمل",
+  "table": "جدول",
+  "old": "قبلی",
+  "new": "جدید",
+  "created": "ایجاد شده",
+  "log_details": "جزیات لاګ",
+  "log_id": "ای دی",
+  "reference_table": "جدول منبع",
+  "record_id": "ریکارد",
+  "old_value": "اطلاعات قبلی",
+  "new_value": "اطلاعات جدید",
+  "export_logs": "صادر کردن لاګ",
+  "confirm_delete": "تایید نمودن حذف",
+  "selected_deleted": "انتخاب شده حذف شدند",
+  "select_date_range": "تاریخ را انتخاب کنید",
+  "no_data_found": "هیچ اطلاعات دریافت نشدند",
+  "export_success": "موفقانه صادر ګرید",
+  "failed_load_logs": "دسترس به اطلاعات ناموق بود"
 }

@@ -5,6 +5,7 @@ import Pagination from "../../components/common/Pagination";
 import SearchBar from "../../components/common/SearchBar";
 import Toast from "../../components/common/Toast";
 import useToast from "../../hooks/useToast";
+import { useTranslation } from "react-i18next";
 
 import {
   getSystemLogs,
@@ -14,6 +15,8 @@ import {
 import { io } from "socket.io-client";
 
 export default function SystemLogs() {
+  const { t } = useTranslation();
+
   const [data, setData] = useState([]);
   const [filtered, setFiltered] = useState([]);
   const [search, setSearch] = useState("");
@@ -46,7 +49,7 @@ export default function SystemLogs() {
 
       setData(arr);
     } catch {
-      showToast("Failed to load logs", "error");
+      showToast(t("failed_load_logs"), "error");
     }
   };
 
@@ -111,10 +114,10 @@ export default function SystemLogs() {
   const handleDelete = async () => {
     try {
       await deleteSystemLog(deleteData.log_id);
-      showToast("Deleted successfully", "success");
+      showToast(t("deleted_success"), "success");
       fetchData();
     } catch {
-      showToast("Delete failed", "error");
+      showToast(t("delete_failed"), "error");
     } finally {
       setDeleteData(null);
     }
@@ -123,11 +126,11 @@ export default function SystemLogs() {
   const handleMultiDelete = async () => {
     try {
       await Promise.all(selected.map((id) => deleteSystemLog(id)));
-      showToast("Selected deleted", "success");
+      showToast(t("deleted_success"), "success");
       setSelected([]);
       fetchData();
     } catch {
-      showToast("Delete failed", "error");
+      showToast(t("delete_failed"), "error");
     } finally {
       setDeleteData(null);
     }
@@ -136,7 +139,7 @@ export default function SystemLogs() {
   // ---------------- EXPORT ----------------
   const handleExport = () => {
     if (!fromDate || !toDate) {
-      showToast("Select date range", "error");
+      showToast(t("select_date_range"), "error");
       return;
     }
 
@@ -146,7 +149,7 @@ export default function SystemLogs() {
     });
 
     if (!filteredData.length) {
-      showToast("No data found", "error");
+      showToast(t("no_data_found"), "error");
       return;
     }
 
@@ -187,7 +190,7 @@ export default function SystemLogs() {
     a.click();
 
     setExportModal(false);
-    showToast("Exported successfully", "success");
+    showToast(t("export_success"), "success");
   };
 
   // ---------------- DRAWER CLOSE OUTSIDE ----------------
@@ -196,10 +199,10 @@ export default function SystemLogs() {
   };
 
   return (
-    <div className="p-4 max-w-6xl mx-auto">
+    <div className="p-3 sm:p-4 max-w-6xl mx-auto w-full overflow-x-auto">
       {/* HEADER */}
       <div className="flex justify-between mb-4">
-        <h2 className="text-2xl font-bold">System Logs</h2>
+        <h2 className="text-2xl font-bold">{t("system_logs")}</h2>
 
         <div className="flex gap-2">
           {/* SEARCH */}
@@ -209,7 +212,7 @@ export default function SystemLogs() {
             onClick={() => setExportModal(true)}
             className="bg-green-500 text-white px-3 py-2 rounded flex items-center gap-2"
           >
-            <FiExternalLink /> Export
+            <FiExternalLink /> {t("export")}
           </button>
 
           {/* Multi Delete Button */}
@@ -231,32 +234,32 @@ export default function SystemLogs() {
             onClick={selectAll}
             className="bg-gray-100 px-3 py-1 rounded text-blue-600"
           >
-            Select All
+            {t("select_page")}
           </button>
 
           <button
             onClick={clearSelection}
             className="bg-gray-100 px-3 py-1 rounded"
           >
-            Clear
+            {t("clear")}
           </button>
         </div>
       )}
 
       {/* TABLE */}
       <div className="bg-white shadow rounded overflow-x-auto">
-        <table className="w-full text-center text-sm">
+        <table className="w-full min-w-[900px] text-center text-sm">
           <thead className="bg-gray-200 text-sm">
             <tr>
-              <th className="p-2">Select</th>
+              <th className="p-2">{t("select")}</th>
               <th className="p-2">ID</th>
-              <th className="p-2">User</th>
-              <th className="p-2">Action</th>
-              <th className="p-2">Table</th>
-              <th className="p-2">Old</th>
-              <th className="p-2">New</th>
-              <th className="p-2">Created</th>
-              <th className="p-2">Action</th>
+              <th className="p-2">{t("user")}</th>
+              <th className="p-2">{t("action")}</th>
+              <th className="p-2">{t("table")}</th>
+              <th className="p-2">{t("old")}</th>
+              <th className="p-2">{t("new")}</th>
+              <th className="p-2">{t("created")}</th>
+              <th className="p-2">{t("action")}</th>
             </tr>
           </thead>
 
@@ -312,21 +315,21 @@ export default function SystemLogs() {
       {deleteData && (
         <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
           <div className="bg-white p-4 rounded w-80">
-            <h3 className="font-bold mb-3">Confirm Delete?</h3>
+            <h3 className="font-bold mb-3">{t("confirm_delete")}</h3>
 
             <div className="flex justify-end gap-2">
               <button
                 onClick={() => setDeleteData(null)}
                 className="px-3 py-1 bg-gray-200 rounded"
               >
-                Cancel
+                {t("cancel")}
               </button>
 
               <button
                 onClick={deleteData.multi ? handleMultiDelete : handleDelete}
                 className="px-3 py-1 bg-red-500 text-white rounded"
               >
-                Delete
+                {t("delete")}
               </button>
             </div>
           </div>
@@ -352,7 +355,7 @@ export default function SystemLogs() {
         >
           <div className="w-[420px] bg-white h-full p-4 overflow-y-auto">
             <div className="flex justify-between mb-4 ">
-              <h3 className="font-bold text-blue-600">Log Details</h3>
+              <h3 className="font-bold text-blue-600">{t("log_details")}</h3>
 
               {/* Drawer Close Button */}
               <div
@@ -365,51 +368,51 @@ export default function SystemLogs() {
 
             <div className="space-y-3 text-sm">
               <p>
-                <b>Log ID:</b>
+                <b>{t("log_id")}:</b>
                 <pre className="bg-gray-100 hover:bg-gray-200 p-2 text-xs whitespace-pre-wrap break-words">
                   {drawer.log_id}
                 </pre>
               </p>
               <p>
-                <b>User ID:</b>
+                <b>{t("user_id")}:</b>
                 <pre className="bg-gray-100 hover:bg-gray-200 p-2 text-xs whitespace-pre-wrap break-words">
                   {drawer.user_id}
                 </pre>
               </p>
               <p>
-                <b>Action:</b>
+                <b>{t("action")}:</b>
                 <pre className="bg-gray-100 hover:bg-gray-200 p-2 text-xs whitespace-pre-wrap break-words">
                   {drawer.action}
                 </pre>
               </p>
               <p>
-                <b>Reference Table:</b>
+                <b>{t("reference_table")}:</b>
                 <pre className="bg-gray-100 hover:bg-gray-200 p-2 text-xs whitespace-pre-wrap break-words">
                   {drawer.reference_table}
                 </pre>
               </p>
               <p>
-                <b>Record ID:</b>
+                <b>{t("record_id")}:</b>
                 <pre className="bg-gray-100 hover:bg-gray-200 p-2 text-xs whitespace-pre-wrap break-words">
                   {drawer.reference_record_id}
                 </pre>
               </p>
 
               <div>
-                <b>Old Value:</b>
+                <b>{t("old_value")}:</b>
                 <pre className="bg-gray-100 hover:bg-gray-200 p-2 text-xs whitespace-pre-wrap break-words">
                   {drawer.old_value}
                 </pre>
               </div>
 
               <div>
-                <b>New Value:</b>
+                <b>{t("new_value")}:</b>
                 <pre className="bg-gray-100 hover:bg-gray-200 p-2 text-xs whitespace-pre-wrap break-words">
                   {drawer.new_value}
                 </pre>
               </div>
               <p>
-                <b>Created at:</b>
+                <b>{t("created_at")}:</b>
                 <pre className="bg-gray-100 hover:bg-gray-200 p-2 text-xs whitespace-pre-wrap break-words">
                   {drawer.created_at}
                 </pre>
@@ -423,12 +426,12 @@ export default function SystemLogs() {
       {exportModal && (
         <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
           <div className="bg-white p-5 rounded-xl w-96 ">
-            <h3 className="font-bold mb-3">Export Logs</h3>
+            <h3 className="font-bold mb-3">{t("export_logs")}</h3>
 
             <div className="text-md">
               <div>
                 <label htmlFor="" className="text-gray-500">
-                  Start Date:
+                  {t("start_date")}
                 </label>
                 <input
                   type="date"
@@ -439,7 +442,7 @@ export default function SystemLogs() {
               </div>
               <div>
                 <label htmlFor="" className="text-gray-500">
-                  End Date:
+                  {t("end_date")}
                 </label>
                 <input
                   type="date"
@@ -451,7 +454,7 @@ export default function SystemLogs() {
 
               <div>
                 <label htmlFor="" className="text-gray-500">
-                  File Name:
+                  {t("file_name")}
                 </label>
                 <input
                   type="text"
@@ -467,14 +470,14 @@ export default function SystemLogs() {
                   type="button"
                   className="px-3 py-1 bg-gray-200 hover:bg-gray-300 rounded"
                 >
-                  Cancel
+                  {t("cancel")}
                 </button>
                 <button
                   onClick={handleExport}
                   type="submit"
                   className="px-3 py-1 bg-green-500 hover:bg-green-600 text-white rounded"
                 >
-                  Export
+                  {t("export")}
                 </button>
               </div>
             </div>
