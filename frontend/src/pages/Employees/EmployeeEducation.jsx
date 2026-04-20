@@ -125,9 +125,9 @@ export default function EmployeeEducation() {
       </div>
 
       {/* ===== TABLE / CARD VIEW ===== */}
-      <div className="bg-white shadow rounded-lg overflow-hidden">
+     <div className="bg-white shadow rounded-lg overflow-hidden">
         {/* ===== DESKTOP TABLE ===== */}
-        <div className="hidden md:block">
+         <div className="hidden md:block">
           <table className="w-full text-sm">
             <thead className="bg-gray-200">
               <tr>
@@ -144,47 +144,72 @@ export default function EmployeeEducation() {
             </thead>
 
             <tbody>
-              {paginated.length > 0 ? (
-                paginated.map((e) => (
-                  <tr key={e.employee_id} className="border-t hover:bg-gray-50">
-                    <td className="p-2">{e.employee_id}</td>
-                    <td className="p-2">{e.emp_full_name}</td>
-                    <td className="p-2">{e.emp_father_name}</td>
-                    <td className="p-2">{e.emp_nid_number}</td>
-                    <td className="p-2">{e.emp_gender}</td>
-                    <td className="p-2">{e.emp_phone}</td>
-                    <td className="p-2">{e.emp_email}</td>
+  {paginated.length > 0 ? (
+    paginated.map((e) => (
+      <tr key={e.eei_id} className="border-t hover:bg-gray-50">
 
-                    <td className="p-2">
-                      <div className="flex justify-center gap-2">
-                        <button
-                          onClick={() => {
-                            setEditData(e);
-                            setModalOpen(true);
-                          }}
-                          className="bg-yellow-500 p-1 text-white rounded"
-                        >
-                          <FiEdit3 />
-                        </button>
+        <td className="p-2 text-center">{e.eei_id}</td>
 
-                        <button
-                          onClick={() => setDeleteData(e)}
-                          className="bg-red-500 p-1 text-white rounded"
-                        >
-                          <FiTrash2 />
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan="8" className="text-center p-4 text-gray-500">
-                    {t("no_records")}
-                  </td>
-                </tr>
-              )}
-            </tbody>
+        <td className="p-2">{e.employee_id}</td>
+
+        <td className="p-2">
+          {e.EmployeeInfo?.emp_full_name || "-"}
+        </td>
+
+        <td className="p-2">
+          {e.educational_degree || "-"}
+        </td>
+
+        <td className="p-2">
+          {e.educational_institution || "-"}
+        </td>
+
+        <td className="p-2">
+          {e.educational_field || "-"}
+        </td>
+
+        <td className="p-2">
+          {e.graduation_date || "-"}
+        </td>
+
+        <td className="p-2">
+          <p className="truncate max-w-[200px]">
+            {e.description || "-"}
+          </p>
+        </td>
+
+        {/* Actions */}
+        <td className="p-2">
+          <div className="flex justify-center gap-2">
+            <button
+              onClick={() => {
+                setEditData(e);
+                setModalOpen(true);
+              }}
+              className="bg-yellow-500 p-1 text-white rounded"
+            >
+              <FiEdit3 />
+            </button>
+
+            <button
+              onClick={() => setDeleteData(e)}
+              className="bg-red-500 p-1 text-white rounded"
+            >
+              <FiTrash2 />
+            </button>
+          </div>
+        </td>
+
+      </tr>
+    ))
+  ) : (
+    <tr>
+      <td colSpan="9" className="text-center p-4 text-gray-500">
+        {t("no_records")}
+      </td>
+    </tr>
+  )}
+</tbody>
           </table>
         </div>
 

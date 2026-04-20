@@ -32,13 +32,13 @@
   "inventory": "انبار",
   "suppliers": "عرضه کننده ها",
   "materials": "مواد",
-  "purchase_orders": "فرمایشات خریداری",
-  "po_items": "P.O مواد",
+  "purchase_orders": "اردر های خرید",
+  "po_items": "مواد اردر های خرید",
 
   "equipments": "وسایط (ماشین آلات)",
   "equipments_documents": "اسناد وسایط",
   "equipments_usage": "استفاده از وسایط",
-  "equipments_maintenance": "محافظت از وسایط",
+  "equipments_maintenance": "مراقبت از وسایط",
 
   "contracts": "قرارداد ها",
   "contracts_milestones": "اجزای قرارداد ها",
@@ -46,7 +46,7 @@
   "tasks": "وظایف",
   "tasks_assignment": "ایجاد وظایف",
   "site_reports": "ګزارش های ساحوی",
-  "safety_incident": "ګزارش های حادثات",
+  "safety_incident": "حادثات",
 
   "system": "سیستم",
   "user_accounts": "حساب های کاربران",
@@ -149,5 +149,162 @@
   "graduation": "تاریخ فراغت",
   "add_employee_education": "افزودن تحصیلات کارمند",
   "update_employee_education": "ویرایش تحصیلات کارمند",
-  "failed_fetch": "دسترس به اطلاعات ناموفق بود"
+  "failed_fetch": "دسترس به اطلاعات ناموفق بود",
+
+  "add_salary": "افزودن معاش",
+  "base_salary": "معاش اولیه",
+  "allowance": "اضافه کاری",
+  "from": "از تاریخ",
+  "to": "الی تاریخ",
+  "status": "حالت",
+  "active": "فعال",
+  "inactive": "غیر فعال",
+
+  "salary_payments": "پرداخت های معاش",
+  "add_payment": "افزودن پرداخت",
+  "salary_id": "ای دی معاش",
+  "month": "ماه",
+  "bonus": "بخششی",
+  "deduction": "کسر",
+  "paid_amount": "قابل پرداخت",
+  "payment_date": "تاریخ پرداخت",
+  "paid": "پرداخت شده",
+  "pending": "انتظار",
+  "failed": "ناموفق",
+  "unknown": "دیګر",
+  "search": "جستجو ...",
+
+  "attendance_list": "حاضری کارمندان",
+  "add_attendance": "افزودن اضافه کاری",
+  "employee": "کارمند",
+  "check_in": "داخل شدن",
+  "check_out": "بیرون شدن",
+  "hours": "سعات ها",
+  "present": "حاضر",
+  "absent": "غیر حاضر",
+  "leave": "رخصت",
+  "sick": "مریض",
+  "no_data": "هیچ اطلاعات دریافت نشد",
+  "failed_load_attendance": "دسترس به اطلاعات حاضری ناموفق بود",
+
+  "add_shift": "افزودن وقت",
+  "shift_name": "اسم وقت/شفت",
+  "latitude": "Latitude",
+  "longitude": "Longitude",
+  "reduce": "فاصله (متر)",
+  "no_shifts_found": "هیچ اطلاعات دریافت نشد",
+  "failed_fetch_shifts": "دسترس به اطلاعات اوقات حاضری ناموفق بود",
+
+  "department_id": "شعبه",
+  "shift_id": "وقت/شفت",
+  "position": "وظیفه",
+  "type": "نوعیت",
+  "hire_date": "تاریخ استخدام",
+  "end_date": "تاریخ پایان",
+
+  "client_info": "اطلاعات مشتریان",
+  "photo": "عکس",
+  "saved_success": "موفقانه ذخیره شد",
+
+  "add_project": "افزودن پروژه",
+  "projects_info": "اطلاعات پروژه ها",
+  "project_name": "اسم پروژه",
+  "client_id": "مشتری",
+  "budget": "بودیجه تخمینی",
+  "start_date": "تاریخ آغاز",
+
+  "add_phase": "افزودن فاز",
+  "project_phases": "فاز های پروژه",
+  "project_id": "پروژه",
+  "phase_name": "اسم فاز",
+
+  "add_boq": "افزودن BOQ Item",
+  "unit": "واحد",
+  "quantity": "مقدار",
+  "price": "قیمت",
+  "total": "مجموعه",
+
+  "project_documents": "اسناد پروژه ها",
+
+  "add_expense": "افزودن مصارف",
+  "amount": "مقدار",
+
+  "add_invoice": "افزودن انوایس",
+  "due_date": "تاریخ نهایی",
+
+  "add_transaction": "افزودن ترانزکشن",
+  "income": "عاید",
+  "expense": "مصرف",
+  "manual": "دستی",
+  "auto": "خودکار",
+
+  "invoice": "انوایس",
+  "payment_method": "روش",
+
+  "payments": "پرداخت ها",
+
+  "add_supplier": "افزودن عرضه کننده",
+
+  "add_material": "افزودن مواد",
+
+  "stock": "موجود",
+
+  "add_purchase_order": "افزودن اردر خرید",
+  "supplier": "عرضه کننده",
+  "project": "پروژه",
+
+  "add_po_item": "افزودن مواد به اردر خرید",
+  "po": "اردر خرید",
+  "material": "مواد",
+  "qty": "مقدار",
+
+  "equipment": "وسایط (ماشین آلات)",
+  "add_equipment": "افزودن وسایط",
+  "serial_number": "سریال نمبر",
+
+  "equipment_usage": "استفاده از وسایط",
+  "start": "آغاز",
+  "end": "پایان",
+  "add": "افزودن",
+
+  "equipment_maintenance": "مراقبت از وسایط",
+  "cost": "هزینه",
+
+  "equipment_documents": "اسناد وسایط (ماشین آلات)",
+
+  "add_contract": "افزودن قرارداد",
+  "number": "شماره",
+  "value": "ارزش",
+
+  "contract_milestones": "اجزای قرارداد ها",
+  "contract": "قرارداد",
+  "title": "عنوان",
+
+  "add_task": "افزودن وظیفه",
+
+  "add_report": "افزودن ګزارش",
+  "report_date": "تاریخ",
+  "weather": "هوا",
+
+  "add_incident": "افزودن حادثه",
+  "safety_incidents": "حادثات",
+  "severity": "شدت",
+  "incident_date": "تاریخ وقوع",
+
+  "users": "کاربران سیستم",
+  "search_users": "جستجو ...",
+  "add_user": "افزودن کاربر",
+  "user_name": "اسم",
+  "role": "صلاحیت",
+  "no_users": "هیچ کابر دریافت نشد",
+  "delete_user_confirm": "آیا مطمئن هستید این کابر را از سیستم حذف کنید؟",
+
+  "save_photo": "ذخیره عکس",
+  "uploading": "در حال اپلود",
+  "user_id": "ای دی کاربر",
+  "employee_id": "ای دی کارمند",
+  "access_start": "آغاز دسترسی",
+  "access_end": "پایان دسترسی",
+  "created_at": "ایجاد شده",
+  "last_login": "اخرین ورود"
 }

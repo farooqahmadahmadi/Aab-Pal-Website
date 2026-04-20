@@ -11,7 +11,7 @@
   "employee_education": "د کارمندانو زده کړي",
   "employee_documents": "د کارمندانو اسناد",
   "employee_salary": "د کارمندانو معاش",
-  "attendance_shifts": "د حاضری وختونه",
+  "attendance_shifts": "د حاضري وختونه",
   "employee_hiring": "د کارمند ګمارنه",
   "employee_attendance_list": "د حاضری لیست",
   "attendance_checker": "د حاضری ثبتول",
@@ -33,7 +33,7 @@
   "suppliers": "عرضه کوونکي",
   "materials": "مواد",
   "purchase_orders": "د خرید ارډرونه",
-  "po_items": "P.O مواد",
+  "po_items": "د خرید ارډرونو مواد",
 
   "equipments": "وسایل (ماشینونه)",
   "equipments_documents": "د وسایلو اسناد",
@@ -46,7 +46,7 @@
   "tasks": "دندې",
   "tasks_assignment": "د دندې زیاتول",
   "site_reports": "ساحوی راپورونه",
-  "safety_incident": "د حادثاتو راپورونه",
+  "safety_incident": "پیښې",
 
   "system": "سیسټم",
   "user_accounts": "د کاروونکو حسابونه",
@@ -149,5 +149,162 @@
   "graduation": "د فراغت نېټه",
   "add_employee_education": "د کارمند زده کړی اضافه کول",
   "update_employee_education": "د کارمند زده کړی تغیر کول",
-  "failed_fetch": "معلوماتو ته لاسرسی ناکام شو"
+  "failed_fetch": "معلوماتو ته لاسرسی ناکام شو",
+
+  "add_salary": "معاش اضافه کول",
+  "base_salary": "لومړنی معاش",
+  "allowance": "اضافه کاري",
+  "from": "له نېټې",
+  "to": "تر نېټې",
+  "status": "حالت",
+  "active": "فعال",
+  "inactive": "غیر فعال",
+
+  "salary_payments": "د معاش تادیات",
+  "add_payment": "تادیه اضافه کول",
+  "salary_id": "معاش ای ډی",
+  "month": "میاشت",
+  "bonus": "بخششی",
+  "deduction": "کسر",
+  "paid_amount": "د تادیې وړ",
+  "payment_date": "د تادیې نېټه",
+  "paid": "تادیه شوي",
+  "pending": "انتظار",
+  "failed": "ناکام",
+  "unknown": "نور",
+  "search": "پلټل ...",
+
+  "attendance_list": "د کارمندانو حاضري",
+  "add_attendance": "حاضري اضافه کول",
+  "employee": "کارمند",
+  "check_in": "د ننوتل",
+  "check_out": "وتل",
+  "hours": "ساعتونه",
+  "present": "حاضر",
+  "absent": "غیر حاضر",
+  "leave": "رخصت",
+  "sick": "ناروغ",
+  "no_data": "هیڅ معلومات ترلاسه نشول",
+  "failed_load_attendance": "د حاضري معلوماتو ته لاسرسی ناکام شو",
+
+  "add_shift": "وخت اضافه کول",
+  "shift_name": "د وخت/شفټ نوم",
+  "latitude": "Latitude",
+  "longitude": "Longitude",
+  "reduce": "فاصله (متر)",
+  "no_shifts_found": "هیڅ معلومات پیدا نشول",
+  "failed_fetch_shifts": "د حاضري وخت معلوماتو ته لاسرسی ناکام شو",
+
+  "department_id": "څانګه",
+  "shift_id": "وخت/شفټ",
+  "position": "دنده",
+  "type": "ډول",
+  "hire_date": "د ګمارني نېټه",
+  "end_date": "د پای نېټه",
+
+  "client_info": "د پیریدونکو معلومات",
+  "photo": "انځور",
+  "saved_success": "په بریالیتوب سره ذخیره شول",
+
+  "add_project": "پروژه اضافه کول",
+  "projects_info": "د پرژو معلومات",
+  "project_name": "پروژي نوم",
+  "client_id": "پیریدونکی",
+  "budget": "اټکل شوی بودیجه",
+  "start_date": "د پیل نېټه",
+
+  "add_phase": "فاز اضافه کول",
+  "project_phases": "د پروژي فازونه",
+  "project_id": "پروژه",
+  "phase_name": "د فاز نوم",
+
+  "add_boq": "BOQ Item اضافه کول",
+  "unit": "واحد",
+  "quantity": "مقدار",
+  "price": "بیه",
+  "total": "ټولټال",
+
+  "project_documents": "د پروژو اسناد",
+
+  "add_expense": "لګښت اضافه کول",
+  "amount": "مقدار",
+
+  "add_invoice": "انوایس اضافه کول",
+  "due_date": "وروستۍ نېټه",
+
+  "add_transaction": "ترانزکشن اضافه کول",
+  "income": "عاید",
+  "expense": "لګښت",
+  "manual": "لاسي",
+  "auto": "اتومات",
+
+  "invoice": "انوایس",
+  "payment_method": "طریقه",
+
+  "payments": "تادیات",
+
+  "add_supplier": "عرضه کاروونکی اضافه کول",
+
+  "add_material": "مواد اضافه کول",
+
+  "stock": "موجود",
+
+  "add_purchase_order": "د خرید ارډر اضافه کول",
+  "supplier": "عرضه کوونکی",
+  "project": "پروژه",
+
+  "add_po_item": "خرید ارډر ته مواد اضافه کول",
+  "po": "د خرید ارډر",
+  "material": "مواد",
+  "qty": "مقدار",
+
+  "equipment": "وسایل (ماشینونه)",
+  "add_equipment": "وسایل اضافه کول",
+  "serial_number": "سریال نمبر",
+
+  "equipment_usage": "د وسایلو کارونه",
+  "start": "پیل",
+  "end": "پای",
+  "add": "اضافه کول",
+
+  "equipment_maintenance": "د وسایلو ساتنه",
+  "cost": "لګښت",
+
+  "equipment_documents": "د وسایلو (ماشین آلاتو) اسناد",
+
+  "add_contract": "تړون لیک اضافه کول",
+  "number": "ګڼه",
+  "value": "ارزښت",
+
+  "contract_milestones": "د تړون لیکونو برخې",
+  "contract": "تړون لیک",
+  "title": "سر لیک",
+
+  "add_task": "دنده اضافه کول",
+
+  "add_report": "راپرو اضافه کول",
+  "report_date": "نېټه",
+  "weather": "هوا",
+
+  "add_incident": "پیښه اضافه کول",
+  "safety_incidents": "پیښې",
+  "severity": "شدت",
+  "incident_date": "د پیښیدو نېټه",
+
+  "users": "د سیسټم کاروونکې",
+  "search_users": "پلټل ...",
+  "add_user": "کاروونکی اضافه کول",
+  "user_name": "نوم",
+  "role": "رول",
+  "no_users": "هیڅ کاروونکی پیدا نشو",
+  "delete_user_confirm": "آیا ډاډه یاست چې دا کاروونکی له سیسټم څخه حذف کړئ؟",
+
+  "save_photo": "د انځور ساتل",
+  "uploading": "د اپلوډ په حال کې ...",
+  "user_id": "د کاروونکې ای ډي",
+  "employee_id": "د کار کوونکي ای ډي",
+  "access_start": "د لاسرسي پیل",
+  "access_end": "د لاسرسي پای",
+  "created_at": "د جوړیدو وخت",
+  "last_login": "وروستۍ ننوتنه"
 }

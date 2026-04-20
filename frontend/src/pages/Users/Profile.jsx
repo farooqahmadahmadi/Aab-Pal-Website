@@ -8,14 +8,16 @@ import {
   FiCamera,
   FiUnlock,
 } from "react-icons/fi";
+import { useTranslation } from "react-i18next";
 
 import { getUserById, uploadUserPhoto } from "../../services/userService";
-
 import UserChangePasswordModal from "../../components/Users/UserChangePasswordModal";
 
 const BASE_URL = import.meta.env.VITE_API_URL;
 
 export default function Profile() {
+  const { t } = useTranslation();
+
   const [user, setUser] = useState({});
   const [file, setFile] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -23,7 +25,7 @@ export default function Profile() {
 
   const loggedUser = JSON.parse(localStorage.getItem("user") || "{}");
 
-  // ================= FETCH USER =================
+  // FETCH
   const fetchUser = async () => {
     try {
       const res = await getUserById(loggedUser.user_id);
@@ -37,14 +39,13 @@ export default function Profile() {
     fetchUser();
   }, []);
 
-  // ================= FIX IMAGE URL =================
+  // IMAGE
   const getAvatar = () => {
     if (!user?.user_photo_url) return defaultAvatar;
-
     return `${BASE_URL}${user.user_photo_url}?t=${Date.now()}`;
   };
 
-  // ================= UPLOAD PHOTO =================
+  // UPLOAD
   const uploadPhoto = async () => {
     if (!file) return;
 
@@ -70,20 +71,19 @@ export default function Profile() {
   };
 
   return (
-    <div className="max-w-5xl mx-auto p-6">
-      {/* HEADER */}
-      <div className="bg-white shadow rounded-xl p-6 flex flex-col md:flex-row gap-6 items-center">
+    <div className="max-w-6xl mx-auto p-3 sm:p-6 space-y-6">
+      {/* ===== HEADER CARD ===== */}
+      <div className="bg-white shadow rounded-xl p-4 flex flex-col md:flex-row gap-5 items-center">
         {/* AVATAR */}
         <div className="relative">
           <img
             src={getAvatar()}
             alt="Profile"
-            className="w-32 h-32 rounded-full object-cover border-4 border-gray-200"
+            className="w-28 h-28 sm:w-32 sm:h-32 rounded-full object-cover border-4 border-gray-200"
           />
 
-          {/* Upload */}
-          <label className="absolute bottom-2 right-2 bg-gray-300 bg-opacity-50 p-2 rounded-full text-black cursor-pointer hover:bg-gray-200">
-            <FiCamera size={14} />
+          <label className="absolute bottom-2 right-2 bg-white p-2 rounded-full shadow cursor-pointer hover:bg-gray-100">
+            <FiCamera size={16} />
             <input
               type="file"
               hidden
@@ -94,114 +94,91 @@ export default function Profile() {
         </div>
 
         {/* INFO */}
-        <div className="flex-1 space-y-2">
-          <h2 className="text-2xl font-bold flex items-center gap-2">
-            <FiUser /> {user.user_name || "N/A"}
+        <div className="flex-1 w-full space-y-2 text-left">
+          <h2 className="text-xl sm:text-2xl font-bold flex items-center gap-2">
+            <FiUser /> {user.user_name || t("na")}
           </h2>
 
           <p className="text-gray-600 flex items-center gap-2">
-            <FiMail /> {user.user_email || "N/A"}
+            <FiMail /> {user.user_email || t("na")}
           </p>
 
           <p className="text-gray-600 flex items-center gap-2">
-            <FiPhone /> {user.user_phone || "N/A"}
+            <FiPhone /> {user.user_phone || t("na")}
           </p>
 
           <p className="text-gray-600 flex items-center gap-2">
-            <FiShield /> {user.user_role || "N/A"}
+            <FiShield /> {user.user_role || t("na")}
           </p>
 
-          <p className="text-sm text-gray-400">
-            Status: {user.login_status || "N/A"}
+          <p className="text-gray-600 flex items-center gap-2">
+            {t("status")}: {user.login_status || t("na")}
           </p>
 
           {/* ACTIONS */}
-          <div className="flex gap-3 mt-2">
+          <div className="flex flex-col sm:flex-row gap-2 mt-3 justify-center md:justify-start">
             {file && (
               <button
                 onClick={uploadPhoto}
                 disabled={loading}
-                className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
+                className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded"
               >
-                {loading ? "Uploading..." : "Save Photo"}
+                {loading ? t("uploading") : t("save_photo")}
               </button>
             )}
 
             <button
               onClick={() => setShowPassModal(true)}
-              className="flex items-center gap-2 bg-gray-800 text-white px-4 py-2 rounded hover:bg-gray-900"
+              className="flex items-center justify-center gap-2 bg-gray-800 text-white px-4 py-2 rounded-lg hover:bg-gray-900"
             >
-              <FiUnlock /> Change Password
+              <FiUnlock /> {t("change_password")}
             </button>
           </div>
         </div>
       </div>
 
-      {/* DETAILS */}
-      <div className="mt-6 bg-white shadow rounded-xl p-6 grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
-          <h3 className="font-semibold text-gray-700">User ID</h3>
-          <p>{user.user_id || "N/A"}</p>
-        </div>
+      {/* ===== DETAILS ===== */}
+      <div className="bg-white shadow rounded-xl p-4 sm:p-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <Info label={t("user_id")} value={user.user_id} />
+        <Info label={t("employee_id")} value={user.employee_id} />
+        <Info label={t("user_name")} value={user.user_name} />
+        <Info label={t("email")} value={user.user_email} />
+        <Info label={t("role")} value={user.user_role} />
+        <Info label={t("status")} value={user.login_status} />
+        <Info label={t("access_start")} value={user.access_time_start} />
+        <Info label={t("access_end")} value={user.access_time_end} />
 
-        <div>
-          <h3 className="font-semibold text-gray-700">Employee ID</h3>
-          <p>{user.employee_id || "N/A"}</p>
-        </div>
+        <Info
+          label={t("created_at")}
+          value={
+            user.created_at ? new Date(user.created_at).toLocaleString() : null
+          }
+        />
 
-        <div>
-          <h3 className="font-semibold text-gray-700">User Name</h3>
-          <p>{user.user_name || "N/A"}</p>
-        </div>
-
-        <div>
-          <h3 className="font-semibold text-gray-700">Email</h3>
-          <p>{user.user_email || "N/A"}</p>
-        </div>
-
-        <div>
-          <h3 className="font-semibold text-gray-700">Role</h3>
-          <p>{user.user_role || "N/A"}</p>
-        </div>
-
-        <div>
-          <h3 className="font-semibold text-gray-700">Status</h3>
-          <p>{user.login_status || "N/A"}</p>
-        </div>
-
-        <div>
-          <h3 className="font-semibold text-gray-700">Accses Start</h3>
-          <p>{user.access_time_start || "N/A"}</p>
-        </div>
-
-        <div>
-          <h3 className="font-semibold text-gray-700">Access End</h3>
-          <p>{user.access_time_end || "N/A"}</p>
-        </div>
-
-        <div>
-          <h3 className="font-semibold text-gray-700">Created At</h3>
-          <p>
-            {user.created_at
-              ? new Date(user.created_at).toLocaleString()
-              : "N/A"}
-          </p>
-        </div>
-
-        <div>
-          <h3 className="font-semibold text-gray-700">Last Login</h3>
-          <p>
-            {user.last_login_at
+        <Info
+          label={t("last_login")}
+          value={
+            user.last_login_at
               ? new Date(user.last_login_at).toLocaleString()
-              : "N/A"}
-          </p>
-        </div>
+              : null
+          }
+        />
       </div>
 
       {/* PASSWORD MODAL */}
       {showPassModal && (
         <UserChangePasswordModal onClose={() => setShowPassModal(false)} />
       )}
+    </div>
+  );
+}
+
+// SMALL COMPONENT (SAFE)
+function Info({ label, value }) {
+  return (
+    <div className="bg-gray-50 p-3 rounded-lg">
+      <h3 className="text-sm text-gray-500">{label}</h3>
+      <p className="font-medium break-words">{value || "N/A"}</p>
     </div>
   );
 }

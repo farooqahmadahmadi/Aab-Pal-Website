@@ -33,7 +33,7 @@
   "suppliers": "Suppliers",
   "materials": "Materials",
   "purchase_orders": "Purcahse Orders",
-  "po_items": "P.O Items",
+  "po_items": "Purcahse Orders Items",
 
   "equipments": "Equipments (Machinery)",
   "equipments_documents": "Equipments Documents",
@@ -141,7 +141,7 @@
 
   "add_new": "Add New",
   "edu_id": "Education ID",
-  "emp_id": "Employee ID",
+  "emp_id": "Employee",
   "emp_name": "Employee Name",
   "degree": "Degree",
   "institution": "Institution",
@@ -149,5 +149,165 @@
   "graduation": "Graduation Date",
   "add_employee_education": "Add Employee Education",
   "update_employee_education": "Update Employee Education",
-  "failed_fetch": "Failed to fetch records"
+  "failed_fetch": "Failed to fetch records",
+
+  "add_salary": "Add Salary",
+  "base_salary": "Base Salary",
+  "allowance": "Allowance",
+  "from": "From",
+  "to": "To",
+  "status": "Status",
+  "active": "Active",
+  "inactive": "Inactive",
+
+  "salary_payments": "Salary Payments",
+  "add_payment": "Add Payment",
+  "salary_id": "Salary ID",
+  "month": "Month",
+  "bonus": "Bonus",
+  "deduction": "Deduction",
+  "paid_amount": "Paid Amount",
+  "payment_date": "Payment Date",
+  "paid": "Paid",
+  "pending": "Pending",
+  "failed": "Failed",
+  "unknown": "Unknown",
+  "search": "Search...",
+
+  "attendance_list": "Attendance List",
+  "add_attendance": "Add Attendance",
+  "employee": "Employee",
+  "check_in": "Check In",
+  "check_out": "Check Out",
+  "hours": "Hours",
+  "present": "Present",
+  "absent": "Absent",
+  "leave": "Leave",
+  "sick": "Sick",
+  "no_data": "No data found",
+  "failed_load_attendance": "Failed to load attendance",
+
+  "add_shift": "Add Shift",
+  "shift_name": "Shift Name",
+  "latitude": "Latitude",
+  "longitude": "Longitude",
+  "reduce": "Reduce (m)",
+  "no_shifts_found": "No shifts found",
+  "failed_fetch_shifts": "Failed to fetch shifts",
+
+  "department_id": "Department ID",
+  "shift_id": "Shift ID",
+  "position": "Position",
+  "type": "Type",
+  "hire_date": "Hire Date",
+  "end_date": "End Date",
+
+  "client_info": "Client Info",
+  "photo": "Photo",
+  "saved_success": "Saved successfully",
+
+  "add_project": "Add New Project",
+  "projects_info": "Projects Info",
+  "project_name": "Project Name",
+  "client_id": "Client ID",
+  "budget": "Estimate Budget",
+  "start_date": "Start Date",
+
+  "add_phase": "Add Phase",
+  "project_phases": "Project Phases",
+  "project_id": "Project",
+  "phase_name": "Phase Name",
+
+  "add_boq": "‌Add BOQ Item",
+  "unit": "Unit",
+  "quantity": "Quantity",
+  "price": "Price",
+  "total": "Total",
+
+  "project_documents": "Projects Documents",
+
+  "add_expense": "Add Expense",
+  "amount": "Amount",
+
+  "add_invoice": "Add Invoice",
+  "due_date": "Due Date",
+
+  "add_transaction": "Add Transaction",
+  "income": "Income",
+  "expense": "Expense",
+  "manual": "Manual",
+  "auto": "Auto",
+
+  "invoice": "Invoice",
+  "payment_method": "Method",
+
+  "payments": "Payments",
+
+  "add_supplier": "Add Supplier",
+
+  "add_material": "Add Material",
+
+  "stock": "Stock",
+
+  "add_purchase_order": "Add Purchase Order",
+  "supplier": "Supplier",
+  "project": "Project",
+
+  "add_po_item": "Add Purcahse Order Item",
+  "po": "Purchase Order",
+  "material": "Material",
+  "qty": "Quantity",
+
+  "equipment": "Equipment (Machinery)",
+  "add_equipment": "Add Equipment",
+  "serial_number": "Serial Number",
+
+  "equipment_usage": "Equipment Usage",
+  "start": "Start",
+  "end": "End",
+  "add": "Add",
+
+  "equipment_maintenance": "Equipment Maintenance",
+  "cost": "Cost",
+
+  "equipment_documents": "Equipment Documents",
+
+  "add_contract": "Add Contract",
+  "number": "Number",
+  "value": "Value",
+
+  "contract_milestones": "Contract Milestones",
+  "contract": "Contract",
+  "title": "Title",
+
+  "add_task": "Add task",
+
+  "add_report": "Add Report",
+  "report_date": "Date",
+  "weather": "Weather",
+
+  "add_incident": "Add Incident",
+  "safety_incidents": "Safety Incidents",
+  "severity": "Severity",
+  "incident_date": "Incident Date",
+
+  "users": "System Users",
+  "search_users": "Search users...",
+  "add_user": "Add User",
+  "user_name": "Name",
+  "role": "Role",
+  "view": "View",
+  "no_users": "No users found",
+  "delete_user_confirm": "Are you sure you want to delete user",
+
+  "na": "N/A",
+
+  "save_photo": "Save Photo",
+  "uploading": "Uploading...",
+  "user_id": "User ID",
+  "employee_id": "Employee ID",
+  "access_start": "Access Start",
+  "access_end": "Access End",
+  "created_at": "Created At",
+  "last_login": "Last Login"
 }
