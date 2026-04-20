@@ -276,12 +276,12 @@ export default function Login() {
             <p className="text-center text-sm text-gray-400 mt-6">
               © {new Date().getFullYear()}{" - "}
               <a
-                href="https://nexora-link.com"
+                href="https://nexora-code.com"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-yellow-500 hover:text-blue-500 transition animate-pulse"
               >
-                Nexora-Link
+                Nexora-Code
               </a>
               . All rights reserved.
             </p>
