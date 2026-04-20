@@ -7,6 +7,9 @@ import Toast from "../../components/common/Toast";
 import useToast from "../../hooks/useToast";
 import { useTranslation } from "react-i18next";
 
+import MobileCard from "../../components/common/MobileCard";
+import CardRow from "../../components/common/CardRow";
+
 import {
   getSystemLogs,
   deleteSystemLog,
@@ -99,7 +102,7 @@ export default function SystemLogs() {
   const start = (page - 1) * limit;
   const paginated = filtered.slice(start, start + limit);
 
-  // ---------------- SELECT (RESTORED) ----------------
+  // ---------------- SELECT ----------------
   const toggleSelect = (id) => {
     setSelected((prev) =>
       prev.includes(id) ? prev.filter((i) => i !== id) : [...prev, id],
@@ -199,18 +202,18 @@ export default function SystemLogs() {
   };
 
   return (
-    <div className="p-3 sm:p-4 max-w-6xl mx-auto w-full overflow-x-auto">
+    <div className="w-full max-w-6xl mx-auto px-3 sm:px-4 md:px-6 py-4">
       {/* HEADER */}
-      <div className="flex justify-between mb-4">
-        <h2 className="text-2xl font-bold">{t("system_logs")}</h2>
+      <div className="flex flex-col md:flex-row justify-between items-center gap-3 mb-4">
+        <h2 className="text-xl sm:text-2xl font-bold">{t("system_logs")}</h2>
 
-        <div className="flex gap-2">
+        <div className="flex flex-col sm:flex-row gap-2 w-full md:w-auto">
           {/* SEARCH */}
           <SearchBar value={search} onChange={setSearch} />
-          {/* ADD Button */}
+          {/* Export Button */}
           <button
             onClick={() => setExportModal(true)}
-            className="bg-green-500 text-white px-3 py-2 rounded flex items-center gap-2"
+            className="bg-green-500 hover:bg-green-600 text-white px-3 py-2 rounded flex items-center justify-center gap-2 text-sm"
           >
             <FiExternalLink /> {t("export")}
           </button>
@@ -219,7 +222,7 @@ export default function SystemLogs() {
           {selected.length > 0 && (
             <button
               onClick={() => setDeleteData({ multi: true })}
-              className="bg-red-500 text-white px-3 py-2 rounded flex items-center gap-2"
+              className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded flex items-center justify-center gap-2"
             >
               <FiTrash2 /> ({selected.length})
             </button>
@@ -227,7 +230,7 @@ export default function SystemLogs() {
         </div>
       </div>
 
-      {/* SELECT CONTROLS (RESTORED) */}
+      {/* SELECT CONTROLS */}
       {paginated.length > 0 && (
         <div className="flex justify-between text-sm my-2">
           <button
@@ -246,72 +249,157 @@ export default function SystemLogs() {
         </div>
       )}
 
-      {/* TABLE */}
-      <div className="bg-white shadow rounded overflow-x-auto">
-        <table className="w-full min-w-[900px] text-center text-sm">
-          <thead className="bg-gray-200 text-sm">
-            <tr>
-              <th className="p-2">{t("select")}</th>
-              <th className="p-2">ID</th>
-              <th className="p-2">{t("user")}</th>
-              <th className="p-2">{t("action")}</th>
-              <th className="p-2">{t("table")}</th>
-              <th className="p-2">{t("old")}</th>
-              <th className="p-2">{t("new")}</th>
-              <th className="p-2">{t("created")}</th>
-              <th className="p-2">{t("action")}</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            {paginated.map((n) => (
-              <tr
-                key={n.log_id}
-                className="hover:bg-gray-50 cursor-pointer"
-                onClick={() => setDrawer(n)}
-              >
-                <td className="p-2" onClick={(e) => e.stopPropagation()}>
-                  <input
-                    type="checkbox"
-                    checked={selected.includes(n.log_id)}
-                    onChange={() => toggleSelect(n.log_id)}
-                  />
-                </td>
-
-                <td className="p-2">{n.log_id}</td>
-                <td className="p-2">{n.user_id}</td>
-                <td className="p-2">{n.action}</td>
-                <td className="p-2">{n.reference_table}</td>
-
-                <td className="p-2 max-w-[120px] truncate" title={n.old_value}>
-                  {n.old_value}
-                </td>
-
-                <td className="p-2 max-w-[120px] truncate" title={n.new_value}>
-                  {n.new_value}
-                </td>
-
-                <td className="p-2">
-                  {new Date(n.created_at).toLocaleString()}
-                </td>
-
-                <td className="p-2">
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setDeleteData(n);
-                    }}
-                    className="bg-red-500 text-white px-2 py-1 rounded flex items-center gap-1"
-                  >
-                    <FiTrash2 />
-                  </button>
-                </td>
+      {/* TABLE / CARD */}
+      <div className="bg-white shadow rounded overflow-hidden">
+        {/* DESKTOP TABLE */}
+        <div className="hidden md:block overflow-x-auto">
+          <table className="w-full min-w-[900px] text-center text-sm">
+            <thead className="bg-gray-200">
+              <tr>
+                <th className="p-2">{t("select")}</th>
+                <th className="p-2">ID</th>
+                <th className="p-2">{t("user")}</th>
+                <th className="p-2">{t("action")}</th>
+                <th className="p-2">{t("table")}</th>
+                <th className="p-2">{t("old")}</th>
+                <th className="p-2">{t("new")}</th>
+                <th className="p-2">{t("created")}</th>
+                <th className="p-2">{t("action")}</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+
+            <tbody>
+              {paginated.map((n) => (
+                <tr
+                  key={n.log_id}
+                  className="hover:bg-gray-50 cursor-pointer"
+                  onClick={() => setDrawer(n)}
+                >
+                  <td className="p-2" onClick={(e) => e.stopPropagation()}>
+                    <input
+                      type="checkbox"
+                      checked={selected.includes(n.log_id)}
+                      onChange={() => toggleSelect(n.log_id)}
+                    />
+                  </td>
+
+                  <td className="p-2">{n.log_id}</td>
+                  <td className="p-2">{n.user_id}</td>
+                  <td className="p-2">{n.action}</td>
+                  <td className="p-2">{n.reference_table}</td>
+
+                  <td
+                    className="p-2 max-w-[120px] truncate"
+                    title={n.old_value}
+                  >
+                    {n.old_value}
+                  </td>
+
+                  <td
+                    className="p-2 max-w-[120px] truncate"
+                    title={n.new_value}
+                  >
+                    {n.new_value}
+                  </td>
+
+                  <td className="p-2">
+                    {new Date(n.created_at).toLocaleString()}
+                  </td>
+
+                  <td className="p-2">
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setDeleteData(n);
+                      }}
+                      className="bg-red-500 text-white px-2 py-1 rounded flex items-center gap-1"
+                    >
+                      <FiTrash2 />
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        {/* MOBILE CARD - WITH CLICK WRAPPER FOR RELIABLE DRAWER OPEN */}
+        <div className="md:hidden p-2 space-y-2">
+          {paginated.length ? (
+            paginated.map((n) => (
+              <div
+                key={n.log_id}
+                onClick={() => setDrawer(n)}
+                className="cursor-pointer"
+              >
+                <MobileCard
+                  id={n.log_id}
+                  className="p-2"
+                  actions={
+                    <div className="flex items-center gap-2">
+                      <input
+                        type="checkbox"
+                        checked={selected.includes(n.log_id)}
+                        onChange={() => toggleSelect(n.log_id)}
+                        onClick={(e) => e.stopPropagation()} // Prevent drawer open when checking
+                        className="w-4 h-4"
+                      />
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setDeleteData(n);
+                        }}
+                        className="bg-red-500 p-1.5 text-white rounded text-xs"
+                      >
+                        <FiTrash2 size={14} />
+                      </button>
+                    </div>
+                  }
+                >
+                  {/* Compact card content */}
+                  <div className="text-xs space-y-1">
+                    <div className="flex justify-between items-center">
+                      <span className="font-semibold">ID: {n.log_id}</span>
+                      <span className="text-gray-500 text-xs">
+                        {new Date(n.created_at).toLocaleDateString()}
+                      </span>
+                    </div>
+                    <div className="flex flex-wrap gap-x-3 gap-y-1">
+                      <span>
+                        <span className="font-medium">{t("user")}:</span>{" "}
+                        {n.user_id}
+                      </span>
+                      <span>
+                        <span className="font-medium">{t("action")}:</span>{" "}
+                        {n.action}
+                      </span>
+                      <span>
+                        <span className="font-medium">{t("table")}:</span>{" "}
+                        {n.reference_table}
+                      </span>
+                    </div>
+                    <div className="flex flex-wrap gap-x-3 text-gray-600">
+                      <span className="truncate max-w-[120px]">
+                        {t("old")}: {n.old_value || "—"}
+                      </span>
+                      <span>→</span>
+                      <span className="truncate max-w-[120px]">
+                        {t("new")}: {n.new_value || "—"}
+                      </span>
+                    </div>
+                  </div>
+                </MobileCard>
+              </div>
+            ))
+          ) : (
+            <div className="text-center text-gray-500 py-4">
+              {t("no_records")}
+            </div>
+          )}
+        </div>
       </div>
 
+      {/* DELETE CONFIRMATION MODAL */}
       {deleteData && (
         <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
           <div className="bg-white p-4 rounded w-80">
@@ -346,23 +434,23 @@ export default function SystemLogs() {
         />
       </div>
 
-      {/* DRAWER (FIXED + CLEAN) */}
+      {/* RESPONSIVE DRAWER - WORKS ON ALL SCREEN SIZES */}
       {drawer && (
         <div
           id="drawer-bg"
           onClick={closeDrawer}
           className="fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-end"
         >
-          <div className="w-[420px] bg-white h-full p-4 overflow-y-auto">
-            <div className="flex justify-between mb-4 ">
+          <div className="w-full sm:w-[420px] max-w-full bg-white h-full p-4 overflow-y-auto">
+            <div className="flex justify-between mb-4">
               <h3 className="font-bold text-blue-600">{t("log_details")}</h3>
 
-              {/* Drawer Close Button */}
+              {/* Improved close button with larger touch target */}
               <div
-                className=" p-1 rounded-full text-red-500 hover:bg-red-500 hover:text-white"
+                className="p-2 rounded-full text-red-500 hover:bg-red-500 hover:text-white cursor-pointer"
                 onClick={() => setDrawer(null)}
               >
-                <FiXCircle />
+                <FiXCircle size={20} />
               </div>
             </div>
 
@@ -425,7 +513,7 @@ export default function SystemLogs() {
       {/* EXPORT MODAL */}
       {exportModal && (
         <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
-          <div className="bg-white p-5 rounded-xl w-96 ">
+          <div className="bg-white p-5 rounded-xl w-96">
             <h3 className="font-bold mb-3">{t("export_logs")}</h3>
 
             <div className="text-md">
@@ -437,7 +525,7 @@ export default function SystemLogs() {
                   type="date"
                   value={fromDate}
                   onChange={(e) => setFromDate(e.target.value)}
-                  className="w-full mb-2 border p-2 rounded-md "
+                  className="w-full mb-2 border p-2 rounded-md"
                 />
               </div>
               <div>
@@ -448,7 +536,7 @@ export default function SystemLogs() {
                   type="date"
                   value={toDate}
                   onChange={(e) => setToDate(e.target.value)}
-                  className="w-full mb-2 border p-2 rounded-md "
+                  className="w-full mb-2 border p-2 rounded-md"
                 />
               </div>
 
@@ -460,11 +548,11 @@ export default function SystemLogs() {
                   type="text"
                   value={fileName}
                   onChange={(e) => setFileName(e.target.value)}
-                  className="w-full mb-3 border p-2 rounded-md "
+                  className="w-full mb-3 border p-2 rounded-md"
                 />
               </div>
 
-              <div className="flex justify-end gap-2 ">
+              <div className="flex justify-end gap-2">
                 <button
                   onClick={() => setExportModal(false)}
                   type="button"
