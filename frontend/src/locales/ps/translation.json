@@ -306,5 +306,17 @@
   "access_start": "د لاسرسي پیل",
   "access_end": "د لاسرسي پای",
   "created_at": "د جوړیدو وخت",
-  "last_login": "وروستۍ ننوتنه"
+  "last_login": "وروستۍ ننوتنه",
+
+  "welcome_login": "سیسټم ته د ننه کېدل",
+  "login": "د ننه شئ",
+  "login_success": "به بریالیتوب سره سیسټم ته د ننه شو",
+  "user_inactive": "دا حساب بند دی!",
+  "password": "پټ نوم",
+  "forgot_password": "پټ نوم مي هیر شوی؟",
+  "enter_email": "بریښنالیک مو د ننه کړئ",
+  "send_reset": "د ریسیټ لینک لیږل",
+  "signup": "د حساب جوړول",
+  "singup_ok": "سمه ده",
+  "contact_admin_signup": "د حساب د ترلاسه کولو لپاره د سیسټم له مدیر سره اړیکه ونیسئ."
 }

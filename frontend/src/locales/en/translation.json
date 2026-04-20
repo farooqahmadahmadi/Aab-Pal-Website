@@ -309,5 +309,17 @@
   "access_start": "Access Start",
   "access_end": "Access End",
   "created_at": "Created At",
-  "last_login": "Last Login"
+  "last_login": "Last Login",
+
+  "welcome_login": "Login to system",
+  "login": "Login",
+  "login_success": "Login successful!",
+  "user_inactive": "User is inactive. Contact admin.",
+  "password": "Password",
+  "forgot_password": "Forgot Password?",
+  "enter_email": "Enter your email",
+  "send_reset": "Send Reset Link",
+  "signup": "Sign Up",
+  "singup_ok": "OK",
+  "contact_admin_signup": "To get a user account, please contact the system administrator."
 }

@@ -306,5 +306,17 @@
   "access_start": "آغاز دسترسی",
   "access_end": "پایان دسترسی",
   "created_at": "ایجاد شده",
-  "last_login": "اخرین ورود"
+  "last_login": "اخرین ورود",
+
+  "welcome_login": "ورود به سیستم",
+  "login": "ورود",
+  "login_success": "ورود موفقانه بود",
+  "user_inactive": "این حساب غیر فعال می باشد",
+  "password": "رمز عبور",
+  "forgot_password": "رمز عبور را فراموش کردم؟",
+  "enter_email": "ایمیل تان را وارد کنید",
+  "send_reset": "ارسال لینک باز یابی",
+  "signup": "ایجاد حساب",
+  "singup_ok": "درست است",
+  "contact_admin_signup": "برای اخذ حساب کاربری با مدیر سیستم در تماس شوید."
 }
