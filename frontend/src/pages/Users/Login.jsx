@@ -50,7 +50,7 @@ export default function Login() {
       setToastType("success");
       setToast(t("login_success"));
 
-      // showNotification("Login Success", "Welcome to CC-MIS System");
+      showNotification("Login Success", "Welcome to CC-MIS System");
 
       switch (user.user_role) {
         case "Admin":
