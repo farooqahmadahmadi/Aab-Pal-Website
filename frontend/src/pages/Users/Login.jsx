@@ -274,9 +274,10 @@ export default function Login() {
             </p>
 
             <p className="text-center text-sm text-gray-400 mt-6">
-              © {new Date().getFullYear()}{" - "}
+              © {new Date().getFullYear()}
+              {" - "}
               <a
-                href="https://nexora-code.com"
+                href="https://www.facebook.com/nexora.code.your.gate.way.to.digital.excellence"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-yellow-500 hover:text-blue-500 transition animate-pulse"
