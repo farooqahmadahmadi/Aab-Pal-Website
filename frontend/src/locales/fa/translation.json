@@ -152,6 +152,7 @@
   "failed_fetch": "دسترس به اطلاعات ناموفق بود",
 
   "add_salary": "افزودن معاش",
+  "update_salary": "ویرایش معاش",
   "base_salary": "معاش اولیه",
   "allowance": "اضافه کاری",
   "from": "از تاریخ",
@@ -159,9 +160,12 @@
   "status": "حالت",
   "active": "فعال",
   "inactive": "غیر فعال",
+  "effective_from": "از تاریخ",
+  "effective_to": "الی تاریخ",
 
   "salary_payments": "پرداخت های معاش",
   "add_payment": "افزودن پرداخت",
+  "update_payment": "ویرایش پرداخت",
   "salary_id": "ای دی معاش",
   "month": "ماه",
   "bonus": "بخششی",
@@ -176,10 +180,17 @@
 
   "attendance_list": "حاضری کارمندان",
   "add_attendance": "افزودن اضافه کاری",
+  "update_attendance": "ویرایش حاضری",
   "employee": "کارمند",
-  "check_in": "داخل شدن",
-  "check_out": "بیرون شدن",
-  "hours": "سعات ها",
+  "check_in": "وقت داخل شدن",
+  "check_out": "وقت بیرون شدن",
+
+  "check_in_start": "آغاز داخل شدن",
+  "check_out_start": "آغاز بیرون شدن",
+  "check_in_end": "پایان داخل شدن",
+  "check_out_end": "پایان بیرون شدن",
+  "attendance_date": "تاریخ حاضری",
+  "work_hours": "ساعت های کاری",
   "present": "حاضر",
   "absent": "غیر حاضر",
   "leave": "رخصت",
@@ -188,6 +199,8 @@
   "failed_load_attendance": "دسترس به اطلاعات حاضری ناموفق بود",
 
   "add_shift": "افزودن وقت",
+
+  "update_shift": "ویرایش وقت",
   "shift_name": "اسم وقت/شفت",
   "latitude": "Latitude",
   "longitude": "Longitude",
@@ -196,14 +209,19 @@
   "failed_fetch_shifts": "دسترس به اطلاعات اوقات حاضری ناموفق بود",
 
   "department_id": "شعبه",
+  "add_employee_hiring": "افزودن استخدام کارمند",
+  "update_employee_hiring": "ویرایش استخدام کارمند",
   "shift_id": "وقت/شفت",
   "position": "وظیفه",
+  "employement_type": "نوعیت استخدام",
   "type": "نوعیت",
   "hire_date": "تاریخ استخدام",
   "end_date": "تاریخ پایان",
 
   "client_info": "اطلاعات مشتریان",
   "photo": "عکس",
+  "add_client": "افزودن مشتری",
+  "update_client": "ویرایش مشتری",
   "saved_success": "موفقانه ذخیره شد",
 
   "add_project": "افزودن پروژه",
@@ -214,25 +232,33 @@
   "start_date": "تاریخ آغاز",
 
   "add_phase": "افزودن فاز",
+  "update_phase": "ویرایش فاز",
   "project_phases": "فاز های پروژه",
-  "project_id": "پروژه",
+  "project_id": "ای دی پروژه",
   "phase_name": "اسم فاز",
 
   "add_boq": "افزودن BOQ Item",
+  "update_boq": "ویرایش BOQ Item",
   "unit": "واحد",
   "quantity": "مقدار",
-  "price": "قیمت",
+  "price": "قیمت/فی",
   "total": "مجموعه",
 
   "project_documents": "اسناد پروژه ها",
 
   "add_expense": "افزودن مصارف",
+  "update_expense": "ویرایش مصارف",
+  "reference_id": "ای دی مرجع",
   "amount": "مقدار",
+  "date": "تاریخ",
 
   "add_invoice": "افزودن انوایس",
+  "update_invoice": "ویرایش انوایس",
   "due_date": "تاریخ نهایی",
 
   "add_transaction": "افزودن ترانزکشن",
+  "update_transaction": "ویرایش ترانزکشن",
+  "transaction_type": "نوعیت ترانزکشن",
   "income": "عاید",
   "expense": "مصرف",
   "manual": "دستی",
@@ -242,32 +268,48 @@
   "payment_method": "روش",
 
   "payments": "پرداخت ها",
+  "payment_amount": "مبلغ قابل پرداخت",
 
   "add_supplier": "افزودن عرضه کننده",
+  "update_supplier": "ویرایش عرضه کننده",
+  "supplier_name": "اسم عرضه کننده",
 
   "add_material": "افزودن مواد",
-
+  "update_material": "ویرایش مواد",
   "stock": "موجود",
+  "average_price": "قیمت اوسط",
 
   "add_purchase_order": "افزودن اردر خرید",
+  "update_purchase_order": "ویرایش اردر خرید",
   "supplier": "عرضه کننده",
   "project": "پروژه",
 
   "add_po_item": "افزودن مواد به اردر خرید",
+  "update_po_item": "ویرایش مواد در اردر خرید",
   "po": "اردر خرید",
   "material": "مواد",
   "qty": "مقدار",
+  "yes": "بلی",
+  "no": "نخیر",
 
+  "equipment_id": "ای دی وسیله (ماشین)",
   "equipment": "وسایط (ماشین آلات)",
   "add_equipment": "افزودن وسایط",
+  "update_equipment": "ویرایش وسایط",
+  "purchase_date": "تاریخ خرید",
+  "purchase_price": "قیمت خرید",
   "serial_number": "سریال نمبر",
 
   "equipment_usage": "استفاده از وسایط",
+  "add_usage": "افزودن استفاده از وسایط",
+  "update_usage": "ویرایش استفاده از وسایط",
   "start": "آغاز",
   "end": "پایان",
   "add": "افزودن",
 
   "equipment_maintenance": "مراقبت از وسایط",
+  "add_maintenance": "افزودن مراقبت از وسایط",
+  "update_maintenance": "ویرایش مراقبت از وسایط",
   "cost": "هزینه",
 
   "equipment_documents": "اسناد وسایط (ماشین آلات)",
@@ -275,21 +317,35 @@
   "add_contract": "افزودن قرارداد",
   "number": "شماره",
   "value": "ارزش",
+  "contract_name": "عنوان قرارداد",
+  "contract_number": "نمبر قرارداد",
+  "signed_date": "تاریخ امضاء",
+  "contract_start_date": "تاریخ آغاز",
+  "contract_end_date": "تاریخ پایان",
 
-  "contract_milestones": "اجزای قرارداد ها",
+  "contract_milestones": "ضمایم قرارداد ها",
+  "add_contract_milestone": "افزودن ضمیمه قرارداد",
+  "update_contract_milestone": "ویرایش ضمیمه قرارداد",
+  "contract_id": "ای دی قرارداد",
   "contract": "قرارداد",
   "title": "عنوان",
 
   "add_task": "افزودن وظیفه",
+  "update_task": "ویرایش وظیفه",
+  "task_id": "ای دی وظیفه",
 
   "add_report": "افزودن ګزارش",
   "report_date": "تاریخ",
   "weather": "هوا",
+  "work_completed": "کار های انجام شده",
+  "issues": "موضوعات",
 
   "add_incident": "افزودن حادثه",
+  "update_incident": "ویرایش حادثه",
   "safety_incidents": "حادثات",
   "severity": "شدت",
   "incident_date": "تاریخ وقوع",
+  "action_taken": "عمل انجام شده",
 
   "users": "کاربران سیستم",
   "search_users": "جستجو ...",
@@ -322,6 +378,9 @@
 
   "notifications": "اعلان ها",
   "add_notification": "افزودن اعلان",
+  "update_notification": "ویرایش اعلان",
+  "recipients": "ګیرینده",
+  "message": "پیام",
   "select_page": "انتخاب همه",
   "clear": "لغو انتخاب",
 

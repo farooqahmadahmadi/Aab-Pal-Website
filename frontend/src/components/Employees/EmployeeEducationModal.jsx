@@ -52,23 +52,22 @@ export default function EmployeeEducationModal({
   };
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-50 p-4">
-      <div className="bg-white w-full max-w-2xl rounded-2xl shadow-lg max-h-[90vh] overflow-y-auto">
+    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-3">
+      <div className="bg-white w-full max-w-3xl max-h-[90vh] overflow-y-auto rounded-2xl shadow-lg p-5">
         {/* Header */}
-        <div className="p-4 border-b flex justify-between items-center">
-          <h3 className="text-lg font-bold">
-            {initialData
-              ? t("update_employee_education")
-              : t("add_employee_education")}
-          </h3>
 
-          {/* <button
+        <h3 className="text-xl font-bold mb-5 text-center">
+          {initialData
+            ? t("update_employee_education")
+            : t("add_employee_education")}
+        </h3>
+
+        {/* <button
             onClick={onClose}
             className="text-gray-500 hover:text-red-500 text-xl"
           >
             ✕
           </button> */}
-        </div>
 
         {/* FORM */}
         <form

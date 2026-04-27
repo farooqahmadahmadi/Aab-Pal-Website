@@ -17,9 +17,13 @@ import {
   FiSettings,
   FiChevronLeft,
   FiChevronRight,
+  FiPaperclip,
+  FiBook,
+  FiClipboard,
 } from "react-icons/fi";
 
 import defaultAvatar from "../assets/images/client-def-image.png";
+import { FaRegStickyNote } from "react-icons/fa";
 
 export default function Sidebar({ role }) {
   const location = useLocation();
@@ -236,6 +240,31 @@ export default function Sidebar({ role }) {
           },
         ],
       },
+
+      // REPORTS -------------------------------------------------------------------------------
+      {
+        name: "Report Center",
+        icon: <FiClipboard className="animate-bounce" />,
+        submenu: [
+          { name: "All Expenses", path: "/admin/reports/all_expenses" },
+          { name: "Daily Expenses ", path: "/admin/reports/daily_expenses" },
+          {
+            name: "Generate Custom ",
+            path: "/admin/reports/filtered_expenses",
+          },
+          {
+            name: "Monthly Expenses ",
+            path: "/admin/reports/monthly_expenses",
+          },
+          { name: "Yearly Expenses ", path: "/admin/reports/yearly_expenses" },
+          {
+            name: "Project Expenses ",
+            path: "/admin/reports/project_expenses",
+          },
+        ],
+      },
+
+      // ----------------------------------------------------------------------------------------------
       {
         name: "system",
         icon: <FiSettings className="animate-spin" />,

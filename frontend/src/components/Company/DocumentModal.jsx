@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { FiFilePlus } from "react-icons/fi";
+import { FiPaperclip } from "react-icons/fi";
 import { useTranslation } from "react-i18next";
 
 export default function DocumentModal({
@@ -102,7 +102,7 @@ export default function DocumentModal({
                 {formData.file ? formData.file.name : t("select_file")}
               </span>
 
-              <FiFilePlus className="text-green-500" size={20} />
+              <FiPaperclip className="text-green-500" size={20} />
 
               <input
                 type="file"

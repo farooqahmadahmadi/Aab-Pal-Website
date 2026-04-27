@@ -1,99 +1,235 @@
 import React, { useEffect, useState } from "react";
-import { FaPlus } from "react-icons/fa";
+import { FiFilePlus } from "react-icons/fi";
+import { useTranslation } from "react-i18next";
 
-export default function ContractModal({ isOpen, onClose, onSubmit, initialData }) {
-    const [form, setForm] = useState({
-        project_id: "",
-        contract_name: "",
-        contract_number: "",
-        signed_date: "",
-        contract_start_date: "",
-        contract_end_date: "",
-        total_value: 0,
-        contract_status: "Draft",
-        file: null
+export default function ContractModal({
+  isOpen,
+  onClose,
+  onSubmit,
+  initialData,
+}) {
+  const defaultForm = {
+    project_id: "",
+    contract_name: "",
+    contract_number: "",
+    signed_date: "",
+    contract_start_date: "",
+    contract_end_date: "",
+    total_value: 0,
+    contract_status: "Draft",
+    file: null,
+  };
+
+  const { t } = useTranslation();
+  const [form, setForm] = useState(defaultForm);
+
+  useEffect(() => {
+    if (initialData) {
+      setForm({ ...initialData, file: null });
+    } else {
+      setForm(defaultForm);
+    }
+  }, [initialData, isOpen]);
+
+  if (!isOpen) return null;
+
+  const handleChange = (e) => {
+    const { name, value, files } = e.target;
+
+    if (files) {
+      setForm((prev) => ({ ...prev, file: files[0] }));
+    } else {
+      setForm((prev) => ({ ...prev, [name]: value }));
+    }
+  };
+
+  const submit = (e) => {
+    e.preventDefault();
+
+    const fd = new FormData();
+
+    Object.keys(form).forEach((key) => {
+      if (form[key] !== null && form[key] !== "") {
+        fd.append(key, form[key]);
+      }
     });
 
-    useEffect(() => {
-        if (initialData) setForm({ ...initialData, file: null });
-        else setForm({
-            project_id: "",
-            contract_name: "",
-            contract_number: "",
-            signed_date: "",
-            contract_start_date: "",
-            contract_end_date: "",
-            total_value: 0,
-            contract_status: "Draft",
-            file: null
-        });
-    }, [initialData, isOpen]);
+    // 🔥 ensure numeric fields correct
+    fd.set("project_id", Number(form.project_id) || "");
 
-    if (!isOpen) return null;
+    onSubmit(fd);
+  };
 
-    const handleChange = (e) => {
-        const { name, value, files } = e.target;
-        if (files) setForm(prev => ({ ...prev, file: files[0] }));
-        else setForm(prev => ({ ...prev, [name]: value }));
-    };
+  return (
+    <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-50 p-3">
+      <div className="bg-white w-full max-w-3xl max-h-[90vh] overflow-y-auto rounded-2xl shadow-xl p-5">
+        {/* Title */}
+        <h2 className="text-xl font-bold text-center mb-5">
+          {initialData ? "Edit Contract" : "Add Contract"}
+        </h2>
 
-    const submit = (e) => {
-        e.preventDefault();
-        const fd = new FormData();
-        Object.keys(form).forEach(k => {
-            if (form[k] !== null) fd.append(k, form[k]);
-        });
-        onSubmit(fd);
-    };
+        {/* Form */}
+        <form onSubmit={submit} className="space-y-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            {/* Project ID */}
+            <div>
+              <label className="block text-sm mb-1 font-medium">
+                {t("project_id")}
+              </label>
+              <input
+                type="number"
+                name="project_id"
+                value={form.project_id ?? ""}
+                onChange={handleChange}
+                className="w-full border p-2.5 rounded focus:ring-2 focus:ring-blue-400 outline-none"
+                required
+              />
+            </div>
 
-    return (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-            <div className="bg-white p-6 rounded-2xl w-full max-w-xl">
-                <h3 className="font-bold mb-4">{initialData ? "Edit" : "Add"} Contract</h3>
+            {/* Name */}
+            <div>
+              <label className="block text-sm mb-1 font-medium">
+                {t("contract_name")}
+              </label>
+              <input
+                name="contract_name"
+                value={form.contract_name ?? ""}
+                onChange={handleChange}
+                className="w-full border p-2.5 rounded focus:ring-2 focus:ring-blue-400 outline-none"
+              />
+            </div>
 
-                <form onSubmit={submit} className="space-y-3">
+            {/* Number */}
+            <div>
+              <label className="block text-sm mb-1 font-medium">
+                {t("contract_number")}
+              </label>
+              <input
+                name="contract_number"
+                value={form.contract_number ?? ""}
+                onChange={handleChange}
+                className="w-full border p-2.5 rounded focus:ring-2 focus:ring-blue-400 outline-none"
+              />
+            </div>
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                        <input name="project_id" value={form.project_id} onChange={handleChange} placeholder="Project ID" className="w-full border p-2 rounded" required />
-                        <input name="contract_name" value={form.contract_name} onChange={handleChange} placeholder="Contract Name(Subject)" className="w-full border p-2 rounded" />
-                        <input name="contract_number" value={form.contract_number} onChange={handleChange} placeholder="Contract Number" className="w-full border p-2 rounded" />
-                        <input type="date" name="signed_date" title="Signature Date" value={form.signed_date} onChange={handleChange} className="w-full border p-2 rounded" required />
+            {/* Signed */}
+            <div>
+              <label className="block text-sm mb-1 font-medium">
+                {t("signed_date")}
+              </label>
+              <input
+                type="date"
+                name="signed_date"
+                value={form.signed_date ?? ""}
+                onChange={handleChange}
+                className="w-full border p-2.5 rounded focus:ring-2 focus:ring-blue-400 outline-none"
+                required
+              />
+            </div>
 
-                        <input type="date" name="contract_start_date" title="Start Date" value={form.contract_start_date} onChange={handleChange} className="w-full border p-2 rounded" />
-                        <input type="date" name="contract_end_date" title="End Date" value={form.contract_end_date} onChange={handleChange} className="w-full border p-2 rounded" />
+            {/* Start */}
+            <div>
+              <label className="block text-sm mb-1 font-medium">
+                {t("contract_start_date")}
+              </label>
+              <input
+                type="date"
+                name="contract_start_date"
+                value={form.contract_start_date ?? ""}
+                onChange={handleChange}
+                className="w-full border p-2.5 rounded focus:ring-2 focus:ring-blue-400 outline-none"
+              />
+            </div>
 
-                        <input type="number" name="total_value" step="0.01" title="Total Value" value={form.total_value ?? 0} onChange={handleChange} placeholder="Total Value" className="w-full border p-2 rounded" />
+            {/* End */}
+            <div>
+              <label className="block text-sm mb-1 font-medium">
+                {t("contract_end_date")}
+              </label>
+              <input
+                type="date"
+                name="contract_end_date"
+                value={form.contract_end_date ?? ""}
+                onChange={handleChange}
+                className="w-full border p-2.5 rounded focus:ring-2 focus:ring-blue-400 outline-none"
+              />
+            </div>
 
-                        <select name="contract_status" title="Status" value={form.contract_status} onChange={handleChange} className="w-full border p-2 rounded">
-                            <option>Draft</option>
-                            <option>Active</option>
-                            <option>Completed</option>
-                            <option>Cancelled</option>
-                        </select>
-                    </div>
+            {/* Value */}
+            <div>
+              <label className="block text-sm mb-1 font-medium">
+                {t("value")}
+              </label>
+              <input
+                type="number"
+                name="total_value"
+                step="0.01"
+                value={form.total_value ?? 0}
+                onChange={handleChange}
+                className="w-full border p-2.5 rounded focus:ring-2 focus:ring-blue-400 outline-none"
+              />
+            </div>
 
-                    <label className="block">
-                        <span className="text-gray-700 mb-1">Choose File:</span>
-                        <div className="flex items-center gap-2 border p-2 rounded cursor-pointer hover:bg-gray-100">
-                            <span>{form.file ? form.file.name : "Select file..."}</span>
-                            <input type="file"
-                                onChange={handleChange}
-                                className="hidden"
-                                accept=".txt,.pdf,.doc,.docx,.xlsx,.pptx,.png,.jpeg,.jpg,.zip,.rar"
-                            />
-                            <FaPlus className="text-green-500" />
-                        </div>
-                    </label>
+            {/* Status */}
+            <div>
+              <label className="block text-sm mb-1 font-medium">
+                {t("status")}
+              </label>
+              <select
+                name="contract_status"
+                value={form.contract_status ?? "Draft"}
+                onChange={handleChange}
+                className="w-full border p-2.5 rounded focus:ring-2 focus:ring-blue-400 outline-none"
+              >
+                <option>Draft</option>
+                <option>Active</option>
+                <option>Completed</option>
+                <option>Cancelled</option>
+              </select>
+            </div>
+          </div>
 
-                    <div className="flex justify-end gap-2">
-                        <button type="button" className="bg-gray-400 hover:bg-gray-500 text-white px-4 py-2 rounded"
-                            onClick={onClose}>Cancel</button>
-                        <button type="submit" className="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded">
-                            {initialData ? "Update" : "Save"}
-                        </button>
-                    </div>
-                </form>
-            </div >
-        </div >
-    );
+          {/* File */}
+          <div>
+            <label className="block text-sm mb-1 font-medium">
+              {t("choose_file")}
+            </label>
+
+            <label className="flex items-center justify-between border p-2.5 rounded cursor-pointer hover:bg-gray-50 transition">
+              <span className="text-sm truncate">
+                {form.file ? form.file.name : t("select_file")}
+              </span>
+              <FiFilePlus className="text-green-500" size={20} />
+
+              <input
+                type="file"
+                name="file"
+                onChange={handleChange}
+                className="hidden"
+                accept=".txt,.pdf,.doc,.docx,.xlsx,.pptx,.png,.jpeg,.jpg,.zip,.rar"
+              />
+            </label>
+          </div>
+
+          {/* Buttons */}
+          <div className="flex flex-col sm:flex-row justify-end gap-2">
+            <button
+              type="button"
+              onClick={onClose}
+              className="bg-gray-400 hover:bg-gray-500 text-white px-4 py-2 rounded w-full sm:w-auto"
+            >
+              {t("cancel")}
+            </button>
+
+            <button
+              type="submit"
+              className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded w-full sm:w-auto"
+            >
+              {initialData ? t("update") : t("save")}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
 }

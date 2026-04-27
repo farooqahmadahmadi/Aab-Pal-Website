@@ -3,7 +3,15 @@ import { getActiveSalaryInfos } from "../../services/empSalaryPaymentService";
 import Toast from "../common/Toast";
 import useToast from "../../hooks/useToast";
 
-const EmpSalaryPaymentModal = ({ isOpen, onClose, onSave, payment, allPayments = [] }) => {
+import { useTranslation } from "react-i18next";
+
+const EmpSalaryPaymentModal = ({
+  isOpen,
+  onClose,
+  onSave,
+  payment,
+  allPayments = [],
+}) => {
   const [form, setForm] = useState({
     employee_salary_id: "",
     salary_month: "",
@@ -11,16 +19,16 @@ const EmpSalaryPaymentModal = ({ isOpen, onClose, onSave, payment, allPayments =
     salary_deduction: 0,
     paid_amount: 0,
     payment_date: "",
-    payment_status: "Pending"
+    payment_status: "Pending",
   });
+
+  const { t } = useTranslation();
 
   const [activeSalaries, setActiveSalaries] = useState([]);
   const [baseSalary, setBaseSalary] = useState(0);
 
-  // Toast
   const { toast, showToast, hideToast } = useToast();
 
-  // Fetch Active Salaries
   useEffect(() => {
     const fetchActive = async () => {
       const salaries = await getActiveSalaryInfos();
@@ -29,11 +37,10 @@ const EmpSalaryPaymentModal = ({ isOpen, onClose, onSave, payment, allPayments =
     fetchActive();
   }, []);
 
-  // Initialize Form
   useEffect(() => {
     if (payment) {
       const salaryInfo = activeSalaries.find(
-        s => s.employee_salary_id === payment.employee_salary_id
+        (s) => s.employee_salary_id === payment.employee_salary_id,
       );
 
       let base = 0;
@@ -60,7 +67,7 @@ const EmpSalaryPaymentModal = ({ isOpen, onClose, onSave, payment, allPayments =
         salary_deduction: deduction,
         paid_amount: parseFloat((base + bonus - deduction).toFixed(2)),
         payment_date: payment.payment_date || "",
-        payment_status: payment.payment_status || "Pending"
+        payment_status: payment.payment_status || "Pending",
       });
     } else {
       setForm({
@@ -70,14 +77,13 @@ const EmpSalaryPaymentModal = ({ isOpen, onClose, onSave, payment, allPayments =
         salary_deduction: 0,
         paid_amount: 0,
         payment_date: "",
-        payment_status: "Pending"
+        payment_status: "Pending",
       });
       setBaseSalary(0);
     }
   }, [payment, activeSalaries]);
 
-  // Handle Change
-  const handleChange = e => {
+  const handleChange = (e) => {
     const { name, value } = e.target;
 
     let updatedForm = { ...form, [name]: value };
@@ -85,7 +91,7 @@ const EmpSalaryPaymentModal = ({ isOpen, onClose, onSave, payment, allPayments =
 
     if (name === "employee_salary_id") {
       const selected = activeSalaries.find(
-        s => s.employee_salary_id.toString() === value
+        (s) => s.employee_salary_id.toString() === value,
       );
 
       if (selected) {
@@ -97,10 +103,11 @@ const EmpSalaryPaymentModal = ({ isOpen, onClose, onSave, payment, allPayments =
     }
 
     const bonus = parseFloat(
-      name === "salary_bonus" ? value : updatedForm.salary_bonus || 0
+      name === "salary_bonus" ? value : updatedForm.salary_bonus || 0,
     );
+
     const deduction = parseFloat(
-      name === "salary_deduction" ? value : updatedForm.salary_deduction || 0
+      name === "salary_deduction" ? value : updatedForm.salary_deduction || 0,
     );
 
     updatedForm.paid_amount = parseFloat((base + bonus - deduction).toFixed(2));
@@ -108,8 +115,7 @@ const EmpSalaryPaymentModal = ({ isOpen, onClose, onSave, payment, allPayments =
     setForm(updatedForm);
   };
 
-  //  Submit 
-  const handleSubmit = e => {
+  const handleSubmit = (e) => {
     e.preventDefault();
 
     if (!form.employee_salary_id) {
@@ -117,14 +123,14 @@ const EmpSalaryPaymentModal = ({ isOpen, onClose, onSave, payment, allPayments =
       return;
     }
 
-    // UNIQUE CHECK (Employee + Month)
-    const duplicate = allPayments.find(p =>
-      p.salary_month === form.salary_month &&
-      (
+    const duplicate = allPayments.find(
+      (p) =>
+        p.salary_month === form.salary_month &&
         p.EmpSalaryInfo?.employee_id ===
-        activeSalaries.find(s => s.employee_salary_id == form.employee_salary_id)?.employee_id
-      ) &&
-      (!payment || p.payment_id !== payment.payment_id)
+          activeSalaries.find(
+            (s) => s.employee_salary_id == form.employee_salary_id,
+          )?.employee_id &&
+        (!payment || p.payment_id !== payment.payment_id),
     );
 
     if (duplicate) {
@@ -139,7 +145,7 @@ const EmpSalaryPaymentModal = ({ isOpen, onClose, onSave, payment, allPayments =
       salary_deduction: parseFloat(form.salary_deduction) || 0,
       paid_amount: parseFloat(form.paid_amount || 0),
       payment_date: form.payment_date || null,
-      payment_status: form.payment_status
+      payment_status: form.payment_status,
     };
 
     onSave(payload);
@@ -149,81 +155,177 @@ const EmpSalaryPaymentModal = ({ isOpen, onClose, onSave, payment, allPayments =
 
   return (
     <>
-      <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-        <div className="bg-white p-6 rounded shadow-lg w-96">
-          <h2 className="text-lg font-bold mb-4">
-            {payment ? "Update " : "Add "}
-            Payment
+      {/* BACKDROP */}
+       <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-50 p-3">
+      <div className="bg-white w-full max-w-3xl max-h-[90vh] overflow-y-auto rounded-2xl shadow-xl p-5">
+        {/* Title */}
+        <h2 className="text-xl font-bold text-center mb-5">
+            {payment ? t("update_payment") : t("add_payment")}
           </h2>
 
-          <form onSubmit={handleSubmit} className="flex flex-col gap-3">
+          {/* FORM */}
+          <form className="grid gap-3 sm:grid-cols-2" onSubmit={handleSubmit}>
+            {/* Employee */}
 
-            {!payment ? (
-              <select
-                name="employee_salary_id"
-                value={form.employee_salary_id}
+            <div className="sm:col-span-2">
+              <div>
+                <label className="block text-sm font-medium mb-1">
+                  {t("salary_id")}
+                </label>
+                {!payment ? (
+                  <select
+                    name="employee_salary_id"
+                    value={form.employee_salary_id}
+                    onChange={handleChange}
+                    required
+                    className="border p-2.5 rounded w-full"
+                  >
+                    <option value=""> </option>
+                    {activeSalaries.map((s) => (
+                      <option
+                        key={s.employee_salary_id}
+                        value={s.employee_salary_id}
+                      >
+                        SID-{s.employee_salary_id} | EID-{s.employee_id}
+                      </option>
+                    ))}
+                  </select>
+                ) : (
+                  <input
+                    type="text"
+                    value={`SID-${form.employee_salary_id}`}
+                    readOnly
+                    className="border p-2.5 rounded w-full bg-gray-100"
+                  />
+                )}
+              </div>
+            </div>
+            {/* Base Salary */}
+            {payment && (
+              <div className="sm:col-span-2">
+                <label className="block text-sm font-medium mb-1">
+                  {t("base_salary")}
+                </label>
+                <input
+                  type="number"
+                  value={baseSalary.toFixed(2)}
+                  readOnly
+                  className="border p-2.5 rounded w-full bg-blue-50 text-blue-700 font-semibold"
+                />
+              </div>
+            )}
+
+            <div>
+              <label className="block text-sm font-medium mb-1">
+                {t("month")}
+              </label>
+              <input
+                type="month"
+                name="salary_month"
+                value={form.salary_month}
                 onChange={handleChange}
                 required
-                className="border p-2 rounded"
-              >
-                <option value="">Select Employee Salary</option>
-                {activeSalaries.map(s => (
-                  <option key={s.employee_salary_id} value={s.employee_salary_id}>
-                    SID-{s.employee_salary_id} | EID-{s.employee_id}
-                  </option>
-                ))}
-              </select>
-            ) : (
-              <input
-                type="text"
-                value={`SID-${form.employee_salary_id}`}
-                readOnly
-                className="border p-2 rounded bg-gray-100"
+                className="border p-2.5 rounded w-full"
               />
-            )}
-
-            {payment && (
-              <input
-                type="number"
-                value={baseSalary.toFixed(2)}
-                readOnly
-                className="border p-2 rounded bg-blue-50 text-blue-700 font-semibold"
-              />
-            )}
-
-            <input type="month" name="salary_month" title="Year & Month" value={form.salary_month} onChange={handleChange} required className="border p-2 rounded" />
-
-            <input type="number" name="salary_bonus" value={form.salary_bonus} onChange={handleChange} placeholder="Bonus" step="0.01" className="border p-2 rounded" />
-
-            <input type="number" name="salary_deduction" value={form.salary_deduction} onChange={handleChange} placeholder="Deduction" step="0.01" className="border p-2 rounded" />
-
-            <input type="number" name="paid_amount" value={parseFloat(form.paid_amount || 0).toFixed(2)} readOnly step="0.01" className="border p-2 rounded bg-gray-100" />
-
-            <input type="date" name="payment_date" title="Payment Date" value={form.payment_date} onChange={handleChange} className="border p-2 rounded" />
-
-            <select name="payment_status" title="Status" value={form.payment_status} onChange={handleChange} className="border p-2 rounded">
-              <option value="Pending">Pending</option>
-              <option value="Paid">Paid</option>
-              <option value="Failed">Failed</option>
-              <option value="Other">Other</option>
-            </select>
-
-            <div className="flex justify-end gap-2 mt-2">
-              <button type="button" onClick={onClose} className="px-4 py-2 bg-gray-400 hover:bg-gray-500 text-white rounded">Cancel</button>
-              <button type="submit" className="px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded">Save</button>
             </div>
 
+            <div>
+              <label className="block text-sm font-medium mb-1">
+                {t("payment_date")}
+              </label>
+              <input
+                type="date"
+                name="payment_date"
+                value={form.payment_date}
+                onChange={handleChange}
+                className="border p-2.5 rounded w-full"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium mb-1">
+                {t("bonus")}
+              </label>
+              <input
+                type="number"
+                name="salary_bonus"
+                value={form.salary_bonus}
+                onChange={handleChange}
+                placeholder="Bonus"
+                step="0.01"
+                className="border p-2.5 rounded w-full"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium mb-1">
+                {t("deduction")}
+              </label>
+              <input
+                type="number"
+                name="salary_deduction"
+                value={form.salary_deduction}
+                onChange={handleChange}
+                placeholder="Deduction"
+                step="0.01"
+                className="border p-2.5 rounded w-full"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium mb-1">
+                {t("paid_amount")}
+              </label>
+              <input
+                type="number"
+                name="paid_amount"
+                value={parseFloat(form.paid_amount || 0).toFixed(2)}
+                readOnly
+                className="border p-2.5 rounded w-full bg-gray-100"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium mb-1">
+                {t("status")}
+              </label>
+              <select
+                name="payment_status"
+                value={form.payment_status}
+                onChange={handleChange}
+                className="border p-2.5 rounded w-full"
+              >
+                <option value="Pending">Pending</option>
+                <option value="Paid">Paid</option>
+                <option value="Failed">Failed</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+
+            {/* ACTIONS */}
+            <div className="sm:col-span-2 flex flex-col sm:flex-row justify-end gap-2 mt-3">
+              <button
+                type="button"
+                onClick={onClose}
+                className="bg-gray-400 hover:bg-gray-500 text-white px-4 py-2 rounded w-full sm:w-auto"
+              >
+                  {t("cancel")}
+              </button>
+
+              <button
+                type="submit"
+                className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded w-full sm:w-auto"
+              >
+                  {t("save")}
+              </button>
+            </div>
           </form>
         </div>
       </div>
 
-      {/* Toast */}
+      {/* TOAST */}
       {toast && (
-        <Toast
-          message={toast.message}
-          type={toast.type}
-          onClose={hideToast}
-        />
+        <Toast message={toast.message} type={toast.type} onClose={hideToast} />
       )}
     </>
   );

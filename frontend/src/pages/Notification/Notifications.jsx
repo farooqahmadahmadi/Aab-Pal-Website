@@ -130,7 +130,7 @@ export default function NotificationsPage() {
             onClick={() => setModalOpen(true)}
             className="bg-green-500 hover:bg-green-600 text-white px-3 py-2 rounded flex items-center justify-center gap-2 text-sm"
           >
-            <FiPlusCircle /> {t("add")}
+            <FiPlusCircle /> {t("add_notification")}
           </button>
 
           {selected.length > 0 && (

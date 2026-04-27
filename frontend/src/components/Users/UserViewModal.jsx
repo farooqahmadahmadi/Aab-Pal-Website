@@ -1,11 +1,9 @@
 import React, { useState } from "react";
 import { updateUser, resetPasswordAdmin } from "../../services/userService";
-import { FaTimes, FaEdit, FaSave, FaKey } from "react-icons/fa";
 import Toast from "../common/Toast";
 import useToast from "../../hooks/useToast";
 
 export default function UserViewModal({ user, onClose, onRefresh }) {
-  const [editMode, setEditMode] = useState(false);
   const [form, setForm] = useState({ ...user });
   const { toast, showToast, hideToast } = useToast();
 
@@ -15,7 +13,7 @@ export default function UserViewModal({ user, onClose, onRefresh }) {
     "updated_at",
     "last_login_at",
     "login_status",
-    "failed_attempts"
+    "failed_attempts",
   ];
 
   const labels = {
@@ -32,14 +30,14 @@ export default function UserViewModal({ user, onClose, onRefresh }) {
     created_at: "Created At",
     updated_at: "Updated At",
     last_login_at: "Last Login",
-    failed_attempts: "Failed Attempts"
+    failed_attempts: "Failed Attempts",
   };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm({
       ...form,
-      [name]: name === "is_active" ? value === "true" : value
+      [name]: name === "is_active" ? value === "true" : value,
     });
   };
 
@@ -47,10 +45,12 @@ export default function UserViewModal({ user, onClose, onRefresh }) {
     try {
       const payload = { ...form };
       delete payload.password_hash;
+
       await updateUser(user.user_id, payload);
+
       showToast("User updated successfully", "success");
-      setEditMode(false);
       onRefresh();
+      onClose();
     } catch (err) {
       console.error(err);
       showToast("Failed to update user", "error");
@@ -64,101 +64,197 @@ export default function UserViewModal({ user, onClose, onRefresh }) {
       onRefresh();
     } catch (err) {
       console.error(err);
-      showToast(err.response?.data?.message || "Failed to reset password", "error");
+      showToast(
+        err.response?.data?.message || "Failed to reset password",
+        "error",
+      );
     }
   };
 
   return (
     <>
-      <div className="fixed inset-0 bg-black bg-opacity-40 flex justify-center items-center z-50">
-        <div className="bg-white p-6 rounded w-96 max-h-[90%] overflow-auto relative">
-          <button onClick={onClose} className="absolute top-3 right-3 text-red-500 hover:bg-red-500 hover:text-white p-2 rounded-full">
-            <FaTimes />
-          </button>
+      <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-3">
+        <div className="bg-white w-full max-w-3xl max-h-[90vh] overflow-y-auto rounded-2xl shadow-lg p-5">
+          {/* TITLE */}
 
-          <div className="flex items-center mb-4 gap-2">
-            {!editMode ? (
-              <button onClick={() => setEditMode(true)} className="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-2 rounded flex items-center gap-2">
-                <FaEdit /> Edit
-              </button>
+          <h3 className="text-xl font-bold mb-5 text-center">
+            {form.user_name}
+          </h3>
+
+          {/* ✅ EDITABLE FIELDS FIRST */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            {/* NAME */}
+            <div>
+              <label className="text-sm text-gray-600">
+                {labels.user_name}
+              </label>
+              <input
+                name="user_name"
+                value={form.user_name || ""}
+                onChange={handleChange}
+                className="w-full border p-2 rounded"
+              />
+            </div>
+
+            {/* EMAIL */}
+            <div>
+              <label className="text-sm text-gray-600">
+                {labels.user_email}
+              </label>
+              <input
+                name="user_email"
+                value={form.user_email || ""}
+                onChange={handleChange}
+                className="w-full border p-2 rounded"
+              />
+            </div>
+
+            {/* ROLE */}
+            <div>
+              <label className="text-sm text-gray-600">
+                {labels.user_role}
+              </label>
+              <select
+                name="user_role"
+                value={form.user_role}
+                onChange={handleChange}
+                className="w-full border p-2 rounded"
+              >
+                <option value="Admin">Admin</option>
+                <option value="HR">HR</option>
+                <option value="Financial">Financial</option>
+                <option value="PM">PM</option>
+                <option value="Employee">Employee</option>
+                <option value="Client">Client</option>
+              </select>
+            </div>
+
+            {/* CONDITIONAL */}
+            {form.user_role === "Client" ? (
+              <div>
+                <label className="text-sm text-gray-600">
+                  {labels.client_id}
+                </label>
+                <input
+                  name="client_id"
+                  value={form.client_id || ""}
+                  onChange={handleChange}
+                  className="w-full border p-2 rounded"
+                />
+              </div>
             ) : (
-              <button onClick={handleSave} className="bg-green-500 hover:bg-green-600 text-white px-3 py-2 rounded flex items-center gap-2">
-                <FaSave /> Save
-              </button>
+              <div>
+                <label className="text-sm text-gray-600">
+                  {labels.employee_id}
+                </label>
+                <input
+                  name="employee_id"
+                  value={form.employee_id || ""}
+                  onChange={handleChange}
+                  className="w-full border p-2 rounded"
+                />
+              </div>
             )}
 
-            <button onClick={handleResetPassword} className="bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded flex items-center gap-2">
-              <FaKey /> Reset Password
-            </button>
+            {/* ACCESS TIME */}
+            <div>
+              <label className="text-sm text-gray-600">
+                {labels.access_time_start}
+              </label>
+              <input
+                type="time"
+                name="access_time_start"
+                value={form.access_time_start || ""}
+                onChange={handleChange}
+                className="w-full border p-2 rounded"
+              />
+            </div>
+
+            <div>
+              <label className="text-sm text-gray-600">
+                {labels.access_time_end}
+              </label>
+              <input
+                type="time"
+                name="access_time_end"
+                value={form.access_time_end || ""}
+                onChange={handleChange}
+                className="w-full border p-2 rounded"
+              />
+            </div>
+
+            {/* STATUS */}
+            <div className="sm:col-span-2">
+              <label className="text-sm text-gray-600">
+                {labels.is_active}
+              </label>
+              <select
+                name="is_active"
+                value={form.is_active ? "true" : "false"}
+                onChange={handleChange}
+                className="w-full border p-2 rounded"
+              >
+                <option value="true">Active</option>
+                <option value="false">Inactive</option>
+              </select>
+            </div>
           </div>
 
-          <h2 className="text-xl font-bold mb-4">{form.user_name}</h2>
+          {/* 🔒 READ ONLY LAST */}
+          <div className="border-t pt-4 mt-4">
+            <h4 className="text-sm font-semibold text-gray-500 mb-3">
+              System Info
+            </h4>
 
-          <div>
-            {Object.keys(form).map((key) => {
-              if (key === "password_hash") return null;
-
-              if (key === "employee_id" && form.user_role === "Client") return null;
-              if (key === "client_id" && form.user_role !== "Client") return null;
-
-              if (readOnlyFields.includes(key)) {
-                return (
-                  <div key={key} className="mb-3">
-                    <label className="text-sm text-gray-600">{labels[key]}</label>
-                    <input type="text" value={form[key] || ""} readOnly className="w-full border p-2 rounded bg-gray-100" />
-                  </div>
-                );
-              }
-
-              if (key === "user_role") {
-                return (
-                  <div key={key} className="mb-3">
-                    <label className="text-sm text-gray-600">{labels[key]}</label>
-                    <select name={key} value={form[key]} onChange={handleChange} disabled={!editMode} className="w-full border p-2 rounded">
-                      <option value="Admin">Admin</option>
-                      <option value="HR">HR</option>
-                      <option value="Financial">Financial</option>
-                      <option value="PM">PM</option>
-                      <option value="Employee">Employee</option>
-                      <option value="Client">Client</option>
-                    </select>
-                  </div>
-                );
-              }
-
-              if (key === "is_active") {
-                return (
-                  <div key={key} className="mb-3">
-                    <label className="text-sm text-gray-600">{labels[key]}</label>
-                    <select name={key} value={form[key] ? "true" : "false"} onChange={handleChange} disabled={!editMode} className="w-full border p-2 rounded">
-                      <option value="true">Active</option>
-                      <option value="false">Inactive</option>
-                    </select>
-                  </div>
-                );
-              }
-
-              if (key === "access_time_start" || key === "access_time_end") {
-                return (
-                  <div key={key} className="mb-3">
-                    <label className="text-sm text-gray-600">{labels[key]}</label>
-                    <input type="time"  name={key} value={form[key] || ""} onChange={handleChange} disabled={!editMode} maxLength={8} className="w-full border p-2 rounded" />
-                  </div>
-                );
-              }
-
-              return (
-                <div key={key} className="mb-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              {readOnlyFields.map((key) => (
+                <div key={key}>
                   <label className="text-sm text-gray-600">{labels[key]}</label>
-                  <input type="text" name={key} value={form[key] || ""} onChange={handleChange} disabled={!editMode} className="w-full border p-2 rounded" />
+                  <input
+                    value={form[key] || ""}
+                    readOnly
+                    className="w-full border p-2 rounded bg-gray-100"
+                  />
                 </div>
-              );
-            })}
+              ))}
+            </div>
+          </div>
+
+          {/* BUTTONS */}
+          <div className="flex flex-col sm:flex-row justify-end gap-2 mt-5">
+            <button
+              type="button"
+              onClick={onClose}
+              className="bg-gray-300 hover:bg-gray-400 px-4 py-2 rounded w-full sm:w-auto"
+            >
+              Cancel
+            </button>
+
+            <button
+              onClick={handleResetPassword}
+              className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded flex items-center justify-center gap-2 w-full sm:w-auto"
+            >
+              Reset Password
+            </button>
+
+            <button
+              onClick={handleSave}
+              className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded flex items-center justify-center gap-2 w-full sm:w-auto"
+            >
+              Save
+            </button>
           </div>
         </div>
       </div>
 
-      {toast && <Toast message={toast.message} type={toast.type} onClose={hideToast} position="center" />}
+      {toast && (
+        <Toast
+          message={toast.message}
+          type={toast.type}
+          onClose={hideToast}
+          position="center"
+        />
+      )}
     </>
   );
 }

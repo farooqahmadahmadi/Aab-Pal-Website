@@ -1,0 +1,5 @@
+@media print {
+  thead {
+    display: table-header-group;
+  }
+}

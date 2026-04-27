@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { getSalaries } from "../../services/employeeSalaryService";
+import { useTranslation } from "react-i18next";
 
 export default function EmployeeSalaryModal({
   isOpen,
@@ -15,10 +16,13 @@ export default function EmployeeSalaryModal({
     effective_to: "",
     is_active: false,
   });
+
+  const { t } = useTranslation();
+
   const [salaries, setSalaries] = useState([]);
   const [activeExists, setActiveExists] = useState(false);
 
-  // Fetch all salaries to check active status
+  // FETCH
   useEffect(() => {
     if (isOpen) {
       const fetchData = async () => {
@@ -33,7 +37,7 @@ export default function EmployeeSalaryModal({
     }
   }, [isOpen]);
 
-  // Set initial form data
+  // INITIAL DATA
   useEffect(() => {
     if (initialData) {
       setForm({
@@ -56,7 +60,7 @@ export default function EmployeeSalaryModal({
     }
   }, [initialData]);
 
-  // Check if an active salary already exists (other than editing one)
+  // ACTIVE CHECK
   useEffect(() => {
     const exists = salaries.some(
       (s) =>
@@ -81,88 +85,126 @@ export default function EmployeeSalaryModal({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-      <div className="bg-white p-6 rounded-lg w-96 shadow-lg">
-        <h3 className="text-lg font-bold mb-4">
-          {initialData ? "Edit" : "Add"} Salary
-        </h3>
-        <form onSubmit={handleSubmit} className="flex flex-col gap-3">
-          <input
-            type="number"
-            name="employee_id"
-            value={form.employee_id}
-            onChange={handleChange}
-            placeholder="Employee ID"
-            required
-            className="border px-3 py-2 rounded"
-          />
-          <input
-            type="number"
-            name="base_salary"
-            value={form.base_salary}
-            onChange={handleChange}
-            placeholder="Base Salary"
-            required
-            className="border px-3 py-2 rounded"
-          />
-          <input
-            type="number"
-            name="allowance"
-            value={form.allowance}
-            onChange={handleChange}
-            placeholder="Allowance"
-            required
-            className="border px-3 py-2 rounded"
-          />
-          <input
-            type="date"
-            name="effective_from"
-            title="Effective From"
-            value={form.effective_from}
-            onChange={handleChange}
-            required
-            className="border px-3 py-2 rounded"
-          />
-          <input
-            type="date"
-            name="effective_to"
-            title="Effective To"
-            value={form.effective_to}
-            onChange={handleChange}
-            required
-            className="border px-3 py-2 rounded"
-          />
+     <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-50 p-3">
+      <div className="bg-white w-full max-w-3xl max-h-[90vh] overflow-y-auto rounded-2xl shadow-xl p-5">
+        {/* Title */}
+        <h2 className="text-xl font-bold text-center mb-5">
+          {initialData ? t("update_salary") : t("add_salary")}
+        </h2>
 
-          <select
-            name="is_active"
-            title="Status"
-            value={form.is_active ? "true" : "false"}
-            onChange={handleChange}
-            disabled={activeExists && !form.is_active}
-            className="border px-3 py-2 rounded"
-          >
-            <option value="true">Active</option>
-            <option value="false">InActive</option>
-          </select>
+        {/* FORM */}
+        <form onSubmit={handleSubmit} className="grid gap-4">
+          {/* GRID */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label className="block text-sm font-medium mb-1">
+                {t("emp_id")}
+              </label>
+              <input
+                type="number"
+                name="employee_id"
+                value={form.employee_id}
+                onChange={handleChange}
+                required
+                className="w-full border p-2.5 rounded focus:ring-2 focus:ring-blue-400 outline-none"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium mb-1">
+                {t("base_salary")}
+              </label>
+              <input
+                type="number"
+                name="base_salary"
+                value={form.base_salary}
+                onChange={handleChange}
+                required
+                className="w-full border p-2.5 rounded focus:ring-2 focus:ring-blue-400 outline-none"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium mb-1">
+                {t("allowance")}
+              </label>
+              <input
+                type="number"
+                name="allowance"
+                value={form.allowance}
+                onChange={handleChange}
+                required
+                className="w-full border p-2.5 rounded focus:ring-2 focus:ring-blue-400 outline-none"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium mb-1">
+                {t("effective_from")}
+              </label>
+              <input
+                type="date"
+                name="effective_from"
+                value={form.effective_from}
+                onChange={handleChange}
+                required
+                className="w-full border p-2.5 rounded focus:ring-2 focus:ring-blue-400 outline-none"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium mb-1">
+                {t("effective_to")}
+              </label>
+              <input
+                type="date"
+                name="effective_to"
+                value={form.effective_to}
+                onChange={handleChange}
+                required
+                className="w-full border p-2.5 rounded focus:ring-2 focus:ring-blue-400 outline-none"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium mb-1">
+                {t("status")}
+              </label>
+              <select
+                name="is_active"
+                value={form.is_active ? "true" : "false"}
+                onChange={handleChange}
+                disabled={activeExists && !form.is_active}
+                className="w-full border p-2.5 rounded focus:ring-2 focus:ring-blue-400 outline-none"
+              >
+                <option value="true">Active</option>
+                <option value="false">Inactive</option>
+              </select>
+            </div>
+          </div>
+
+          {/* WARNING */}
           {activeExists && !form.is_active && (
-            <p className="text-xs text-red-500 mt-1">
+            <p className="text-xs text-red-500">
               Only one active record is allowed
             </p>
           )}
 
-          <div className="flex justify-end gap-2 mt-4">
+          {/* BUTTONS */}
+          <div className="flex flex-col sm:flex-row justify-end gap-2 mt-2">
             <button
               type="button"
               onClick={onClose}
-              className="bg-gray-400 hover:bg-gray-500 text-white px-4 py-2 rounded"
+              className="bg-gray-400 hover:bg-gray-500 text-white px-4 py-2 rounded w-full sm:w-auto"
             >
-              Cancel
+                {t("cancel")}
             </button>
+
             <button
               type="submit"
-              className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
+              className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded w-full sm:w-auto"
             >
-              Save
+                  {initialData ? t("update") : t("save")}
             </button>
           </div>
         </form>

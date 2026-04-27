@@ -17,15 +17,22 @@ export default function AdminLayout({ children }) {
 
   return (
     <div
-      className={`flex h-screen bg-gray-100 ${
+      className={`flex h-screen bg-gray-100 print:bg-white ${
         dir === "rtl" ? "flex-row-reverse" : "flex-row"
       }`}
     >
-      <Sidebar role="Admin" />
+      {/*  hide in print */}
+      <div className="print:hidden">
+        <Sidebar role="Admin" />
+      </div>
 
       <div className="flex-1 flex flex-col min-w-0">
-        <Navbar role="Admin" />
+        {/*  hide in print */}
+        <div className="print:hidden">
+          <Navbar role="Admin" />
+        </div>
 
+        {/*  report area */}
         <main className="p-6 overflow-auto">{children}</main>
       </div>
     </div>

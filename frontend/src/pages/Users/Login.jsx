@@ -1,7 +1,5 @@
 import { useState, useEffect } from "react";
 
-import { showNotification } from "../../utils/notify";
-
 import InstallPwaModal from "../../components/PWA/InstallPwaModal";
 
 import { useNavigate } from "react-router-dom";
@@ -49,8 +47,6 @@ export default function Login() {
 
       setToastType("success");
       setToast(t("login_success"));
-
-      showNotification("Login Success", "Welcome to CC-MIS System");
 
       switch (user.user_role) {
         case "Admin":

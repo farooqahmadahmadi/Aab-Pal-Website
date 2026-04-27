@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 export default function InvoicesModal({
   isOpen,
@@ -18,6 +19,8 @@ export default function InvoicesModal({
     reference_id: "",
     paid_amount: "",
   });
+
+  const { t } = useTranslation();
 
   useEffect(() => {
     setForm({
@@ -48,7 +51,7 @@ export default function InvoicesModal({
       project_id: form.project_id ? Number(form.project_id) : null,
       client_id: form.client_id ? Number(form.client_id) : null,
       invoice_amount: form.invoice_amount ? Number(form.invoice_amount) : 0,
-      invoice_due_date: form.invoice_due_date || null, // 🔹 null allowed
+      invoice_due_date: form.invoice_due_date || null,
     });
   };
 
@@ -56,135 +59,193 @@ export default function InvoicesModal({
   const showReferenceFields = !!form.reference_type;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-      <div className="bg-white p-6 rounded w-96">
-        <h3 className="text-lg font-bold mb-4">
-          {initialData ? "Edit Invoice" : "Add Invoice"}
-        </h3>
+    <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-50 p-3">
+      <div className="bg-white w-full max-w-3xl max-h-[90vh] overflow-y-auto rounded-2xl shadow-xl p-5">
+        {/* Title */}
+        <h2 className="text-xl font-bold text-center mb-5">
+          {initialData ? t("update_invoice") : t("add_invoice")}
+        </h2>
 
-        <form onSubmit={submit} className="space-y-3">
+        <form
+          onSubmit={submit}
+          className="grid grid-cols-1 md:grid-cols-2 gap-4"
+        >
           {/* Invoice Type */}
-          <select
-            name="invoice_type"
-            value={form.invoice_type || ""}
-            onChange={handleChange}
-            className="w-full border p-2 rounded"
-          >
-            <option value="In">In</option>
-            <option value="Out">Out</option>
-          </select>
+          <div>
+            <label className="block text-sm font-medium mb-1">
+              {t("type")}
+            </label>
+            <select
+              name="invoice_type"
+              value={form.invoice_type || ""}
+              onChange={handleChange}
+              className="w-full border p-2 rounded"
+            >
+              <option value="In">In</option>
+              <option value="Out">Out</option>
+            </select>
+          </div>
 
-          {/* Reference Type & ID */}
+          {/* Reference Type */}
           {showReferenceFields && (
             <>
-              <select
-                name="reference_type"
-                value={form.reference_type || ""}
-                onChange={handleChange}
-                className="w-full border p-2 rounded bg-gray-100"
-                disabled
-              >
-                <option value="">Select Reference Type</option>
-                <option value="Purchase Order">Purchase Order</option>
-                <option value="Other">Other</option>
-              </select>
+              <div>
+                <label className="block text-sm font-medium mb-1">
+                  {t("reference_type")}
+                </label>
+                <select
+                  name="reference_type"
+                  value={form.reference_type || ""}
+                  onChange={handleChange}
+                  className="w-full border p-2 rounded bg-gray-100"
+                  disabled
+                >
+                  <option value="">Select Reference Type</option>
+                  <option value="Purchase Order">Purchase Order</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
 
-              <input
-                name="reference_id"
-                value={form.reference_id || ""}
-                onChange={handleChange}
-                placeholder="Reference ID"
-                className="w-full border p-2 rounded bg-gray-100"
-                readOnly
-              />
+              <div>
+                <label className="block text-sm font-medium mb-1">
+                  {t("reference_id")}
+                </label>
+                <input
+                  name="reference_id"
+                  value={form.reference_id || ""}
+                  onChange={handleChange}
+                  placeholder="Reference ID"
+                  className="w-full border p-2 rounded bg-gray-100"
+                  readOnly
+                />
+              </div>
             </>
           )}
 
-          {/* Project & Client ID */}
-          <input
-            name="project_id"
-            value={form.project_id || ""}
-            onChange={handleChange}
-            placeholder="Project ID"
-            className={`w-full border p-2 rounded ${isPurchaseOrder ? "bg-gray-100" : ""}`}
-            readOnly={isPurchaseOrder}
-          />
-          <input
-            name="client_id"
-            value={form.client_id || ""}
-            onChange={handleChange}
-            placeholder="Client ID"
-            className={`w-full border p-2 rounded ${isPurchaseOrder ? "bg-gray-100" : ""}`}
-            readOnly={isPurchaseOrder}
-          />
+          {/* Project ID */}
+          <div>
+            <label className="block text-sm font-medium mb-1">
+              {t("project_id")}
+            </label>
+            <input
+              name="project_id"
+              value={form.project_id || ""}
+              onChange={handleChange}
+              className={`w-full border p-2 rounded ${
+                isPurchaseOrder ? "bg-gray-100" : ""
+              }`}
+              readOnly={isPurchaseOrder}
+            />
+          </div>
+
+          {/* Client ID */}
+          <div>
+            <label className="block text-sm font-medium mb-1">
+              {t("client_id")}
+            </label>
+            <input
+              name="client_id"
+              value={form.client_id || ""}
+              onChange={handleChange}
+              className={`w-full border p-2 rounded ${
+                isPurchaseOrder ? "bg-gray-100" : ""
+              }`}
+              readOnly={isPurchaseOrder}
+            />
+          </div>
 
           {/* Invoice Amount */}
-          <input
-            name="invoice_amount"
-            type="number"
-            value={form.invoice_amount || ""}
-            onChange={handleChange}
-            placeholder="Amount"
-            className="w-full border p-2 rounded"
-            readOnly={isPurchaseOrder}
-            required
-          />
+          <div>
+            <label className="block text-sm font-medium mb-1">
+              {t("amount")}
+            </label>
+            <input
+              name="invoice_amount"
+              type="number"
+              value={form.invoice_amount || ""}
+              onChange={handleChange}
+              className="w-full border p-2 rounded"
+              readOnly={isPurchaseOrder}
+              required
+            />
+          </div>
 
-          {/* Paid Amount */}
-          <input
-            name="paid_amount"
-            type="number"
-            value={form.paid_amount || 0}
-            readOnly
-            className="w-full border p-2 rounded bg-gray-100"
-          />
+          {/* Paid Amount (Full Width) */}
+          <div className="md:col-span-2">
+            <label className="block text-sm font-medium mb-1">
+              {t("paid_amount")}
+            </label>
+            <input
+              name="paid_amount"
+              type="number"
+              value={form.paid_amount || 0}
+              readOnly
+              className="w-full border p-2 rounded bg-gray-100"
+            />
+          </div>
 
           {/* Due Date */}
-          <input
-            name="invoice_due_date"
-            type="date"
-            value={form.invoice_due_date || ""}
-            onChange={handleChange}
-            className="w-full border p-2 rounded"
-          />
-
-          {/* Description */}
-          <textarea
-            name="invoice_description"
-            value={form.invoice_description || ""}
-            onChange={handleChange}
-            placeholder="Description"
-            className="w-full border p-2 rounded"
-          />
+          <div>
+            <label className="block text-sm font-medium mb-1">
+              {t("due_date")}
+            </label>
+            <input
+              name="invoice_due_date"
+              type="date"
+              value={form.invoice_due_date || ""}
+              onChange={handleChange}
+              className="w-full border p-2 rounded"
+            />
+          </div>
 
           {/* Status */}
-          <select
-            name="invoice_status"
-            value={form.invoice_status || "Pending"}
-            onChange={handleChange}
-            className="w-full border p-2 rounded"
-          >
-            <option value="Pending">Pending</option>
-            <option value="Partial">Partial</option>
-            <option value="Paid">Paid</option>
-            <option value="Overdue">Overdue</option>
-            <option value="Cancelled">Cancelled</option>
-          </select>
+          <div>
+            <label className="block text-sm font-medium mb-1">
+              {t("status")}
+            </label>
+            <select
+              name="invoice_status"
+              value={form.invoice_status || "Pending"}
+              onChange={handleChange}
+              className="w-full border p-2 rounded"
+            >
+              <option value="Pending">Pending</option>
+              <option value="Partial">Partial</option>
+              <option value="Paid">Paid</option>
+              <option value="Overdue">Overdue</option>
+              <option value="Cancelled">Cancelled</option>
+            </select>
+          </div>
+
+          {/* Description (Full Width) */}
+          <div className="md:col-span-2">
+            <label className="block text-sm font-medium mb-1">
+              {t("description")}
+            </label>
+            <textarea
+              name="invoice_description"
+              value={form.invoice_description || ""}
+              onChange={handleChange}
+              className="w-full border p-2 rounded"
+              rows={3}
+            />
+          </div>
 
           {/* Buttons */}
-          <div className="flex justify-end gap-2 mt-4">
+          <div className="md:col-span-2 flex flex-col sm:flex-row justify-end gap-2 pt-2">
             <button
               type="button"
               onClick={onClose}
-              className="bg-gray-300 hover:bg-gray-400 px-4 py-2 rounded"
+              className="w-full sm:w-auto bg-gray-400 hover:bg-gray-500 text-white px-5 py-2 rounded-lg"
             >
-              Cancel
+              {t("cancel")}
             </button>
+
             <button
               type="submit"
-              className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded"
+              className="w-full sm:w-auto bg-green-500 hover:bg-green-600 text-white px-5 py-2 rounded-lg"
             >
-              {initialData ? "Update" : "Save"}
+              {initialData ? t("update") : t("save")}
             </button>
           </div>
         </form>

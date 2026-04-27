@@ -69,6 +69,14 @@ import Notifications from "../pages/Notification/Notifications";
 import SystemLogs from "../pages/SystemLogs/SystemLogs";
 import SystemSettings from "../pages/Settings/SystemSettings";
 
+// Reports
+import AllExpenses from "../pages/Reports/Expenses/ExpensesReport";
+import DailyExpenses from "../pages/Reports/Expenses/DailyExpensesReport";
+import FilteredExpensesReport from "../pages/Reports/Expenses/FilteredExpensesReport";
+import MonthlyExpensesReport from "../pages/Reports/Expenses/MonthlyExpensesReport";
+import ProjectExpensesReport from "../pages/Reports/Expenses/ProjectExpensesReport";
+import YearlyExpensesReport from "../pages/Reports/Expenses/YearlyExpensesReport";
+
 export default function AppRoutes() {
   return (
     <BrowserRouter>
@@ -498,6 +506,69 @@ export default function AppRoutes() {
           }
         />
 
+        {/* REPORTs */}
+        <Route
+          path="/admin/reports/all_expenses"
+          element={
+            <ProtectedRoute allowedRoles={["Admin"]}>
+              <AdminLayout>
+                <AllExpenses />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/reports/daily_expenses"
+          element={
+            <ProtectedRoute allowedRoles={["Admin"]}>
+              <AdminLayout>
+                <DailyExpenses />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/reports/filtered_expenses"
+          element={
+            <ProtectedRoute allowedRoles={["Admin"]}>
+              <AdminLayout>
+                <FilteredExpensesReport />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/reports/monthly_expenses"
+          element={
+            <ProtectedRoute allowedRoles={["Admin"]}>
+              <AdminLayout>
+                <MonthlyExpensesReport />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/reports/project_expenses"
+          element={
+            <ProtectedRoute allowedRoles={["Admin"]}>
+              <AdminLayout>
+                <ProjectExpensesReport />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        />
+         <Route
+          path="/admin/reports/yearly_expenses"
+          element={
+            <ProtectedRoute allowedRoles={["Admin"]}>
+              <AdminLayout>
+                <YearlyExpensesReport />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        />
+
+        {/* ------------------------------------------------------------------------------ */}
         {/* HR */}
         <Route
           path="/hr/dashboard"

@@ -73,7 +73,7 @@
   "company_name": "Company Name",
   "license_number": "License Number",
   "license_expire_date": "License Expire Date",
-  "phone": "Phone number",
+  "phone": "Phone Number",
   "email": "Email",
   "address": "Address",
   "edit": "Edit",
@@ -152,6 +152,7 @@
   "failed_fetch": "Failed to fetch records",
 
   "add_salary": "Add Salary",
+  "update_salary": "Update Salary",
   "base_salary": "Base Salary",
   "allowance": "Allowance",
   "from": "From",
@@ -159,9 +160,12 @@
   "status": "Status",
   "active": "Active",
   "inactive": "Inactive",
+  "effective_from": "Effective From",
+  "effective_to": "Effective To",
 
   "salary_payments": "Salary Payments",
   "add_payment": "Add Payment",
+  "Update Payment": "Update Payment",
   "salary_id": "Salary ID",
   "month": "Month",
   "bonus": "Bonus",
@@ -176,10 +180,16 @@
 
   "attendance_list": "Attendance List",
   "add_attendance": "Add Attendance",
+  "update_attendance": "Update Attendance",
   "employee": "Employee",
   "check_in": "Check In",
   "check_out": "Check Out",
-  "hours": "Hours",
+  "check_in_start": "Check In Start",
+  "check_out_start": "Check Out Start",
+  "check_in_end": "Check In End",
+  "check_out_end": "Check Out End",
+  "attendance_date": "Attendance Date",
+  "work_hours": "Work Hours",
   "present": "Present",
   "absent": "Absent",
   "leave": "Leave",
@@ -188,6 +198,7 @@
   "failed_load_attendance": "Failed to load attendance",
 
   "add_shift": "Add Shift",
+  "update_shift": "Update Shift",
   "shift_name": "Shift Name",
   "latitude": "Latitude",
   "longitude": "Longitude",
@@ -196,14 +207,19 @@
   "failed_fetch_shifts": "Failed to fetch shifts",
 
   "department_id": "Department ID",
+  "add_employee_hiring": "Add Employee Hiring",
+  "update_employee_hiring": "Update Employee Hiring",
   "shift_id": "Shift ID",
   "position": "Position",
   "type": "Type",
+  "employement_type": "Employement Type",
   "hire_date": "Hire Date",
   "end_date": "End Date",
 
   "client_info": "Client Info",
   "photo": "Photo",
+  "add_client": "Add Client",
+  "update_client": "Update Client",
   "saved_success": "Saved successfully",
 
   "add_project": "Add New Project",
@@ -214,25 +230,34 @@
   "start_date": "Start Date",
 
   "add_phase": "Add Phase",
+  "update_phase": "Update Phase",
   "project_phases": "Project Phases",
-  "project_id": "Project",
+  "project_id": "Project ID",
   "phase_name": "Phase Name",
 
   "add_boq": "‌Add BOQ Item",
+  "update_boq": "Update BOQ Item",
   "unit": "Unit",
   "quantity": "Quantity",
-  "price": "Price",
+  "price": "Unit Price",
   "total": "Total",
 
   "project_documents": "Projects Documents",
 
   "add_expense": "Add Expense",
+  "update_expense": "Update Expense",
+  "reference_id": "Reference ID",
   "amount": "Amount",
+  "date": "Date",
 
   "add_invoice": "Add Invoice",
+  "update_invoice": "Update Invoice",
   "due_date": "Due Date",
 
   "add_transaction": "Add Transaction",
+  "update_transaction": "Update Transaction",
+  "transaction_type": "Transaction Type",
+
   "income": "Income",
   "expense": "Expense",
   "manual": "Manual",
@@ -242,32 +267,48 @@
   "payment_method": "Method",
 
   "payments": "Payments",
+  "payment_amount": "Payment Amount",
 
   "add_supplier": "Add Supplier",
+  "update_supplier": "Update Supplier",
+  "supplier_name": "Supplier Name",
 
   "add_material": "Add Material",
-
+  "update_materil": "Update Material",
   "stock": "Stock",
+  "average_price": "Average Price",
 
   "add_purchase_order": "Add Purchase Order",
+  "update_purchase_order": "Update Purcahse Order",
   "supplier": "Supplier",
   "project": "Project",
 
   "add_po_item": "Add Purcahse Order Item",
+  "update_po_item": "Update Purchase Order Item",
   "po": "Purchase Order",
   "material": "Material",
   "qty": "Quantity",
+  "yes": "Yes",
+  "no": "No",
 
+  "equipment_id": "Equipment ID",
   "equipment": "Equipment (Machinery)",
   "add_equipment": "Add Equipment",
+  "update_equipment": "Update Equipment",
+  "purchase_date": "Purcahse Date",
+  "purchase_price": "Purcahse Price",
   "serial_number": "Serial Number",
 
   "equipment_usage": "Equipment Usage",
+  "add_usage": "Add Usage",
+  "update_usage": "Update Usage",
   "start": "Start",
   "end": "End",
   "add": "Add",
 
   "equipment_maintenance": "Equipment Maintenance",
+  "add_maintenance": "Add Maintenance",
+  "update_maintenance": "Update Maintenance",
   "cost": "Cost",
 
   "equipment_documents": "Equipment Documents",
@@ -275,21 +316,35 @@
   "add_contract": "Add Contract",
   "number": "Number",
   "value": "Value",
+  "contract_name": "Contract Name",
+  "contract_number": "Contract Number",
+  "signed_date": "Signed Date",
+  "contract_start_date": "Contract Start Date",
+  "contract_end_date": "Contract End Date",
 
   "contract_milestones": "Contract Milestones",
+  "add_contract_milestone": "Add Contract Milestone",
+  "update_contract_milestone": "Update Contract Milestone",
+  "contract_id": "Contract ID",
   "contract": "Contract",
   "title": "Title",
 
   "add_task": "Add task",
+  "update_task": "Update Task",
+  "task_id": "Task ID",
 
   "add_report": "Add Report",
   "report_date": "Date",
   "weather": "Weather",
+  "work_completed": "Work Comleted",
+  "issues": "Issues",
 
   "add_incident": "Add Incident",
+  "update_incident": "Update Incident",
   "safety_incidents": "Safety Incidents",
   "severity": "Severity",
   "incident_date": "Incident Date",
+  "action_taken": "Action Taken",
 
   "users": "System Users",
   "search_users": "Search users...",
@@ -311,7 +366,7 @@
   "created_at": "Created At",
   "last_login": "Last Login",
 
-  "welcome_login": "Login to system",
+  "welcome_login": "Login to System",
   "login": "Login",
   "login_success": "Login successful!",
   "user_inactive": "User is inactive. Contact admin.",
@@ -325,6 +380,9 @@
 
   "notifications": "Notifications",
   "add_notification": "Add Notification",
+  "update_notification": "Update Notification",
+  "recipients": "Recipients",
+  "message": "Message",
   "select_page": "Select All",
   "clear": "Clear",
 
