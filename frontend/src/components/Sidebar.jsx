@@ -21,6 +21,7 @@ import {
   FiBook,
   FiClipboard,
 } from "react-icons/fi";
+import { Menu } from "lucide-react";
 
 import defaultAvatar from "../assets/images/client-def-image.png";
 import { FaRegStickyNote } from "react-icons/fa";
@@ -46,7 +47,8 @@ export default function Sidebar({ role }) {
 
   // const BASE_URL = import.meta.env.VITE_API_URL;
 
-  const BASE_URL = import.meta.env.VITE_IMAGE_URL || import.meta.env.VITE_API_URL;
+  const BASE_URL =
+    import.meta.env.VITE_IMAGE_URL || import.meta.env.VITE_API_URL;
 
   // ================= RESPONSIVE =================
   useEffect(() => {
@@ -392,9 +394,9 @@ export default function Sidebar({ role }) {
             <FiChevronLeft size={18} />
           )
         ) : isRTL ? (
-          <FiChevronLeft size={18} />
+          <Menu size={19} />
         ) : (
-          <FiChevronRight size={18} />
+          <Menu size={19} />
         )}
       </div>
 
