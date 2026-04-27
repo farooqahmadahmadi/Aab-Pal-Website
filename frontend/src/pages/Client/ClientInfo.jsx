@@ -34,8 +34,9 @@ export default function ClientInfoPage() {
   const [preview, setPreview] = useState(null);
 
   const { toast, showToast, hideToast } = useToast();
-
-  const BASE_URL = import.meta.env.VITE_API_URL;
+  
+  const BASE_URL = import.meta.env.VITE_IMAGE_URL;
+  // const BASE_URL = import.meta.env.VITE_API_URL;
   const DEFAULT_AVATAR = clientDefImage;
 
   // ===== FETCH =====

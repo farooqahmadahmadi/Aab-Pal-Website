@@ -38,7 +38,9 @@ export default function Navbar({ sidebarOpen, role }) {
   const getAvatar = (u) => {
     if (!u?.user_photo_url) return defaultAvatar;
     if (u.user_photo_url.startsWith("http")) return u.user_photo_url;
-    return `${import.meta.env.VITE_API_URL}${u.user_photo_url}`;
+
+    // return `${import.meta.env.VITE_API_URL}${u.user_photo_url}`;
+       return `${import.meta.env.VITE_IMAGE_URL}${u.user_photo_url}`;
   };
 
   const getStatusClass = (status) =>
@@ -139,7 +141,8 @@ export default function Navbar({ sidebarOpen, role }) {
   useEffect(() => {
     fetchNotifications();
 
-    const socket = io(import.meta.env.VITE_API_URL, {
+  const socket = io(import.meta.env.VITE_API_URL, {
+    // const socket = io(import.meta.env.VITE_IMAGE_URL, {
       transports: ["websocket"],
     });
 

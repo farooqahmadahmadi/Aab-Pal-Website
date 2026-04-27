@@ -5,7 +5,8 @@ import Toast from "../../components/common/Toast";
 import useToast from "../../hooks/useToast";
 import { useTranslation } from "react-i18next";
 
-const BASE_URL = import.meta.env.VITE_API_URL;
+const BASE_URL = import.meta.env.VITE_IMAGE_URL;
+// const BASE_URL = import.meta.env.VITE_API_URL;
 
 export default function CompanyInfo() {
   const { t, i18n } = useTranslation();

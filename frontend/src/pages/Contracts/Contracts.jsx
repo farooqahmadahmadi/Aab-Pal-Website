@@ -30,7 +30,8 @@ export default function Contracts() {
   const [deleteData, setDeleteData] = useState(null);
 
   const { toast, showToast, hideToast } = useToast();
-  const BASE_URL = import.meta.env.VITE_API_URL;
+  const BASE_URL = import.meta.env.VITE_IMAGE_URL;
+  // const BASE_URL = import.meta.env.VITE_API_URL;
 
   // ===== Fetch =====
   const fetchData = async () => {

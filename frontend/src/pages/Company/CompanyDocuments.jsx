@@ -36,7 +36,8 @@ export default function CompanyDocuments() {
   const [previewData, setPreviewData] = useState(null);
 
   const { toast, showToast, hideToast } = useToast();
-  const BASE_URL = import.meta.env.VITE_API_URL;
+  const BASE_URL = import.meta.env.VITE_IMAGE_URL;
+  // const BASE_URL = import.meta.env.VITE_API_URL;
 
   // ===== FETCH =====
   const fetchDocs = async () => {

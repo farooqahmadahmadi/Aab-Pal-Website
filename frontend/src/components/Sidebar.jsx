@@ -43,6 +43,9 @@ export default function Sidebar({ role }) {
   const itemRefs = useRef({});
 
   const user = JSON.parse(localStorage.getItem("user") || "{}");
+
+  // const BASE_URL = import.meta.env.VITE_API_URL;
+
   const BASE_URL = import.meta.env.VITE_IMAGE_URL || import.meta.env.VITE_API_URL;
 
   // ================= RESPONSIVE =================

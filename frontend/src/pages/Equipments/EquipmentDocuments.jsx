@@ -42,7 +42,8 @@ export default function EquipmentDocuments() {
   const [sortOrder, setSortOrder] = useState("asc");
 
   const { toast, showToast, hideToast } = useToast();
-  const BASE_URL = import.meta.env.VITE_API_URL;
+  const BASE_URL = import.meta.env.VITE_IMAGE_URL;
+  // const BASE_URL = import.meta.env.VITE_API_URL;
 
   const fetchData = async () => {
     try {
