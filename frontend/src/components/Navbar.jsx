@@ -26,6 +26,7 @@ export default function Navbar({ sidebarOpen, role }) {
   const [tab, setTab] = useState("unread");
   const [limit, setLimit] = useState(6);
 
+  const [avatarError, setAvatarError] = useState(false);
   // ---------------- REFS ----------------
   const notifRef = useRef();
   const profileRef = useRef();
@@ -40,7 +41,7 @@ export default function Navbar({ sidebarOpen, role }) {
     if (u.user_photo_url.startsWith("http")) return u.user_photo_url;
 
     // return `${import.meta.env.VITE_API_URL}${u.user_photo_url}`;
-       return `${import.meta.env.VITE_IMAGE_URL}${u.user_photo_url}`;
+    return `${import.meta.env.VITE_IMAGE_URL}${u.user_photo_url}`;
   };
 
   const getStatusClass = (status) =>
@@ -141,8 +142,8 @@ export default function Navbar({ sidebarOpen, role }) {
   useEffect(() => {
     fetchNotifications();
 
-  const socket = io(import.meta.env.VITE_API_URL, {
-    // const socket = io(import.meta.env.VITE_IMAGE_URL, {
+    const socket = io(import.meta.env.VITE_API_URL, {
+      // const socket = io(import.meta.env.VITE_IMAGE_URL, {
       transports: ["websocket"],
     });
 
@@ -358,7 +359,8 @@ export default function Navbar({ sidebarOpen, role }) {
               className="flex items-center gap-2 cursor-pointer hover:bg-gray-100 px-1 py-1 rounded-full"
             >
               <img
-                src={getAvatar(user)}
+                src={avatarError ? defaultAvatar : getAvatar(user)}
+                onError={() => setAvatarError(true)}
                 className="w-8 h-8 rounded-full border object-cover"
               />
             </div>
