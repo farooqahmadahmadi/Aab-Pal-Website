@@ -53,7 +53,7 @@ export default function Profile() {
 
     const formData = new FormData();
     // formData.append("user_photo_url", file);
-formData.append("file", file);
+formData.append("user_photo_url", file);
     try {
       setLoading(true);
 
