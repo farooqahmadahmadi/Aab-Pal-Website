@@ -137,7 +137,7 @@ export default function CashTransactionsChart() {
       </div>
 
      {/* CHART */}
-<div className="w-full h-[300px]">
+<div className="w-full h-[220px]">
   <ResponsiveContainer>
     <LineChart data={chartData}>
       <CartesianGrid strokeDasharray="3 3" opacity={0.2} />

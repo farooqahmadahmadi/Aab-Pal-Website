@@ -86,7 +86,7 @@ export default function ProjectBarCard() {
       </div>
 
       {/* CHART */}
-      <div className="flex-1 min-h-[300px]">
+      <div className="flex-1 min-h-[220px]">
         <ResponsiveContainer width="100%" height="100%">
           <BarChart data={chartData}>
             <CartesianGrid strokeDasharray="3 3" opacity={0.2} />

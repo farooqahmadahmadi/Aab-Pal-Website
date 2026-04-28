@@ -18,7 +18,7 @@ export default function AdminDashboard() {
       <div
         className="grid gap-3 
         grid-cols-1
-        sm:grid-cols-2 
+        sm:grid-cols-1 
         lg:grid-cols-3"
       >
         <UsersPieCard />
@@ -32,8 +32,16 @@ export default function AdminDashboard() {
 
         <ExpensesBarCard />
         <ExpensesPieCard />
+      </div>
+        <div
+        className="grid gap-3 p-4 
+        grid-cols-1
+        sm:grid-cols-1 
+        lg:grid-cols-1"
+      >
         <CashTransactionsChart />
       </div>
     </div>
+    
   );
 }

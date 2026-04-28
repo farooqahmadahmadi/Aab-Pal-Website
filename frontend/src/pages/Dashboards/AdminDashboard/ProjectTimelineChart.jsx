@@ -129,7 +129,7 @@ export default function ProjectTimelineChart() {
       </div>
 
       {/* CHART */}
-      <div className="w-full h-[300px]">
+      <div className="w-full h-[220px]">
         <ResponsiveContainer>
           <ScatterChart>
             <CartesianGrid stroke="#f1f5f9" />
