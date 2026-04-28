@@ -13,7 +13,6 @@ import { useTranslation } from "react-i18next";
 import { getUserById, uploadUserPhoto } from "../../services/userService";
 import UserChangePasswordModal from "../../components/Users/UserChangePasswordModal";
 
-
 // const BASE_URL = import.meta.env.VITE_API_URL;
 const BASE_URL = import.meta.env.VITE_IMAGE_URL;
 
@@ -44,14 +43,14 @@ export default function Profile() {
 
   // IMAGE
   const getAvatar = () => {
-  const photo = user?.user_photo_url;
+    const photo = user?.user_photo_url;
 
-  if (!photo || photo.trim() === "" || imgError) {
-    return defaultAvatar;
-  }
+    if (!photo || photo.trim() === "" || imgError) {
+      return defaultAvatar;
+    }
 
-  return `${BASE_URL}${photo}?t=${Date.now()}`;
-};
+    return `${BASE_URL}${photo}?t=${Date.now()}`;
+  };
 
   // UPLOAD
   const uploadPhoto = async () => {
@@ -59,7 +58,7 @@ export default function Profile() {
 
     const formData = new FormData();
     // formData.append("user_photo_url", file);
-formData.append("user_photo_url", file);
+    formData.append("user_photo_url", file);
     try {
       setLoading(true);
 
@@ -85,11 +84,11 @@ formData.append("user_photo_url", file);
         {/* AVATAR */}
         <div className="relative">
           <img
-  src={getAvatar()}
-  onError={() => setImgError(true)}
-  alt="Profile"
-  className="w-28 h-28 sm:w-32 sm:h-32 rounded-full object-cover border-4 border-gray-200"
-/>
+            src={getAvatar()}
+            onError={() => setImgError(true)}
+            alt="Profile"
+            className="w-28 h-28 sm:w-32 sm:h-32 rounded-full object-cover border-4 border-gray-200"
+          />
 
           <label className="absolute bottom-2 right-2 bg-white p-2 rounded-full shadow cursor-pointer hover:bg-gray-100">
             <FiCamera size={16} />
