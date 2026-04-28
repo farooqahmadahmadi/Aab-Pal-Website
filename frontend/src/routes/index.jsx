@@ -70,6 +70,11 @@ import SystemLogs from "../pages/SystemLogs/SystemLogs";
 import SystemSettings from "../pages/Settings/SystemSettings";
 
 // Reports
+// Attendance
+import DailyEmployeeAttendanceReport from "../pages/Reports/Attendance/DailyEmployeeAttendanceReport";
+import MonthlyEmployeeAttendanceReport from "../pages/Reports/Attendance/MonthlyEmployeeAttendanceReport";
+
+// Expenses
 import AllExpenses from "../pages/Reports/Expenses/ExpensesReport";
 import DailyExpenses from "../pages/Reports/Expenses/DailyExpensesReport";
 import FilteredExpensesReport from "../pages/Reports/Expenses/FilteredExpensesReport";
@@ -507,6 +512,30 @@ export default function AppRoutes() {
         />
 
         {/* REPORTs */}
+        {/* Attendance */}
+        <Route
+          path="/admin/reports/daily_employee_attendance"
+          element={
+            <ProtectedRoute allowedRoles={["Admin"]}>
+              <AdminLayout>
+                <DailyEmployeeAttendanceReport />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/admin/reports/monthly_employee_attendance"
+          element={
+            <ProtectedRoute allowedRoles={["Admin"]}>
+              <AdminLayout>
+                <MonthlyEmployeeAttendanceReport />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Expenses */}
         <Route
           path="/admin/reports/all_expenses"
           element={
@@ -557,7 +586,7 @@ export default function AppRoutes() {
             </ProtectedRoute>
           }
         />
-         <Route
+        <Route
           path="/admin/reports/yearly_expenses"
           element={
             <ProtectedRoute allowedRoles={["Admin"]}>

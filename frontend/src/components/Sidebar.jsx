@@ -144,7 +144,7 @@ export default function Sidebar({ role }) {
             path: "/admin/employees/employee-hiring-info",
           },
           {
-            name: "employee_attendance_list",
+            name: "employee_attendance",
             path: "/admin/employees/employee-attendance-list",
           },
           {
@@ -251,6 +251,14 @@ export default function Sidebar({ role }) {
         name: "Report Center",
         icon: <FiClipboard className="animate-bounce" />,
         submenu: [
+          {
+            name: "Daily Attendance",
+            path: "/admin/reports/daily_employee_attendance",
+          },
+          {
+            name: "Monthly Attendance",
+            path: "/admin/reports/monthly_employee_attendance",
+          },
           { name: "All Expenses", path: "/admin/reports/all_expenses" },
           { name: "Daily Expenses ", path: "/admin/reports/daily_expenses" },
           {
