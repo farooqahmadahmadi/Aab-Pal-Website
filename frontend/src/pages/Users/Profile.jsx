@@ -24,6 +24,7 @@ export default function Profile() {
   const [file, setFile] = useState(null);
   const [loading, setLoading] = useState(false);
   const [showPassModal, setShowPassModal] = useState(false);
+  const [imgError, setImgError] = useState(false);
 
   const loggedUser = JSON.parse(localStorage.getItem("user") || "{}");
 
@@ -43,9 +44,14 @@ export default function Profile() {
 
   // IMAGE
   const getAvatar = () => {
-    if (!user?.user_photo_url) return defaultAvatar;
-    return `${BASE_URL}${user.user_photo_url}?t=${Date.now()}`;
-  };
+  const photo = user?.user_photo_url;
+
+  if (!photo || photo.trim() === "" || imgError) {
+    return defaultAvatar;
+  }
+
+  return `${BASE_URL}${photo}?t=${Date.now()}`;
+};
 
   // UPLOAD
   const uploadPhoto = async () => {
@@ -79,10 +85,11 @@ formData.append("user_photo_url", file);
         {/* AVATAR */}
         <div className="relative">
           <img
-            src={getAvatar()}
-            alt="Profile"
-            className="w-28 h-28 sm:w-32 sm:h-32 rounded-full object-cover border-4 border-gray-200"
-          />
+  src={getAvatar()}
+  onError={() => setImgError(true)}
+  alt="Profile"
+  className="w-28 h-28 sm:w-32 sm:h-32 rounded-full object-cover border-4 border-gray-200"
+/>
 
           <label className="absolute bottom-2 right-2 bg-white p-2 rounded-full shadow cursor-pointer hover:bg-gray-100">
             <FiCamera size={16} />
