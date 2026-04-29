@@ -6,11 +6,11 @@ import { getTransactions } from "../../../services/cashTransactionsService";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 
-export default function MonthlyCashTransactionsReport() {
+export default function YearlyCashTransactionsReport() {
   const [transactions, setTransactions] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const [selectedMonth, setSelectedMonth] = useState("");
+  const [selectedYear, setSelectedYear] = useState("");
 
   useEffect(() => {
     fetchTransactions();
@@ -25,53 +25,77 @@ export default function MonthlyCashTransactionsReport() {
     }
   };
 
-  // ================= MONTHS =================
-  const months = [
+  // ================= YEARS =================
+  const years = [
     ...new Set(
-      transactions.map((e) => e.transaction_date?.slice(0, 7)).filter(Boolean),
+      transactions.map((e) => e.transaction_date?.slice(0, 4)).filter(Boolean),
     ),
   ];
 
-  // auto select first month
   useEffect(() => {
-    if (months.length && !selectedMonth) {
-      setSelectedMonth(months[0]);
+    if (years.length && !selectedYear) {
+      setSelectedYear(years[0]);
     }
   }, [transactions]);
 
-  // ================= FILTER =================
-  const filtered = transactions.filter(
-    (e) => e.transaction_date?.slice(0, 7) === selectedMonth,
-  );
+  // ================= MONTH NAMES =================
+  const monthNames = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
 
-  // ================= GROUP BY DATE =================
-  const grouped = filtered.reduce((acc, item) => {
-    const date = item.transaction_date;
+  // ================= DATA PROCESS =================
+  let groupedArray = [];
 
-    if (!acc[date]) {
-      acc[date] = {
-        date,
+  if (selectedYear) {
+    const filtered = transactions.filter(
+      (e) => e.transaction_date?.slice(0, 4) === selectedYear,
+    );
+
+    const grouped = {};
+
+    filtered.forEach((item) => {
+      const monthIndex = new Date(item.transaction_date).getMonth();
+
+      if (!grouped[monthIndex]) {
+        grouped[monthIndex] = {
+          month: monthNames[monthIndex],
+          income: 0,
+          expense: 0,
+        };
+      }
+
+      if (item.transaction_type === "Income") {
+        grouped[monthIndex].income += Number(item.amount || 0);
+      } else {
+        grouped[monthIndex].expense += Number(item.amount || 0);
+      }
+    });
+
+    // 🔥 ensure all 12 months موجود وي
+    groupedArray = monthNames.map((month, index) => {
+      const data = grouped[index] || {
+        month,
         income: 0,
         expense: 0,
       };
-    }
 
-    if (item.transaction_type === "Income") {
-      acc[date].income += Number(item.amount || 0);
-    } else {
-      acc[date].expense += Number(item.amount || 0);
-    }
-
-    return acc;
-  }, {});
-
-  const groupedArray = Object.values(grouped).map((d) => ({
-    ...d,
-    profit: d.income - d.expense,
-  }));
-
-  // 🔥 SORT BY DATE
-  groupedArray.sort((a, b) => new Date(a.date) - new Date(b.date));
+      return {
+        ...data,
+        profit: data.income - data.expense,
+      };
+    });
+  }
 
   // ================= TOTAL =================
   const totalIncome = groupedArray.reduce((s, i) => s + i.income, 0);
@@ -79,14 +103,9 @@ export default function MonthlyCashTransactionsReport() {
   const totalProfit = totalIncome - totalExpense;
 
   // ================= TITLE =================
-  const monthName = selectedMonth
-    ? new Date(selectedMonth + "-01").toLocaleString("en-US", {
-        month: "long",
-        year: "numeric",
-      })
-    : "";
-
-  const title = `Monthly Transactions Report (${monthName})`;
+  const title = selectedYear
+    ? `Yearly Cash Transactions Report (${selectedYear})`
+    : "Yearly Report";
 
   // ================= PDF =================
   const handleExportPDF = async () => {
@@ -110,24 +129,24 @@ export default function MonthlyCashTransactionsReport() {
     const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
 
     pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, Math.min(pdfHeight, 285));
-    pdf.save("monthly-cash-transactions-report.pdf");
+    pdf.save("yearly-cash-transactions-report.pdf");
   };
 
   if (loading) return <p className="text-center py-10">Loading...</p>;
 
   return (
     <div className="bg-gray-100 p-3 flex flex-col items-center">
-      {/* FILTER */}
+      {/* ================= FILTER ================= */}
       <div className="flex gap-2 mb-3">
         <select
-          value={selectedMonth}
-          onChange={(e) => setSelectedMonth(e.target.value)}
+          value={selectedYear}
+          onChange={(e) => setSelectedYear(e.target.value)}
           className="border px-3 py-1 rounded"
         >
-          <option value="">Select Month</option>
-          {months.map((m) => (
-            <option key={m} value={m}>
-              {m}
+          <option value="">Select Year</option>
+          {years.map((y) => (
+            <option key={y} value={y}>
+              {y}
             </option>
           ))}
         </select>
@@ -140,14 +159,14 @@ export default function MonthlyCashTransactionsReport() {
         </button>
       </div>
 
-      {/* REPORT */}
+      {/* ================= REPORT ================= */}
       <div className="pdf-page w-full max-w-[210mm] bg-white p-4">
         <ReportHeader title={title} />
 
         <table className="w-full text-xs border border-gray-300 border-collapse mt-3 table-fixed">
           <thead className="bg-gray-100">
             <tr>
-              <th className="border p-2 w-[25%]">Date</th>
+              <th className="border p-2 w-[25%]">Month</th>
               <th className="border p-2 w-[25%]">Income</th>
               <th className="border p-2 w-[25%]">Expense</th>
               <th className="border p-2 w-[25%]">Profit</th>
@@ -157,7 +176,7 @@ export default function MonthlyCashTransactionsReport() {
           <tbody>
             {groupedArray.map((item, i) => (
               <tr key={i} className="text-center">
-                <td className="border p-2">{item.date}</td>
+                <td className="border p-2">{item.month}</td>
                 <td className="border p-2 text-green-600 font-semibold">
                   {item.income.toFixed(2)}
                 </td>
@@ -171,7 +190,7 @@ export default function MonthlyCashTransactionsReport() {
             ))}
           </tbody>
 
-           <tfoot className="bg-gray-100 font-bold">
+          <tfoot className="bg-gray-100 font-bold">
             <tr>
               <td className="border p-2 text-center">Total</td>
               <td className="border p-2 text-green-700">

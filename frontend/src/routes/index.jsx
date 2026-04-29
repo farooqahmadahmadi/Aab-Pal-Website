@@ -78,6 +78,7 @@ import MonthlyEmployeeAttendanceReport from "../pages/Reports/Attendance/Monthly
 import DailyCashTransactionsReport from "../pages/Reports/CashTransactions/DailyCashTransactionsReport";
 import CashTransactionsFilteredReport from "../pages/Reports/CashTransactions/CashTransactionsFilteredReport";
 import MonthlyCashTransactionsReport from "../pages/Reports/CashTransactions/MonthlyCashTransactionsReport";
+import YearlyCashTransactionsReport from "../pages/Reports/CashTransactions/YearlyCashTransactionsReport";
 
 // Expenses
 import AllExpenses from "../pages/Reports/Expenses/ExpensesReport";
@@ -560,12 +561,22 @@ export default function AppRoutes() {
             </ProtectedRoute>
           }
         />
-         <Route
+        <Route
           path="/admin/reports/monthly_cash_transactions"
           element={
             <ProtectedRoute allowedRoles={["Admin"]}>
               <AdminLayout>
                 <MonthlyCashTransactionsReport />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        />
+           <Route
+          path="/admin/reports/yearly_cash_transactions"
+          element={
+            <ProtectedRoute allowedRoles={["Admin"]}>
+              <AdminLayout>
+                <YearlyCashTransactionsReport />
               </AdminLayout>
             </ProtectedRoute>
           }

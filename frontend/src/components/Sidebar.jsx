@@ -271,6 +271,10 @@ export default function Sidebar({ role }) {
             name: "Monthly Cash Transactions",
             path: "/admin/reports/monthly_cash_transactions",
           },
+          {
+            name: "Yearly Cash Transactions",
+            path: "/admin/reports/yearly_cash_transactions",
+          },
           { name: "All Expenses", path: "/admin/reports/all_expenses" },
           { name: "Daily Expenses ", path: "/admin/reports/daily_expenses" },
           {
