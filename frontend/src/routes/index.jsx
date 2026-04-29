@@ -74,6 +74,11 @@ import SystemSettings from "../pages/Settings/SystemSettings";
 import DailyEmployeeAttendanceReport from "../pages/Reports/Attendance/DailyEmployeeAttendanceReport";
 import MonthlyEmployeeAttendanceReport from "../pages/Reports/Attendance/MonthlyEmployeeAttendanceReport";
 
+// Cash Transactions
+import DailyCashTransactionsReport from "../pages/Reports/CashTransactions/DailyCashTransactionsReport";
+import CashTransactionsFilteredReport from "../pages/Reports/CashTransactions/CashTransactionsFilteredReport";
+import MonthlyCashTransactionsReport from "../pages/Reports/CashTransactions/MonthlyCashTransactionsReport";
+
 // Expenses
 import AllExpenses from "../pages/Reports/Expenses/ExpensesReport";
 import DailyExpenses from "../pages/Reports/Expenses/DailyExpensesReport";
@@ -523,13 +528,44 @@ export default function AppRoutes() {
             </ProtectedRoute>
           }
         />
-
         <Route
           path="/admin/reports/monthly_employee_attendance"
           element={
             <ProtectedRoute allowedRoles={["Admin"]}>
               <AdminLayout>
                 <MonthlyEmployeeAttendanceReport />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Cash Transactions */}
+        <Route
+          path="/admin/reports/daily_cash_transactions"
+          element={
+            <ProtectedRoute allowedRoles={["Admin"]}>
+              <AdminLayout>
+                <DailyCashTransactionsReport />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/reports/filterd_cash_transactions"
+          element={
+            <ProtectedRoute allowedRoles={["Admin"]}>
+              <AdminLayout>
+                <CashTransactionsFilteredReport />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        />
+         <Route
+          path="/admin/reports/monthly_cash_transactions"
+          element={
+            <ProtectedRoute allowedRoles={["Admin"]}>
+              <AdminLayout>
+                <MonthlyCashTransactionsReport />
               </AdminLayout>
             </ProtectedRoute>
           }

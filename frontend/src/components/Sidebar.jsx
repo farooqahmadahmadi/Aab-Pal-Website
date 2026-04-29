@@ -259,6 +259,18 @@ export default function Sidebar({ role }) {
             name: "Monthly Attendance",
             path: "/admin/reports/monthly_employee_attendance",
           },
+          {
+            name: "Daily Cash Transactions",
+            path: "/admin/reports/daily_cash_transactions",
+          },
+          {
+            name: "Generate Custom",
+            path: "/admin/reports/filterd_cash_transactions",
+          },
+          {
+            name: "Monthly Cash Transactions",
+            path: "/admin/reports/monthly_cash_transactions",
+          },
           { name: "All Expenses", path: "/admin/reports/all_expenses" },
           { name: "Daily Expenses ", path: "/admin/reports/daily_expenses" },
           {

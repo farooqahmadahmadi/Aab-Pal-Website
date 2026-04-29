@@ -205,17 +205,17 @@ export default function Navbar({ sidebarOpen, role }) {
                 </div>
 
                 <div
-                  onClick={() => changeLanguage("fa")}
-                  className="px-3 py-2 hover:bg-gray-100 text-sm cursor-pointer"
-                >
-                  {t("persian")}
-                </div>
-
-                <div
                   onClick={() => changeLanguage("ps")}
                   className="px-3 py-2 hover:bg-gray-100 text-sm cursor-pointer"
                 >
                   {t("pashto")}
+                </div>
+
+                <div
+                  onClick={() => changeLanguage("fa")}
+                  className="px-3 py-2 hover:bg-gray-100 text-sm cursor-pointer"
+                >
+                  {t("persian")}
                 </div>
               </motion.div>
             )}
