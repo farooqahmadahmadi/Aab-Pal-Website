@@ -120,11 +120,11 @@ export default function FinanceCard() {
 
       {/* PROFIT */}
       <div className="flex flex-col items-center justify-center mb-4 relative z-10">
-        <div className="bg-green-100 text-green-600 p-2 rounded-full mb-2 shadow-sm">
+        <div className="bg-green-100 text-green-600 p-3 rounded-full mb-2 shadow-sm">
           <FiDollarSign className="text-lg" />
         </div>
 
-        <p className="text-gray-400 text-xs font-semibold">Profit</p>
+        <p className="text-gray-500 text-xs font-semibold">Profit</p>
 
         <h2
           className={`text-2xl font-extrabold mt-0.5 ${
