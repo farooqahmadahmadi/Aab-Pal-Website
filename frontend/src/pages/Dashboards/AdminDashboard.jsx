@@ -14,7 +14,7 @@ import FinanceCard from "./AdminDashboard/FinanceCard";
 
 export default function AdminDashboard() {
   return (
-    <div className="p-4">
+    <div className="p-4 pt-0.5">
       <div
         className="grid gap-3 pb-3
         grid-cols-1
