@@ -10,10 +10,19 @@ import ProjectTimelineChart from "./AdminDashboard/ProjectTimelineChart";
 import ExpensesBarCard from "./AdminDashboard/ExpensesBarCard";
 import ExpensesPieCard from "./AdminDashboard/ExpensesPieCard";
 import CashTransactionsChart from "./AdminDashboard/CashTransactionsChart";
+import FinanceCard from "./AdminDashboard/FinanceCard";
 
 export default function AdminDashboard() {
   return (
     <div className="p-4">
+      <div
+        className="grid gap-3 pb-3
+        grid-cols-1
+        sm:grid-cols-3 
+        lg:grid-cols-4"
+      >
+        <FinanceCard />
+      </div>
       {/* DASHBOARD GRID */}
       <div
         className="grid gap-3 

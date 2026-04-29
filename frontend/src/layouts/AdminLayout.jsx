@@ -17,7 +17,7 @@ export default function AdminLayout({ children }) {
 
   return (
     <div
-      className={`flex h-screen bg-gray-100 print:bg-white ${
+      className={`flex h-screen bg-gray-50 print:bg-white ${
         dir === "rtl" ? "flex-row-reverse" : "flex-row"
       }`}
     >

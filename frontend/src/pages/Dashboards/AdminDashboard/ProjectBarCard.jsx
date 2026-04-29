@@ -77,7 +77,10 @@ export default function ProjectBarCard() {
   ];
 
   return (
-    <div className="bg-white rounded-2xl shadow-lg p-5 hover:shadow-xl transition h-full flex flex-col">
+    <div
+      className="relative bg-gradient-to-br from-white to-sky-50 rounded-2xl shadow-md p-4 w-full 
+                    hover:shadow-xl hover:-translate-y-1 transition-all duration-300 border border-gray-100 overflow-hidden h-full flex flex-col"
+    >
       {/* HEADER */}
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-md font-bold text-gray-800">Project Analytics</h2>
@@ -102,7 +105,7 @@ export default function ProjectBarCard() {
           </BarChart>
         </ResponsiveContainer>
       </div>
-      
+
       {/* LEGEND (DYNAMIC) */}
       <div className="flex flex-wrap gap-3 mt-4 text-xs text-gray-700 justify-center">
         {chartData.map((item, index) => (
