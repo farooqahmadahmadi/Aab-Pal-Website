@@ -33,8 +33,8 @@ export default function AdminDashboard() {
         <ExpensesBarCard />
         <ExpensesPieCard />
       </div>
-        <div
-        className="grid gap-3 p-4 
+      <div
+        className="grid gap-3 pt-3 pb-2
         grid-cols-1
         sm:grid-cols-1 
         lg:grid-cols-1"
@@ -42,6 +42,5 @@ export default function AdminDashboard() {
         <CashTransactionsChart />
       </div>
     </div>
-    
   );
 }

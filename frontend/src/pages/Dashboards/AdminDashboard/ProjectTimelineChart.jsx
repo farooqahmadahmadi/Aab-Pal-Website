@@ -112,7 +112,7 @@ export default function ProjectTimelineChart() {
   };
 
   return (
-    <div className="bg-white rounded-xl shadow p-4 h-full flex flex-col">
+   <div className="bg-white rounded-2xl shadow-lg p-5 hover:shadow-xl transition h-full flex flex-col">
       {/* HEADER */}
       <div className="flex justify-between mb-3">
         <h2 className="text-md font-bold text-gray-800">Project Timeline</h2>
