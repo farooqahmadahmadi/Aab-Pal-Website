@@ -157,7 +157,7 @@ export default function EmployeeAttendanceList() {
                 <th className="p-2">{t("status")}</th>
                 <th className="p-2">{t("check_in")}</th>
                 <th className="p-2">{t("check_out")}</th>
-                <th className="p-2">{t("hours")}</th>
+                <th className="p-2">{t("work_hours")}</th>
                 <th className="p-2">{t("actions")}</th>
               </tr>
             </thead>
