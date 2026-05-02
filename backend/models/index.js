@@ -17,6 +17,8 @@ const TestimonialsPage = require("./TestimonialsPage");
 const WebsitePages = require("./WebsitePages");
 const WebPageViews = require("./WebPageViews");
 const WebPageViewStats = require("./WebPageViewStats");
+// No associations required for Users
+const Users = require('./Users');
 
 // Home Page → Website Languages
 HomePage.belongsTo(WebsiteLanguage, { foreignKey: "language_id" });
@@ -86,4 +88,6 @@ module.exports = {
   WebsitePages,
   WebPageViews,
   WebPageViewStats,
+  // No associations required for Users
+  Users,
 };
