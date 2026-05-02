@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { getUsers, deleteUser } from "../../services/userService";
-import UserViewModal from "../../components/Users/UserViewModal";
-import UserAddModal from "../../components/Users/UserAddModal";
-import Pagination from "../../components/common/Pagination";
-import SearchBar from "../../components/common/SearchBar";
-import Toast from "../../components/common/Toast";
-import useToast from "../../hooks/useToast";
+import { getUsers, deleteUser } from "../../../services/userService";
+import UserViewModal from "../../../components/Users/UserViewModal";
+import UserAddModal from "../../../components/Users/UserAddModal";
+import Pagination from "../../../components/common/Pagination";
+import SearchBar from "../../../components/common/SearchBar";
+import Toast from "../../../components/common/Toast";
+import useToast from "../../../hooks/useToast";
 
 import { FiPlusCircle, FiEdit3, FiTrash2 } from "react-icons/fi";
 
-import MobileCard from "../../components/common/MobileCard";
-import CardRow from "../../components/common/CardRow";
+import MobileCard from "../../../components/common/MobileCard";
+import CardRow from "../../../components/common/CardRow";
 import { useTranslation } from "react-i18next";
 
 export default function UsersList() {

@@ -6,7 +6,6 @@ const rateLimit = require("express-rate-limit");
 
 require("./models/index");
 const userRoutes = require("./routes/userRoutes");
-const companyRoutes = require("./routes/companyRoutes");
 
 const app = express();
 
@@ -73,7 +72,6 @@ app.get("/", (req, res) => {
 
 // Routes
 app.use("/api/users", userRoutes);
-app.use("/api/company", companyRoutes);
 
 // Error handler
 app.use((err, req, res, next) => {
