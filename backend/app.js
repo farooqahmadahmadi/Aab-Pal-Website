@@ -5,7 +5,10 @@ const helmet = require("helmet");
 const rateLimit = require("express-rate-limit");
 
 require("./models/index");
-const userRoutes = require("./routes/userRoutes");
+
+// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+// const userRoutes = require("./routes/userRoutes");
+const websiteLanguageRoutes = require("./routes/websiteLanguage.routes");
 
 const app = express();
 
@@ -70,8 +73,10 @@ app.get("/", (req, res) => {
   res.json({ message: "API Running 🚀" });
 });
 
+// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 // Routes
-app.use("/api/users", userRoutes);
+// app.use("/api/users", userRoutes);
+app.use("/api/languages", websiteLanguageRoutes);
 
 // Error handler
 app.use((err, req, res, next) => {

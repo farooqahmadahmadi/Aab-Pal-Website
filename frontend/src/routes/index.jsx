@@ -1,52 +1,35 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Login from "../pages/Users/Login";
+
+// Auth
+import Login from "../pages/admin/Users/Login";
 import ProtectedRoute from "../components/ProtectedRoute";
 
-// Imported Layouts
+// Layouts
 import AdminLayout from "../layouts/AdminLayout";
-import Public from "../layouts/PublicLayout";
 
-// Imported Dashboards
-
-// Imported Pages
-import UsersList from "../pages/Users/UsersList";
-import UserProfile from "../pages/Users/Profile";
-
-import Notifications from "../pages/Notification/Notifications";
-import SystemLogs from "../pages/SystemLogs/SystemLogs";
-
-// Reports
-// Attendance
+// Pages
+import WebsiteLanguageList from "../pages/admin/websiteLanguage/WebsiteLanguageList";
 
 export default function AppRoutes() {
   return (
     <BrowserRouter>
       <Routes>
+
+        {/* ================= AUTH ================= */}
         <Route path="/" element={<Login />} />
 
-        {/* Admin */}
+        {/* ================= ADMIN ================= */}
         <Route
-          path="/admin/dashboard"
+          path="/admin/languages"
           element={
-            <ProtectedRoute allowedRoles={["Admin"]}>
+            <ProtectedRoute allowedRoles={["admin"]}>
               <AdminLayout>
-                <AdminDashboard />
+                <WebsiteLanguageList />
               </AdminLayout>
             </ProtectedRoute>
           }
         />
 
-        {/* Company */}
-        <Route
-          path="/admin/company/company-info"
-          element={
-            <ProtectedRoute allowedRoles={["Admin"]}>
-              <AdminLayout>
-                <CompanyInfo />
-              </AdminLayout>
-            </ProtectedRoute>
-          }
-        />
       </Routes>
     </BrowserRouter>
   );

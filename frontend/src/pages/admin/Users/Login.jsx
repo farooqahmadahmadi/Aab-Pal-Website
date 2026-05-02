@@ -5,7 +5,7 @@ import InstallPwaModal from "../../../components/PWA/InstallPwaModal";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import API from "../../../services/api";
-import loginBg from "../../assets/images/login-bg.jpg";
+import loginBg from "../../../assets/images/login-bg.jpg";
 
 import { FaTimes, FaEye, FaEyeSlash, FaUserLock } from "react-icons/fa";
 
