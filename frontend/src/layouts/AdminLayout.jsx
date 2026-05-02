@@ -1,40 +1,19 @@
-// import Navbar from "../components/Navbar";
-// import Sidebar from "../components/Sidebar";
-import { useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
+import Sidebar from "../components/Sidebar";
 
 export default function AdminLayout({ children }) {
-  const { i18n } = useTranslation();
-  const [dir, setDir] = useState("ltr");
-
-  useEffect(() => {
-    const currentDir =
-      i18n.language === "fa" || i18n.language === "ps" ? "rtl" : "ltr";
-
-    setDir(currentDir);
-    document.documentElement.dir = currentDir;
-  }, [i18n.language]);
-
   return (
-    <div
-      className={`flex h-screen bg-gray-50 print:bg-white ${
-        dir === "rtl" ? "flex-row-reverse" : "flex-row"
-      }`}
-    >
-      {/*  hide in print */}
-      <div className="print:hidden">
-        <Sidebar role="Admin" />
+    <div className="flex min-h-screen bg-gray-100">
+
+      {/* SIDEBAR */}
+      <Sidebar />
+
+      {/* CONTENT */}
+      <div className="flex-1">
+        <main className="p-4">
+          {children}
+        </main>
       </div>
 
-      <div className="flex-1 flex flex-col min-w-0">
-        {/*  hide in print */}
-        <div className="print:hidden">
-          <Navbar role="Admin" />
-        </div>
-
-        {/*  report area */}
-        <main className="p-6 overflow-auto">{children}</main>
-      </div>
     </div>
   );
 }

@@ -1,48 +1,67 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 
-// Auth
+// AUTH
 import Login from "../pages/admin/Users/Login";
 import ProtectedRoute from "../components/ProtectedRoute";
 
-// Layouts
+// LAYOUTS
 import AdminLayout from "../layouts/AdminLayout";
 import PublicLayout from "../layouts/PublicLayout";
 
-// Pages
-import WebsiteLanguageList from "../pages/admin/websiteLanguage/WebsiteLanguageList";
+// PUBLIC
 import HomePage from "../pages/public/HomePage";
+
+// ADMIN
+import AdminDashboard from "../pages/admin/dashboards/AdminDashboard";
+import WebsiteLanguageList from "../pages/admin/websiteLanguage/WebsiteLanguageList";
 
 export default function AppRoutes() {
   return (
-    <BrowserRouter>
-      <Routes>
+    <Routes>
 
-        {/* ================= PUBLIC ================= */}
-        <Route
-          path="/"
-          element={
-            <PublicLayout>
-              <HomePage />
-            </PublicLayout>
-          }
-        />
+      {/* ROOT → PUBLIC HOME */}
+      <Route path="/" element={<Navigate to="/home" replace />} />
 
-        {/* ================= AUTH ================= */}
-        <Route path="/login" element={<Login />} />
+      {/* PUBLIC */}
+      <Route
+        path="/home"
+        element={
+          <PublicLayout>
+            <HomePage />
+          </PublicLayout>
+        }
+      />
 
-        {/* ================= ADMIN ================= */}
-        <Route
-          path="/admin/languages"
-          element={
-            <ProtectedRoute allowedRoles={["admin"]}>
-              <AdminLayout>
-                <WebsiteLanguageList />
-              </AdminLayout>
-            </ProtectedRoute>
-          }
-        />
+      {/* LOGIN */}
+      <Route path="/login" element={<Login />} />
 
-      </Routes>
-    </BrowserRouter>
+      {/* ADMIN DASHBOARD */}
+      <Route
+        path="/admin/dashboard"
+        element={
+     <ProtectedRoute allowedRoles={["admin"]}>
+            <AdminLayout>
+              <AdminDashboard />
+            </AdminLayout>
+          </ProtectedRoute>
+        }
+      />
+
+      {/* ADMIN OTHER */}
+      <Route
+        path="/admin/languages"
+        element={
+     <ProtectedRoute allowedRoles={["admin"]}>
+            <AdminLayout>
+              <WebsiteLanguageList />
+            </AdminLayout>
+          </ProtectedRoute>
+        }
+      />
+
+      {/* FALLBACK */}
+      <Route path="*" element={<Navigate to="/home" replace />} />
+
+    </Routes>
   );
 }

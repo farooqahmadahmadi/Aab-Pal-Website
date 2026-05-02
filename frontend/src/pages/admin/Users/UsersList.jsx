@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { getUsers, deleteUser } from "../../../services/userService";
-import UserViewModal from "../../../components/Users/UserViewModal";
-import UserAddModal from "../../../components/Users/UserAddModal";
+import { getUsers, deleteUser } from "../../../services/user.service";
+
+import UserModal from "../../../components/Users/UserModal";
+
 import Pagination from "../../../components/common/Pagination";
 import SearchBar from "../../../components/common/SearchBar";
 import Toast from "../../../components/common/Toast";
@@ -16,6 +17,7 @@ import { useTranslation } from "react-i18next";
 export default function UsersList() {
   const { t } = useTranslation();
 
+  // ================= DATA =================
   const [users, setUsers] = useState([]);
   const [filtered, setFiltered] = useState([]);
 
@@ -23,14 +25,16 @@ export default function UsersList() {
   const [page, setPage] = useState(1);
   const limit = 10;
 
-  const [selectedUser, setSelectedUser] = useState(null);
-  const [showView, setShowView] = useState(false);
-  const [showAdd, setShowAdd] = useState(false);
+  // ================= MODAL =================
+  const [openModal, setOpenModal] = useState(false);
+  const [editUser, setEditUser] = useState(null);
+
+  // ================= DELETE =================
   const [deleteData, setDeleteData] = useState(null);
 
   const { toast, showToast, hideToast } = useToast();
 
-  // FETCH
+  // ================= FETCH USERS =================
   const fetchUsers = async () => {
     try {
       const res = await getUsers();
@@ -44,7 +48,7 @@ export default function UsersList() {
     fetchUsers();
   }, []);
 
-  // SEARCH
+  // ================= SEARCH =================
   useEffect(() => {
     const f = users.filter(
       (u) =>
@@ -58,13 +62,11 @@ export default function UsersList() {
     setPage(1);
   }, [search, users]);
 
-  // PAGINATION
+  // ================= PAGINATION =================
   const start = (page - 1) * limit;
   const paginated = filtered.slice(start, start + limit);
 
-  // DELETE
-  const handleDelete = (user) => setDeleteData(user);
-
+  // ================= DELETE =================
   const confirmDelete = async () => {
     try {
       await deleteUser(deleteData.user_id);
@@ -79,7 +81,7 @@ export default function UsersList() {
 
   return (
     <div className="p-3 sm:p-6 max-w-7xl mx-auto">
-      {/* ===== TOP ===== */}
+      {/* ================= HEADER ================= */}
       <div className="flex flex-col md:flex-row justify-between items-center gap-3 mb-4">
         <h2 className="text-xl sm:text-2xl font-bold">{t("users")}</h2>
 
@@ -91,7 +93,10 @@ export default function UsersList() {
           />
 
           <button
-            onClick={() => setShowAdd(true)}
+            onClick={() => {
+              setEditUser(null);
+              setOpenModal(true);
+            }}
             className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded flex items-center justify-center gap-2"
           >
             <FiPlusCircle /> {t("add_user")}
@@ -99,19 +104,19 @@ export default function UsersList() {
         </div>
       </div>
 
-      {/* ===== TABLE / CARD ===== */}
+      {/* ================= TABLE ================= */}
       <div className="bg-white shadow rounded-lg overflow-hidden">
         {/* DESKTOP */}
         <div className="hidden md:block">
           <table className="w-full text-sm">
             <thead className="bg-gray-200">
               <tr>
-                <th className="p-2 text-center">ID</th>
+                <th className="p-2">ID</th>
                 <th className="p-2">{t("user_name")}</th>
-                <th className="p-2 text-left">{t("email")}</th>
+                <th className="p-2">{t("email")}</th>
                 <th className="p-2">{t("role")}</th>
                 <th className="p-2">{t("status")}</th>
-                <th className="p-2 text-center">{t("actions")}</th>
+                <th className="p-2">{t("actions")}</th>
               </tr>
             </thead>
 
@@ -120,43 +125,41 @@ export default function UsersList() {
                 paginated.map((u) => (
                   <tr
                     key={u.user_id}
-                    className="border-t hover:bg-gray-50 text-center"
+                    className="border-t text-center hover:bg-gray-50"
                   >
                     <td className="p-2">{u.user_id}</td>
                     <td className="p-2">{u.user_name}</td>
-
-                    <td className="p-2 text-left">
-                      <a href={`mailto:${u.user_email}`}>{u.user_email}</a>
-                    </td>
-
+                    <td className="p-2">{u.user_email}</td>
                     <td className="p-2">{u.user_role}</td>
 
                     <td className="p-2">
                       <span
-                        className={`px-2 py-1 rounded-full text-xs font-semibold ${
-                          u.login_status === "Online"
-                            ? "bg-green-100 text-green-600 animate-pulse"
-                            : "bg-gray-200 text-gray-600"
+                        className={`px-2 py-1 rounded text-xs ${
+                          u.is_active
+                            ? "bg-green-100 text-green-600"
+                            : "bg-red-100 text-red-600"
                         }`}
                       >
-                        {u.login_status}
+                        {u.is_active ? "Active" : "Inactive"}
                       </span>
                     </td>
 
                     <td className="p-2">
                       <div className="flex justify-center gap-2">
+                        {/* EDIT */}
                         <button
                           onClick={() => {
-                            setSelectedUser(u);
-                            setShowView(true);
+                            setEditUser(u);
+                            setOpenModal(true);
                           }}
                           className="bg-yellow-500 p-1.5 text-white rounded"
                         >
                           <FiEdit3 />
                         </button>
 
+                        {/* DELETE */}
                         <button
-                          onClick={() => handleDelete(u)}
+                          onClick={() => setDeleteData(u)}
                           className="bg-red-500 p-1.5 text-white rounded"
                         >
                           <FiTrash2 />
@@ -178,47 +181,44 @@ export default function UsersList() {
 
         {/* MOBILE */}
         <div className="md:hidden p-2 space-y-3">
-          {paginated.length ? (
-            paginated.map((u) => (
-              <MobileCard
-                key={u.user_id}
-                id={u.user_id}
-                actions={
-                  <>
-                    <button
-                      onClick={() => {
-                        setSelectedUser(u);
-                        setShowView(true);
-                      }}
-                      className="bg-yellow-500 p-2 text-white rounded"
-                    >
-                      <FiEdit3 />
-                    </button>
+          {paginated.map((u) => (
+            <MobileCard
+              key={u.user_id}
+              id={u.user_id}
+              actions={
+                <>
+                  <button
+                    onClick={() => {
+                      setEditUser(u);
+                      setOpenModal(true);
+                    }}
+                    className="bg-yellow-500 p-2 text-white rounded"
+                  >
+                    <FiEdit3 />
+                  </button>
 
-                    <button
-                      onClick={() => handleDelete(u)}
-                      className="bg-red-500 p-2 text-white rounded"
-                    >
-                      <FiTrash2 />
-                    </button>
-                  </>
-                }
-              >
-                <CardRow label={t("user_name")} value={u.user_name} />
-                <CardRow label={t("email")} value={u.user_email} />
-                <CardRow label={t("role")} value={u.user_role} />
-                <CardRow label={t("status")} value={u.login_status} />
-              </MobileCard>
-            ))
-          ) : (
-            <div className="text-center text-gray-500 py-4">
-              {t("no_users")}
-            </div>
-          )}
+                  <button
+                    onClick={() => setDeleteData(u)}
+                    className="bg-red-500 p-2 text-white rounded"
+                  >
+                    <FiTrash2 />
+                  </button>
+                </>
+              }
+            >
+              <CardRow label={t("user_name")} value={u.user_name} />
+              <CardRow label={t("email")} value={u.user_email} />
+              <CardRow label={t("role")} value={u.user_role} />
+              <CardRow
+                label={t("status")}
+                value={u.is_active ? "Active" : "Inactive"}
+              />
+            </MobileCard>
+          ))}
         </div>
       </div>
 
-      {/* PAGINATION */}
+      {/* ================= PAGINATION ================= */}
       <div className="mt-4 flex justify-center">
         <Pagination
           page={page}
@@ -228,23 +228,15 @@ export default function UsersList() {
         />
       </div>
 
-      {/* MODALS */}
-      {showView && (
-        <UserViewModal
-          user={selectedUser}
-          onClose={() => setShowView(false)}
-          onRefresh={fetchUsers}
-        />
-      )}
+      {/* ================= USER MODAL (ADD + EDIT) ================= */}
+      <UserModal
+        open={openModal}
+        editUser={editUser}
+        onClose={() => setOpenModal(false)}
+        onRefresh={fetchUsers}
+      />
 
-      {showAdd && (
-        <UserAddModal
-          onClose={() => setShowAdd(false)}
-          onRefresh={fetchUsers}
-        />
-      )}
-
-      {/* DELETE */}
+      {/* ================= DELETE MODAL ================= */}
       {deleteData && (
         <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-50 p-4">
           <div className="bg-white p-6 rounded-lg w-full max-w-sm">
@@ -272,7 +264,7 @@ export default function UsersList() {
         </div>
       )}
 
-      {/* TOAST */}
+      {/* ================= TOAST ================= */}
       {toast && (
         <Toast
           message={toast.message}

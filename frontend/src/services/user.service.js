@@ -1,31 +1,66 @@
 import API from "./api";
 
-export const getUsers = (params) => API.get("/users", { params });
+// ================= LOGIN =================
+export const loginUser = (data) => {
+  return API.post("/users/login", data);
+};
 
-export const getUserById = (id) => API.get(`/users/${id}`);
+// ================= LOGOUT =================
+export const logoutUser = () => {
+  return API.post("/users/logout");
+};
 
-export const addUser = (data) =>
-  API.post("/users", data, {
-    headers: { "Content-Type": "multipart/form-data" },
-  });
+// ================= GET USERS =================
+export const getUsers = () => {
+  return API.get("/users");
+};
 
-export const updateUser = (id, data) =>
-  API.put(`/users/${id}`, data, {
-    headers: { "Content-Type": "multipart/form-data" },
-  });
+// ================= GET USER BY ID =================
+export const getUserById = (id) => {
+  return API.get(`/users/${id}`);
+};
 
-export const deleteUser = (id) => API.delete(`/users/${id}`);
-
-export const changePassword = (data) =>
-  API.post("/users/change-password", data);
-
-export const resetPasswordAdmin = (id) =>
-  API.post(`/users/${id}/reset-password`);
-
-// ✅ ADD THIS (FIX)
-export const uploadUserPhoto = (id, formData) =>
-  API.post(`/users/${id}/photo`, formData, {
+// ================= CREATE USER =================
+export const createUser = (data) => {
+  return API.post("/users", data, {
     headers: {
       "Content-Type": "multipart/form-data",
     },
   });
+};
+
+// ================= UPDATE USER =================
+export const updateUser = (id, data) => {
+  return API.put(`/users/${id}`, data, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+};
+
+// ================= DELETE USER =================
+export const deleteUser = (id) => {
+  return API.delete(`/users/${id}`);
+};
+
+// ================= CHANGE PASSWORD =================
+export const changePassword = (data) => {
+  return API.post("/users/change-password", data);
+};
+
+// ================= ADMIN RESET PASSWORD =================
+export const adminResetPassword = (id) => {
+  return API.post(`/users/${id}/reset-password`);
+};
+
+// ================= UPLOAD PHOTO ONLY =================
+export const uploadUserPhoto = (id, file) => {
+  const formData = new FormData();
+  formData.append("user_photo_url", file);
+
+  return API.post(`/users/${id}/photo`, formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+};

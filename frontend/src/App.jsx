@@ -3,12 +3,10 @@ import RouteIndex from "./routes/index";
 import UpdateNotifier from "./components/PWA/UpdateNotifier";
 
 function App() {
-
   useEffect(() => {
-    if ("Notification" in window) {
-      if (Notification.permission === "default") {
-        Notification.requestPermission();
-      }
+    // Ask notification permission once
+    if ("Notification" in window && Notification.permission === "default") {
+      Notification.requestPermission();
     }
   }, []);
 
