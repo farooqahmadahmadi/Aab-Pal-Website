@@ -28,7 +28,7 @@ const OurTeamPage = sequelize.define('OurTeamPage', {
     type: DataTypes.TEXT
   },
 
-  member_photo_url: {
+  member_photo: {
     type: DataTypes.STRING(255)
   }
 }, {

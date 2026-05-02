@@ -35,7 +35,7 @@ module.exports = {
         allowNull: true
       },
 
-      member_photo_url: {
+      member_photo: {
         type: Sequelize.STRING(255),
         allowNull: true
       },
