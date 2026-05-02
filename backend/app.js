@@ -6,9 +6,10 @@ const rateLimit = require("express-rate-limit");
 
 require("./models/index");
 
-// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-// const userRoutes = require("./routes/userRoutes");
+// >>>>>>>>>>> Routes >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+const userRoutes = require("./routes/user.routes");
 const websiteLanguageRoutes = require("./routes/websiteLanguage.routes");
+
 
 const app = express();
 
@@ -73,9 +74,8 @@ app.get("/", (req, res) => {
   res.json({ message: "API Running 🚀" });
 });
 
-// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-// Routes
-// app.use("/api/users", userRoutes);
+// >>>>>>>>>>> Routes >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+app.use("/api/users", userRoutes);
 app.use("/api/languages", websiteLanguageRoutes);
 
 // Error handler
