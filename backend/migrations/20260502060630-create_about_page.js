@@ -30,7 +30,7 @@ module.exports = {
         allowNull: false
       },
 
-      about_image_url: {
+      about_image: {
         type: Sequelize.STRING(255),
         allowNull: true
       },

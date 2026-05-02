@@ -24,7 +24,7 @@ const AboutPage = sequelize.define('AboutPage', {
     allowNull: false
   },
 
-  about_image_url: {
+  about_image: {
     type: DataTypes.STRING(255)
   },
 
