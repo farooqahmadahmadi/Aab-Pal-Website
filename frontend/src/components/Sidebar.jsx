@@ -20,13 +20,13 @@ import {
   FiPaperclip,
   FiBook,
   FiClipboard,
+  FiGlobe,
 } from "react-icons/fi";
-import { Menu } from "lucide-react";
+import { FileBracesCorner, Menu } from "lucide-react";
 
 import defaultAvatar from "../assets/images/client-def-image.png";
-import { FaRegStickyNote } from "react-icons/fa";
-
-export default function Sidebar({ role }) {
+import { FaRegStickyNote, FaWineBottle } from "react-icons/fa";
+export default function Sidebar() {
   const location = useLocation();
   const sidebarRef = useRef();
   const { t, i18n } = useTranslation();
@@ -45,7 +45,8 @@ export default function Sidebar({ role }) {
 
   const user = JSON.parse(localStorage.getItem("user") || "{}");
 
-  // const BASE_URL = import.meta.env.VITE_API_URL;
+  // ✅ FIX: role normalize
+  const role = String(user?.user_role || "").toLowerCase();
 
   const BASE_URL =
     import.meta.env.VITE_IMAGE_URL || import.meta.env.VITE_API_URL;
@@ -86,37 +87,41 @@ export default function Sidebar({ role }) {
     setOpenMenu((prev) => (prev === name ? null : name));
   };
 
-  // ================= FUTURE SOCKET SAFE HOOK =================
-  useEffect(() => {
-    // reserved for socket integration later
-    // prevents future breaking changes
-  }, []);
-
+  // ================= MENU =================
   const menuItems = {
-    // >>>>>>>>>>>>>>>> Sidebar for Admin Role:
-    Admin: [
+    admin: [
       {
         name: "dashboard",
         path: "/admin/dashboard",
         icon: <FiPieChart className="animate-bounce" />,
       },
       {
-        name: "company",
+        name: "Website Languages",
+        path: "/admin/languages",
+        icon: <FiGlobe className="animate-bounce" />,
+      },
+      {
+        name: "Users",
+        path: "/admin/users",
+        icon: <FiPieChart className="animate-bounce" />,
+      },
+      {
+        name: "Blogs",
         icon: <FiHome className="animate-bounce" />,
         submenu: [
           {
-            name: "company_info",
-            path: "/admin/company/company-info",
+            name: "Blos",
+            path: "",
+          },
+          {
+            name: "Blog Comments",
+            path: "",
           },
         ],
       },
     ],
   };
 
-  const isAnyChildActive = (item) => {
-    if (!item.submenu) return false;
-    return item.submenu.some((sub) => sub.path === location.pathname);
-  };
   return (
     <>
       {/* TOGGLE */}
@@ -134,8 +139,6 @@ export default function Sidebar({ role }) {
           ) : (
             <FiChevronLeft size={18} />
           )
-        ) : isRTL ? (
-          <Menu size={19} />
         ) : (
           <Menu size={19} />
         )}
@@ -206,17 +209,8 @@ export default function Sidebar({ role }) {
               ) : (
                 <>
                   <div
-                    ref={(el) => {
-                      if (isAnyChildActive(item)) {
-                        itemRefs.current[item.name] = el;
-                      }
-                    }}
                     onClick={() => toggleMenu(item.name)}
-                    className={`flex items-center gap-3 px-3 py-2 rounded-lg cursor-pointer ${
-                      isAnyChildActive(item)
-                        ? "bg-blue-50 text-blue-600 font-semibold"
-                        : "hover:bg-gray-100"
-                    }`}
+                    className="flex items-center gap-3 px-3 py-2 rounded-lg cursor-pointer hover:bg-gray-100"
                   >
                     {item.icon}
                     <span className="flex-1">{t(item.name)}</span>
@@ -228,19 +222,12 @@ export default function Sidebar({ role }) {
                   </div>
 
                   {openMenu === item.name && (
-                    <div
-                      className={`mt-1 space-y-1 ${isRTL ? "mr-8" : "ml-8"}`}
-                    >
+                    <div className={`mt-1 ${isRTL ? "mr-8" : "ml-8"}`}>
                       {item.submenu.map((sub, j) => (
                         <Link
                           key={j}
-                          ref={(el) => (itemRefs.current[sub.path] = el)}
                           to={sub.path}
-                          className={`block px-2 py-1 rounded ${
-                            isActive(sub.path)
-                              ? "bg-gray-100 text-blue-600 font-semibold"
-                              : "hover:bg-gray-100"
-                          }`}
+                          className="block px-2 py-1 hover:bg-gray-100 rounded"
                         >
                           {t(sub.name)}
                         </Link>

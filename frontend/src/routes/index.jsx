@@ -14,11 +14,12 @@ import HomePage from "../pages/public/HomePage";
 // ADMIN
 import AdminDashboard from "../pages/admin/dashboards/AdminDashboard";
 import WebsiteLanguageList from "../pages/admin/websiteLanguage/WebsiteLanguageList";
+import UsersList from './../pages/admin/users/UsersList';
+
 
 export default function AppRoutes() {
   return (
     <Routes>
-
       {/* ROOT → PUBLIC HOME */}
       <Route path="/" element={<Navigate to="/home" replace />} />
 
@@ -39,7 +40,7 @@ export default function AppRoutes() {
       <Route
         path="/admin/dashboard"
         element={
-     <ProtectedRoute allowedRoles={["admin"]}>
+          <ProtectedRoute allowedRoles={["admin"]}>
             <AdminLayout>
               <AdminDashboard />
             </AdminLayout>
@@ -51,9 +52,19 @@ export default function AppRoutes() {
       <Route
         path="/admin/languages"
         element={
-     <ProtectedRoute allowedRoles={["admin"]}>
+          <ProtectedRoute allowedRoles={["admin"]}>
             <AdminLayout>
               <WebsiteLanguageList />
+            </AdminLayout>
+          </ProtectedRoute>
+        }
+      />
+       <Route
+        path="/admin/users"
+        element={
+          <ProtectedRoute allowedRoles={["admin"]}>
+            <AdminLayout>
+              <UsersList />
             </AdminLayout>
           </ProtectedRoute>
         }
@@ -61,7 +72,6 @@ export default function AppRoutes() {
 
       {/* FALLBACK */}
       <Route path="*" element={<Navigate to="/home" replace />} />
-
     </Routes>
   );
 }
