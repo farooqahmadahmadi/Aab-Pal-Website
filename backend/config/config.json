@@ -2,7 +2,7 @@
     "development": {
         "username": "root",
         "password": "Root@MySQL",
-        "database": "cc_mis_db",
+        "database": "aabpal_website",
         "host": "127.0.0.1",
         "dialect": "mysql"
     }
