@@ -6,8 +6,8 @@ const BlogComments = require("./BlogComments");
 const FaqsPage = require("./FaqsPage");
 const PrivacyAndPolicyPage = require("./PrivacyAndPolicyPage");
 const ServicesPage = require("./ServicesPage");
-const OurTeamPage = require('./OurTeamPage');
-
+const OurTeamPage = require("./OurTeamPage");
+const TermsAndConditionsPage = require("./TermsAndConditionsPage");
 
 // Home Page → Website Languages
 HomePage.belongsTo(WebsiteLanguage, { foreignKey: "language_id" });
@@ -34,10 +34,14 @@ ServicesPage.belongsTo(WebsiteLanguage, { foreignKey: "language_id" });
 WebsiteLanguage.hasMany(ServicesPage, { foreignKey: "language_id" });
 
 // Our Team Page → Website Languages
-OurTeamPage.belongsTo(WebsiteLanguage, {  foreignKey: 'language_id'});
-WebsiteLanguage.hasMany(OurTeamPage, {  foreignKey: 'language_id'});
+OurTeamPage.belongsTo(WebsiteLanguage, { foreignKey: "language_id" });
+WebsiteLanguage.hasMany(OurTeamPage, { foreignKey: "language_id" });
 
-
+// Terms & Conditions Page → Website Languages
+TermsAndConditionsPage.belongsTo(WebsiteLanguage, {
+  foreignKey: "language_id",
+});
+WebsiteLanguage.hasMany(TermsAndConditionsPage, { foreignKey: "language_id" });
 
 module.exports = {
   sequelize,
@@ -47,5 +51,6 @@ module.exports = {
   BlogComments,
   FaqsPage,
   ServicesPage,
-  OurTeamPage
+  OurTeamPage,
+  TermsAndConditionsPage,
 };
