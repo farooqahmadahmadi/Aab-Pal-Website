@@ -13,8 +13,8 @@ const OurProjectsPage = require("./OurProjectsPage");
 const AboutPage = require("./AboutPage");
 // No associations required for TestimonialsPage
 const TestimonialsPage = require("./TestimonialsPage");
-
-
+// No associations required for WebsitePages
+const WebsitePages = require("./WebsitePages");
 
 // Home Page → Website Languages
 HomePage.belongsTo(WebsiteLanguage, { foreignKey: "language_id" });
@@ -58,8 +58,6 @@ WebsiteLanguage.hasMany(OurProjectsPage, { foreignKey: "language_id" });
 AboutPage.belongsTo(WebsiteLanguage, { foreignKey: "language_id" });
 WebsiteLanguage.hasMany(AboutPage, { foreignKey: "language_id" });
 
-
-
 module.exports = {
   sequelize,
   // No associations required for WebsiteLanguage,
@@ -75,4 +73,6 @@ module.exports = {
   AboutPage,
   // No associations required for TestimonialsPage
   TestimonialsPage,
+  // No associations required for WebsitePages
+  WebsitePages,
 };
