@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { createLanguage, updateLanguage } from "../../services";
+import { createLanguage, updateLanguage } from "../../services/websiteLanguage.service";
 
 export default function LanguageModal({
   isOpen,
@@ -13,9 +13,14 @@ export default function LanguageModal({
     language_direction: "LTR",
   });
 
+  // ================= RESET FORM =================
   useEffect(() => {
     if (initialData) {
-      setForm(initialData);
+      setForm({
+        language_code: initialData.language_code || "",
+        language_name: initialData.language_name || "",
+        language_direction: initialData.language_direction || "LTR",
+      });
     } else {
       setForm({
         language_code: "",
@@ -29,11 +34,12 @@ export default function LanguageModal({
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
+  // ================= SUBMIT =================
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      if (initialData) {
+      if (initialData?.language_id) {
         await updateLanguage(initialData.language_id, form);
       } else {
         await createLanguage(form);
@@ -51,17 +57,20 @@ export default function LanguageModal({
   return (
     <div className="fixed inset-0 bg-black/50 flex justify-center items-center">
       <div className="bg-white p-5 rounded w-full max-w-md">
+
         <h2 className="text-lg font-bold mb-3">
           {initialData ? "Edit Language" : "Add Language"}
         </h2>
 
         <form onSubmit={handleSubmit} className="space-y-3">
+
           <input
             name="language_code"
             value={form.language_code}
             onChange={handleChange}
-            placeholder="Code (e.g. en)"
+            placeholder="Code"
             className="border p-2 w-full"
+            required
           />
 
           <input
@@ -70,6 +79,7 @@ export default function LanguageModal({
             onChange={handleChange}
             placeholder="Language Name"
             className="border p-2 w-full"
+            required
           />
 
           <select
@@ -87,10 +97,14 @@ export default function LanguageModal({
               Cancel
             </button>
 
-            <button type="submit" className="bg-green-500 text-white px-3 py-1">
+            <button
+              type="submit"
+              className="bg-green-500 text-white px-3 py-1"
+            >
               {initialData ? "Update" : "Save"}
             </button>
           </div>
+
         </form>
       </div>
     </div>

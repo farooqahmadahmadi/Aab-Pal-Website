@@ -20,7 +20,7 @@ export default function PublicNavbar() {
   };
 
   return (
-    <nav className="w-full bg-white shadow-sm">
+    <nav className=" bg-white shadow-sm w-svw">
       <div className="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
         {/* ================= LOGO ================= */}
         <Link to="/" className="text-xl font-bold text-blue-600">

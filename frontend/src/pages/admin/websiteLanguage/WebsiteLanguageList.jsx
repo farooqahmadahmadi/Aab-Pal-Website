@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { getLanguages, deleteLanguage } from "../../../services";
+import { getLanguages, deleteLanguage } from "../../../services/websiteLanguage.service";
 
 import LanguageModal from "../../../components/WebsiteLanguage/LanguageModal";
-import Pagination from "../../../components/common/Pagination";
 import SearchBar from "../../../components/common/SearchBar";
 import Toast from "../../../components/common/Toast";
 import useToast from "../../../hooks/useToast";
@@ -23,11 +22,14 @@ export default function WebsiteLanguageList() {
 
   const { toast, showToast, hideToast } = useToast();
 
+  // ================= FETCH =================
   const fetchData = async () => {
     try {
       const res = await getLanguages();
-      setLanguages(res.data || []);
-    } catch {
+
+      const data = res?.data || res || [];
+      setLanguages(Array.isArray(data) ? data : []);
+    } catch (err) {
       showToast("Failed to load languages", "error");
     }
   };
@@ -36,12 +38,13 @@ export default function WebsiteLanguageList() {
     fetchData();
   }, []);
 
+  // ================= SEARCH =================
   useEffect(() => {
-    const f = languages.filter(
-      (l) =>
-        l.language_name.toLowerCase().includes(search.toLowerCase()) ||
-        l.language_code.toLowerCase().includes(search.toLowerCase()),
+    const f = languages.filter((l) =>
+      (l.language_name || "").toLowerCase().includes(search.toLowerCase()) ||
+      (l.language_code || "").toLowerCase().includes(search.toLowerCase())
     );
+
     setFiltered(f);
     setPage(1);
   }, [search, languages]);
@@ -49,14 +52,13 @@ export default function WebsiteLanguageList() {
   const start = (page - 1) * limit;
   const paginated = filtered.slice(start, start + limit);
 
-  const handleDelete = (item) => setDeleteData(item);
-
+  // ================= DELETE =================
   const confirmDelete = async () => {
     try {
-      await deleteLanguage(deleteData.language_id);
+      await deleteLanguage(deleteData?.language_id);
       showToast("Deleted successfully", "success");
       fetchData();
-    } catch {
+    } catch (err) {
       showToast("Delete failed", "error");
     } finally {
       setDeleteData(null);
@@ -65,12 +67,16 @@ export default function WebsiteLanguageList() {
 
   return (
     <div className="p-4 max-w-6xl mx-auto">
+
       {/* HEADER */}
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-xl font-bold">Website Languages</h2>
 
         <button
-          onClick={() => setShowModal(true)}
+          onClick={() => {
+            setSelected(null);
+            setShowModal(true);
+          }}
           className="bg-green-500 text-white px-4 py-2 rounded flex items-center gap-2"
         >
           <FiPlusCircle /> Add
@@ -113,7 +119,7 @@ export default function WebsiteLanguageList() {
                   </button>
 
                   <button
-                    onClick={() => handleDelete(l)}
+                    onClick={() => setDeleteData(l)}
                     className="bg-red-500 text-white p-1 rounded"
                   >
                     <FiTrash2 />
