@@ -7,48 +7,13 @@ const rateLimit = require("express-rate-limit");
 require("./models/index");
 const userRoutes = require("./routes/userRoutes");
 const companyRoutes = require("./routes/companyRoutes");
-const companyDocumentRoutes = require("./routes/companyDocumentRoutes");
-const departmentRoutes = require("./routes/departmentRoutes");
-const employeeRoutes = require("./routes/employeeRoutes");
-const employeeEducationRoutes = require("./routes/employeeEducationRoutes");
-const employeeDocumentsRoutes = require("./routes/employeeDocumentsRoutes");
-const employeeSalaryRoutes = require("./routes/employeeSalaryRoutes");
-const attendanceShiftsRoutes = require("./routes/attendanceShiftsInfoRoutes");
-const empHiringInfoRoutes = require("./routes/empHiringInfoRoutes");
-const attendanceRoutes = require("./routes/employeeAttendanceRoutes");
-const empSalaryPaymentRoutes = require("./routes/empSalaryPaymentRoutes");
-const clientRoutes = require("./routes/clientInfoRoutes");
-const projectInfoRoutes = require("./routes/projectInfoRoutes");
-const projectPhasesRoutes = require("./routes/projectPhasesRoutes");
-const projectDocumentRoutes = require("./routes/projectDocumentRoutes");
-const boqRoutes = require("./routes/boqItemsRoutes");
-const equipmentRoutes = require("./routes/equipmentRoutes");
-const equipmentUsageRoutes = require("./routes/equipmentUsageRoutes");
-const equipmentMaintenanceRoutes = require("./routes/equipmentMaintenanceRoutes");
-const equipmentDocumentsRoutes = require("./routes/equipmentDocumentsRoutes");
-const contractRoutes = require("./routes/contractRoutes");
-const milestoneRoutes = require("./routes/contractMilestoneRoutes");
-const suppliersRoutes = require("./routes/suppliersRoutes");
-const materialsRoutes = require("./routes/materialsRoutes");
-const purchaseOrdersRoutes = require("./routes/purchaseOrdersRoutes");
-const purchaseOrderItemsRoutes = require("./routes/purchaseOrderItemsRoutes");
-const tasksRoutes = require("./routes/tasksAssignmentRoutes");
-const siteDailyReportsRoutes = require("./routes/siteDailyReportsRoutes");
-const safetyIncidentsRoutes = require("./routes/safetyIncidentsRoutes");
-const expensesRoutes = require("./routes/expensesRoutes");
-const invoicesRoutes = require("./routes/invoicesRoutes");
-const cashTransactionsRoutes = require("./routes/cashTransactionsRoutes");
-const paymentsRoutes = require("./routes/paymentsInfoRoutes");
-const notificationsRoutes = require("./routes/notificationsRoutes");
-const systemLogsRoutes = require("./routes/systemLogsRoutes");
-const systemSettingsRoutes = require("./routes/systemSettingsRoutes");
 
 const app = express();
 
 // Security - Helmet (FIXED for images & downloads)
 app.use(
   helmet({
-    crossOriginResourcePolicy: { policy: "cross-origin" }, // مهم 👈
+    crossOriginResourcePolicy: { policy: "cross-origin" },
   }),
 );
 
@@ -85,31 +50,6 @@ app.use(
   }),
 );
 
-// // Security
-// const allowedOrigins = process.env.FRONTEND_URL.split(",");
-
-// app.use(
-//   cors({
-//     origin: function (origin, callback) {
-//       // allow server-to-server / mobile apps / postman
-//       if (!origin) return callback(null, true);
-
-//       // exact match
-//       if (allowedOrigins.includes(origin)) {
-//         return callback(null, true);
-//       }
-
-//       // LAN support (important fix)
-//       if (origin.startsWith("http://192.168.") || origin.startsWith("http://10.") || origin.startsWith("http://127.0.0.1") || origin.startsWith("http://localhost")) {
-//         return callback(null, true);
-//       }
-
-//       return callback(null, true); // dev-friendly fallback
-//     },
-//     credentials: true,
-//   })
-// );
-
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -126,44 +66,14 @@ app.use(
 // Static files
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
+//API Running Status
+app.get("/", (req, res) => {
+  res.json({ message: "API Running 🚀" });
+});
+
 // Routes
 app.use("/api/users", userRoutes);
 app.use("/api/company", companyRoutes);
-app.use("/api/company-documents", companyDocumentRoutes);
-app.use("/api/departments", departmentRoutes);
-app.use("/api/employees", employeeRoutes);
-app.use("/api/employee-educational-info", employeeEducationRoutes);
-app.use("/api/employee-documents", employeeDocumentsRoutes);
-app.use("/api/employee-salary", employeeSalaryRoutes);
-app.use("/api/attendance-shifts-info", attendanceShiftsRoutes);
-app.use("/api/emp-hiring-info", empHiringInfoRoutes);
-app.use("/api/employee-attendance", attendanceRoutes);
-app.use("/api/payments", empSalaryPaymentRoutes);
-app.use("/api/client-info", clientRoutes);
-app.use("/api/project-info", projectInfoRoutes);
-app.use("/api/project-phases", projectPhasesRoutes);
-app.use("/api/project-documents", projectDocumentRoutes);
-app.use("/api/boq-items", boqRoutes);
-app.use("/api/equipment", equipmentRoutes);
-app.use("/api/equipment-usage", equipmentUsageRoutes);
-app.use("/api/equipment-maintenance", equipmentMaintenanceRoutes);
-app.use("/api/equipment-documents", equipmentDocumentsRoutes);
-app.use("/api/contracts", contractRoutes);
-app.use("/api/contract-milestones", milestoneRoutes);
-app.use("/api/suppliers", suppliersRoutes);
-app.use("/api/materials", materialsRoutes);
-app.use("/api/purchase-orders", purchaseOrdersRoutes);
-app.use("/api/purchase-order-items", purchaseOrderItemsRoutes);
-app.use("/api/tasks", tasksRoutes);
-app.use("/api/site-daily-reports", siteDailyReportsRoutes);
-app.use("/api/safety-incidents", safetyIncidentsRoutes);
-app.use("/api/expenses", expensesRoutes);
-app.use("/api/invoices", invoicesRoutes);
-app.use("/api/cash-transactions", cashTransactionsRoutes);
-app.use("/api/finance-payments", paymentsRoutes);
-app.use("/api/notifications", notificationsRoutes);
-app.use("/api/system-logs", systemLogsRoutes);
-app.use("/api/system-settings", systemSettingsRoutes);
 
 // Error handler
 app.use((err, req, res, next) => {
