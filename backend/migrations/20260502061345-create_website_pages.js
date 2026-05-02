@@ -1,49 +1,49 @@
-'use strict';
+"use strict";
 
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('website_pages', {
+    await queryInterface.createTable("website_pages", {
       web_page_id: {
         type: Sequelize.BIGINT.UNSIGNED,
         autoIncrement: true,
-        primaryKey: true
+        primaryKey: true,
       },
 
       page_title: {
         type: Sequelize.STRING(255),
-        allowNull: false
+        allowNull: false,
       },
 
       page_slug: {
         type: Sequelize.STRING(255),
         allowNull: false,
-        unique: true
+        unique: true,
       },
 
       page_meta_title: {
         type: Sequelize.STRING(255),
-        allowNull: true
+        allowNull: true,
       },
 
       page_meta_keyword: {
         type: Sequelize.TEXT,
-        allowNull: true
+        allowNull: true,
       },
 
       page_meta_description: {
         type: Sequelize.TEXT,
-        allowNull: true
+        allowNull: true,
       },
 
       updated_at: {
         type: Sequelize.DATE,
         allowNull: false,
-        defaultValue: Sequelize.NOW
-      }
+        defaultValue: Sequelize.NOW,
+      },
     });
   },
 
   async down(queryInterface) {
-    await queryInterface.dropTable('website_pages');
-  }
+    await queryInterface.dropTable("website_pages");
+  },
 };

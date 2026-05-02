@@ -47,9 +47,7 @@ OurTeamPage.belongsTo(WebsiteLanguage, { foreignKey: "language_id" });
 WebsiteLanguage.hasMany(OurTeamPage, { foreignKey: "language_id" });
 
 // Terms & Conditions Page → Website Languages
-TermsAndConditionsPage.belongsTo(WebsiteLanguage, {
-  foreignKey: "language_id",
-});
+TermsAndConditionsPage.belongsTo(WebsiteLanguage, { foreignKey: "language_id" });
 WebsiteLanguage.hasMany(TermsAndConditionsPage, { foreignKey: "language_id" });
 
 // Our Projects Page → Website Languages
@@ -67,6 +65,7 @@ WebsitePages.hasMany(WebPageViews, { foreignKey: "web_page_id" });
 // WebsitePages → WebPageViewStats
 WebPageViewStats.belongsTo(WebsitePages, { foreignKey: "web_page_id" });
 WebsitePages.hasMany(WebPageViewStats, { foreignKey: "web_page_id" });
+
 
 module.exports = {
   sequelize,
