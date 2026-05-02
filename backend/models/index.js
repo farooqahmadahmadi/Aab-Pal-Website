@@ -20,6 +20,7 @@ const WebPageViewStats = require("./WebPageViewStats");
 // No associations required for Users
 const Users = require("./Users");
 const WebsiteLogs = require("./WebsiteLogs");
+const WebsiteNotifications = require("./WebsiteNotifications");
 
 // Home Page → Website Languages
 HomePage.belongsTo(WebsiteLanguage, { foreignKey: "language_id" });
@@ -75,6 +76,13 @@ WebsitePages.hasMany(WebPageViewStats, { foreignKey: "web_page_id" });
 WebsiteLogs.belongsTo(Users, { foreignKey: "user_id" });
 Users.hasMany(WebsiteLogs, { foreignKey: "user_id" });
 
+// Users → WebsiteNotifications
+WebsiteNotifications.belongsTo(Users, { foreignKey: "recipient_id", as: "recipient" });
+Users.hasMany(WebsiteNotifications, {
+  foreignKey: "recipient_id",
+  as: "notifications",
+});
+
 module.exports = {
   sequelize,
   // No associations required for WebsiteLanguage,
@@ -97,4 +105,5 @@ module.exports = {
   // No associations required for Users
   Users,
   WebsiteLogs,
+  WebsiteNotifications,
 };
