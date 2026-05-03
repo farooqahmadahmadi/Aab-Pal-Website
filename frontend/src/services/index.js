@@ -16,7 +16,7 @@ export * from "./user.service";
 // export * from "./faqs.service";
 
 // // Pages
-// export * from "./homePage.service";
+export * from "./homePage.service";
 // export * from "./servicesPage.service";
 // export * from "./aboutPage.service";
 // export * from "./ourTeam.service";

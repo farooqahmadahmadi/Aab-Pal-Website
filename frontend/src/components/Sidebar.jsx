@@ -101,6 +101,11 @@ export default function Sidebar() {
         icon: <FiGlobe className="animate-bounce" />,
       },
       {
+        name: "Home Page",
+        path: "/admin/home",
+        icon: <FiPieChart className="animate-bounce" />,
+      },
+      {
         name: "About Page",
         path: "/admin/about",
         icon: <FiPieChart className="animate-bounce" />,
