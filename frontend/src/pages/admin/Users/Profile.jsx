@@ -13,7 +13,6 @@ import { useTranslation } from "react-i18next";
 import { getUserById, uploadUserPhoto } from "../../services/userService";
 import UserChangePasswordModal from "../../components/Users/UserChangePasswordModal";
 
-// const BASE_URL = import.meta.env.VITE_API_URL;
 const BASE_URL = import.meta.env.VITE_IMAGE_URL;
 
 export default function Profile() {

@@ -14,10 +14,12 @@ import MobileCard from "../../../components/common/MobileCard";
 import CardRow from "../../../components/common/CardRow";
 import { useTranslation } from "react-i18next";
 
+// ✅ DEFAULT IMAGE
+import defaultUserImage from "../../../assets/images/user-def-image.png";
+
 export default function UsersList() {
   const { t } = useTranslation();
 
-  // ================= DATA =================
   const [users, setUsers] = useState([]);
   const [filtered, setFiltered] = useState([]);
 
@@ -25,16 +27,14 @@ export default function UsersList() {
   const [page, setPage] = useState(1);
   const limit = 10;
 
-  // ================= MODAL =================
   const [openModal, setOpenModal] = useState(false);
   const [editUser, setEditUser] = useState(null);
 
-  // ================= DELETE =================
   const [deleteData, setDeleteData] = useState(null);
 
   const { toast, showToast, hideToast } = useToast();
 
-  // ================= FETCH USERS =================
+  // ================= FETCH =================
   const fetchUsers = async () => {
     try {
       const res = await getUsers();
@@ -62,9 +62,17 @@ export default function UsersList() {
     setPage(1);
   }, [search, users]);
 
-  // ================= PAGINATION =================
   const start = (page - 1) * limit;
   const paginated = filtered.slice(start, start + limit);
+
+  // ================= IMAGE HANDLER =================
+  const getUserImage = (u) => {
+    if (!u?.user_photo) return defaultUserImage;
+
+    if (u.user_photo.startsWith("http")) return u.user_photo;
+
+    return `${import.meta.env.VITE_IMAGE_URL || ""}${u.user_photo}`;
+  };
 
   // ================= DELETE =================
   const confirmDelete = async () => {
@@ -81,7 +89,7 @@ export default function UsersList() {
 
   return (
     <div className="p-3 sm:p-6 max-w-7xl mx-auto">
-      {/* ================= HEADER ================= */}
+      {/* HEADER */}
       <div className="flex flex-col md:flex-row justify-between items-center gap-3 mb-4">
         <h2 className="text-xl sm:text-2xl font-bold">{t("users")}</h2>
 
@@ -97,24 +105,25 @@ export default function UsersList() {
               setEditUser(null);
               setOpenModal(true);
             }}
-            className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded flex items-center justify-center gap-2"
+            className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded flex items-center gap-2"
           >
             <FiPlusCircle /> {t("add_user")}
           </button>
         </div>
       </div>
 
-      {/* ================= TABLE ================= */}
+      {/* TABLE */}
       <div className="bg-white shadow rounded-lg overflow-hidden">
         {/* DESKTOP */}
         <div className="hidden md:block">
           <table className="w-full text-sm">
             <thead className="bg-gray-200">
               <tr>
-                <th className="p-2">ID</th>
+                <th className="p-2">{t("id")}</th>
                 <th className="p-2">{t("user_name")}</th>
                 <th className="p-2">{t("email")}</th>
                 <th className="p-2">{t("role")}</th>
+                <th className="p-2">{t("photo")}</th>
                 <th className="p-2">{t("status")}</th>
                 <th className="p-2">{t("actions")}</th>
               </tr>
@@ -123,14 +132,20 @@ export default function UsersList() {
             <tbody>
               {paginated.length ? (
                 paginated.map((u) => (
-                  <tr
-                    key={u.user_id}
-                    className="border-t text-center hover:bg-gray-50"
-                  >
+                  <tr key={u.user_id} className="border-t text-center">
                     <td className="p-2">{u.user_id}</td>
                     <td className="p-2">{u.user_name}</td>
                     <td className="p-2">{u.user_email}</td>
                     <td className="p-2">{u.user_role}</td>
+
+                    {/* PHOTO */}
+                    <td className="p-2">
+                      <img
+                        src={getUserImage(u)}
+                        alt="user"
+                        className="w-10 h-10 rounded-full object-cover mx-auto border"
+                      />
+                    </td>
 
                     <td className="p-2">
                       <span
@@ -146,7 +161,6 @@ export default function UsersList() {
 
                     <td className="p-2">
                       <div className="flex justify-center gap-2">
-                        {/* EDIT */}
                         <button
                           onClick={() => {
                             setEditUser(u);
@@ -157,7 +171,6 @@ export default function UsersList() {
                           <FiEdit3 />
                         </button>
 
-                        {/* DELETE */}
                         <button
                           onClick={() => setDeleteData(u)}
                           className="bg-red-500 p-1.5 text-white rounded"
@@ -170,7 +183,7 @@ export default function UsersList() {
                 ))
               ) : (
                 <tr>
-                  <td colSpan="6" className="p-4 text-center text-gray-500">
+                  <td colSpan="7" className="p-4 text-center text-gray-500">
                     {t("no_users")}
                   </td>
                 </tr>
@@ -206,6 +219,15 @@ export default function UsersList() {
                 </>
               }
             >
+              {/* AVATAR */}
+              <div className="flex justify-center mb-2">
+                <img
+                  src={getUserImage(u)}
+                  alt="user"
+                  className="w-16 h-16 rounded-full object-cover border"
+                />
+              </div>
+
               <CardRow label={t("user_name")} value={u.user_name} />
               <CardRow label={t("email")} value={u.user_email} />
               <CardRow label={t("role")} value={u.user_role} />
@@ -218,7 +240,7 @@ export default function UsersList() {
         </div>
       </div>
 
-      {/* ================= PAGINATION ================= */}
+      {/* PAGINATION */}
       <div className="mt-4 flex justify-center">
         <Pagination
           page={page}
@@ -228,7 +250,7 @@ export default function UsersList() {
         />
       </div>
 
-      {/* ================= USER MODAL (ADD + EDIT) ================= */}
+      {/* MODAL */}
       <UserModal
         open={openModal}
         editUser={editUser}
@@ -236,7 +258,7 @@ export default function UsersList() {
         onRefresh={fetchUsers}
       />
 
-      {/* ================= DELETE MODAL ================= */}
+      {/* DELETE */}
       {deleteData && (
         <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-50 p-4">
           <div className="bg-white p-6 rounded-lg w-full max-w-sm">
@@ -264,7 +286,7 @@ export default function UsersList() {
         </div>
       )}
 
-      {/* ================= TOAST ================= */}
+      {/* TOAST */}
       {toast && (
         <Toast
           message={toast.message}

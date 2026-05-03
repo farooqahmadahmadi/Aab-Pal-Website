@@ -24,7 +24,7 @@ import {
 } from "react-icons/fi";
 import { FileBracesCorner, Menu } from "lucide-react";
 
-import defaultAvatar from "../assets/images/client-def-image.png";
+import defaultAvatar from "../assets/images/user-def-image.png";
 import { FaRegStickyNote, FaWineBottle } from "react-icons/fa";
 export default function Sidebar() {
   const location = useLocation();
