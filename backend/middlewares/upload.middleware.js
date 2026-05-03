@@ -47,7 +47,7 @@ const uploadUser = multer({
   },
 });
 
-// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+// ================= ABOUTE PAGE =================
 
 const aboutDir = path.join(__dirname, "../uploads/about_page");
 
@@ -73,8 +73,33 @@ const uploadAbout = multer({
   limits: { fileSize: 2 * 1024 * 1024 },
 });
 
+// ================= HOME PAGE =================
+const homeDir = path.join(__dirname, "../uploads/home_page");
+
+if (!fs.existsSync(homeDir)) {
+  fs.mkdirSync(homeDir, { recursive: true });
+}
+
+const homeStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, homeDir);
+  },
+
+  filename: (req, file, cb) => {
+    const ext = path.extname(file.originalname);
+    const name = `home-${Date.now()}${ext}`;
+    cb(null, name);
+  },
+});
+
+const uploadHome = multer({
+  storage: homeStorage,
+  limits: { fileSize: 2 * 1024 * 1024 },
+});
+
 // ================= EXPORT =================
 module.exports = {
   uploadUser,
   uploadAbout,
+  uploadHome,
 };
