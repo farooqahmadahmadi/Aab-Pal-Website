@@ -7,6 +7,8 @@ export default function UserModal({ open, onClose, onRefresh, editUser }) {
   const isEdit = !!editUser;
   const { toast, showToast, hideToast } = useToast();
 
+  const [fileName, setFileName] = useState(""); // ✅ NEW
+
   const [form, setForm] = useState({
     user_name: "",
     user_email: "",
@@ -16,7 +18,7 @@ export default function UserModal({ open, onClose, onRefresh, editUser }) {
     failed_attempts: "",
     access_time_start: "",
     access_time_end: "",
-    user_photo_url: null,
+    user_photo: null,
   });
 
   // ================= LOAD =================
@@ -31,7 +33,7 @@ export default function UserModal({ open, onClose, onRefresh, editUser }) {
         failed_attempts: "",
         access_time_start: editUser.access_time_start || "",
         access_time_end: editUser.access_time_end || "",
-        user_photo_url: null,
+        user_photo: null,
       });
     } else {
       setForm({
@@ -43,9 +45,11 @@ export default function UserModal({ open, onClose, onRefresh, editUser }) {
         failed_attempts: "",
         access_time_start: "",
         access_time_end: "",
-        user_photo_url: null,
+        user_photo: null,
       });
     }
+
+    setFileName(""); // ✅ reset filename
   }, [editUser]);
 
   // ================= INPUT =================
@@ -53,7 +57,9 @@ export default function UserModal({ open, onClose, onRefresh, editUser }) {
     const { name, value, type, files } = e.target;
 
     if (type === "file") {
-      setForm({ ...form, user_photo_url: files[0] });
+      const file = files[0];
+      setForm({ ...form, user_photo: file });
+      setFileName(file?.name || ""); // ✅ show filename
     } else if (name === "is_active") {
       setForm({ ...form, is_active: value === "true" });
     } else {
@@ -123,6 +129,7 @@ export default function UserModal({ open, onClose, onRefresh, editUser }) {
           </h2>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+
             {/* NAME */}
             <div>
               <label className="text-sm">User Name</label>
@@ -191,10 +198,12 @@ export default function UserModal({ open, onClose, onRefresh, editUser }) {
               <label className="text-sm block mb-1">User Photo</label>
 
               <label className="flex items-center justify-center border-2 border-dashed rounded-lg p-3 cursor-pointer hover:bg-gray-50">
-                <span className="text-gray-500 text-sm">Choose Image</span>
+                <span className="text-gray-500 text-sm">
+                  {fileName ? fileName : "Choose Image"} {/* ✅ FIX */}
+                </span>
                 <input
                   type="file"
-                  name="user_photo_url"
+                  name="user_photo"
                   onChange={handleChange}
                   className="hidden"
                 />
@@ -204,6 +213,15 @@ export default function UserModal({ open, onClose, onRefresh, editUser }) {
             {/* READ ONLY */}
             {isEdit && (
               <>
+                <div>
+                  <label className="text-sm">Failed Attempts</label>
+                  <input
+                    value={editUser.failed_attempts}
+                    readOnly
+                    className="border p-2 rounded w-full bg-gray-100"
+                  />
+                </div>
+
                 <div>
                   <label className="text-sm">Created At</label>
                   <input
@@ -221,21 +239,13 @@ export default function UserModal({ open, onClose, onRefresh, editUser }) {
                     className="border p-2 rounded w-full bg-gray-100"
                   />
                 </div>
-                <div>
-                  <label className="text-sm">Failed Attempts</label>
-                  <input
-                    value={editUser.failed_attempts}
-                    readOnly
-                    className="border p-2 rounded w-full bg-gray-100"
-                  />
-                </div>
               </>
             )}
           </div>
 
           {/* BUTTONS */}
           <div className="flex justify-end gap-2 mt-6">
-            {/* RESET PASSWORD */}
+
             {isEdit && (
               <button
                 onClick={handleResetPassword}
@@ -244,6 +254,7 @@ export default function UserModal({ open, onClose, onRefresh, editUser }) {
                 Reset Password
               </button>
             )}
+
             <button onClick={onClose} className="bg-gray-400 px-4 py-2 rounded">
               Cancel
             </button>
@@ -258,7 +269,6 @@ export default function UserModal({ open, onClose, onRefresh, editUser }) {
         </div>
       </div>
 
-      {/* TOAST */}
       {toast && (
         <Toast message={toast.message} type={toast.type} onClose={hideToast} />
       )}
