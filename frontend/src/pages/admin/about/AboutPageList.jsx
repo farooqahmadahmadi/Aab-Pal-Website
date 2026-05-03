@@ -5,30 +5,46 @@ import {
 } from "../../../services/aboutPage.service";
 
 import AboutModal from "../../../components/About/AboutModal";
+
+import Pagination from "../../../components/common/Pagination";
+import SearchBar from "../../../components/common/SearchBar";
 import Toast from "../../../components/common/Toast";
 import useToast from "../../../hooks/useToast";
 
 import { FiPlusCircle, FiEdit3, FiTrash2 } from "react-icons/fi";
 
+import MobileCard from "../../../components/common/MobileCard";
+import CardRow from "../../../components/common/CardRow";
+import { useTranslation } from "react-i18next";
+
 import defaultImg from "../../../assets/images/about-default.jpg";
 
 export default function AboutPageList() {
+  const { t } = useTranslation();
+
   const [data, setData] = useState([]);
-  const [open, setOpen] = useState(false);
+  const [filtered, setFiltered] = useState([]);
+
+  const [search, setSearch] = useState("");
+  const [page, setPage] = useState(1);
+  const limit = 10;
+
+  const [openModal, setOpenModal] = useState(false);
   const [edit, setEdit] = useState(null);
+
   const [deleteItem, setDeleteItem] = useState(null);
 
   const { toast, showToast, hideToast } = useToast();
 
-  // ✅ USE ENV (NO HARDCODED LOCALHOST)
   const BASE_URL = (import.meta.env.VITE_IMAGE_URL || "").replace(/\/$/, "");
 
+  // ================= FETCH =================
   const fetchData = async () => {
     try {
       const res = await getAboutPages();
       setData(res.data || []);
     } catch {
-      showToast("Failed to load data", "error");
+      showToast(t("operation_failed"), "error");
     }
   };
 
@@ -36,133 +52,231 @@ export default function AboutPageList() {
     fetchData();
   }, []);
 
-  const handleDelete = async () => {
+  // ================= SEARCH =================
+  useEffect(() => {
+    const f = data.filter(
+      (item) =>
+        item.about_id?.toString().includes(search) ||
+        item.about_title?.toLowerCase().includes(search.toLowerCase()),
+    );
+
+    setFiltered(f);
+    setPage(1);
+  }, [search, data]);
+
+  const start = (page - 1) * limit;
+  const paginated = filtered.slice(start, start + limit);
+
+  // ================= IMAGE =================
+  const getImage = (item) => {
+    if (!item?.about_image) return defaultImg;
+
+    if (item.about_image.startsWith("http")) return item.about_image;
+
+    return `${BASE_URL}${item.about_image}`;
+  };
+
+  // ================= DELETE =================
+  const confirmDelete = async () => {
     try {
       await deleteAboutPage(deleteItem.about_id);
-      showToast("Deleted successfully", "success");
+      showToast(t("deleted_success"), "success");
       fetchData();
     } catch {
-      showToast("Delete failed", "error");
+      showToast(t("operation_failed"), "error");
     } finally {
       setDeleteItem(null);
     }
   };
 
   return (
-    <div className="p-4 max-w-6xl mx-auto">
-
+    <div className="p-3 sm:p-6 max-w-7xl mx-auto">
       {/* HEADER */}
-      <div className="flex justify-between mb-4">
-        <h2 className="text-xl font-bold">About Page</h2>
+      <div className="flex flex-col md:flex-row justify-between items-center gap-3 mb-4">
+        <h2 className="text-xl sm:text-2xl font-bold">{t("about_page")}</h2>
 
-        <button
-          onClick={() => {
-            setEdit(null);
-            setOpen(true);
-          }}
-          className="bg-green-500 text-white px-4 py-2 rounded flex items-center gap-2"
-        >
-          <FiPlusCircle /> Add
-        </button>
+        <div className="flex flex-col sm:flex-row gap-2 w-full md:w-auto">
+          <SearchBar
+            value={search}
+            onChange={setSearch}
+            placeholder="Search about..."
+          />
+
+          <button
+            onClick={() => {
+              setEdit(null);
+              setOpenModal(true);
+            }}
+            className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded flex items-center gap-2"
+          >
+            <FiPlusCircle /> Add
+          </button>
+        </div>
       </div>
 
       {/* TABLE */}
-      <div className="bg-white shadow rounded overflow-hidden">
-        <table className="w-full text-sm">
+      <div className="bg-white shadow rounded-lg overflow-hidden">
+        {/* DESKTOP */}
+        <div className="hidden md:block">
+          <table className="w-full text-sm">
+            <thead className="bg-gray-200">
+              <tr>
+                <th className="p-2">{t("id")}</th>
+                <th className="p-2">{t("image")}</th>
+                <th className="p-2">{t("title")}</th>
+                <th className="p-2">{t("order")}</th>
+                <th className="p-2">{t("actions")}</th>
+              </tr>
+            </thead>
 
-          <thead className="bg-gray-200">
-            <tr>
-              <th>ID</th>
-              <th>Image</th>
-              <th>Title</th>
-              <th>Order</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
+            <tbody>
+              {paginated.length ? (
+                paginated.map((item) => (
+                  <tr key={item.about_id} className="border-t text-center">
+                    <td className="p-2">{item.about_id}</td>
 
-          <tbody>
-            {data.map((item) => (
-              <tr key={item.about_id} className="text-center border-t">
+                    {/* IMAGE */}
+                    <td className="p-2">
+                      <img
+                        src={getImage(item)}
+                        onError={(e) => (e.target.src = defaultImg)}
+                        className="w-10 h-10 rounded object-cover mx-auto border"
+                      />
+                    </td>
 
-                <td>{item.about_id}</td>
+                    <td className="p-2">{item.about_title}</td>
+                    <td className="p-2">{item.display_order}</td>
 
-                {/* IMAGE */}
-                <td className="flex justify-center p-2">
-                  <img
-                    src={
-                      item.about_image
-                        ? `${BASE_URL}${item.about_image}`
-                        : defaultImg
-                    }
-                    onError={(e) => {
-                      e.target.src = defaultImg;
-                    }}
-                    className="w-12 h-12 rounded-full object-cover border"
-                  />
-                </td>
+                    {/* ACTIONS */}
+                    <td className="p-2">
+                      <div className="flex justify-center gap-2">
+                        <button
+                          onClick={() => {
+                            setEdit(item);
+                            setOpenModal(true);
+                          }}
+                          className="bg-yellow-500 p-1.5 text-white rounded"
+                        >
+                          <FiEdit3 />
+                        </button>
 
-                <td>{item.about_title}</td>
-                <td>{item.display_order}</td>
+                        <button
+                          onClick={() => setDeleteItem(item)}
+                          className="bg-red-500 p-1.5 text-white rounded"
+                        >
+                          <FiTrash2 />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="5" className="p-4 text-center text-gray-500">
+                    {t("no_data")}
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
 
-                <td className="flex justify-center gap-2 p-2">
-
+        {/* MOBILE */}
+        <div className="md:hidden p-2 space-y-3">
+          {paginated.map((item) => (
+            <MobileCard
+              key={item.about_id}
+              id={item.about_id}
+              actions={
+                <>
                   <button
                     onClick={() => {
                       setEdit(item);
-                      setOpen(true);
+                      setOpenModal(true);
                     }}
-                    className="bg-yellow-500 text-white p-1 rounded"
+                    className="bg-yellow-500 p-2 text-white rounded"
                   >
                     <FiEdit3 />
                   </button>
 
                   <button
                     onClick={() => setDeleteItem(item)}
-                    className="bg-red-500 text-white p-1 rounded"
+                    className="bg-red-500 p-2 text-white rounded"
                   >
                     <FiTrash2 />
                   </button>
+                </>
+              }
+            >
+              {/* IMAGE */}
+              <div className="flex justify-center mb-2">
+                <img
+                  src={getImage(item)}
+                  className="w-16 h-16 rounded object-cover border"
+                />
+              </div>
 
-                </td>
-              </tr>
-            ))}
-          </tbody>
+              <CardRow label="Title" value={item.about_title} />
+              <CardRow label="Order" value={item.display_order} />
+            </MobileCard>
+          ))}
+        </div>
+      </div>
 
-        </table>
+      {/* PAGINATION */}
+      <div className="mt-4 flex justify-center">
+        <Pagination
+          page={page}
+          total={filtered.length}
+          limit={limit}
+          onPageChange={setPage}
+        />
       </div>
 
       {/* MODAL */}
-      {open && (
-        <AboutModal
-          open={open}
-          edit={edit}
-          onClose={() => setOpen(false)}
-          onRefresh={fetchData}
-        />
-      )}
+      <AboutModal
+        open={openModal}
+        edit={edit}
+        onClose={() => setOpenModal(false)}
+        onRefresh={fetchData}
+      />
 
       {/* DELETE */}
       {deleteItem && (
-        <div className="fixed inset-0 bg-black/40 flex items-center justify-center">
-          <div className="bg-white p-4 rounded">
-            <p>Delete this record?</p>
+        <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-50 p-4">
+          <div className="bg-white p-6 rounded-lg w-full max-w-sm">
+            <p>
+              {t("delete_confirm")} <strong>{deleteItem.about_title}</strong>?
+            </p>
 
-            <div className="flex justify-end gap-2 mt-3">
-              <button onClick={() => setDeleteItem(null)}>Cancel</button>
-              <button onClick={handleDelete} className="text-red-500">
-                Delete
+            <div className="flex justify-end gap-2 mt-4">
+              <button
+                onClick={() => setDeleteItem(null)}
+                className="bg-gray-300 px-4 py-2 rounded"
+              >
+                {t("cancel")}
+              </button>
+
+              <button
+                onClick={confirmDelete}
+                className="bg-red-500 text-white px-4 py-2 rounded"
+              >
+                {t("delete")}
               </button>
             </div>
-
           </div>
         </div>
       )}
 
       {/* TOAST */}
       {toast && (
-        <Toast message={toast.message} type={toast.type} onClose={hideToast} />
+        <Toast
+          message={toast.message}
+          type={toast.type}
+          onClose={hideToast}
+          position="top-right"
+        />
       )}
-
     </div>
   );
 }

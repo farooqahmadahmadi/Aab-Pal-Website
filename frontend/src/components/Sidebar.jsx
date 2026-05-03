@@ -4,28 +4,22 @@ import { useTranslation } from "react-i18next";
 
 import {
   FiHome,
-  FiUsers,
   FiPieChart,
-  FiDollarSign,
   FiChevronsDown,
   FiChevronsUp,
-  FiBox,
-  FiShoppingBag,
-  FiTruck,
-  FiBookOpen,
-  FiList,
-  FiSettings,
   FiChevronLeft,
-  FiChevronRight,
-  FiPaperclip,
-  FiBook,
-  FiClipboard,
   FiGlobe,
+  FiInfo,
+  FiCreditCard,
+  FiUsers,
 } from "react-icons/fi";
+
+import { FaIdCard } from "react-icons/fa";
+
 import { FileBracesCorner, Menu } from "lucide-react";
 
 import defaultAvatar from "../assets/images/user-def-image.png";
-import { FaRegStickyNote, FaWineBottle } from "react-icons/fa";
+
 export default function Sidebar() {
   const location = useLocation();
   const sidebarRef = useRef();
@@ -103,16 +97,16 @@ export default function Sidebar() {
       {
         name: "Home Page",
         path: "/admin/home",
-        icon: <FiPieChart className="animate-bounce" />,
+        icon: <FiHome className="animate-bounce" />,
       },
       {
         name: "About Page",
         path: "/admin/about",
-        icon: <FiPieChart className="animate-bounce" />,
+        icon: <FiInfo className="animate-bounce" />,
       },
       {
         name: "Blogs Page",
-        icon: <FiHome className="animate-bounce" />,
+        icon: <FiCreditCard className="animate-bounce" />,
         submenu: [
           {
             name: "Blos",
@@ -127,7 +121,7 @@ export default function Sidebar() {
       {
         name: "Users",
         path: "/admin/users",
-        icon: <FiPieChart className="animate-bounce" />,
+        icon: <FiUsers className="animate-bounce" />,
       },
     ],
   };
