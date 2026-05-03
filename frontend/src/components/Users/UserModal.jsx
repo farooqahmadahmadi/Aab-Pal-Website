@@ -5,38 +5,42 @@ import useToast from "../../hooks/useToast";
 
 export default function UserModal({ open, onClose, onRefresh, editUser }) {
   const isEdit = !!editUser;
-
   const { toast, showToast, hideToast } = useToast();
 
   const [form, setForm] = useState({
     user_name: "",
     user_email: "",
     password: "",
-    user_role: "client",
-    employee_id: "",
-    client_id: "",
+    user_role: "admin",
     is_active: true,
+    failed_attempts: "",
     access_time_start: "",
     access_time_end: "",
     user_photo_url: null,
   });
 
-  // ================= LOAD EDIT DATA =================
+  // ================= LOAD =================
   useEffect(() => {
     if (editUser) {
       setForm({
-        ...editUser,
+        user_name: editUser.user_name || "",
+        user_email: editUser.user_email || "",
         password: "",
+        user_role: editUser.user_role || "admin",
+        is_active: editUser.is_active ?? true,
+        failed_attempts: "",
+        access_time_start: editUser.access_time_start || "",
+        access_time_end: editUser.access_time_end || "",
+        user_photo_url: null,
       });
     } else {
       setForm({
         user_name: "",
         user_email: "",
         password: "",
-        user_role: "client",
-        employee_id: "",
-        client_id: "",
+        user_role: "admin",
         is_active: true,
+        failed_attempts: "",
         access_time_start: "",
         access_time_end: "",
         user_photo_url: null,
@@ -44,7 +48,7 @@ export default function UserModal({ open, onClose, onRefresh, editUser }) {
     }
   }, [editUser]);
 
-  // ================= HANDLE INPUT =================
+  // ================= INPUT =================
   const handleChange = (e) => {
     const { name, value, type, files } = e.target;
 
@@ -79,8 +83,32 @@ export default function UserModal({ open, onClose, onRefresh, editUser }) {
       onRefresh();
       onClose();
     } catch (err) {
-      console.error(err);
       showToast(err.response?.data?.message || "Operation failed", "error");
+    }
+  };
+
+  // ================= RESET PASSWORD =================
+  const handleResetPassword = async () => {
+    if (!editUser) return;
+
+    const confirmReset = window.confirm(
+      "Are you sure you want to reset password to 12345?",
+    );
+
+    if (!confirmReset) return;
+
+    try {
+      const formData = new FormData();
+      formData.append("password", "12345");
+
+      await updateUser(editUser.user_id, formData);
+
+      showToast(
+        "Password reset to 12345 successfully. Please change after login.",
+        "success",
+      );
+    } catch (err) {
+      showToast("Password reset failed", "error");
     }
   };
 
@@ -88,123 +116,135 @@ export default function UserModal({ open, onClose, onRefresh, editUser }) {
 
   return (
     <>
-      {/* BACKDROP */}
       <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-3">
-        <div className="bg-white w-full max-w-3xl max-h-[90vh] overflow-y-auto rounded-2xl shadow-lg p-5">
-
-          {/* TITLE */}
-          <h2 className="text-xl font-bold text-center mb-4">
+        <div className="bg-white w-full max-w-4xl max-h-[90vh] overflow-y-auto rounded-2xl shadow-lg p-6">
+          <h2 className="text-xl font-bold text-center mb-5">
             {isEdit ? "Edit User" : "Add User"}
           </h2>
 
-          {/* FORM */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {/* NAME */}
-            <input
-              name="user_name"
-              placeholder="User Name"
-              value={form.user_name}
-              onChange={handleChange}
-              className="border p-2 rounded"
-            />
+            <div>
+              <label className="text-sm">User Name</label>
+              <input
+                name="user_name"
+                value={form.user_name}
+                onChange={handleChange}
+                className="border p-2 rounded w-full"
+              />
+            </div>
 
             {/* EMAIL */}
-            <input
-              name="user_email"
-              placeholder="Email"
-              value={form.user_email}
-              onChange={handleChange}
-              className="border p-2 rounded"
-            />
-
-            {/* PASSWORD (ONLY ADD) */}
-            {!isEdit && (
+            <div>
+              <label className="text-sm">Email</label>
               <input
-                name="password"
-                type="password"
-                placeholder="Password"
-                value={form.password}
+                name="user_email"
+                value={form.user_email}
                 onChange={handleChange}
-                className="border p-2 rounded"
+                className="border p-2 rounded w-full"
               />
+            </div>
+
+            {/* PASSWORD ONLY ADD */}
+            {!isEdit && (
+              <div>
+                <label className="text-sm">Password</label>
+                <input
+                  type="password"
+                  name="password"
+                  value={form.password}
+                  onChange={handleChange}
+                  className="border p-2 rounded w-full"
+                />
+              </div>
             )}
 
             {/* ROLE */}
-            <select
-              name="user_role"
-              value={form.user_role}
-              onChange={handleChange}
-              className="border p-2 rounded"
-            >
-              <option value="admin">Admin</option>
-              <option value="manager">Manager</option>
-              <option value="employee">Employee</option>
-              <option value="client">Client</option>
-            </select>
-
-            {/* CONDITIONAL ID */}
-            {form.user_role === "client" ? (
-              <input
-                name="client_id"
-                placeholder="Client ID"
-                value={form.client_id}
+            <div>
+              <label className="text-sm">Role</label>
+              <select
+                name="user_role"
+                value={form.user_role}
                 onChange={handleChange}
-                className="border p-2 rounded"
-              />
-            ) : (
-              <input
-                name="employee_id"
-                placeholder="Employee ID"
-                value={form.employee_id}
-                onChange={handleChange}
-                className="border p-2 rounded"
-              />
-            )}
-
-            {/* ACCESS TIME */}
-            <input
-              type="time"
-              name="access_time_start"
-              value={form.access_time_start}
-              onChange={handleChange}
-              className="border p-2 rounded"
-            />
-
-            <input
-              type="time"
-              name="access_time_end"
-              value={form.access_time_end}
-              onChange={handleChange}
-              className="border p-2 rounded"
-            />
+                className="border p-2 rounded w-full"
+              >
+                <option value="admin">Admin</option>
+              </select>
+            </div>
 
             {/* STATUS */}
-            <select
-              name="is_active"
-              value={form.is_active ? "true" : "false"}
-              onChange={handleChange}
-              className="border p-2 rounded"
-            >
-              <option value="true">Active</option>
-              <option value="false">Inactive</option>
-            </select>
+            <div>
+              <label className="text-sm">Status</label>
+              <select
+                name="is_active"
+                value={form.is_active ? "true" : "false"}
+                onChange={handleChange}
+                className="border p-2 rounded w-full"
+              >
+                <option value="true">Active</option>
+                <option value="false">Inactive</option>
+              </select>
+            </div>
 
-            {/* PHOTO */}
-            <input
-              type="file"
-              name="user_photo_url"
-              onChange={handleChange}
-              className="border p-2 rounded"
-            />
+            {/* FILE */}
+            <div>
+              <label className="text-sm block mb-1">User Photo</label>
+
+              <label className="flex items-center justify-center border-2 border-dashed rounded-lg p-3 cursor-pointer hover:bg-gray-50">
+                <span className="text-gray-500 text-sm">Choose Image</span>
+                <input
+                  type="file"
+                  name="user_photo_url"
+                  onChange={handleChange}
+                  className="hidden"
+                />
+              </label>
+            </div>
+
+            {/* READ ONLY */}
+            {isEdit && (
+              <>
+                <div>
+                  <label className="text-sm">Created At</label>
+                  <input
+                    value={editUser.created_at}
+                    readOnly
+                    className="border p-2 rounded w-full bg-gray-100"
+                  />
+                </div>
+
+                <div>
+                  <label className="text-sm">Updated At</label>
+                  <input
+                    value={editUser.updated_at}
+                    readOnly
+                    className="border p-2 rounded w-full bg-gray-100"
+                  />
+                </div>
+                <div>
+                  <label className="text-sm">Failed Attempts</label>
+                  <input
+                    value={editUser.failed_attempts}
+                    readOnly
+                    className="border p-2 rounded w-full bg-gray-100"
+                  />
+                </div>
+              </>
+            )}
           </div>
 
           {/* BUTTONS */}
-          <div className="flex justify-end gap-2 mt-5">
-            <button
-              onClick={onClose}
-              className="bg-gray-400 px-4 py-2 rounded"
-            >
+          <div className="flex justify-end gap-2 mt-6">
+            {/* RESET PASSWORD */}
+            {isEdit && (
+              <button
+                onClick={handleResetPassword}
+                className="bg-yellow-500 text-white px-4 py-2 rounded"
+              >
+                Reset Password
+              </button>
+            )}
+            <button onClick={onClose} className="bg-gray-400 px-4 py-2 rounded">
               Cancel
             </button>
 
@@ -220,12 +260,7 @@ export default function UserModal({ open, onClose, onRefresh, editUser }) {
 
       {/* TOAST */}
       {toast && (
-        <Toast
-          message={toast.message}
-          type={toast.type}
-          onClose={hideToast}
-          position="center"
-        />
+        <Toast message={toast.message} type={toast.type} onClose={hideToast} />
       )}
     </>
   );
