@@ -30,15 +30,19 @@ export default function AboutModal({ open, onClose, edit, onRefresh }) {
     const fetchLanguages = async () => {
       try {
         const res = await getLanguages();
-        setLanguages(res.data.languages);
-        
-        const list = res?.languages || res?.data?.languages || res?.data || [];
+
+        const list =
+          res?.data?.data ||
+          res?.data ||
+          res?.languages ||
+          [];
 
         setLanguages(list);
       } catch (err) {
         console.log(err);
       }
     };
+
     fetchLanguages();
   }, []);
 
@@ -52,6 +56,7 @@ export default function AboutModal({ open, onClose, edit, onRefresh }) {
         display_order: edit.display_order || 0,
         about_image: null,
       });
+
       setFileName("");
     } else {
       setForm({
@@ -61,20 +66,21 @@ export default function AboutModal({ open, onClose, edit, onRefresh }) {
         display_order: 0,
         about_image: null,
       });
+
       setFileName("");
     }
   }, [edit]);
 
-  // ================= CHANGE =================
+  // ================= INPUT CHANGE =================
   const handleChange = (e) => {
     const { name, value, files } = e.target;
 
     if (name === "about_image") {
       const file = files[0];
-      setForm({ ...form, about_image: file });
+      setForm((prev) => ({ ...prev, about_image: file }));
       setFileName(file?.name || "");
     } else {
-      setForm({ ...form, [name]: value });
+      setForm((prev) => ({ ...prev, [name]: value }));
     }
   };
 
@@ -117,12 +123,15 @@ export default function AboutModal({ open, onClose, edit, onRefresh }) {
 
   return (
     <div className="fixed inset-0 bg-black/40 flex items-center justify-center p-4">
-      <div className="bg-white w-full max-w-2xl p-5 rounded-lg">
+
+      <div className="bg-white w-full max-w-2xl max-h-[90vh] overflow-y-auto p-5 rounded-lg">
+
+        {/* HEADER */}
         <h2 className="text-lg font-bold mb-4">
           {isEdit ? "Edit About Page" : "Add About Page"}
         </h2>
 
-        {/* LANGUAGE DROPDOWN */}
+        {/* LANGUAGE */}
         <div className="mb-3">
           <label className="text-sm">Language</label>
 
@@ -148,16 +157,16 @@ export default function AboutModal({ open, onClose, edit, onRefresh }) {
           value={form.about_title}
           onChange={handleChange}
           placeholder="Title"
-          className="border p-2 w-full mb-3 rounded"
+          className="border p-2 w-full mb-3 rounded text-sm"
         />
 
-        {/* TEXT */}
+        {/* TEXTAREA (REPLACED EDITOR) */}
         <textarea
           name="about_text"
           value={form.about_text}
           onChange={handleChange}
-          placeholder="Text"
-          className="border p-2 w-full mb-3 rounded"
+          placeholder="Write content here..."
+          className="border p-2 w-full mb-3 rounded min-h-[200px]"
         />
 
         {/* ORDER */}
@@ -169,7 +178,7 @@ export default function AboutModal({ open, onClose, edit, onRefresh }) {
           className="border p-2 w-full mb-3 rounded"
         />
 
-        {/* FILE CHOOSER */}
+        {/* IMAGE */}
         <div className="mb-4">
           <label className="text-sm block mb-1">About Image</label>
 
@@ -188,7 +197,8 @@ export default function AboutModal({ open, onClose, edit, onRefresh }) {
         </div>
 
         {/* BUTTONS */}
-        <div className="flex justify-end gap-2">
+        <div className="flex justify-end gap-2 sticky bottom-0 bg-white pt-3">
+
           <button onClick={onClose} className="bg-gray-400 px-4 py-2 rounded">
             Cancel
           </button>
@@ -199,13 +209,16 @@ export default function AboutModal({ open, onClose, edit, onRefresh }) {
           >
             {isEdit ? "Update" : "Save"}
           </button>
+
         </div>
+
       </div>
 
       {/* TOAST */}
       {toast && (
         <Toast message={toast.message} type={toast.type} onClose={hideToast} />
       )}
+
     </div>
   );
 }

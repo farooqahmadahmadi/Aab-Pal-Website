@@ -176,7 +176,7 @@ export default function Sidebar() {
           />
 
           <div className="flex flex-col min-w-0">
-            <h1 className="text-sm font-bold text-blue-600">CC-MIS</h1>
+            <h1 className="text-sm font-bold text-blue-600">AabPal Website</h1>
             <p className="text-sm font-semibold truncate">{user.user_name}</p>
             <p className="text-[11px] truncate text-gray-500">
               {user.user_email}
