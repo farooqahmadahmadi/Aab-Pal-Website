@@ -14,8 +14,8 @@ import HomePage from "../pages/public/HomePage";
 // ADMIN
 import AdminDashboard from "../pages/admin/dashboards/AdminDashboard";
 import WebsiteLanguageList from "../pages/admin/websiteLanguage/WebsiteLanguageList";
-import UsersList from './../pages/admin/users/UsersList';
-
+import UsersList from "./../pages/admin/users/UsersList";
+import AboutPageList from "./../pages/admin/about/AboutPageList";
 
 export default function AppRoutes() {
   return (
@@ -59,7 +59,17 @@ export default function AppRoutes() {
           </ProtectedRoute>
         }
       />
-       <Route
+      <Route
+        path="/admin/about"
+        element={
+          <ProtectedRoute allowedRoles={["admin"]}>
+            <AdminLayout>
+              <AboutPageList />
+            </AdminLayout>
+          </ProtectedRoute>
+        }
+      />
+      <Route
         path="/admin/users"
         element={
           <ProtectedRoute allowedRoles={["admin"]}>

@@ -101,12 +101,12 @@ export default function Sidebar() {
         icon: <FiGlobe className="animate-bounce" />,
       },
       {
-        name: "Users",
-        path: "/admin/users",
+        name: "About Page",
+        path: "/admin/about",
         icon: <FiPieChart className="animate-bounce" />,
       },
       {
-        name: "Blogs",
+        name: "Blogs Page",
         icon: <FiHome className="animate-bounce" />,
         submenu: [
           {
@@ -118,6 +118,11 @@ export default function Sidebar() {
             path: "",
           },
         ],
+      },
+      {
+        name: "Users",
+        path: "/admin/users",
+        icon: <FiPieChart className="animate-bounce" />,
       },
     ],
   };

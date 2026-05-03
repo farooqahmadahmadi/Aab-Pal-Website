@@ -47,7 +47,34 @@ const uploadUser = multer({
   },
 });
 
+// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+const aboutDir = path.join(__dirname, "../uploads/about_page");
+
+// create folder if not exists
+if (!fs.existsSync(aboutDir)) {
+  fs.mkdirSync(aboutDir, { recursive: true });
+}
+
+const aboutStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, aboutDir);
+  },
+
+  filename: (req, file, cb) => {
+    const ext = path.extname(file.originalname);
+    const name = `about-${Date.now()}${ext}`;
+    cb(null, name);
+  },
+});
+
+const uploadAbout = multer({
+  storage: aboutStorage,
+  limits: { fileSize: 2 * 1024 * 1024 },
+});
+
 // ================= EXPORT =================
 module.exports = {
   uploadUser,
+  uploadAbout,
 };

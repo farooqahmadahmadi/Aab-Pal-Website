@@ -3,9 +3,8 @@ import API from "./api";
 // GET all languages
 export const getLanguages = async () => {
   const res = await API.get("/languages");
-  return res.data;
+  return res; // ❗ not res.data
 };
-
 // GET single language
 export const getLanguage = async (id) => {
   const res = await API.get(`/languages/${id}`);
