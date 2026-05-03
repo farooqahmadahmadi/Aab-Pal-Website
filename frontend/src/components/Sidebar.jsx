@@ -76,9 +76,9 @@ export default function Sidebar() {
   }, [location.pathname, sidebarOpen, openMenu]);
 
   const getAvatar = () => {
-    if (!user?.user_photo_url) return defaultAvatar;
-    if (user.user_photo_url.startsWith("http")) return user.user_photo_url;
-    return `${BASE_URL}${user.user_photo_url}`;
+    if (!user?.user_photo) return defaultAvatar;
+    if (user.user_photo.startsWith("http")) return user.user_photo;
+    return `${BASE_URL}${user.user_photo}`;
   };
 
   const isActive = (path) => location.pathname === path;
