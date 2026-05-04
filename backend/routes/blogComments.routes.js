@@ -12,25 +12,32 @@ const {
   create,
   approve,
   remove,
-  update, // ✅ NEW
+  update,
 } = require("../controllers/blogComments.controller");
 
 // ================= ROUTES =================
+
+// GET ALL
 router.get("/", getAll);
+
+// GET BY BLOG
 router.get("/blog/:blog_id", getByBlog);
 
+// CREATE
 router.post("/", uploadComment.single("visitor_photo"), create);
 
-// UPDATE ROUTE
+// UPDATE
 router.put(
   "/:id",
   authMiddleware,
   uploadComment.single("visitor_photo"),
-  update,
+  update
 );
 
+// APPROVE
 router.put("/approve/:id", authMiddleware, approve);
 
+// DELETE
 router.delete("/:id", authMiddleware, remove);
 
 module.exports = router;
