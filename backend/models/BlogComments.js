@@ -15,6 +15,11 @@ const BlogComments = sequelize.define(
       allowNull: false,
     },
 
+    parent_id: {
+      type: DataTypes.BIGINT.UNSIGNED,
+      allowNull: true,
+    },
+
     visitor_ip: {
       type: DataTypes.STRING(45),
     },

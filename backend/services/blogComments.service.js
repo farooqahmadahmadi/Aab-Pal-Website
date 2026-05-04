@@ -11,7 +11,7 @@ exports.getAll = async () => {
 exports.getByBlog = async (blog_id) => {
   return await BlogComments.findAll({
     where: { blog_id },
-    order: [["comment_id", "DESC"]],
+    order: [["comment_id", "ASC"]], // 👈 مهم د tree لپاره
   });
 };
 
@@ -20,7 +20,7 @@ exports.create = async (data) => {
   return await BlogComments.create(data);
 };
 
-// ================= UPDATE (🔥 NEW) =================
+// ================= UPDATE =================
 exports.update = async (id, data) => {
   const item = await BlogComments.findByPk(id);
   if (!item) throw new Error("Comment not found");

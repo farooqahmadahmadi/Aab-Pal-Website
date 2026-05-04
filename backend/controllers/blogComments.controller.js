@@ -1,13 +1,15 @@
 const fs = require("fs");
 const path = require("path");
 
+const BlogComments = require("../models/BlogComments");
+
 const {
   getAll,
   getByBlog,
   create,
   approve,
   remove,
-  update, // ✅ NEW
+  update,
 } = require("../services/blogComments.service");
 
 // ================= GET ALL =================
@@ -34,25 +36,32 @@ exports.getByBlog = async (req, res) => {
 exports.create = async (req, res) => {
   try {
     const data = req.body;
+
+    // IP
     data.visitor_ip = req.ip;
 
+    // image
     if (req.file) {
       data.visitor_photo = `/uploads/blog_comments/${req.file.filename}`;
     }
 
+    // parent_id normalize
+    if (!data.parent_id) {
+      data.parent_id = null;
+    }
+
     const result = await create(data);
+
     res.status(201).json(result);
   } catch (err) {
     res.status(400).json({ message: err.message });
   }
 };
 
-// ================= UPDATE (🔥 FIXED) =================
+// ================= UPDATE =================
 exports.update = async (req, res) => {
   try {
-    const item = await getAll().then((r) =>
-      r.find((c) => c.comment_id == req.params.id)
-    );
+    const item = await BlogComments.findByPk(req.params.id);
 
     if (!item) {
       return res.status(404).json({ message: "Comment not found" });
@@ -60,7 +69,7 @@ exports.update = async (req, res) => {
 
     const data = req.body;
 
-    // delete old image if new uploaded
+    // image update
     if (req.file) {
       if (item.visitor_photo) {
         const oldPath = path.join(__dirname, "..", item.visitor_photo);
@@ -91,11 +100,14 @@ exports.approve = async (req, res) => {
 // ================= DELETE =================
 exports.remove = async (req, res) => {
   try {
-    const all = await getAll();
+    const item = await BlogComments.findByPk(req.params.id);
 
-    const item = all.find((c) => c.comment_id == req.params.id);
+    if (!item) {
+      return res.status(404).json({ message: "Comment not found" });
+    }
 
-    if (item?.visitor_photo) {
+    // delete image
+    if (item.visitor_photo) {
       const imgPath = path.join(__dirname, "..", item.visitor_photo);
       if (fs.existsSync(imgPath)) fs.unlinkSync(imgPath);
     }

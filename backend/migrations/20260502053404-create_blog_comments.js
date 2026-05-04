@@ -19,7 +19,15 @@ module.exports = {
         onUpdate: "CASCADE",
         onDelete: "CASCADE",
       },
-
+      parent_id: {
+        type: Sequelize.BIGINT.UNSIGNED,
+        references: {
+          model: "blog_comments",
+          key: "comment_id",
+        },
+        onUpdate: "CASCADE",
+        onDelete: "CASCADE",
+      },
       visitor_ip: {
         type: Sequelize.STRING(45),
         allowNull: true,
