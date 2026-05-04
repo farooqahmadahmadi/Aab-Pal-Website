@@ -16,6 +16,7 @@ import AdminDashboard from "../pages/admin/dashboards/AdminDashboard";
 import WebsiteLanguageList from "../pages/admin/websiteLanguage/WebsiteLanguageList";
 import HomePageList from "./../pages/admin/home/HomePageList";
 import BlogsPageList from "./../pages/admin/blogs/BlogsPageList";
+import BlogCommentsList from "./../pages/admin/blogs/BlogCommentsList";
 import AboutPageList from "./../pages/admin/about/AboutPageList";
 import UsersList from "./../pages/admin/users/UsersList";
 
@@ -81,6 +82,18 @@ export default function AppRoutes() {
           </ProtectedRoute>
         }
       />
+
+      <Route
+        path="/admin/blog-comments"
+        element={
+          <ProtectedRoute allowedRoles={["admin"]}>
+            <AdminLayout>
+              <BlogCommentsList />
+            </AdminLayout>
+          </ProtectedRoute>
+        }
+      />
+
       <Route
         path="/admin/about"
         element={

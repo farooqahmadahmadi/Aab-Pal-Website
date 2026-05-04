@@ -109,7 +109,7 @@ export default function Sidebar() {
           },
           {
             name: "Blog Comments",
-            path: "admin/blogs-comments",
+            path: "/admin/blog-comments",
           },
         ],
       },
