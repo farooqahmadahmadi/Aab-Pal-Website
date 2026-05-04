@@ -6,21 +6,25 @@ export const getBlogComments = async () => {
   return res.data;
 };
 
-// CREATE (optional)
+// CREATE
 export const createBlogComment = async (data) => {
-  const res = await API.post("/blog-comments", data);
+  const res = await API.post("/blog-comments", data, {
+    headers: { "Content-Type": "multipart/form-data" },
+  });
+  return res.data;
+};
+
+// UPDATE
+export const updateBlogComment = async (id, data) => {
+  const res = await API.put(`/blog-comments/${id}`, data, {
+    headers: { "Content-Type": "multipart/form-data" },
+  });
   return res.data;
 };
 
 // APPROVE
 export const approveBlogComment = async (id) => {
   const res = await API.put(`/blog-comments/approve/${id}`);
-  return res.data;
-};
-
-// UPDATE
-export const updateBlogComment = async (id, data) => {
-  const res = await API.put(`/blog-comments/${id}`, data);
   return res.data;
 };
 

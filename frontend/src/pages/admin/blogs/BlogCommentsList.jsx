@@ -17,16 +17,16 @@ import {
   FiCheck,
   FiPlusCircle,
   FiEdit3,
+  FiCornerDownRight,
+  FiChevronDown,
+  FiChevronRight,
 } from "react-icons/fi";
 
-import MobileCard from "../../../components/common/MobileCard";
-import CardRow from "../../../components/common/CardRow";
-
-import defaultImg from "../../../assets/images/default_image.png";
+import defaultImg from "../../../assets/images/user-def-image.png";
 
 export default function BlogCommentsList() {
   const [data, setData] = useState([]);
-  const [filtered, setFiltered] = useState([]);
+  const [tree, setTree] = useState([]);
 
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
@@ -34,17 +34,43 @@ export default function BlogCommentsList() {
 
   const [open, setOpen] = useState(false);
   const [edit, setEdit] = useState(null);
+  const [parentId, setParentId] = useState(null);
   const [deleteItem, setDeleteItem] = useState(null);
+  const [currentBlogId, setCurrentBlogId] = useState(null);
+
+  const [expanded, setExpanded] = useState({});
 
   const { toast, showToast, hideToast } = useToast();
 
   const BASE_URL = (import.meta.env.VITE_IMAGE_URL || "").replace(/\/$/, "");
 
+  // ================= BUILD TREE =================
+  const buildTree = (list) => {
+    const map = {};
+    const roots = [];
+
+    list.forEach((c) => {
+      map[c.comment_id] = { ...c, children: [] };
+    });
+
+    list.forEach((c) => {
+      if (c.parent_id) {
+        map[c.parent_id]?.children.push(map[c.comment_id]);
+      } else {
+        roots.push(map[c.comment_id]);
+      }
+    });
+
+    return roots;
+  };
+
   // ================= FETCH =================
   const fetchData = async () => {
     try {
       const res = await getBlogComments();
-      setData(res.data || []);
+      const list = res.data || [];
+      setData(list);
+      setTree(buildTree(list));
     } catch {
       showToast("Failed to load comments", "error");
     }
@@ -55,20 +81,14 @@ export default function BlogCommentsList() {
   }, []);
 
   // ================= SEARCH =================
-  useEffect(() => {
-    const f = data.filter(
-      (c) =>
-        (c.comment_text || "").toLowerCase().includes(search.toLowerCase()) ||
-        (c.visitor_email || "").toLowerCase().includes(search.toLowerCase()) ||
-        (c.visitor_ip || "").toLowerCase().includes(search.toLowerCase())
-    );
+  const filtered = data.filter(
+    (c) =>
+      (c.comment_text || "").toLowerCase().includes(search.toLowerCase()) ||
+      (c.visitor_email || "").toLowerCase().includes(search.toLowerCase()) ||
+      (c.visitor_ip || "").toLowerCase().includes(search.toLowerCase()),
+  );
 
-    setFiltered(f);
-    setPage(1);
-  }, [search, data]);
-
-  const start = (page - 1) * limit;
-  const paginated = filtered.slice(start, start + limit);
+  const paginated = filtered.slice((page - 1) * limit, page * limit);
 
   // ================= DELETE =================
   const handleDelete = async () => {
@@ -94,270 +114,233 @@ export default function BlogCommentsList() {
     }
   };
 
+  // ================= TOGGLE =================
+  const toggleExpand = (id) => {
+    setExpanded((p) => ({ ...p, [id]: !p[id] }));
+  };
+
+  // ================= RENDER ROW =================
+  const renderRow = (c, level = 0) => {
+    const hasChildren = c.children?.length > 0;
+
+    return (
+      <React.Fragment key={c.comment_id}>
+        <tr className="border-t text-center">
+          <td className="p-2">
+            <div className="flex items-center gap-1 justify-center">
+              {hasChildren && (
+                <button
+                  onClick={() => toggleExpand(c.comment_id)}
+                  className=" bg-gray-200 rounded-full p-1 hover:bg-yellow-100"
+                >
+                  {expanded[c.comment_id] ? (
+                    <FiChevronDown />
+                  ) : (
+                    <FiChevronRight />
+                  )}
+                </button>
+              )}
+              <span style={{ marginLeft: level * 10 }}>{c.comment_id}</span>
+            </div>
+          </td>
+
+          <td className="p-2">
+            <img
+              src={
+                c.visitor_photo ? `${BASE_URL}${c.visitor_photo}` : defaultImg
+              }
+              onError={(e) => (e.target.src = defaultImg)}
+              className="w-10 h-10 rounded-full mx-auto object-cover border"
+            />
+          </td>
+
+          <td className="p-2">{c.blog_id}</td>
+          <td className="p-2">{c.visitor_email}</td>
+          <td className="p-2">{c.visitor_ip}</td>
+          <td className="p-2">{c.visitor_rating}</td>
+          <td className="p-2 text-left">{c.comment_text}</td>
+
+          <td className="p-2">
+            <span
+              className={`px-2 py-1 rounded text-xs ${
+                c.is_approved
+                  ? "bg-green-100 text-green-600"
+                  : "bg-yellow-100 text-yellow-600"
+              }`}
+            >
+              {c.is_approved ? "Approved" : "Pending"}
+            </span>
+          </td>
+
+          <td className="p-2">
+            <div className="flex justify-center gap-2">
+              {/* REPLY */}
+              <button
+                onClick={() => {
+                  setParentId(c.comment_id);
+                  setCurrentBlogId(c.blog_id); // ✅ مهم
+                  setEdit(null);
+                  setOpen(true);
+                }}
+                className="bg-blue-500 p-1.5 text-white rounded"
+              >
+                <FiCornerDownRight />
+              </button>
+
+              {/* EDIT */}
+              <button
+                onClick={() => {
+                  setEdit(c);
+                  setOpen(true);
+                }}
+                className="bg-yellow-500 p-1.5 text-white rounded"
+              >
+                <FiEdit3 />
+              </button>
+
+              {!c.is_approved && (
+                <button
+                  onClick={() => handleApprove(c.comment_id)}
+                  className="bg-green-500 p-1.5 text-white rounded"
+                >
+                  <FiCheck />
+                </button>
+              )}
+
+              <button
+                onClick={() => setDeleteItem(c)}
+                className="bg-red-500 p-1.5 text-white rounded"
+              >
+                <FiTrash2 />
+              </button>
+            </div>
+          </td>
+        </tr>
+
+        {/* CHILDREN */}
+        {hasChildren &&
+          expanded[c.comment_id] &&
+          c.children.map((child) => renderRow(child, level + 1))}
+      </React.Fragment>
+    );
+  };
+
+  // ================= PAGINATION FIX =================
+
+  // ONLY parent (root) comments pagination
+  const filteredTree = tree.filter(
+    (c) =>
+      (c.comment_text || "").toLowerCase().includes(search.toLowerCase()) ||
+      (c.visitor_email || "").toLowerCase().includes(search.toLowerCase()) ||
+      (c.visitor_ip || "").toLowerCase().includes(search.toLowerCase()),
+  );
+
+  const paginatedTree = filteredTree.slice((page - 1) * limit, page * limit);
+
+  // reset page on search
+  useEffect(() => {
+    setPage(1);
+  }, [search, data]);
+
+  // ================= RETURN =================
   return (
     <div className="p-3 sm:p-6 max-w-7xl mx-auto">
+      {/* HEADER */}
+      <div className="flex justify-between mb-4">
+        <h2 className="text-xl font-bold">Blog Comments</h2>
 
-      {/* ================= HEADER ================= */}
-      <div className="flex flex-col md:flex-row justify-between items-center gap-3 mb-4">
-
-        <h2 className="text-xl sm:text-2xl font-bold">
-          Blog Comments
-        </h2>
-
-        <div className="flex flex-col sm:flex-row gap-2 w-full md:w-auto">
-
+        <div className="flex gap-2">
           <SearchBar
             value={search}
             onChange={setSearch}
-            placeholder="Search comments..."
+            placeholder="Search..."
           />
 
-          {/* ADD BUTTON */}
           <button
             onClick={() => {
               setEdit(null);
+              setParentId(null);
               setOpen(true);
             }}
-            className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded flex items-center gap-2"
+            className="bg-green-500 text-white px-4 py-2 rounded flex gap-2 items-center"
           >
-            <FiPlusCircle /> Add Comment
+            <FiPlusCircle /> Add
           </button>
-
         </div>
       </div>
 
-      {/* ================= TABLE ================= */}
+      {/* TABLE */}
       <div className="bg-white shadow rounded-lg overflow-hidden">
+        <table className="w-full text-sm">
+          <thead className="bg-gray-200">
+            <tr>
+              <th className="p-2">ID</th>
+              <th className="p-2">Photo</th>
+              <th className="p-2">Blog</th>
+              <th className="p-2">Email</th>
+              <th className="p-2">IP</th>
+              <th className="p-2">Rating</th>
+              <th className="p-2">Comment</th>
+              <th className="p-2">Status</th>
+              <th className="p-2">Actions</th>
+            </tr>
+          </thead>
 
-        {/* DESKTOP */}
-        <div className="hidden md:block">
-          <table className="w-full text-sm">
-
-            <thead className="bg-gray-200">
+          <tbody>
+            {paginatedTree.length ? (
+              paginatedTree.map((c) => renderRow(c))
+            ) : (
               <tr>
-                <th className="p-2">ID</th>
-                <th className="p-2">Photo</th>
-                <th className="p-2">Blog ID</th>
-                <th className="p-2">Email</th>
-                <th className="p-2">IP</th>
-                <th className="p-2">Rating</th>
-                <th className="p-2">Comment</th>
-                <th className="p-2">Status</th>
-                <th className="p-2">Actions</th>
+                <td colSpan="9" className="p-4 text-center text-gray-500">
+                  No comments found
+                </td>
               </tr>
-            </thead>
-
-            <tbody>
-              {paginated.length ? (
-                paginated.map((c) => (
-                  <tr key={c.comment_id} className="text-center border-t">
-
-                    <td className="p-2">{c.comment_id}</td>
-
-                    {/* IMAGE */}
-                    <td className="p-2">
-                      <img
-                        src={
-                          c.visitor_photo
-                            ? `${BASE_URL}${c.visitor_photo}`
-                            : defaultImg
-                        }
-                        onError={(e) => (e.target.src = defaultImg)}
-                        className="w-10 h-10 rounded-full mx-auto object-cover border"
-                      />
-                    </td>
-
-                    <td className="p-2">{c.blog_id}</td>
-                    <td className="p-2">{c.visitor_email}</td>
-                    <td className="p-2">{c.visitor_ip}</td>
-                    <td className="p-2">{c.visitor_rating}</td>
-                    <td className="p-2">{c.comment_text}</td>
-
-                    <td className="p-2">
-                      <span
-                        className={`px-2 py-1 rounded text-xs ${
-                          c.is_approved
-                            ? "bg-green-100 text-green-600"
-                            : "bg-yellow-100 text-yellow-600"
-                        }`}
-                      >
-                        {c.is_approved ? "Approved" : "Pending"}
-                      </span>
-                    </td>
-
-                    <td className="p-2">
-                      <div className="flex justify-center gap-2">
-
-                        {/* EDIT */}
-                        <button
-                          onClick={() => {
-                            setEdit(c);
-                            setOpen(true);
-                          }}
-                          className="bg-yellow-500 p-1.5 text-white rounded"
-                        >
-                          <FiEdit3 />
-                        </button>
-
-                        {/* APPROVE */}
-                        {!c.is_approved && (
-                          <button
-                            onClick={() => handleApprove(c.comment_id)}
-                            className="bg-green-500 p-1.5 text-white rounded"
-                          >
-                            <FiCheck />
-                          </button>
-                        )}
-
-                        {/* DELETE */}
-                        <button
-                          onClick={() => setDeleteItem(c)}
-                          className="bg-red-500 p-1.5 text-white rounded"
-                        >
-                          <FiTrash2 />
-                        </button>
-
-                      </div>
-                    </td>
-
-                  </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan="9" className="p-4 text-center text-gray-500">
-                    No comments found
-                  </td>
-                </tr>
-              )}
-            </tbody>
-
-          </table>
-        </div>
-
-        {/* MOBILE */}
-        <div className="md:hidden space-y-3 p-2">
-          {paginated.map((c) => (
-            <MobileCard
-              key={c.comment_id}
-              id={c.comment_id}
-              actions={
-                <>
-                  <button
-                    onClick={() => {
-                      setEdit(c);
-                      setOpen(true);
-                    }}
-                    className="bg-yellow-500 p-2 text-white rounded"
-                  >
-                    <FiEdit3 />
-                  </button>
-
-                  {!c.is_approved && (
-                    <button
-                      onClick={() => handleApprove(c.comment_id)}
-                      className="bg-green-500 p-2 text-white rounded"
-                    >
-                      <FiCheck />
-                    </button>
-                  )}
-
-                  <button
-                    onClick={() => setDeleteItem(c)}
-                    className="bg-red-500 p-2 text-white rounded"
-                  >
-                    <FiTrash2 />
-                  </button>
-                </>
-              }
-            >
-
-              {/* IMAGE */}
-              <div className="flex justify-center mb-2">
-                <img
-                    src={
-                          c.visitor_photo
-                            ? `${BASE_URL}${c.visitor_photo}`
-                            : defaultImg
-                        }
-                        onError={(e) => (e.target.src = defaultImg)}
-                  className="w-14 h-14 rounded-full object-cover border"
-                />
-              </div>
-
-              <CardRow label="Blog ID" value={c.blog_id} />
-              <CardRow label="Email" value={c.visitor_email} />
-              <CardRow label="IP" value={c.visitor_ip} />
-              <CardRow label="Rating" value={c.visitor_rating} />
-              <CardRow label="Comment" value={c.comment_text} />
-              <CardRow
-                label="Status"
-                value={c.is_approved ? "Approved" : "Pending"}
-              />
-            </MobileCard>
-          ))}
-        </div>
-
+            )}
+          </tbody>
+        </table>
       </div>
 
-      {/* ================= PAGINATION ================= */}
+      {/* PAGINATION */}
       <div className="mt-4 flex justify-center">
         <Pagination
           page={page}
-          total={filtered.length}
+          total={filteredTree.length}
           limit={limit}
           onPageChange={setPage}
         />
       </div>
 
-      {/* ================= DELETE MODAL ================= */}
-      {deleteItem && (
-        <div className="fixed inset-0 bg-black/40 flex items-center justify-center p-4">
-          <div className="bg-white p-5 rounded-lg w-full max-w-sm">
-
-            <p className="mb-4">Delete this comment?</p>
-
-            <div className="flex justify-end gap-2">
-
-              <button
-                onClick={() => setDeleteItem(null)}
-                className="bg-gray-300 px-4 py-2 rounded"
-              >
-                Cancel
-              </button>
-
-              <button
-                onClick={handleDelete}
-                className="bg-red-500 text-white px-4 py-2 rounded"
-              >
-                Delete
-              </button>
-
-            </div>
-
-          </div>
-        </div>
-      )}
-
-      {/* ================= MODAL ================= */}
+      {/* MODAL */}
       {open && (
         <BlogCommentModal
           open={open}
           edit={edit}
-          onClose={() => setOpen(false)}
+          blogId={currentBlogId} 
+          parentId={parentId}
+          onClose={() => {
+            setOpen(false);
+            setEdit(null);
+            setParentId(null);
+            setCurrentBlogId(null); 
+          }}
           onRefresh={fetchData}
         />
       )}
 
-      {/* ================= TOAST ================= */}
-      {toast && (
-        <Toast
-          message={toast.message}
-          type={toast.type}
-          onClose={hideToast}
-          position="top-right"
-        />
+      {/* DELETE */}
+      {deleteItem && (
+        <div className="fixed inset-0 bg-black/40 flex items-center justify-center">
+          <div className="bg-white p-5 rounded">
+            <p>Delete?</p>
+            <button onClick={handleDelete}>Yes</button>
+          </div>
+        </div>
       )}
 
+      {/* TOAST */}
+      {toast && (
+        <Toast message={toast.message} type={toast.type} onClose={hideToast} />
+      )}
     </div>
   );
 }
