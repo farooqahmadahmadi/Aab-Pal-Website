@@ -25,7 +25,6 @@ import {
 import MobileCard from "../../../components/common/MobileCard";
 import CardRow from "../../../components/common/CardRow";
 
-
 import defaultImg from "../../../assets/images/user-def-image.png";
 
 export default function BlogCommentsList() {
@@ -43,8 +42,9 @@ export default function BlogCommentsList() {
   const [currentBlogId, setCurrentBlogId] = useState(null);
 
   const [expanded, setExpanded] = useState({});
- 
-const [expandedMobile, setExpandedMobile] = useState({});
+
+  // const [expandedMobile, setExpandedMobile] = useState({});
+  // const [expanded, setExpanded] = useState({});
 
   const { toast, showToast, hideToast } = useToast();
 
@@ -94,7 +94,7 @@ const [expandedMobile, setExpandedMobile] = useState({});
       (c.visitor_ip || "").toLowerCase().includes(search.toLowerCase()),
   );
 
-  const paginated = filtered.slice((page - 1) * limit, page * limit);
+  // const paginated = filtered.slice((page - 1) * limit, page * limit);
 
   // ================= DELETE =================
   const handleDelete = async () => {
@@ -122,358 +122,328 @@ const [expandedMobile, setExpandedMobile] = useState({});
 
   // ================= TOGGLE =================
   const toggleExpand = (id) => {
-    setExpanded((p) => ({ ...p, [id]: !p[id] }));
+    setExpanded((prev) => ({
+      ...prev,
+      [id]: !prev[id],
+    }));
   };
-  // ================= RENDER ROW (DESKTOP TREE) =================
-const renderRow = (c, level = 0) => {
-  const hasChildren = c.children?.length > 0;
 
-  return (
-    <React.Fragment key={c.comment_id}>
-      <tr className="border-t text-center">
-        <td className="p-2">
-          <div className="flex items-center gap-1 justify-center">
-            {hasChildren && (
-              <button
-                onClick={() => toggleExpand(c.comment_id)}
-                className="bg-gray-200 rounded-full p-1 hover:bg-yellow-100"
-              >
-                {expanded[c.comment_id] ? (
-                  <FiChevronDown />
-                ) : (
-                  <FiChevronRight />
-                )}
-              </button>
-            )}
+  // ================= DESKTOP ROW =================
+  const renderRow = (c, level = 0) => {
+    const hasChildren = c.children?.length > 0;
 
-            <span style={{ marginLeft: level * 10 }}>
-              {c.comment_id}
+    return (
+      <React.Fragment key={c.comment_id}>
+        <tr className="border-t text-center">
+          <td className="p-2">
+            <div className="flex items-center justify-center gap-1">
+              {hasChildren && (
+                <button
+                  onClick={() => toggleExpand(c.comment_id)}
+                  className="bg-gray-200 rounded-full p-1"
+                >
+                  {expanded[c.comment_id] ? (
+                    <FiChevronDown />
+                  ) : (
+                    <FiChevronRight />
+                  )}
+                </button>
+              )}
+              <span>{c.comment_id}</span>
+            </div>
+          </td>
+
+          <td className="p-2">
+            <img
+              src={
+                c.visitor_photo ? `${BASE_URL}${c.visitor_photo}` : defaultImg
+              }
+              onError={(e) => (e.target.src = defaultImg)}
+              className="w-10 h-10 rounded-full mx-auto object-cover border"
+            />
+          </td>
+
+          <td className="p-2">{c.blog_id}</td>
+          <td className="p-2">{c.visitor_email}</td>
+          <td className="p-2">{c.visitor_ip}</td>
+          <td className="p-2">{c.visitor_rating}</td>
+          <td className="p-2 text-left">{c.comment_text}</td>
+
+          <td className="p-2">
+            <span
+              className={`px-2 py-1 rounded text-xs ${
+                c.is_approved
+                  ? "bg-green-100 text-green-600"
+                  : "bg-yellow-100 text-yellow-600"
+              }`}
+            >
+              {c.is_approved ? "Approved" : "Pending"}
             </span>
-          </div>
-        </td>
+          </td>
 
-        <td className="p-2">
-          <img
-            src={
-              c.visitor_photo
-                ? `${BASE_URL}${c.visitor_photo}`
-                : defaultImg
-            }
-            onError={(e) => (e.target.src = defaultImg)}
-            className="w-10 h-10 rounded-full mx-auto object-cover border"
-          />
-        </td>
-
-        <td className="p-2">{c.blog_id}</td>
-        <td className="p-2">{c.visitor_email}</td>
-        <td className="p-2">{c.visitor_ip}</td>
-        <td className="p-2">{c.visitor_rating}</td>
-        <td className="p-2 text-left">{c.comment_text}</td>
-
-        <td className="p-2">
-          <span
-            className={`px-2 py-1 rounded text-xs ${
-              c.is_approved
-                ? "bg-green-100 text-green-600"
-                : "bg-yellow-100 text-yellow-600"
-            }`}
-          >
-            {c.is_approved ? "Approved" : "Pending"}
-          </span>
-        </td>
-
-        <td className="p-2">
-          <div className="flex justify-center gap-2">
-
-            {/* REPLY */}
-            <button
-              onClick={() => {
-                setParentId(c.comment_id);
-                setCurrentBlogId(c.blog_id);
-                setEdit(null);
-                setOpen(true);
-              }}
-              className="bg-blue-500 p-1.5 text-white rounded"
-            >
-              <FiCornerDownRight />
-            </button>
-
-            {/* EDIT */}
-            <button
-              onClick={() => {
-                setEdit(c);
-                setOpen(true);
-              }}
-              className="bg-yellow-500 p-1.5 text-white rounded"
-            >
-              <FiEdit3 />
-            </button>
-
-            {!c.is_approved && (
+          <td className="p-2">
+            <div className="flex justify-center gap-1">
               <button
-                onClick={() => handleApprove(c.comment_id)}
-                className="bg-green-500 p-1.5 text-white rounded"
+                onClick={() => {
+                  setParentId(c.comment_id);
+                  setCurrentBlogId(c.blog_id);
+                  setEdit(null);
+                  setOpen(true);
+                }}
+                className="bg-blue-500 p-1.5 text-white rounded-full"
               >
-                <FiCheck />
+                <FiCornerDownRight />
               </button>
-            )}
 
-            <button
-              onClick={() => setDeleteItem(c)}
-              className="bg-red-500 p-1.5 text-white rounded"
-            >
-              <FiTrash2 />
-            </button>
+              <button
+                onClick={() => {
+                  setEdit(c);
+                  setOpen(true);
+                }}
+                className="bg-yellow-500 p-1.5 text-white rounded-full"
+              >
+                <FiEdit3 />
+              </button>
 
-          </div>
-        </td>
-      </tr>
+              {!c.is_approved && (
+                <button
+                  onClick={() => handleApprove(c.comment_id)}
+                  className="bg-green-500 p-1.5 text-white rounded-full"
+                >
+                  <FiCheck />
+                </button>
+              )}
 
-      {/* CHILDREN */}
-      {hasChildren &&
-        expanded[c.comment_id] &&
-        c.children.map((child) =>
-          renderRow(child, level + 1)
-        )}
-    </React.Fragment>
+              <button
+                onClick={() => setDeleteItem(c)}
+                className="bg-red-500 p-1.5 text-white rounded-full"
+              >
+                <FiTrash2 />
+              </button>
+            </div>
+          </td>
+        </tr>
+
+        {/* CHILDREN (FLAT STYLE) */}
+        {expanded[c.comment_id] &&
+          c.children?.map((child) => renderRow(child, level))}
+      </React.Fragment>
+    );
+  };
+
+  // ================= FILTER =================
+  const filteredTree = tree.filter(
+    (c) =>
+      (c.comment_text || "").toLowerCase().includes(search.toLowerCase()) ||
+      (c.visitor_email || "").toLowerCase().includes(search.toLowerCase()) ||
+      (c.visitor_ip || "").toLowerCase().includes(search.toLowerCase()),
   );
-};
 
+  const paginatedTree = filteredTree.slice((page - 1) * limit, page * limit);
 
-// ================= FILTER + PAGINATION =================
-const filteredTree = tree.filter(
-  (c) =>
-    (c.comment_text || "").toLowerCase().includes(search.toLowerCase()) ||
-    (c.visitor_email || "").toLowerCase().includes(search.toLowerCase()) ||
-    (c.visitor_ip || "").toLowerCase().includes(search.toLowerCase())
-);
+  useEffect(() => {
+    setPage(1);
+  }, [search, data]);
 
-const paginatedTree = filteredTree.slice(
-  (page - 1) * limit,
-  page * limit
-);
+  // ================= MOBILE CARD =================
+  const renderMobileCard = (c) => {
+    const hasChildren = c.children?.length > 0;
 
-useEffect(() => {
-  setPage(1);
-}, [search, data]);
+    return (
+      <React.Fragment key={c.comment_id}>
+        <MobileCard
+          id={c.comment_id}
+          actions={
+            <>
+              {hasChildren && (
+                <button
+                  onClick={() => toggleExpand(c.comment_id)}
+                  className="bg-gray-500 p-2 text-white rounded-full"
+                >
+                  {expanded[c.comment_id] ? (
+                    <FiChevronDown />
+                  ) : (
+                    <FiChevronRight />
+                  )}
+                </button>
+              )}
 
+              <button
+                onClick={() => {
+                  setParentId(c.comment_id);
+                  setCurrentBlogId(c.blog_id);
+                  setEdit(null);
+                  setOpen(true);
+                }}
+                className="bg-blue-500 p-2 text-white rounded-full"
+              >
+                <FiCornerDownRight />
+              </button>
 
-// ================= MOBILE CARD (EXPAND/COLLAPSE FIXED) =================
-const renderMobileCard = (c) => {
-  const hasChildren = c.children?.length > 0;
-  const isOpen = expanded[c.comment_id];
+              <button
+                onClick={() => {
+                  setEdit(c);
+                  setOpen(true);
+                }}
+                className="bg-yellow-500 p-2 text-white rounded-full"
+              >
+                <FiEdit3 />
+              </button>
 
+              {!c.is_approved && (
+                <button
+                  onClick={() => handleApprove(c.comment_id)}
+                  className="bg-green-500 p-2 text-white rounded-full"
+                >
+                  <FiCheck />
+                </button>
+              )}
+
+              <button
+                onClick={() => setDeleteItem(c)}
+                className="bg-red-500 p-2 text-white rounded-full"
+              >
+                <FiTrash2 />
+              </button>
+            </>
+          }
+        >
+          <div className="flex justify-center mb-2">
+            <img
+              src={
+                c.visitor_photo ? `${BASE_URL}${c.visitor_photo}` : defaultImg
+              }
+              onError={(e) => (e.target.src = defaultImg)}
+              className="w-14 h-14 rounded-full object-cover border"
+            />
+          </div>
+
+          <CardRow label="Blog ID" value={c.blog_id} />
+          <CardRow label="Email" value={c.visitor_email} />
+          <CardRow label="IP" value={c.visitor_ip} />
+          <CardRow label="Rating" value={c.visitor_rating} />
+          <CardRow label="Comment" value={c.comment_text} />
+          <CardRow
+            label="Status"
+            value={c.is_approved ? "Approved" : "Pending"}
+          />
+        </MobileCard>
+
+        {/* CHILDREN (FLAT SAME SIZE) */}
+        {expanded[c.comment_id] &&
+          c.children?.map((child) => renderMobileCard(child))}
+      </React.Fragment>
+    );
+  };
+
+  // ================= RETURN =================
   return (
-    <MobileCard
-      key={c.comment_id}
-      id={c.comment_id}
-      actions={
-        <div className="flex gap-2 flex-wrap">
+    <div className="p-3 sm:p-6 max-w-7xl mx-auto">
+      {/* HEADER */}
+      <div className="flex justify-between mb-4">
+        <h2 className="text-xl font-bold">Blog Comments</h2>
 
-          {/* EXPAND / COLLAPSE */}
-          {hasChildren && (
-            <button
-              onClick={() => toggleExpand(c.comment_id)}
-              className="bg-gray-500 p-2 text-white rounded"
-            >
-              {isOpen ? <FiChevronDown /> : <FiChevronRight />}
-            </button>
-          )}
+        <div className="flex gap-2">
+          <SearchBar
+            value={search}
+            onChange={setSearch}
+            placeholder="Search..."
+          />
 
-          {/* REPLY */}
           <button
             onClick={() => {
-              setParentId(c.comment_id);
-              setCurrentBlogId(c.blog_id);
               setEdit(null);
+              setParentId(null);
               setOpen(true);
             }}
-            className="bg-blue-500 p-2 text-white rounded"
+            className="bg-green-500 text-white px-4 py-2 rounded flex gap-2 items-center"
           >
-            <FiCornerDownRight />
-          </button>
-
-          {/* EDIT */}
-          <button
-            onClick={() => {
-              setEdit(c);
-              setOpen(true);
-            }}
-            className="bg-yellow-500 p-2 text-white rounded"
-          >
-            <FiEdit3 />
-          </button>
-
-          {/* APPROVE */}
-          {!c.is_approved && (
-            <button
-              onClick={() => handleApprove(c.comment_id)}
-              className="bg-green-500 p-2 text-white rounded"
-            >
-              <FiCheck />
-            </button>
-          )}
-
-          {/* DELETE */}
-          <button
-            onClick={() => setDeleteItem(c)}
-            className="bg-red-500 p-2 text-white rounded"
-          >
-            <FiTrash2 />
+            <FiPlusCircle /> Add
           </button>
         </div>
-      }
-    >
-      {/* IMAGE */}
-      <div className="flex justify-center mb-2">
-        <img
-          src={
-            c.visitor_photo
-              ? `${BASE_URL}${c.visitor_photo}`
-              : defaultImg
-          }
-          onError={(e) => (e.target.src = defaultImg)}
-          className="w-14 h-14 rounded-full object-cover border"
+      </div>
+
+      {/* DESKTOP */}
+      <div className="hidden md:block bg-white shadow rounded-lg overflow-hidden">
+        <table className="w-full text-sm">
+          <thead className="bg-gray-200">
+            <tr>
+              <th className="p-2">ID</th>
+              <th className="p-2">Photo</th>
+              <th className="p-2">Blog</th>
+              <th className="p-2">Email</th>
+              <th className="p-2">IP</th>
+              <th className="p-2">Rating</th>
+              <th className="p-2">Comment</th>
+              <th className="p-2">Status</th>
+              <th className="p-2">Actions</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {paginatedTree.length ? (
+              paginatedTree.map((c) => renderRow(c))
+            ) : (
+              <tr>
+                <td colSpan="9" className="p-4 text-center text-gray-500">
+                  No comments found
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
+
+      {/* MOBILE */}
+      <div className="md:hidden p-2 space-y-3">
+        {paginatedTree.length ? (
+          paginatedTree.map((c) => renderMobileCard(c))
+        ) : (
+          <p className="text-center text-gray-500">No comments found</p>
+        )}
+      </div>
+
+      {/* PAGINATION */}
+      <div className="mt-4 flex justify-center">
+        <Pagination
+          page={page}
+          total={filteredTree.length}
+          limit={limit}
+          onPageChange={setPage}
         />
       </div>
 
-      <CardRow label="Blog ID" value={c.blog_id} />
-      <CardRow label="Email" value={c.visitor_email} />
-      <CardRow label="IP" value={c.visitor_ip} />
-      <CardRow label="Rating" value={c.visitor_rating} />
-      <CardRow label="Comment" value={c.comment_text} />
-
-      <CardRow
-        label="Status"
-        value={c.is_approved ? "Approved" : "Pending"}
-      />
-
-      {/* CHILDREN IN MOBILE */}
-      {hasChildren && isOpen && (
-        <div className="mt-2 pl-4 border-l">
-          {c.children.map(renderMobileCard)}
-        </div>
-      )}
-    </MobileCard>
-  );
-};
-
-
-// ================= RETURN =================
-return (
-  <div className="p-3 sm:p-6 max-w-7xl mx-auto">
-
-    {/* HEADER */}
-    <div className="flex justify-between mb-4">
-      <h2 className="text-xl font-bold">Blog Comments</h2>
-
-      <div className="flex gap-2">
-        <SearchBar
-          value={search}
-          onChange={setSearch}
-          placeholder="Search..."
-        />
-
-        <button
-          onClick={() => {
+      {/* MODAL */}
+      {open && (
+        <BlogCommentModal
+          open={open}
+          edit={edit}
+          blogId={currentBlogId}
+          parentId={parentId}
+          onClose={() => {
+            setOpen(false);
             setEdit(null);
             setParentId(null);
-            setOpen(true);
+            setCurrentBlogId(null);
           }}
-          className="bg-green-500 text-white px-4 py-2 rounded flex gap-2 items-center"
-        >
-          <FiPlusCircle /> Add
-        </button>
-      </div>
-    </div>
+          onRefresh={fetchData}
+        />
+      )}
 
-    {/* DESKTOP */}
-    <div className="hidden md:block bg-white shadow rounded-lg overflow-hidden">
-      <table className="w-full text-sm">
-        <thead className="bg-gray-200">
-          <tr>
-            <th className="p-2">ID</th>
-            <th className="p-2">Photo</th>
-            <th className="p-2">Blog</th>
-            <th className="p-2">Email</th>
-            <th className="p-2">IP</th>
-            <th className="p-2">Rating</th>
-            <th className="p-2">Comment</th>
-            <th className="p-2">Status</th>
-            <th className="p-2">Actions</th>
-          </tr>
-        </thead>
+      {/* DELETE */}
+      {deleteItem && (
+        <div className="fixed inset-0 bg-black/40 flex items-center justify-center">
+          <div className="bg-white p-5 rounded">
+            <p>Delete?</p>
+            <button onClick={handleDelete}>Yes</button>
+          </div>
+        </div>
+      )}
 
-        <tbody>
-          {paginatedTree.length ? (
-            paginatedTree.map((c) => renderRow(c))
-          ) : (
-            <tr>
-              <td colSpan="9" className="p-4 text-center text-gray-500">
-                No comments found
-              </td>
-            </tr>
-          )}
-        </tbody>
-      </table>
-    </div>
-
-    {/* MOBILE */}
-    <div className="md:hidden p-2 space-y-3">
-      {paginatedTree.length ? (
-        paginatedTree.map(renderMobileCard)
-      ) : (
-        <p className="text-center text-gray-500">
-          No comments found
-        </p>
+      {/* TOAST */}
+      {toast && (
+        <Toast message={toast.message} type={toast.type} onClose={hideToast} />
       )}
     </div>
-
-    {/* PAGINATION */}
-    <div className="mt-4 flex justify-center">
-      <Pagination
-        page={page}
-        total={filteredTree.length}
-        limit={limit}
-        onPageChange={setPage}
-      />
-    </div>
-
-    {/* MODAL */}
-    {open && (
-      <BlogCommentModal
-        open={open}
-        edit={edit}
-        blogId={currentBlogId}
-        parentId={parentId}
-        onClose={() => {
-          setOpen(false);
-          setEdit(null);
-          setParentId(null);
-          setCurrentBlogId(null);
-        }}
-        onRefresh={fetchData}
-      />
-    )}
-
-    {/* DELETE */}
-    {deleteItem && (
-      <div className="fixed inset-0 bg-black/40 flex items-center justify-center">
-        <div className="bg-white p-5 rounded">
-          <p>Delete?</p>
-          <button onClick={handleDelete}>Yes</button>
-        </div>
-      </div>
-    )}
-
-    {/* TOAST */}
-    {toast && (
-      <Toast
-        message={toast.message}
-        type={toast.type}
-        onClose={hideToast}
-      />
-    )}
-  </div>
-);
+  );
 }
