@@ -17,7 +17,7 @@ import MobileCard from "../../../components/common/MobileCard";
 import CardRow from "../../../components/common/CardRow";
 import { useTranslation } from "react-i18next";
 
-import defaultImg from "../../../assets/images/about-default.jpg";
+import defaultImg from "../../../assets/images/default_image.png";
 
 export default function HomePageList() {
   const { t } = useTranslation();

@@ -13,7 +13,7 @@ import { FiPlusCircle, FiEdit3, FiTrash2 } from "react-icons/fi";
 import MobileCard from "../../../components/common/MobileCard";
 import CardRow from "../../../components/common/CardRow";
 
-import defaultImg from "../../../assets/images/about-default.jpg";
+import defaultImg from "../../../assets/images/default_image.png";
 
 export default function BlogsList() {
   const [data, setData] = useState([]);
