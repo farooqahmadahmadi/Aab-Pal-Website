@@ -7,6 +7,7 @@ const {
   create,
   approve,
   remove,
+  update, // ✅ NEW
 } = require("../services/blogComments.service");
 
 // ================= GET ALL =================
@@ -33,18 +34,45 @@ exports.getByBlog = async (req, res) => {
 exports.create = async (req, res) => {
   try {
     const data = req.body;
-
-    // 🔥 IP tracking
     data.visitor_ip = req.ip;
 
-    // 🔥 IMAGE UPLOAD
     if (req.file) {
       data.visitor_photo = `/uploads/blog_comments/${req.file.filename}`;
     }
 
     const result = await create(data);
-
     res.status(201).json(result);
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+};
+
+// ================= UPDATE (🔥 FIXED) =================
+exports.update = async (req, res) => {
+  try {
+    const item = await getAll().then((r) =>
+      r.find((c) => c.comment_id == req.params.id)
+    );
+
+    if (!item) {
+      return res.status(404).json({ message: "Comment not found" });
+    }
+
+    const data = req.body;
+
+    // delete old image if new uploaded
+    if (req.file) {
+      if (item.visitor_photo) {
+        const oldPath = path.join(__dirname, "..", item.visitor_photo);
+        if (fs.existsSync(oldPath)) fs.unlinkSync(oldPath);
+      }
+
+      data.visitor_photo = `/uploads/blog_comments/${req.file.filename}`;
+    }
+
+    await update(req.params.id, data);
+
+    res.json({ message: "Updated successfully" });
   } catch (err) {
     res.status(400).json({ message: err.message });
   }
@@ -63,17 +91,13 @@ exports.approve = async (req, res) => {
 // ================= DELETE =================
 exports.remove = async (req, res) => {
   try {
-    const existing = await getAll();
+    const all = await getAll();
 
-    const item = existing.find((c) => c.comment_id == req.params.id);
+    const item = all.find((c) => c.comment_id == req.params.id);
 
-    // 🔥 delete image
     if (item?.visitor_photo) {
       const imgPath = path.join(__dirname, "..", item.visitor_photo);
-
-      if (fs.existsSync(imgPath)) {
-        fs.unlinkSync(imgPath);
-      }
+      if (fs.existsSync(imgPath)) fs.unlinkSync(imgPath);
     }
 
     await remove(req.params.id);

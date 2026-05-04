@@ -20,6 +20,15 @@ exports.create = async (data) => {
   return await BlogComments.create(data);
 };
 
+// ================= UPDATE (🔥 NEW) =================
+exports.update = async (id, data) => {
+  const item = await BlogComments.findByPk(id);
+  if (!item) throw new Error("Comment not found");
+
+  await item.update(data);
+  return item;
+};
+
 // ================= APPROVE =================
 exports.approve = async (id) => {
   const item = await BlogComments.findByPk(id);
