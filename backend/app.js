@@ -12,6 +12,7 @@ const websiteLanguageRoutes = require("./routes/websiteLanguage.routes");
 const aboutPageRoutes = require("./routes/aboutPage.routes");
 const homePageRoutes = require("./routes/homePage.routes");
 const blogsPageRoutes = require("./routes/blogsPage.routes");
+const blogCommentsRoutes = require("./routes/blogComments.routes");
 
 const app = express();
 
@@ -82,6 +83,7 @@ app.use("/api/languages", websiteLanguageRoutes);
 app.use("/api/about-page", aboutPageRoutes);
 app.use("/api/home-page", homePageRoutes);
 app.use("/api/blogs-page", blogsPageRoutes);
+app.use("/api/blog-comments", blogCommentsRoutes);
 
 // Error handler
 app.use((err, req, res, next) => {

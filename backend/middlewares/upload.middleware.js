@@ -119,10 +119,34 @@ const uploadBlog = multer({
   limits: { fileSize: 2 * 1024 * 1024 },
 });
 
+// ================= BLOG COMMENTS DIR =================
+const commentDir = path.join(__dirname, "../uploads/blog_comments");
+
+if (!fs.existsSync(commentDir)) {
+  fs.mkdirSync(commentDir, { recursive: true });
+}
+
+const commentStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, commentDir);
+  },
+
+  filename: (req, file, cb) => {
+    const ext = path.extname(file.originalname);
+    cb(null, `comment-${Date.now()}${ext}`);
+  },
+});
+
+const uploadComment = multer({
+  storage: commentStorage,
+  limits: { fileSize: 2 * 1024 * 1024 },
+});
+
 // ================= EXPORT =================
 module.exports = {
   uploadUser,
   uploadAbout,
   uploadHome,
   uploadBlog,
+  uploadComment,
 };
