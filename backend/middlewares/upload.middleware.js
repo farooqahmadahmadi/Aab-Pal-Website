@@ -97,9 +97,32 @@ const uploadHome = multer({
   limits: { fileSize: 2 * 1024 * 1024 },
 });
 
+// ================= BLOG UPLOAD =================
+const blogDir = path.join(__dirname, "../uploads/blogs_page");
+
+if (!fs.existsSync(blogDir)) {
+  fs.mkdirSync(blogDir, { recursive: true });
+}
+
+const blogStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, blogDir);
+  },
+  filename: (req, file, cb) => {
+    const ext = path.extname(file.originalname);
+    cb(null, `blog-${Date.now()}${ext}`);
+  },
+});
+
+const uploadBlog = multer({
+  storage: blogStorage,
+  limits: { fileSize: 2 * 1024 * 1024 },
+});
+
 // ================= EXPORT =================
 module.exports = {
   uploadUser,
   uploadAbout,
   uploadHome,
+  uploadBlog,
 };
