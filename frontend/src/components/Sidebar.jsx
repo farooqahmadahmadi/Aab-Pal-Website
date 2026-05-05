@@ -128,7 +128,11 @@ export default function Sidebar() {
         path: "/admin/privacy-policy",
         icon: <FiInfo className="animate-bounce" />,
       },
-
+      {
+        name: "Terms & Conditions",
+        path: "/admin/terms",
+        icon: <FiInfo className="animate-bounce" />,
+      },
       {
         name: "Users",
         path: "/admin/users",
