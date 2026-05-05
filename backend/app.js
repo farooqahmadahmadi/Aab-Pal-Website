@@ -20,6 +20,8 @@ const testimonialsRoute = require("./routes/testimonialsPage.route");
 const ourTeamRoutes = require("./routes/ourTeamPage.routes");
 const ourProjectsRoutes = require("./routes/ourProjectsPage.routes");
 const servicesRoutes = require("./routes/servicesPage.routes");
+const websitePagesRoutes = require("./routes/websitePages.routes");
+
 
 const app = express();
 
@@ -98,6 +100,8 @@ app.use("/api/testimonials-page", testimonialsRoute);
 app.use("/api/our-team-page", ourTeamRoutes);
 app.use("/api/our-projects-page", ourProjectsRoutes);
 app.use("/api/services-page", servicesRoutes);
+app.use("/api/website-pages", websitePagesRoutes);
+
 
 // Error handler
 app.use((err, req, res, next) => {
