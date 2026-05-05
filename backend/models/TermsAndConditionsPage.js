@@ -21,7 +21,7 @@ const TermsAndConditionsPage = sequelize.define(
       allowNull: false,
     },
 
-    about_text: {
+    tc_text: {
       type: DataTypes.TEXT,
       allowNull: false,
     },

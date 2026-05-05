@@ -25,7 +25,7 @@ module.exports = {
         allowNull: false,
       },
 
-      about_text: {
+      tc_text: {
         type: Sequelize.TEXT,
         allowNull: false,
       },
