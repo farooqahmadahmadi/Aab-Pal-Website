@@ -45,25 +45,13 @@ export default function TestimonialsModal({
 
   // ================= HANDLE CHANGE =================
   const handleChange = (e) => {
-    const { name, value, type, checked, files } = e.target;
+    const { name, value, files } = e.target;
 
     // IMAGE
     if (name === "testimonial_photo") {
       const file = files[0];
       setForm((prev) => ({ ...prev, testimonial_photo: file }));
       setFileName(file?.name || "");
-      return;
-    }
-
-    // DROPDOWN (APPROVED)
-    if (name === "is_approved") {
-      setForm((prev) => ({ ...prev, is_approved: value }));
-      return;
-    }
-
-    // CHECKBOX (optional future use)
-    if (type === "checkbox") {
-      setForm((prev) => ({ ...prev, [name]: checked }));
       return;
     }
 
@@ -166,7 +154,7 @@ export default function TestimonialsModal({
           <option value="1">Approved</option>
         </select>
 
-        {/* IMAGE (FILE PICKER STYLE FIXED) */}
+        {/* IMAGE */}
         <label className="text-sm">Photo</label>
         <label className="flex items-center justify-center border-2 border-dashed rounded-lg p-3 cursor-pointer mb-3">
           <span className="text-gray-500 text-sm">
@@ -183,10 +171,7 @@ export default function TestimonialsModal({
 
         {/* BUTTONS */}
         <div className="flex justify-end gap-2">
-          <button
-            onClick={onClose}
-            className="bg-gray-400 px-4 py-2 rounded"
-          >
+          <button onClick={onClose} className="bg-gray-400 px-4 py-2 rounded">
             Cancel
           </button>
 
@@ -200,7 +185,6 @@ export default function TestimonialsModal({
 
       </div>
 
-      {/* TOAST */}
       {toast && (
         <Toast message={toast.message} type={toast.type} onClose={hideToast} />
       )}

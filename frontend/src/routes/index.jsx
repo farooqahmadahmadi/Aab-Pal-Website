@@ -22,7 +22,7 @@ import UsersList from "./../pages/admin/users/UsersList";
 import FaqsPageList from "./../pages/admin/faqs/FaqsPageList";
 import PrivacyPolicyList from "./../pages/admin/privacy-policy/PrivacyPolicyList";
 import TermsList from './../pages/admin/terms/TermsList';
-
+import TestimonialsList from "../pages/admin/testimonials/TestimonialsList";
 
 export default function AppRoutes() {
   return (
@@ -128,12 +128,23 @@ export default function AppRoutes() {
           </ProtectedRoute>
         }
       />
+      
       <Route
         path="/admin/terms"
         element={
           <ProtectedRoute allowedRoles={["admin"]}>
             <AdminLayout>
               <TermsList />
+            </AdminLayout>
+          </ProtectedRoute>
+        }
+      />
+       <Route
+        path="/admin/testimonials"
+        element={
+          <ProtectedRoute allowedRoles={["admin"]}>
+            <AdminLayout>
+              <TestimonialsList />
             </AdminLayout>
           </ProtectedRoute>
         }
