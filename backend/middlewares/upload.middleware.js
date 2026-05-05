@@ -166,6 +166,32 @@ const uploadTestimonials = multer({
   limits: { fileSize: 2 * 1024 * 1024 },
 });
 
+
+
+// ================= OUR TEAM DIR =================
+const teamDir = path.join(__dirname, "../uploads/our_team_page");
+
+if (!fs.existsSync(teamDir)) {
+  fs.mkdirSync(teamDir, { recursive: true });
+}
+
+const teamStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, teamDir);
+  },
+
+  filename: (req, file, cb) => {
+    const ext = path.extname(file.originalname);
+    cb(null, `team-${Date.now()}${ext}`);
+  },
+});
+
+const uploadTeam = multer({
+  storage: teamStorage,
+  limits: { fileSize: 2 * 1024 * 1024 },
+});
+
+
 // ================= EXPORT =================
 module.exports = {
   uploadUser,
@@ -174,4 +200,5 @@ module.exports = {
   uploadBlog,
   uploadComment,
   uploadTestimonials,
+  uploadTeam,
 };
