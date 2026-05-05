@@ -20,6 +20,7 @@ import BlogCommentsList from "./../pages/admin/blogs/BlogCommentsList";
 import AboutPageList from "./../pages/admin/about/AboutPageList";
 import UsersList from "./../pages/admin/users/UsersList";
 import FaqsPageList from "./../pages/admin/faqs/FaqsPageList";
+import PrivacyPolicyList from "./../pages/admin/privacy-policy/PrivacyPolicyList";
 
 export default function AppRoutes() {
   return (
@@ -111,6 +112,16 @@ export default function AppRoutes() {
           <ProtectedRoute allowedRoles={["admin"]}>
             <AdminLayout>
               <FaqsPageList />
+            </AdminLayout>
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin/privacy-policy"
+        element={
+          <ProtectedRoute allowedRoles={["admin"]}>
+            <AdminLayout>
+              <PrivacyPolicyList />
             </AdminLayout>
           </ProtectedRoute>
         }

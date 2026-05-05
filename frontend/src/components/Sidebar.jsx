@@ -123,6 +123,11 @@ export default function Sidebar() {
         path: "/admin/faqs",
         icon: <FiInfo className="animate-bounce" />,
       },
+      {
+        name: "Privacy Policy",
+        path: "/admin/privacy-policy",
+        icon: <FiInfo className="animate-bounce" />,
+      },
 
       {
         name: "Users",
