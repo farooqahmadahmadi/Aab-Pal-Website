@@ -215,6 +215,30 @@ const uploadProject = multer({
 });
 
 
+// ================= SERVICES DIR =================
+const servicesDir = path.join(__dirname, "../uploads/services_page");
+
+if (!fs.existsSync(servicesDir)) {
+  fs.mkdirSync(servicesDir, { recursive: true });
+}
+
+const servicesStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, servicesDir);
+  },
+
+  filename: (req, file, cb) => {
+    const ext = path.extname(file.originalname);
+    cb(null, `service-${Date.now()}${ext}`);
+  },
+});
+
+const uploadServices = multer({
+  storage: servicesStorage,
+  limits: { fileSize: 2 * 1024 * 1024 }, // 2MB
+});
+
+
 // ================= EXPORT =================
 module.exports = {
   uploadUser,
@@ -224,5 +248,6 @@ module.exports = {
   uploadComment,
   uploadTestimonials,
   uploadTeam,
-  uploadProject
+  uploadProject,
+  uploadServices,
 };

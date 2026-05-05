@@ -19,8 +19,7 @@ const termsAndConditionsRoutes = require("./routes/termsAndConditionsPage.routes
 const testimonialsRoute = require("./routes/testimonialsPage.route");
 const ourTeamRoutes = require("./routes/ourTeamPage.routes");
 const ourProjectsRoutes = require("./routes/ourProjectsPage.routes");
-
-
+const servicesRoutes = require("./routes/servicesPage.routes");
 
 const app = express();
 
@@ -98,7 +97,7 @@ app.use("/api/terms-and-conditions", termsAndConditionsRoutes);
 app.use("/api/testimonials-page", testimonialsRoute);
 app.use("/api/our-team-page", ourTeamRoutes);
 app.use("/api/our-projects-page", ourProjectsRoutes);
-
+app.use("/api/services-page", servicesRoutes);
 
 // Error handler
 app.use((err, req, res, next) => {
