@@ -124,6 +124,11 @@ export default function Sidebar() {
         icon: <FiInfo className="animate-bounce" />,
       },
       {
+        name: "Our Services",
+        path: "/admin/our-services",
+        icon: <FiInfo className="animate-bounce" />,
+      },
+      {
         name: "About Page",
         path: "/admin/about",
         icon: <FiInfo className="animate-bounce" />,
