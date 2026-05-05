@@ -142,6 +142,30 @@ const uploadComment = multer({
   limits: { fileSize: 2 * 1024 * 1024 },
 });
 
+
+// ================= TESTIMONIALS DIR =================
+const testimonialDir = path.join(__dirname, "../uploads/testimonials_page");
+
+if (!fs.existsSync(testimonialDir)) {
+  fs.mkdirSync(testimonialDir, { recursive: true });
+}
+
+const testimonialStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, testimonialDir);
+  },
+
+  filename: (req, file, cb) => {
+    const ext = path.extname(file.originalname);
+    cb(null, `testimonial-${Date.now()}${ext}`);
+  },
+});
+
+const uploadTestimonials = multer({
+  storage: testimonialStorage,
+  limits: { fileSize: 2 * 1024 * 1024 },
+});
+
 // ================= EXPORT =================
 module.exports = {
   uploadUser,
@@ -149,4 +173,5 @@ module.exports = {
   uploadHome,
   uploadBlog,
   uploadComment,
+  uploadTestimonials,
 };

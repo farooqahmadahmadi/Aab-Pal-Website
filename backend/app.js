@@ -16,6 +16,7 @@ const blogCommentsRoutes = require("./routes/blogComments.routes");
 const faqsRoutes = require("./routes/faqsPage.routes");
 const privacyAndPolicyRoutes = require("./routes/privacyAndPolicyPage.routes");
 const termsAndConditionsRoutes = require("./routes/termsAndConditionsPage.routes");
+const testimonialsRoute = require("./routes/testimonialsPage.route");
 
 const app = express();
 
@@ -90,7 +91,7 @@ app.use("/api/blog-comments", blogCommentsRoutes);
 app.use("/api/faqs", faqsRoutes);
 app.use("/api/privacy-policy", privacyAndPolicyRoutes);
 app.use("/api/terms-and-conditions", termsAndConditionsRoutes);
-
+app.use("/api/testimonials-page", testimonialsRoute);
 
 // Error handler
 app.use((err, req, res, next) => {
