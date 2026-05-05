@@ -100,6 +100,11 @@ export default function Sidebar() {
         icon: <FiHome className="animate-bounce" />,
       },
       {
+        name: "Our Team",
+        path: "/admin/our-team",
+        icon: <FiUsers className="animate-bounce" />,
+      },
+      {
         name: "Blogs Page",
         icon: <FiCreditCard className="animate-bounce" />,
         submenu: [

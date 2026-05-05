@@ -15,6 +15,7 @@ import HomePage from "../pages/public/HomePage";
 import AdminDashboard from "../pages/admin/dashboards/AdminDashboard";
 import WebsiteLanguageList from "../pages/admin/websiteLanguage/WebsiteLanguageList";
 import HomePageList from "./../pages/admin/home/HomePageList";
+import OurTeamList from "../pages/admin/ourTeam/OurTeamList";
 import BlogsPageList from "./../pages/admin/blogs/BlogsPageList";
 import BlogCommentsList from "./../pages/admin/blogs/BlogCommentsList";
 import AboutPageList from "./../pages/admin/about/AboutPageList";
@@ -23,6 +24,7 @@ import FaqsPageList from "./../pages/admin/faqs/FaqsPageList";
 import PrivacyPolicyList from "./../pages/admin/privacy-policy/PrivacyPolicyList";
 import TermsList from './../pages/admin/terms/TermsList';
 import TestimonialsList from "../pages/admin/testimonials/TestimonialsList";
+
 
 export default function AppRoutes() {
   return (
@@ -76,6 +78,17 @@ export default function AppRoutes() {
           </ProtectedRoute>
         }
       />
+       <Route
+        path="/admin/our-team"
+        element={
+          <ProtectedRoute allowedRoles={["admin"]}>
+            <AdminLayout>
+              <OurTeamList />
+            </AdminLayout>
+          </ProtectedRoute>
+        }
+      />
+
       <Route
         path="/admin/blogs"
         element={
