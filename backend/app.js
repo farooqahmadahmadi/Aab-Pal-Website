@@ -14,6 +14,8 @@ const homePageRoutes = require("./routes/homePage.routes");
 const blogsPageRoutes = require("./routes/blogsPage.routes");
 const blogCommentsRoutes = require("./routes/blogComments.routes");
 const faqsRoutes = require("./routes/faqsPage.routes");
+const privacyAndPolicyRoutes = require("./routes/privacyAndPolicyPage.routes");
+
 
 const app = express();
 
@@ -86,6 +88,8 @@ app.use("/api/home-page", homePageRoutes);
 app.use("/api/blogs-page", blogsPageRoutes);
 app.use("/api/blog-comments", blogCommentsRoutes);
 app.use("/api/faqs", faqsRoutes);
+app.use("/api/privacy-policy", privacyAndPolicyRoutes);
+
 
 // Error handler
 app.use((err, req, res, next) => {
