@@ -77,11 +77,14 @@ WebsiteLogs.belongsTo(Users, { foreignKey: "user_id" });
 Users.hasMany(WebsiteLogs, { foreignKey: "user_id" });
 
 // Users → WebsiteNotifications
-WebsiteNotifications.belongsTo(Users, { foreignKey: "recipient_id", as: "recipient" });
-Users.hasMany(WebsiteNotifications, {
-  foreignKey: "recipient_id",
-  as: "notifications",
-});
+// Users → WebsiteNotifications
+// (REMOVED because recipient_id does not exist in model)
+
+// WebsiteNotifications.belongsTo(Users, { foreignKey: "recipient_id", as: "recipient" });
+// Users.hasMany(WebsiteNotifications, {
+//   foreignKey: "recipient_id",
+//   as: "notifications",
+// });
 
 module.exports = {
   sequelize,

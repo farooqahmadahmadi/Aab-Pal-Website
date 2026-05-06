@@ -36,7 +36,7 @@ const WebsiteNotifications = sequelize.define(
     },
   },
   {
-    tableName: "notifications",
+    tableName: "website_notifications",
     timestamps: true,
     createdAt: "created_at",
     updatedAt: false,

@@ -30,6 +30,7 @@ import TermsList from './../pages/admin/terms/TermsList';
 import TestimonialsList from "../pages/admin/testimonials/TestimonialsList";
 import OurProjectsList from './../pages/admin/ourProjects/OurProjectsList';
 import OurServicesList from "../pages/admin/ourServices/OurServicesList";
+import WebsiteNotificationsList from './../pages/admin/websiteNotifications/WebsiteNotificationsList';
 
 
 
@@ -228,6 +229,16 @@ export default function AppRoutes() {
           <ProtectedRoute allowedRoles={["admin"]}>
             <AdminLayout>
               <UsersList />
+            </AdminLayout>
+          </ProtectedRoute>
+        }
+      />
+        <Route
+        path="/admin/website-notifications"
+        element={
+          <ProtectedRoute allowedRoles={["admin"]}>
+            <AdminLayout>
+              <WebsiteNotificationsList />
             </AdminLayout>
           </ProtectedRoute>
         }

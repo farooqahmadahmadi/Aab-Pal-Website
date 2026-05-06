@@ -169,6 +169,11 @@ export default function Sidebar() {
         path: "/admin/users",
         icon: <FiUsers className="animate-bounce" />,
       },
+        {
+          name: "Website Notifications",
+          path: "/admin/website-notifications",
+          icon: <FiUsers className="animate-bounce" />,
+        },
     ],
   };
 
