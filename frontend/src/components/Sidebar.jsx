@@ -100,6 +100,11 @@ export default function Sidebar() {
         icon: <FiGlobe className="animate-bounce" />,
       },
       {
+        name: "Web Page Views",
+        path: "/admin/web-page-views",
+        icon: <FiGlobe className="animate-bounce" />,
+      },
+      {
         name: "Home Page",
         path: "/admin/home",
         icon: <FiHome className="animate-bounce" />,
