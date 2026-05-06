@@ -115,18 +115,14 @@ export default function Sidebar() {
         icon: <FiUsers className="animate-bounce" />,
       },
       {
-        name: "Blogs Page",
-        icon: <FiCreditCard className="animate-bounce" />,
-        submenu: [
-          {
-            name: "Blos",
-            path: "/admin/blogs",
-          },
-          {
-            name: "Blog Comments",
-            path: "/admin/blog-comments",
-          },
-        ],
+        name: "Blogs",
+        path: "/admin/blogs",
+        icon: <FiUsers className="animate-bounce" />,
+      },
+      {
+        name: "Blog Comments",
+        path: "/admin/blog-comments",
+        icon: <FiUsers className="animate-bounce" />,
       },
       {
         name: "Our Projects",
@@ -139,7 +135,7 @@ export default function Sidebar() {
         icon: <FiInfo className="animate-bounce" />,
       },
       {
-        name: "About Page",
+        name: "About",
         path: "/admin/about",
         icon: <FiInfo className="animate-bounce" />,
       },
