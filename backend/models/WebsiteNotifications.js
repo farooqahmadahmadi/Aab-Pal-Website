@@ -10,15 +10,15 @@ const WebsiteNotifications = sequelize.define(
       autoIncrement: true,
     },
 
-    recipient_id: {
-      type: DataTypes.BIGINT.UNSIGNED,
-      allowNull: false,
-    },
+    // recipient_id: {
+    //   type: DataTypes.BIGINT.UNSIGNED,
+    //   allowNull: false,
+    // },
 
-    recipient_type: {
-      type: DataTypes.STRING(50),
-      allowNull: false,
-    },
+    // recipient_type: {
+    //   type: DataTypes.STRING(50),
+    //   allowNull: false,
+    // },
 
     notification_title: {
       type: DataTypes.STRING(150),

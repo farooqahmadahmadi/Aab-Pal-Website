@@ -9,15 +9,15 @@ module.exports = {
         primaryKey: true,
       },
 
-      recipient_id: {
-        type: Sequelize.BIGINT.UNSIGNED,
-        allowNull: false,
-      },
+      // recipient_id: {
+      //   type: Sequelize.BIGINT.UNSIGNED,
+      //   allowNull: false,
+      // },
 
-      recipient_type: {
-        type: Sequelize.STRING(50), // e.g: user, employee, client
-        allowNull: false,
-      },
+      // recipient_type: {
+      //   type: Sequelize.STRING(50), // e.g: user, employee, client
+      //   allowNull: false,
+      // },
 
       notification_title: {
         type: Sequelize.STRING(150),
