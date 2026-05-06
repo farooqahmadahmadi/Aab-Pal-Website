@@ -206,7 +206,7 @@ export default function Sidebar() {
         {/* SIDEBAR */}
         <div
           ref={sidebarRef}
-          className="fixed top-0 h-screen bg-white shadow-lg z-50 overflow-hidden transition-all duration-300"
+          className="fixed top-0 h-screen  bg-white shadow-lg z-50 overflow-hidden transition-all duration-300"
           style={{
             width: sidebarOpen ? "14.5rem" : "0rem",
             left: isRTL ? "auto" : 0,
@@ -227,7 +227,7 @@ export default function Sidebar() {
                 AabPal Website
               </h1>
               <p className="text-sm font-semibold truncate">{user.user_name}</p>
-              <p className="text-[11px] truncate text-gray-500">
+              <p className="text-[11px] truncate text-gray-500 ">
                 {user.user_email}
               </p>
             </div>
@@ -236,7 +236,7 @@ export default function Sidebar() {
           {/* MENU */}
           <div className="relative p-2 text-sm space-y-1 overflow-y-auto h-[calc(100%-80px)]">
             <div
-              className="absolute w-1 bg-blue-500 rounded-full transition-all duration-300"
+              className="absolute w-1 bg-blue-500 rounded-full transition-all duration-300 "
               style={{
                 top: indicatorStyle.top,
                 height: indicatorStyle.height,
