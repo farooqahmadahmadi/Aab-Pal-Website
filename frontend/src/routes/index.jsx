@@ -16,6 +16,8 @@ import AdminDashboard from "../pages/admin/dashboards/AdminDashboard";
 import WebsiteLanguageList from "../pages/admin/websiteLanguage/WebsiteLanguageList";
 import WebsitePagesList from './../pages/admin/websitePages/WebsitePagesList';
 import WebPageViewsList from './../pages/admin/websitePages/WebPageViewsList';
+import WebPageViewStatsList from './../pages/admin/websitePages/WebPageViewStatsList';
+
 import HomePageList from "./../pages/admin/home/HomePageList";
 import OurTeamList from "../pages/admin/ourTeam/OurTeamList";
 import BlogsPageList from "./../pages/admin/blogs/BlogsPageList";
@@ -28,6 +30,7 @@ import TermsList from './../pages/admin/terms/TermsList';
 import TestimonialsList from "../pages/admin/testimonials/TestimonialsList";
 import OurProjectsList from './../pages/admin/ourProjects/OurProjectsList';
 import OurServicesList from "../pages/admin/ourServices/OurServicesList";
+
 
 
 
@@ -90,6 +93,16 @@ export default function AppRoutes() {
           <ProtectedRoute allowedRoles={["admin"]}>
             <AdminLayout>
               <WebPageViewsList />
+            </AdminLayout>
+          </ProtectedRoute>
+        }
+      />
+        <Route
+        path="/admin/web-page-view-stats"
+        element={
+          <ProtectedRoute allowedRoles={["admin"]}>
+            <AdminLayout>
+              <WebPageViewStatsList />
             </AdminLayout>
           </ProtectedRoute>
         }
