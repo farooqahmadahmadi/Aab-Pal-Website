@@ -6,17 +6,21 @@ import {
   updateBlogComment,
 } from "../../services/blogComments.service";
 
+import { getBlogs } from "../../services/blogsPage.service";
+
 export default function BlogCommentModal({
   open,
   onClose,
   blogId,
-  parentId, // ✅ NEW
+  parentId,
   onRefresh,
   edit,
 }) {
   const isEdit = !!edit;
-
   const { toast, showToast, hideToast } = useToast();
+
+  const [blogs, setBlogs] = useState([]);
+  const [showDropdown, setShowDropdown] = useState(false);
 
   const [fileName, setFileName] = useState("");
 
@@ -28,13 +32,26 @@ export default function BlogCommentModal({
     comment_text: "",
     visitor_photo: null,
     is_approved: "0",
-    parent_id: parentId || null, // ✅
+    parent_id: parentId || null,
   });
 
   const isReply = !!(parentId || form.parent_id) && !isEdit;
 
-  
-  // ================= LOAD EDIT =================
+  // ================= LOAD BLOGS =================
+  useEffect(() => {
+    const fetchBlogs = async () => {
+      try {
+        const res = await getBlogs();
+        setBlogs(res?.data || []);
+      } catch {
+        showToast("Failed to load blogs", "error");
+      }
+    };
+
+    fetchBlogs();
+  }, []);
+
+  // ================= EDIT LOAD =================
   useEffect(() => {
     if (edit) {
       setForm({
@@ -52,17 +69,6 @@ export default function BlogCommentModal({
     }
   }, [edit]);
 
-  // ================= HANDLE REPLY INIT =================
-  useEffect(() => {
-    if (!edit) {
-      setForm((prev) => ({
-        ...prev,
-        blog_id: blogId || prev.blog_id,
-        parent_id: parentId || null,
-      }));
-    }
-  }, [blogId, parentId, edit]);
-
   // ================= HANDLE CHANGE =================
   const handleChange = (e) => {
     const { name, value, files } = e.target;
@@ -74,8 +80,26 @@ export default function BlogCommentModal({
       return;
     }
 
+    if (name === "blog_id") {
+      setForm((p) => ({ ...p, blog_id: value }));
+      setShowDropdown(true);
+      return;
+    }
+
     setForm((p) => ({ ...p, [name]: value }));
   };
+
+  // ================= SELECT BLOG =================
+  const selectBlog = (id) => {
+    setForm((p) => ({ ...p, blog_id: id }));
+    setShowDropdown(false);
+  };
+
+  const filteredBlogs = blogs.filter((b) =>
+    `${b.blog_id} ${b.blog_title}`
+      .toLowerCase()
+      .includes(form.blog_id.toString().toLowerCase()),
+  );
 
   // ================= SUBMIT =================
   const handleSubmit = async () => {
@@ -122,110 +146,72 @@ export default function BlogCommentModal({
               : "Add Blog Comment"}
         </h2>
 
-        {/* BLOG + PARENT */}
-        <div
-          className={`grid gap-2 mb-3 ${
-            isReply ? "grid-cols-2" : "grid-cols-1"
-          }`}
-        >
-          {/* BLOG ID */}
-          <div>
-            <label className="text-sm">Blog ID</label>
-            <input
-              name="blog_id"
-              value={form.blog_id}
-              onChange={handleChange}
-              readOnly={isReply}
-              className={`border p-2 w-full rounded ${
-                isReply ? "bg-gray-100" : ""
-              }`}
-            />
-          </div>
+        {/* BLOG SELECT (SEARCH + DROPDOWN) */}
+        <div className="mb-3 relative">
+          <label className="text-sm">Blog</label>
 
-          {/* PARENT ID */}
-          {isReply && (
-            <div>
-              <label className="text-sm">Parent Comment ID</label>
-              <input
-                name="parent_id"
-                value={form.parent_id || ""}
-                readOnly
-                className="border p-2 w-full rounded bg-gray-100"
-              />
+          <input
+            name="blog_id"
+            value={form.blog_id}
+            onChange={handleChange}
+            onFocus={() => setShowDropdown(true)}
+            readOnly={isReply}
+            placeholder="Search blog..."
+            className={`border p-2 w-full rounded ${
+              isReply ? "bg-gray-100" : ""
+            }`}
+          />
+
+          {/* DROPDOWN */}
+          {showDropdown && !isReply && (
+            <div className="absolute w-full bg-white border rounded shadow max-h-40 overflow-y-auto z-10">
+              {filteredBlogs.length ? (
+                filteredBlogs.map((b) => (
+                  <div
+                    key={b.blog_id}
+                    onClick={() => selectBlog(b.blog_id)}
+                    className="p-2 hover:bg-gray-100 cursor-pointer text-sm"
+                  >
+                    #{b.blog_id} - {b.blog_title}
+                  </div>
+                ))
+              ) : (
+                <div className="p-2 text-gray-400 text-sm">No results</div>
+              )}
             </div>
           )}
         </div>
 
         {/* EMAIL + IP */}
         <div className="grid grid-cols-2 gap-2 mb-3">
-          <div>
-            <label className="text-sm">Email</label>
-            <input
-              name="visitor_email"
-              value={form.visitor_email}
-              onChange={handleChange}
-              className="border p-2 w-full rounded"
-              placeholder="example@gmail.com"
-            />
-          </div>
+          <input
+            name="visitor_email"
+            value={form.visitor_email}
+            onChange={handleChange}
+            placeholder="Email"
+            className="border p-2 rounded"
+          />
 
-          <div>
-            <label className="text-sm">IP Address</label>
-            <input
-              name="visitor_ip"
-              value={form.visitor_ip}
-              onChange={handleChange}
-              className="border p-2 w-full rounded"
-              placeholder="192.168.1.1"
-            />
-          </div>
-        </div>
-
-        {/* RATING + STATUS */}
-        <div className="grid grid-cols-2 gap-2 mb-3">
-          <div>
-            <label className="text-sm">Rating</label>
-            <select
-              name="visitor_rating"
-              value={form.visitor_rating}
-              onChange={handleChange}
-              className="border p-2 w-full rounded"
-            >
-              {[1, 2, 3, 4, 5].map((n) => (
-                <option key={n} value={n}>
-                  {n}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          <div>
-            <label className="text-sm">Status</label>
-            <select
-              name="is_approved"
-              value={form.is_approved}
-              onChange={handleChange}
-              className="border p-2 w-full rounded"
-            >
-              <option value="0">Pending</option>
-              <option value="1">Approved</option>
-            </select>
-          </div>
+          <input
+            name="visitor_ip"
+            value={form.visitor_ip}
+            onChange={handleChange}
+            placeholder="IP Address"
+            className="border p-2 rounded"
+          />
         </div>
 
         {/* COMMENT */}
-        <label className="text-sm">Comment</label>
         <textarea
           name="comment_text"
           value={form.comment_text}
           onChange={handleChange}
+          placeholder="Write comment..."
           className="border p-2 w-full mb-3 rounded min-h-[120px]"
-          placeholder="Write your comment..."
         />
 
-        {/* FILE */}
-        <label className="text-sm">Visitor Photo</label>
-        <label className="flex items-center justify-center border-2 border-dashed rounded-lg p-3 cursor-pointer hover:bg-gray-50 mb-4">
+        {/* IMAGE */}
+        <label className="flex justify-center border-2 border-dashed p-3 rounded cursor-pointer mb-3">
           <span className="text-gray-500 text-sm">
             {fileName || "Choose image"}
           </span>
@@ -253,7 +239,6 @@ export default function BlogCommentModal({
         </div>
       </div>
 
-      {/* TOAST */}
       {toast && (
         <Toast message={toast.message} type={toast.type} onClose={hideToast} />
       )}

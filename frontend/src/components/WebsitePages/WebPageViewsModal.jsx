@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { createView, updateView } from "../../services/webPageViews.service";
+import { getPages } from "../../services/websitePages.service";
 
 import Toast from "../common/Toast";
 import useToast from "../../hooks/useToast";
@@ -8,11 +9,27 @@ export default function WebPageViewsModal({ open, onClose, edit, onRefresh }) {
   const isEdit = !!edit;
   const { toast, showToast, hideToast } = useToast();
 
+  const [pages, setPages] = useState([]);
+
   const [form, setForm] = useState({
     web_page_id: "",
     visitor_ip: "",
     visitor_agent: "",
   });
+
+  // ================= LOAD PAGES =================
+  useEffect(() => {
+    const loadPages = async () => {
+      try {
+        const res = await getPages();
+        setPages(res?.data || []);
+      } catch {
+        showToast("Failed to load pages", "error");
+      }
+    };
+
+    loadPages();
+  }, []);
 
   // ================= EDIT LOAD =================
   useEffect(() => {
@@ -28,14 +45,18 @@ export default function WebPageViewsModal({ open, onClose, edit, onRefresh }) {
   // ================= HANDLE =================
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setForm((prev) => ({ ...prev, [name]: value }));
+
+    setForm((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
 
   // ================= SUBMIT =================
   const handleSubmit = async () => {
     try {
       if (!form.web_page_id) {
-        showToast("Page ID required", "error");
+        showToast("Page required", "error");
         return;
       }
 
@@ -59,18 +80,26 @@ export default function WebPageViewsModal({ open, onClose, edit, onRefresh }) {
   return (
     <div className="fixed inset-0 bg-black/40 flex justify-center items-center p-4">
       <div className="bg-white w-full max-w-xl p-5 rounded-lg">
+
         <h2 className="text-lg font-bold mb-4">
           {isEdit ? "Edit View" : "Add View"}
         </h2>
 
-        {/* PAGE ID */}
-        <label className="text-sm">Page ID</label>
-        <input
+        {/* PAGE DROPDOWN */}
+        <label className="text-sm">Page</label>
+        <select
           name="web_page_id"
           value={form.web_page_id}
           onChange={handleChange}
           className="border p-2 w-full mb-3 rounded"
-        />
+        >
+          <option value="">Select Page</option>
+          {pages.map((p) => (
+            <option key={p.web_page_id} value={p.web_page_id}>
+              {p.page_title} (ID: {p.web_page_id})
+            </option>
+          ))}
+        </select>
 
         {/* IP */}
         <label className="text-sm">Visitor IP</label>
@@ -103,6 +132,7 @@ export default function WebPageViewsModal({ open, onClose, edit, onRefresh }) {
             {isEdit ? "Update" : "Save"}
           </button>
         </div>
+
       </div>
 
       {toast && (
