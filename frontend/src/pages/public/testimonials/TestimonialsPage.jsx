@@ -15,8 +15,7 @@ export default function TestimonialsPage() {
   const BASE_URL = import.meta.env.VITE_IMAGE_URL;
 
   // LANGUAGE
-  const getLanguageId = () =>
-    Number(localStorage.getItem("language_id")) || 1;
+  const getLanguageId = () => Number(localStorage.getItem("language_id")) || 1;
 
   const [languageId] = useState(getLanguageId());
 
@@ -32,15 +31,13 @@ export default function TestimonialsPage() {
         ]);
 
         const list = Array.isArray(res) ? res : res?.data || [];
-        const homeList = Array.isArray(homeRes)
-          ? homeRes
-          : homeRes?.data || [];
+        const homeList = Array.isArray(homeRes) ? homeRes : homeRes?.data || [];
 
         const heroSection = homeList.find(
           (h) =>
             h.is_active &&
             Number(h.language_id) === Number(languageId) &&
-            h.section_name?.toLowerCase().includes("testimonial")
+            h.section_name?.toLowerCase().includes("testimonial"),
         );
 
         setHero(heroSection || null);
@@ -147,6 +144,13 @@ export default function TestimonialsPage() {
               <h3 className="font-semibold text-gray-800">
                 {item.testimonial_name}
               </h3>
+
+              {/* Email */}
+              <p className="text-gray-500 text-sm">
+                <a href={`mailto:${item.testimonial_email}`} className="hover:underline">
+                  {item.testimonial_email}
+                </a>
+              </p>
 
               {/* MESSAGE */}
               <p className="text-gray-600 text-sm mt-2 mb-4">

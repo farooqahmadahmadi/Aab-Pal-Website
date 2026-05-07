@@ -25,6 +25,7 @@ const webPageViewsRoutes = require("./routes/webPageViews.routes");
 const webPageViewStatsRoutes = require("./routes/webPageViewStats.routes");
 const websiteNotificationsRoutes = require("./routes/websiteNotifications.routes");
 const websiteLogsRoutes = require("./routes/websiteLogs.routes");
+const contactUsPageRoutes = require("./routes/contactUsPage.routes");
 
 const app = express();
 
@@ -108,6 +109,8 @@ app.use("/api/web-page-views", webPageViewsRoutes);
 app.use("/api/web-page-view-stats", webPageViewStatsRoutes);
 app.use("/api/notifications", websiteNotificationsRoutes);
 app.use("/api/website-logs", websiteLogsRoutes);
+app.use("/api/contact-us", contactUsPageRoutes);
+
 
 // Error handler
 app.use((err, req, res, next) => {

@@ -21,6 +21,7 @@ const WebPageViewStats = require("./WebPageViewStats");
 const Users = require("./Users");
 const WebsiteLogs = require("./WebsiteLogs");
 const WebsiteNotifications = require("./WebsiteNotifications");
+const ContactUsPage = require("./ContactUsPage");
 
 // Home Page → Website Languages
 HomePage.belongsTo(WebsiteLanguage, { foreignKey: "language_id" });
@@ -109,4 +110,5 @@ module.exports = {
   Users,
   WebsiteLogs,
   WebsiteNotifications,
+  ContactUsPage,
 };
