@@ -14,6 +14,8 @@ import FaqsPubPage from "../pages/public/faqs/FaqsPage";
 import PrivacyAndPolicyPage from "../pages/public/privacy-policy/PrivacyAndPolicyPage";
 import TermsAndConditionsPage from "../pages/public/terms/TermsAndConditionsPage";
 import TestimonialsPage from "../pages/public/testimonials/TestimonialsPage";
+import AboutPage from "../pages/public/about/AboutPage";
+
 
 // ADMIN
 import AdminDashboard from "../pages/admin/dashboards/AdminDashboard";
@@ -86,7 +88,14 @@ export default function AppRoutes() {
           </PublicLayout>
         }
       />
-
+   <Route
+        path="/about"
+        element={
+          <PublicLayout>
+            <AboutPage />
+          </PublicLayout>
+        }
+      />
 
       {/* LOGIN */}
       <Route path="/login" element={<Login />} />
