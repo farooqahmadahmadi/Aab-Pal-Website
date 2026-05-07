@@ -1,34 +1,39 @@
 import { useState, useEffect, useRef } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-
+import { updateNotification } from "../services/websiteNotifications.service";
 import {
-  FiHome,
   FiPieChart,
-  FiChevronsDown,
-  FiChevronsUp,
   FiChevronLeft,
-  FiGlobe,
-  FiInfo,
-  FiCreditCard,
+  FiChevronRight,
   FiUsers,
+  FiBell,
+  FiLogOut,
+  FiGlobe,
+  FiHome,
+  FiInfo,
 } from "react-icons/fi";
 
-import { FaIdCard } from "react-icons/fa";
-
-import { FileBracesCorner, Menu } from "lucide-react";
+import { Menu } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 
 import defaultAvatar from "../assets/images/user-def-image.png";
+import { getNotifications } from "../services/websiteNotifications.service";
 
 export default function Sidebar() {
   const location = useLocation();
-  const sidebarRef = useRef();
-  const { t, i18n } = useTranslation();
+  const navigate = useNavigate();
+  const notifRef = useRef();
 
+  const { t, i18n } = useTranslation();
   const isRTL = i18n.language === "fa" || i18n.language === "ps";
 
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [openMenu, setOpenMenu] = useState(null);
+  const [notifOpen, setNotifOpen] = useState(false);
+  const [notifications, setNotifications] = useState([]);
+
+  const [tab, setTab] = useState("unread");
+  const [limit, setLimit] = useState(10);
 
   const [indicatorStyle, setIndicatorStyle] = useState({
     top: 0,
@@ -36,49 +41,94 @@ export default function Sidebar() {
   });
 
   const itemRefs = useRef({});
-
   const user = JSON.parse(localStorage.getItem("user") || "{}");
-
-  // ✅ FIX: role normalize
   const role = String(user?.user_role || "").toLowerCase();
 
   const BASE_URL =
     import.meta.env.VITE_IMAGE_URL || import.meta.env.VITE_API_URL;
 
-  // ================= RESPONSIVE =================
+  // ================= FETCH =================
   useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth < 768) setSidebarOpen(false);
-      else setSidebarOpen(true);
-    };
+    const fetch = async () => {
+      try {
+        const data = await getNotifications();
+        const list = Array.isArray(data) ? data : data?.data || [];
 
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+        setNotifications(
+          list.sort((a, b) => new Date(b.created_at) - new Date(a.created_at)),
+        );
+      } catch {}
+    };
+    fetch();
   }, []);
 
-  // ================= ACTIVE INDICATOR =================
+  const unreadList = notifications.filter((n) => !n?.is_read);
+  const readList = notifications.filter((n) => n?.is_read);
+
+  const currentList = tab === "unread" ? unreadList : readList;
+  const visibleList = currentList.slice(0, limit);
+
+  // ================= LOGOUT =================
+  const handleLogout = () => {
+    localStorage.clear();
+    navigate("/");
+  };
+
+  const markAsRead = async (id) => {
+    try {
+      await updateNotification(id, { is_read: true });
+
+      setNotifications((prev) =>
+        prev.map((n) =>
+          n.notification_id === id ? { ...n, is_read: true } : n,
+        ),
+      );
+    } catch (err) {
+      console.error(err);
+    }
+  };
+  // ================= TIME =================
+  const formatTime = (date) => {
+    const d = new Date(date);
+    return d.toLocaleString();
+  };
+
+  // ================= CLICK OUTSIDE =================
+  useEffect(() => {
+    const handleClick = (e) => {
+      if (notifRef.current && !notifRef.current.contains(e.target)) {
+        setNotifOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClick);
+    return () => document.removeEventListener("mousedown", handleClick);
+  }, []);
+
+  // ================= RESPONSIVE =================
+  useEffect(() => {
+    const resize = () => {
+      setSidebarOpen(window.innerWidth >= 768);
+    };
+    resize();
+    window.addEventListener("resize", resize);
+    return () => window.removeEventListener("resize", resize);
+  }, []);
+
+  // ================= ACTIVE =================
   useEffect(() => {
     const el = itemRefs.current[location.pathname];
-
     if (el) {
       setIndicatorStyle({
         top: el.offsetTop,
         height: el.offsetHeight,
       });
     }
-  }, [location.pathname, sidebarOpen, openMenu]);
+  }, [location.pathname, sidebarOpen]);
 
   const getAvatar = () => {
     if (!user?.user_photo) return defaultAvatar;
     if (user.user_photo.startsWith("http")) return user.user_photo;
     return `${BASE_URL}${user.user_photo}`;
-  };
-
-  const isActive = (path) => location.pathname === path;
-
-  const toggleMenu = (name) => {
-    setOpenMenu((prev) => (prev === name ? null : name));
   };
 
   // ================= MENU =================
@@ -169,11 +219,11 @@ export default function Sidebar() {
         path: "/admin/users",
         icon: <FiUsers className="animate-bounce" />,
       },
-        {
-          name: "Website Notifications",
-          path: "/admin/website-notifications",
-          icon: <FiUsers className="animate-bounce" />,
-        },
+      {
+        name: "Website Notifications",
+        path: "/admin/website-notifications",
+        icon: <FiUsers className="animate-bounce" />,
+      },
     ],
   };
 
@@ -196,57 +246,208 @@ export default function Sidebar() {
         >
           {sidebarOpen ? (
             isRTL ? (
-              <FiChevronRight size={18} />
+              <FiChevronRight />
             ) : (
-              <FiChevronLeft size={18} />
+              <FiChevronLeft />
             )
           ) : (
-            <Menu size={19} />
+            <Menu />
           )}
         </div>
 
-        {/* BACKDROP */}
-        {sidebarOpen && (
-          <div
-            onClick={() => setSidebarOpen(false)}
-            className="fixed inset-0 bg-black/10 md:hidden z-40"
-          />
-        )}
-
         {/* SIDEBAR */}
         <div
-          ref={sidebarRef}
-          className="fixed top-0 h-screen  bg-white shadow-lg z-50 overflow-hidden transition-all duration-300"
+          className={`fixed top-0 pb-12 h-screen bg-white shadow-lg z-50 transition-all duration-300 ${
+            sidebarOpen ? "w-[14.5rem]" : "w-0"
+          } overflow-hidden`}
           style={{
-            width: sidebarOpen ? "14.5rem" : "0rem",
             left: isRTL ? "auto" : 0,
-
             right: isRTL ? 0 : "auto",
           }}
         >
           {/* HEADER */}
-          <div className="p-3 border-b flex items-center gap-3 bg-zinc-100 rounded">
-            <img
-              src={getAvatar()}
-              onError={(e) => (e.target.src = defaultAvatar)}
-              className="w-12 h-12 rounded-full object-cover border shadow"
-            />
+          <div
+            className={`p-3 border-b bg-zinc-100 transition-all duration-300 ${
+              sidebarOpen ? "opacity-100" : "opacity-0 pointer-events-none"
+            }`}
+          >
+            <div className="flex flex-col gap-1">
+              {/* USER INFO */}
+              <div className="flex items-center gap-3">
+                <img
+                  src={getAvatar()}
+                  className="w-11 h-11 rounded-full border object-cover flex-shrink-0"
+                />
 
-            <div className="flex flex-col min-w-0">
-              <h1 className="text-sm font-bold text-blue-600">
-                AabPal Website
-              </h1>
-              <p className="text-sm font-semibold truncate">{user.user_name}</p>
-              <p className="text-[11px] truncate text-gray-500 ">
-                {user.user_email}
-              </p>
+                <div className="min-w-0">
+                  {/* BRAND NAME */}
+                  <p className="text-sm font-bold text-blue-600 tracking-wide">
+                    AabPal-Website
+                  </p>
+                  <p className="text-sm font-semibold truncate">
+                    {user.user_name}
+                  </p>
+
+                  <p className="text-xs text-gray-500 truncate">
+                    {user.user_email}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* ACTIONS */}
+            <div className="flex items-center justify-between mt-3">
+              {/* Logout */}
+              <div
+                onClick={handleLogout}
+                className="flex items-center gap-1 text-red-500 hover:text-white text-sm hover:bg-red-500 px-2 py-1 font-semibold rounded-full cursor-pointer"
+              >
+                <FiLogOut /> Logout
+              </div>
+
+              {/* Notification */}
+              <div className="relative w-full flex justify-end" ref={notifRef}>
+                <div
+                  onClick={() => setNotifOpen(!notifOpen)}
+                  className="relative p-2 rounded-full hover:bg-gray-200 cursor-pointer"
+                >
+                  <FiBell size={18} />
+
+                  {unreadList.length > 0 && (
+                    <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs px-1 rounded-full animate-bounce">
+                      {unreadList.length}
+                    </span>
+                  )}
+                </div>
+
+                {/* DROPDOWN */}
+                <AnimatePresence>
+                  {notifOpen && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -10 }}
+                      className="fixed top-14 bg-white border shadow-xl rounded-xl z-[9999] flex flex-col"
+                      style={{
+                        width: window.innerWidth < 768 ? "90vw" : "320px",
+                        maxWidth: "340px",
+
+                        // ✅ desktop alignment with sidebar
+                        right: isRTL
+                          ? window.innerWidth < 768
+                            ? "1rem"
+                            : "14.5rem"
+                          : "auto",
+
+                        left: isRTL
+                          ? "auto"
+                          : window.innerWidth < 768
+                            ? "1rem"
+                            : "14.5rem",
+
+                        height: "420px",
+                      }}
+                    >
+                      {/* HEADER */}
+                      <div className="p-3 font-semibold border-b shrink-0">
+                        Notifications
+                      </div>
+
+                      {/* TABS */}
+                      <div className="flex border-b text-sm shrink-0">
+                        <button
+                          onClick={() => {
+                            setTab("unread");
+                            setLimit(10);
+                          }}
+                          className={`flex-1 py-2 ${
+                            tab === "unread"
+                              ? "border-b-2 border-blue-500 text-blue-600 font-semibold"
+                              : ""
+                          }`}
+                        >
+                          Unread ({unreadList.length})
+                        </button>
+
+                        <button
+                          onClick={() => {
+                            setTab("read");
+                            setLimit(10);
+                          }}
+                          className={`flex-1 py-2 ${
+                            tab === "read"
+                              ? "border-b-2 border-blue-500 text-blue-600 font-semibold"
+                              : ""
+                          }`}
+                        >
+                          Read ({readList.length})
+                        </button>
+                      </div>
+
+                      {/* LIST */}
+                      <div className="flex-1 overflow-y-auto">
+                        {visibleList.length === 0 && (
+                          <p className="p-3 text-sm text-gray-500 text-center">
+                            No notifications
+                          </p>
+                        )}
+
+                        {visibleList.map((n) => (
+                          <div
+                            key={n.notification_id}
+                            className={`p-3 border-b hover:bg-gray-100 cursor-pointer ${
+                              !n.is_read ? "bg-blue-50" : ""
+                            }`}
+                          >
+                            <div className="text-sm font-semibold">
+                              {n.notification_title || "Notification"}
+                            </div>
+
+                            <div className="text-xs text-gray-600 mt-1">
+                              {n.notification_message}
+                            </div>
+
+                            <div className="flex justify-between items-center mt-2">
+                              <span className="text-[10px] text-gray-400">
+                                {formatTime(n.created_at)}
+                              </span>
+
+                              {!n.is_read && (
+                                <button
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    markAsRead(n.notification_id);
+                                  }}
+                                  className="text-xs text-blue-500 hover:underline"
+                                >
+                                  Mark as read
+                                </button>
+                              )}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+
+                      {/* MORE */}
+                      {currentList.length > limit && (
+                        <div
+                          onClick={() => setLimit((prev) => prev + 10)}
+                          className="p-2 text-center text-sm text-blue-600 hover:bg-gray-100 cursor-pointer border-t shrink-0"
+                        >
+                          More notifications...
+                        </div>
+                      )}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
             </div>
           </div>
 
           {/* MENU */}
-          <div className="relative p-2 text-sm space-y-1 overflow-y-auto h-[calc(100%-80px)]">
+          <div className="relative p-2 text-sm space-y-1 overflow-y-auto h-[calc(100%-120px)] scrollbar-hide">
             <div
-              className="absolute w-1 bg-blue-500 rounded-full transition-all duration-300 "
+              className="absolute w-1 bg-blue-500 rounded-full transition-all duration-300"
               style={{
                 top: indicatorStyle.top,
                 height: indicatorStyle.height,
@@ -256,51 +457,19 @@ export default function Sidebar() {
             />
 
             {menuItems[role]?.map((item, i) => (
-              <div key={i}>
-                {item.path ? (
-                  <Link
-                    ref={(el) => (itemRefs.current[item.path] = el)}
-                    to={item.path}
-                    className={`flex items-center gap-3 px-3 py-2 rounded-lg ${
-                      isActive(item.path)
-                        ? "bg-blue-50 text-blue-600 font-semibold"
-                        : "hover:bg-gray-100"
-                    }`}
-                  >
-                    {item.icon}
-                    <span>{t(item.name)}</span>
-                  </Link>
-                ) : (
-                  <>
-                    <div
-                      onClick={() => toggleMenu(item.name)}
-                      className="flex items-center gap-3 px-3 py-2 rounded-lg cursor-pointer hover:bg-gray-100"
-                    >
-                      {item.icon}
-                      <span className="flex-1">{t(item.name)}</span>
-                      {openMenu === item.name ? (
-                        <FiChevronsUp />
-                      ) : (
-                        <FiChevronsDown />
-                      )}
-                    </div>
-
-                    {openMenu === item.name && (
-                      <div className={`mt-1 ${isRTL ? "mr-8" : "ml-8"}`}>
-                        {item.submenu.map((sub, j) => (
-                          <Link
-                            key={j}
-                            to={sub.path}
-                            className="block px-2 py-1 hover:bg-gray-100 rounded"
-                          >
-                            {t(sub.name)}
-                          </Link>
-                        ))}
-                      </div>
-                    )}
-                  </>
-                )}
-              </div>
+              <Link
+                key={i}
+                ref={(el) => (itemRefs.current[item.path] = el)}
+                to={item.path}
+                className={`flex items-center gap-3 px-3 py-2 rounded-lg text-black ${
+                  location.pathname === item.path
+                    ? "bg-blue-50 text-blue-700 font-semibold"
+                    : "hover:bg-gray-100  hover:text-blue-700"
+                }`}
+              >
+                {item.icon}
+                <span>{t(item.name)}</span>
+              </Link>
             ))}
           </div>
         </div>

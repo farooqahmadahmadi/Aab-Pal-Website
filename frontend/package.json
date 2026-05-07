@@ -30,6 +30,7 @@
     "react-to-print": "^3.3.0",
     "recharts": "^3.8.1",
     "socket.io-client": "^4.8.3",
+    "tailwind-scrollbar-hide": "^4.0.0",
     "vite-plugin-pwa": "^1.2.0"
   },
   "devDependencies": {

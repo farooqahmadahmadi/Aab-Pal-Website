@@ -8,6 +8,17 @@ module.exports = {
 
     return queryInterface.bulkInsert("users", [
       {
+        user_name: "Faroo Ahmad Ahmadi",
+        user_email: "farooqahmadahmadi1400@gmail.com",
+        password_hash: passwordHash,
+        user_role: "admin",
+        failed_attempts: 0,
+        is_active: true,
+        user_photo: null,
+        created_at: new Date(),
+        updated_at: new Date(),
+      },
+       {
         user_name: "Admin User",
         user_email: "admin@aabpal.com",
         password_hash: passwordHash,
