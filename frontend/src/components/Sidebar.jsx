@@ -224,6 +224,11 @@ export default function Sidebar() {
         path: "/admin/website-notifications",
         icon: <FiUsers className="animate-bounce" />,
       },
+      {
+        name: "Website Logs",
+        path: "/admin/website-logs",
+        icon: <FiUsers className="animate-bounce" />,
+      },
     ],
   };
 

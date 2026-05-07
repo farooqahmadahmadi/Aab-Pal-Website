@@ -34,7 +34,7 @@ const WebsiteLogs = sequelize.define('WebsiteLogs', {
     type: DataTypes.TEXT
   }
 }, {
-  tableName: 'system_logs',
+  tableName: 'website_logs',
   timestamps: true,
   createdAt: 'created_at',
   updatedAt: false

@@ -7,23 +7,23 @@ export * from "./websiteLanguage.service";
 export * from "./user.service";
 
 // Blogs (future ready)
-// export * from "./blog.service";
+export * from "./blog.service";
 
 // Blog Comments (future ready)
-// export * from "./blogComments.service";
+export * from "./blogComments.service";
 
-// // FAQs
-// export * from "./faqs.service";
+// FAQs
+export * from "./faqs.service";
 
 // // Pages
 export * from "./homePage.service";
-// export * from "./servicesPage.service";
-// export * from "./aboutPage.service";
-// export * from "./ourTeam.service";
-// export * from "./ourProjects.service";
-// export * from "./privacyPolicy.service";
-// export * from "./terms.service";
+export * from "./servicesPage.service";
+export * from "./aboutPage.service";
+export * from "./ourTeam.service";
+export * from "./ourProjects.service";
+export * from "./privacyPolicy.service";
+export * from "./terms.service";
 
 // // System
-// export * from "./notifications.service";
-// export * from "./logs.service";
+export * from "./notifications.service";
+export * from "./logs.service";
