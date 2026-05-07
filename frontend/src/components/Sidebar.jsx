@@ -267,7 +267,7 @@ export default function Sidebar() {
         >
           {/* HEADER */}
           <div
-            className={`p-3 border-b bg-zinc-100 transition-all duration-300 ${
+            className={`p-2 border-b bg-zinc-100 transition-all duration-300 ${
               sidebarOpen ? "opacity-100" : "opacity-0 pointer-events-none"
             }`}
           >
@@ -294,9 +294,9 @@ export default function Sidebar() {
                 </div>
               </div>
             </div>
-
+            <div className="border-b-2 mt-3  border-dashed"></div>
             {/* ACTIONS */}
-            <div className="flex items-center justify-between mt-3">
+            <div className="flex items-center justify-between mt-2 pl-2 pr-2">
               {/* Logout */}
               <div
                 onClick={handleLogout}
@@ -314,7 +314,7 @@ export default function Sidebar() {
                   <FiBell size={18} />
 
                   {unreadList.length > 0 && (
-                    <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs px-1 rounded-full animate-bounce">
+                    <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs px-1  rounded-full animate-pulse">
                       {unreadList.length}
                     </span>
                   )}
@@ -332,7 +332,7 @@ export default function Sidebar() {
                         width: window.innerWidth < 768 ? "90vw" : "320px",
                         maxWidth: "340px",
 
-                        // ✅ desktop alignment with sidebar
+                        //  desktop alignment with sidebar
                         right: isRTL
                           ? window.innerWidth < 768
                             ? "1rem"
@@ -354,34 +354,34 @@ export default function Sidebar() {
                       </div>
 
                       {/* TABS */}
-                      <div className="flex border-b text-sm shrink-0">
-                        <button
+                      <div className="flex border-b text-sm shrink-0 text-center cursor-pointer">
+                        <div
                           onClick={() => {
                             setTab("unread");
                             setLimit(10);
                           }}
-                          className={`flex-1 py-2 ${
+                          className={`flex-1 py-2 hover:bg-gray-100 ${
                             tab === "unread"
                               ? "border-b-2 border-blue-500 text-blue-600 font-semibold"
                               : ""
                           }`}
                         >
                           Unread ({unreadList.length})
-                        </button>
+                        </div>
 
-                        <button
+                        <div
                           onClick={() => {
                             setTab("read");
                             setLimit(10);
                           }}
-                          className={`flex-1 py-2 ${
+                          className={`flex-1 py-2 hover:bg-gray-100 ${
                             tab === "read"
                               ? "border-b-2 border-blue-500 text-blue-600 font-semibold"
                               : ""
                           }`}
                         >
                           Read ({readList.length})
-                        </button>
+                        </div>
                       </div>
 
                       {/* LIST */}
@@ -413,15 +413,15 @@ export default function Sidebar() {
                               </span>
 
                               {!n.is_read && (
-                                <button
+                                <div
                                   onClick={(e) => {
                                     e.stopPropagation();
                                     markAsRead(n.notification_id);
                                   }}
-                                  className="text-xs text-blue-500 hover:underline"
+                                  className="text-xs text-blue-500 hover:underline p-1 bg-blue-100 rounded "
                                 >
                                   Mark as read
-                                </button>
+                                </div>
                               )}
                             </div>
                           </div>
