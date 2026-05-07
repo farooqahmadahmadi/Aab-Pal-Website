@@ -13,8 +13,17 @@ const {
   create,
   update,
   remove,
+  createPublicTestimonial
 } = require("../controllers/testimonialsPage.controller");
 
+
+// ================= PUBLIC ROUTES =================
+router.post(
+  "/addpublictestimonial",
+  uploadTestimonials.single("testimonial_photo"),
+  createPublicTestimonial
+);
+  
 // ROUTES
 router.get("/", getAll);
 router.get("/:id", getOne);

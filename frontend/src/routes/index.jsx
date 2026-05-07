@@ -13,6 +13,7 @@ import HomePubPage from "../pages/public/HomePage";
 import FaqsPubPage from "../pages/public/faqs/FaqsPage";
 import PrivacyAndPolicyPage from "../pages/public/privacy-policy/PrivacyAndPolicyPage";
 import TermsAndConditionsPage from "../pages/public/terms/TermsAndConditionsPage";
+import TestimonialsPage from "../pages/public/testimonials/TestimonialsPage";
 
 // ADMIN
 import AdminDashboard from "../pages/admin/dashboards/AdminDashboard";
@@ -68,7 +69,7 @@ export default function AppRoutes() {
           </PublicLayout>
         }
       />
-            <Route
+      <Route
         path="/terms-and-conditions"
         element={
           <PublicLayout>
@@ -76,6 +77,16 @@ export default function AppRoutes() {
           </PublicLayout>
         }
       />
+
+       <Route
+        path="/testimonials"
+        element={
+          <PublicLayout>
+            <TestimonialsPage />
+          </PublicLayout>
+        }
+      />
+
 
       {/* LOGIN */}
       <Route path="/login" element={<Login />} />
