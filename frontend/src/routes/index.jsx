@@ -11,7 +11,8 @@ import PublicLayout from "../layouts/PublicLayout";
 // PUBLIC
 import HomePubPage from "../pages/public/HomePage";
 import FaqsPubPage from "../pages/public/faqs/FaqsPage";
-import PrivacyAndPolicyPage from "../pages/public/privacyandpolicy/PrivacyAndPolicyPage";
+import PrivacyAndPolicyPage from "../pages/public/privacy-policy/PrivacyAndPolicyPage";
+import TermsAndConditionsPage from "../pages/public/terms/TermsAndConditionsPage";
 
 // ADMIN
 import AdminDashboard from "../pages/admin/dashboards/AdminDashboard";
@@ -64,6 +65,14 @@ export default function AppRoutes() {
         element={
           <PublicLayout>
             <PrivacyAndPolicyPage />
+          </PublicLayout>
+        }
+      />
+            <Route
+        path="/terms-and-conditions"
+        element={
+          <PublicLayout>
+            <TermsAndConditionsPage />
           </PublicLayout>
         }
       />
