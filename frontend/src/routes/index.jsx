@@ -9,7 +9,8 @@ import AdminLayout from "../layouts/AdminLayout";
 import PublicLayout from "../layouts/PublicLayout";
 
 // PUBLIC
-import HomePage from "../pages/public/HomePage";
+import HomePubPage from "../pages/public/HomePage";
+import FaqsPubPage from "../pages/public/faqs/FaqsPage";
 
 // ADMIN
 import AdminDashboard from "../pages/admin/dashboards/AdminDashboard";
@@ -32,6 +33,7 @@ import OurProjectsList from "./../pages/admin/ourProjects/OurProjectsList";
 import OurServicesList from "../pages/admin/ourServices/OurServicesList";
 import WebsiteNotificationsList from "./../pages/admin/websiteNotifications/WebsiteNotificationsList";
 import WebsiteLogs from "../pages/admin/websiteLogs/WebsiteLogs";
+import FaqsPage from './../pages/public/faqs/FaqsPage';
 
 export default function AppRoutes() {
   return (
@@ -44,7 +46,15 @@ export default function AppRoutes() {
         path="/home"
         element={
           <PublicLayout>
-            <HomePage />
+            <HomePubPage />
+          </PublicLayout>
+        }
+      />
+      <Route
+        path="/faqs"
+        element={
+          <PublicLayout>
+            <FaqsPubPage />
           </PublicLayout>
         }
       />

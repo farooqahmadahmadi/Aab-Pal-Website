@@ -34,7 +34,7 @@ exports.getOne = async (req, res) => {
   }
 };
 
-// ================= CREATE =================
+// ================= ADMIN CREATE =================
 exports.create = async (req, res) => {
   try {
     const data = await service.create(req.body);
@@ -51,10 +51,56 @@ exports.create = async (req, res) => {
   }
 };
 
+// ================= PUBLIC ASK QUESTION =================
+exports.createPublicQuestion = async (
+  req,
+  res
+) => {
+  try {
+    const {
+      language_id,
+      faqs_question,
+    } = req.body;
+
+    // ================= VALIDATION =================
+    if (
+      !language_id ||
+      !faqs_question
+    ) {
+      return res.status(400).json({
+        success: false,
+        message:
+          "language_id and faqs_question are required",
+      });
+    }
+
+    const data =
+      await service.createPublicQuestion({
+        language_id,
+        faqs_question,
+      });
+
+    res.status(201).json({
+      success: true,
+      message:
+        "Question submitted successfully",
+      data,
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: err.message,
+    });
+  }
+};
+
 // ================= UPDATE =================
 exports.update = async (req, res) => {
   try {
-    const data = await service.update(req.params.id, req.body);
+    const data = await service.update(
+      req.params.id,
+      req.body
+    );
 
     res.status(200).json({
       success: true,

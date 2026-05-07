@@ -12,9 +12,25 @@ const getOne = async (id) => {
   return await FaqsPage.findByPk(id);
 };
 
-// ================= CREATE =================
+// ================= ADMIN CREATE =================
 const create = async (data) => {
   return await FaqsPage.create(data);
+};
+
+// ================= PUBLIC ASK QUESTION =================
+const createPublicQuestion = async (data) => {
+  return await FaqsPage.create({
+    language_id: data.language_id,
+
+    faqs_question: data.faqs_question,
+
+    // AUTO VALUES
+    faqs_answer: "",
+
+    faqs_category: "General",
+
+    is_active: false,
+  });
 };
 
 // ================= UPDATE =================
@@ -35,6 +51,7 @@ module.exports = {
   getAll,
   getOne,
   create,
+  createPublicQuestion,
   update,
   remove,
 };

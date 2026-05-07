@@ -12,9 +12,16 @@ export const getFaq = async (id) => {
   return res.data;
 };
 
-// ================= CREATE =================
+// ================= ADMIN CREATE =================
 export const createFaq = async (data) => {
   const res = await API.post("/faqs", data);
+  return res.data;
+};
+
+// ================= PUBLIC ASK QUESTION =================
+// 🔥 NO AUTH REQUIRED
+export const askFaqQuestion = async (data) => {
+  const res = await API.post("/faqs/ask", data);
   return res.data;
 };
 
