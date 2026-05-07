@@ -11,6 +11,7 @@ import PublicLayout from "../layouts/PublicLayout";
 // PUBLIC
 import HomePubPage from "../pages/public/HomePage";
 import FaqsPubPage from "../pages/public/faqs/FaqsPage";
+import PrivacyAndPolicyPage from "../pages/public/privacyandpolicy/PrivacyAndPolicyPage";
 
 // ADMIN
 import AdminDashboard from "../pages/admin/dashboards/AdminDashboard";
@@ -33,7 +34,6 @@ import OurProjectsList from "./../pages/admin/ourProjects/OurProjectsList";
 import OurServicesList from "../pages/admin/ourServices/OurServicesList";
 import WebsiteNotificationsList from "./../pages/admin/websiteNotifications/WebsiteNotificationsList";
 import WebsiteLogs from "../pages/admin/websiteLogs/WebsiteLogs";
-import FaqsPage from './../pages/public/faqs/FaqsPage';
 
 export default function AppRoutes() {
   return (
@@ -55,6 +55,15 @@ export default function AppRoutes() {
         element={
           <PublicLayout>
             <FaqsPubPage />
+          </PublicLayout>
+        }
+      />
+
+      <Route
+        path="/privacy-policy"
+        element={
+          <PublicLayout>
+            <PrivacyAndPolicyPage />
           </PublicLayout>
         }
       />

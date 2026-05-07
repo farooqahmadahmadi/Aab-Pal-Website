@@ -13,8 +13,7 @@ export default function PublicNavbar() {
   const [currentLanguage, setCurrentLanguage] = useState(null);
 
   // ================= RTL =================
-  const isRTL =
-    currentLanguage?.language_direction?.toUpperCase() === "RTL";
+  const isRTL = currentLanguage?.language_direction?.toUpperCase() === "RTL";
 
   // ================= FETCH LANGUAGES =================
   useEffect(() => {
@@ -38,7 +37,7 @@ export default function PublicNavbar() {
         // first try by language_id
         if (savedLanguageId) {
           selectedLanguage = list.find(
-            (l) => Number(l.language_id) === Number(savedLanguageId)
+            (l) => Number(l.language_id) === Number(savedLanguageId),
           );
         }
 
@@ -64,8 +63,7 @@ export default function PublicNavbar() {
       if (!langObj) return;
 
       const lng = langObj.language_code;
-      const dir =
-        langObj.language_direction?.toLowerCase() || "ltr";
+      const dir = langObj.language_direction?.toLowerCase() || "ltr";
 
       // react-i18next (ONLY for static texts)
       await i18n.changeLanguage(lng);
@@ -73,14 +71,8 @@ export default function PublicNavbar() {
       // save full DB language info
       localStorage.setItem("lang", lng);
       localStorage.setItem("language_id", langObj.language_id);
-      localStorage.setItem(
-        "language_direction",
-        langObj.language_direction
-      );
-      localStorage.setItem(
-        "language_name",
-        langObj.language_name
-      );
+      localStorage.setItem("language_direction", langObj.language_direction);
+      localStorage.setItem("language_name", langObj.language_name);
 
       // html settings
       document.documentElement.lang = lng;
@@ -93,7 +85,7 @@ export default function PublicNavbar() {
       window.dispatchEvent(
         new CustomEvent("languageChanged", {
           detail: langObj,
-        })
+        }),
       );
     } catch (err) {
       console.error("Apply language error:", err);
@@ -128,7 +120,9 @@ export default function PublicNavbar() {
           <Link to="/faqs" className="hover:text-blue-600">
             {t("faqs")}
           </Link>
-
+          <Link to="/privacy-policy" className="hover:text-blue-600">
+            {t("privacy")}
+          </Link>
           <Link to="/projects" className="hover:text-blue-600">
             {t("projects")}
           </Link>
@@ -196,10 +190,7 @@ export default function PublicNavbar() {
           </Link>
 
           {/* ================= MOBILE BUTTON ================= */}
-          <button
-            className="md:hidden"
-            onClick={() => setMenuOpen(!menuOpen)}
-          >
+          <button className="md:hidden" onClick={() => setMenuOpen(!menuOpen)}>
             {menuOpen ? <FiX size={22} /> : <FiMenu size={22} />}
           </button>
         </div>
@@ -218,6 +209,10 @@ export default function PublicNavbar() {
 
           <Link to="/faqs" onClick={() => setMenuOpen(false)}>
             {t("faqs")}
+          </Link>
+
+          <Link to="/privacy-policy" onClick={() => setMenuOpen(false)}>
+            {t("privacy")}
           </Link>
 
           <Link to="/projects" onClick={() => setMenuOpen(false)}>
