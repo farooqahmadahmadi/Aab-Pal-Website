@@ -113,14 +113,13 @@ export default function PublicNavbar() {
             {t("home")}
           </Link>
 
-          <Link to="/services" className="hover:text-blue-600">
+          <Link to="/our-services" className="hover:text-blue-600">
             {t("services")}
           </Link>
 
-<Link to="/our-team" className="hover:text-blue-600">
+          <Link to="/our-team" className="hover:text-blue-600">
             {t("ourTeam")}
           </Link>
-
 
           <Link to="/faqs" className="hover:text-blue-600">
             {t("faqs")}

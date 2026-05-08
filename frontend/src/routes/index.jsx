@@ -17,6 +17,8 @@ import TestimonialsPage from "../pages/public/testimonials/TestimonialsPage";
 import AboutPage from "../pages/public/about/AboutPage";
 import ContactUsPubPage from "../pages/public/contactUs/ContactUsPage";
 import OurteamPage from "../pages/public/ourTeam/OurTeamPage";
+import ServicesPage from "../pages/public/ourServices/ServicesPage";
+import ServiceDetailsPage from "../pages/public/ourServices/ServiceDetailsPage";
 
 // ADMIN
 import AdminDashboard from "../pages/admin/dashboards/AdminDashboard";
@@ -57,11 +59,28 @@ export default function AppRoutes() {
         }
       />
 
- <Route
+      <Route
         path="/our-team"
         element={
           <PublicLayout>
             <OurteamPage />
+          </PublicLayout>
+        }
+      />
+      <Route
+        path="/our-services"
+        element={
+          <PublicLayout>
+            <ServicesPage />
+          </PublicLayout>
+        }
+      />
+
+      <Route
+        path="/services/:serviceId"
+        element={
+          <PublicLayout>
+            <ServiceDetailsPage />
           </PublicLayout>
         }
       />
