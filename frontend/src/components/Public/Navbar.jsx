@@ -129,7 +129,7 @@ export default function PublicNavbar() {
             {t("terms")}
           </Link>
 
- <Link to="/testimonials" className="hover:text-blue-600">
+          <Link to="/testimonials" className="hover:text-blue-600">
             {t("testimonials")}
           </Link>
 
@@ -145,7 +145,7 @@ export default function PublicNavbar() {
             {t("about")}
           </Link>
 
-          <Link to="/contact" className="hover:text-blue-600">
+          <Link to="/contact-us" className="hover:text-blue-600">
             {t("contact")}
           </Link>
         </div>

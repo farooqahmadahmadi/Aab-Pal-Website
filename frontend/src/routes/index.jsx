@@ -15,7 +15,7 @@ import PrivacyAndPolicyPage from "../pages/public/privacy-policy/PrivacyAndPolic
 import TermsAndConditionsPage from "../pages/public/terms/TermsAndConditionsPage";
 import TestimonialsPage from "../pages/public/testimonials/TestimonialsPage";
 import AboutPage from "../pages/public/about/AboutPage";
-
+import ContactUsPubPage from "../pages/public/contactUs/ContactUsPage";
 
 // ADMIN
 import AdminDashboard from "../pages/admin/dashboards/AdminDashboard";
@@ -26,7 +26,7 @@ import WebPageViewStatsList from "./../pages/admin/websitePages/WebPageViewStats
 
 import HomePageList from "./../pages/admin/home/HomePageList";
 import OurTeamList from "../pages/admin/ourTeam/OurTeamList";
-import ContactUsPage from './../pages/admin/contactUs/ContactUsPage';
+import ContactUsPage from "./../pages/admin/contactUs/ContactUsPage";
 import BlogsPageList from "./../pages/admin/blogs/BlogsPageList";
 import BlogCommentsList from "./../pages/admin/blogs/BlogCommentsList";
 import AboutPageList from "./../pages/admin/about/AboutPageList";
@@ -39,7 +39,6 @@ import OurProjectsList from "./../pages/admin/ourProjects/OurProjectsList";
 import OurServicesList from "../pages/admin/ourServices/OurServicesList";
 import WebsiteNotificationsList from "./../pages/admin/websiteNotifications/WebsiteNotificationsList";
 import WebsiteLogs from "../pages/admin/websiteLogs/WebsiteLogs";
-
 
 export default function AppRoutes() {
   return (
@@ -56,6 +55,7 @@ export default function AppRoutes() {
           </PublicLayout>
         }
       />
+
       <Route
         path="/faqs"
         element={
@@ -82,7 +82,7 @@ export default function AppRoutes() {
         }
       />
 
-       <Route
+      <Route
         path="/testimonials"
         element={
           <PublicLayout>
@@ -90,11 +90,19 @@ export default function AppRoutes() {
           </PublicLayout>
         }
       />
-   <Route
+      <Route
         path="/about"
         element={
           <PublicLayout>
             <AboutPage />
+          </PublicLayout>
+        }
+      />
+      <Route
+        path="/contact-us"
+        element={
+          <PublicLayout>
+            <ContactUsPubPage />
           </PublicLayout>
         }
       />
