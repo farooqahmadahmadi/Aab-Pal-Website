@@ -4,7 +4,6 @@ const router = express.Router();
 const { authMiddleware } = require("../middlewares/auth.middleware");
 const uploadMiddleware = require("../middlewares/upload.middleware");
 
-// 👇 new upload config
 const uploadServices = uploadMiddleware.uploadServices;
 
 const {
@@ -13,12 +12,14 @@ const {
   create,
   update,
   remove,
+  addRating, // ⭐ NEW
 } = require("../controllers/servicesPage.controller");
 
-// ================= ROUTES =================
+// ================= PUBLIC ROUTES =================
 router.get("/", getAll);
 router.get("/:id", getOne);
 
+// ================= CREATE =================
 router.post(
   "/",
   authMiddleware,
@@ -26,6 +27,7 @@ router.post(
   create,
 );
 
+// ================= UPDATE =================
 router.put(
   "/:id",
   authMiddleware,
@@ -33,6 +35,11 @@ router.put(
   update,
 );
 
+// ================= DELETE =================
 router.delete("/:id", authMiddleware, remove);
+
+// ================= ⭐ NEW: RATING ROUTE =================
+// user can rate service
+router.patch("/:id/rating", addRating);
 
 module.exports = router;

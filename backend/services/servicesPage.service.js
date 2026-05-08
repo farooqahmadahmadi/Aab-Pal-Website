@@ -35,3 +35,16 @@ exports.remove = async (id) => {
 
   return await item.destroy();
 };
+
+// ⭐ NEW: ADD RATING (SAFE + ADDITIVE)
+exports.addRating = async (id, rating) => {
+  const item = await ServicesPage.findByPk(id);
+  if (!item) throw new Error("Service not found");
+
+  item.service_rating =
+    Number(item.service_rating || 0) + Number(rating);
+
+  await item.save();
+
+  return item;
+};

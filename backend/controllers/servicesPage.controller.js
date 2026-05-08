@@ -7,6 +7,7 @@ const {
   create,
   update,
   remove,
+  addRating, // ⭐ NEW
 } = require("../services/servicesPage.service");
 
 // ================= GET ALL =================
@@ -28,7 +29,7 @@ exports.getOne = async (req, res) => {
       return res.status(404).json({ message: "Not found" });
     }
 
-    res.json(data);
+    res.json({ data });
   } catch {
     res.status(500).json({ message: "Error" });
   }
@@ -45,7 +46,7 @@ exports.create = async (req, res) => {
 
     const result = await create(data);
 
-    res.status(201).json(result);
+    res.status(201).json({ data: result });
   } catch (err) {
     res.status(400).json({ message: err.message });
   }
@@ -58,7 +59,6 @@ exports.update = async (req, res) => {
     const data = req.body;
 
     if (req.file) {
-      // DELETE OLD IMAGE
       if (existing?.service_image) {
         const oldPath = path.join(__dirname, "..", existing.service_image);
 
@@ -72,7 +72,7 @@ exports.update = async (req, res) => {
 
     const result = await update(req.params.id, data);
 
-    res.json(result);
+    res.json({ data: result });
   } catch (err) {
     res.status(400).json({ message: err.message });
   }
@@ -94,6 +94,19 @@ exports.remove = async (req, res) => {
     await remove(req.params.id);
 
     res.json({ message: "Deleted successfully" });
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+};
+
+// ⭐ NEW: RATING ENDPOINT
+exports.addRating = async (req, res) => {
+  try {
+    const { rating } = req.body;
+
+    const result = await addRating(req.params.id, rating);
+
+    res.json({ data: result });
   } catch (err) {
     res.status(400).json({ message: err.message });
   }

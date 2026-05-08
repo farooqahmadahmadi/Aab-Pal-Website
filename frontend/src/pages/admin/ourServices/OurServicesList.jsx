@@ -36,13 +36,15 @@ export default function ServicesList() {
 
   // FETCH
   const fetchData = async () => {
-    try {
-      const res = await getServices();
-      setData(res.data || []);
-    } catch {
-      showToast("Failed to load services", "error");
-    }
-  };
+  try {
+    const res = await getServices();
+
+    // FIX: res is already array (servicePage.service.js normalize)
+    setData(res || []);
+  } catch {
+    showToast("Failed to load services", "error");
+  }
+};
 
   useEffect(() => {
     fetchData();
