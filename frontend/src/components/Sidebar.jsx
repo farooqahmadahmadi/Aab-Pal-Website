@@ -165,6 +165,11 @@ export default function Sidebar() {
         icon: <FiHome className="animate-bounce" />,
       },
       {
+        name: "Contacts",
+        path: "/admin/contact-us",
+        icon: <FiHome className="animate-bounce" />,
+      },
+      {
         name: "Our Team",
         path: "/admin/our-team",
         icon: <FiUsers className="animate-bounce" />,

@@ -26,6 +26,7 @@ import WebPageViewStatsList from "./../pages/admin/websitePages/WebPageViewStats
 
 import HomePageList from "./../pages/admin/home/HomePageList";
 import OurTeamList from "../pages/admin/ourTeam/OurTeamList";
+import ContactUsPage from './../pages/admin/contactUs/ContactUsPage';
 import BlogsPageList from "./../pages/admin/blogs/BlogsPageList";
 import BlogCommentsList from "./../pages/admin/blogs/BlogCommentsList";
 import AboutPageList from "./../pages/admin/about/AboutPageList";
@@ -38,6 +39,7 @@ import OurProjectsList from "./../pages/admin/ourProjects/OurProjectsList";
 import OurServicesList from "../pages/admin/ourServices/OurServicesList";
 import WebsiteNotificationsList from "./../pages/admin/websiteNotifications/WebsiteNotificationsList";
 import WebsiteLogs from "../pages/admin/websiteLogs/WebsiteLogs";
+
 
 export default function AppRoutes() {
   return (
@@ -159,6 +161,16 @@ export default function AppRoutes() {
           <ProtectedRoute allowedRoles={["admin"]}>
             <AdminLayout>
               <HomePageList />
+            </AdminLayout>
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin/contact-us"
+        element={
+          <ProtectedRoute allowedRoles={["admin"]}>
+            <AdminLayout>
+              <ContactUsPage />
             </AdminLayout>
           </ProtectedRoute>
         }
