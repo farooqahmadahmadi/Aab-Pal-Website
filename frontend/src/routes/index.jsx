@@ -19,6 +19,8 @@ import ContactUsPubPage from "../pages/public/contactUs/ContactUsPage";
 import OurteamPage from "../pages/public/ourTeam/OurTeamPage";
 import ServicesPage from "../pages/public/ourServices/ServicesPage";
 import ServiceDetailsPage from "../pages/public/ourServices/ServiceDetailsPage";
+import OurProjectsPage from "../pages/public/OurProjects/OurProjectsPage";
+import OurProjectsDetailsPage from "../pages/public/OurProjects/ProjectDetailsPage";
 
 // ADMIN
 import AdminDashboard from "../pages/admin/dashboards/AdminDashboard";
@@ -81,6 +83,23 @@ export default function AppRoutes() {
         element={
           <PublicLayout>
             <ServiceDetailsPage />
+          </PublicLayout>
+        }
+      />
+            <Route
+        path="/our-projects"
+        element={
+          <PublicLayout>
+            <OurProjectsPage />
+          </PublicLayout>
+        }
+      />
+
+         <Route
+        path="/our-projects/:projectId"
+        element={
+          <PublicLayout>
+            <OurProjectsDetailsPage />
           </PublicLayout>
         }
       />

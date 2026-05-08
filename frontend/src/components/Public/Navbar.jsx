@@ -137,7 +137,7 @@ export default function PublicNavbar() {
             {t("testimonials")}
           </Link>
 
-          <Link to="/projects" className="hover:text-blue-600">
+          <Link to="/our-projects" className="hover:text-blue-600">
             {t("projects")}
           </Link>
 
