@@ -91,7 +91,7 @@ export default function BlogGallery({ blog, baseUrl }) {
                     bg-white
                     border border-gray-100
                     shadow-sm
-                    hover:shadow-xl
+                    // hover:shadow-xl
                     transition-all duration-500
                   "
             >
@@ -115,10 +115,10 @@ export default function BlogGallery({ blog, baseUrl }) {
                 <div className="px-5 py-4">
                   <h3
                     className="
-                          text-gray-800
-                          font-semibold
-                          text-lg
-                          leading-relaxed
+                            text-gray-800
+                            font-semibold
+                            text-lg
+                            leading-relaxed
                         "
                   >
                     {img.image_title}
@@ -134,15 +134,13 @@ export default function BlogGallery({ blog, baseUrl }) {
               onClick={() => setExpanded(false)}
               className="
                   px-6 py-3
-                  rounded-full
-                  bg-gray-900
-                  text-white
-                  font-medium
-                  flex items-center gap-2
-                  hover:bg-black
-                  hover:scale-105
-                  transition-all duration-300
-                  shadow-lg
+                   rounded-full
+                text-sm font-medium
+                flex items-center gap-2
+                shadow-lg
+                hover:bg-white/20
+                hover:scale-105
+                transition-all duration-300
                 "
             >
               Show Less
