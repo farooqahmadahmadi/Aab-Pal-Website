@@ -10,9 +10,16 @@ import {
 } from "react-icons/fi";
 
 // ================= AUTHOR =================
-export function BlogAuthor({ author }) {
+export function BlogAuthor({ author, created_at, type }) {
+  const formatDate = (date) => {
+    if (!date) return "Recently";
+
+    return new Date(date).toLocaleString();
+  };
+
   return (
     <div className="flex items-center gap-4">
+      {/* PROFILE IMAGE */}
       <img
         src={userImg}
         alt="user"
@@ -23,10 +30,43 @@ export function BlogAuthor({ author }) {
         "
       />
 
+      {/* INFO */}
       <div>
-        <h2 className="font-bold text-gray-800 text-lg">
+        {/* AUTHOR */}
+        <h2
+          className="
+            font-bold
+            text-gray-800
+            text-lg
+            leading-tight
+          "
+        >
           {author || "Unknown"}
         </h2>
+
+        {/* DATE + TYPE */}
+        <div
+          className="
+            flex flex-wrap
+            items-center gap-3
+            mt-1
+            text-sm text-gray-500
+          "
+        >
+          {/* TYPE */}
+          <div className="flex items-center gap-1">
+            <FiTag className="text-[13px]" />
+
+            <span>{type || "General"}</span>
+          </div>
+
+          {/* DATE */}
+          <div className="flex items-center gap-1">
+            <FiClock className="text-[13px]" />
+
+            <span>{formatDate(created_at)}</span>
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -79,53 +119,62 @@ export function BlogStats({
   return (
     <div
       className="
-        flex items-center justify-around
+        flex items-center
         border-t
-        px-2 py-3
+        px-6 py-3
         bg-gray-50
       "
     >
       {/* LIKE */}
-      <button
-        className="
-          flex items-center gap-2
-          text-gray-600
-          hover:text-red-500
-          transition
-          font-medium
-        "
-      >
-        <FiHeart className="text-lg" />
-        <span>{likes || 0}</span>
-      </button>
+      <div className="flex-1 flex justify-start">
+        <button
+          className="
+            flex items-center gap-2
+            text-gray-600
+            hover:text-red-500
+            transition
+            font-medium
+          "
+        >
+          <FiHeart className="text-lg" />
+
+          <span>{likes || 0}</span>
+        </button>
+      </div>
 
       {/* COMMENT */}
-      <button
-        className="
-          flex items-center gap-2
-          text-gray-600
-          hover:text-blue-500
-          transition
-          font-medium
-        "
-      >
-        <FiMessageCircle className="text-lg" />
-        <span>{comments || 0}</span>
-      </button>
+      <div className="flex-1 flex justify-center">
+        <button
+          className="
+            flex items-center gap-2
+            text-gray-600
+            hover:text-blue-500
+            transition
+            font-medium
+          "
+        >
+          <FiMessageCircle className="text-lg" />
+
+          <span>{comments || 0}</span>
+        </button>
+      </div>
 
       {/* SHARE */}
-      <button
-        className="
-          flex items-center gap-2
-          text-gray-600
-          hover:text-green-500
-          transition
-          font-medium
-        "
-      >
-        <FiShare2 className="text-lg" />
-        <span>{shares || 0}</span>
-      </button>
+      <div className="flex-1 flex justify-end">
+        <button
+          className="
+            flex items-center gap-2
+            text-gray-600
+            hover:text-green-500
+            transition
+            font-medium
+          "
+        >
+          <FiShare2 className="text-lg" />
+
+          <span>{shares || 0}</span>
+        </button>
+      </div>
     </div>
   );
 }
