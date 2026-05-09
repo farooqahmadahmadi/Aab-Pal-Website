@@ -12,6 +12,7 @@ const websiteLanguageRoutes = require("./routes/websiteLanguage.routes");
 const aboutPageRoutes = require("./routes/aboutPage.routes");
 const homePageRoutes = require("./routes/homePage.routes");
 const blogsPageRoutes = require("./routes/blogsPage.routes");
+const blogImagesRoutes = require("./routes/blogImages.routes");
 const blogCommentsRoutes = require("./routes/blogComments.routes");
 const faqsRoutes = require("./routes/faqsPage.routes");
 const privacyAndPolicyRoutes = require("./routes/privacyAndPolicyPage.routes");
@@ -96,6 +97,7 @@ app.use("/api/languages", websiteLanguageRoutes);
 app.use("/api/about-page", aboutPageRoutes);
 app.use("/api/home-page", homePageRoutes);
 app.use("/api/blogs-page", blogsPageRoutes);
+app.use("/api/blog-images", blogImagesRoutes);
 app.use("/api/blog-comments", blogCommentsRoutes);
 app.use("/api/faqs", faqsRoutes);
 app.use("/api/privacy-policy", privacyAndPolicyRoutes);
@@ -110,7 +112,6 @@ app.use("/api/web-page-view-stats", webPageViewStatsRoutes);
 app.use("/api/notifications", websiteNotificationsRoutes);
 app.use("/api/website-logs", websiteLogsRoutes);
 app.use("/api/contact-us", contactUsPageRoutes);
-
 
 // Error handler
 app.use((err, req, res, next) => {

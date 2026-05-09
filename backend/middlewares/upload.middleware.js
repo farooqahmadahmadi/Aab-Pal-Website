@@ -5,71 +5,44 @@ const path = require("path");
 // ================= USERS UPLOAD DIR =================
 const userDir = path.join(__dirname, "../uploads/users");
 
-// create folder if not exists
 if (!fs.existsSync(userDir)) {
   fs.mkdirSync(userDir, { recursive: true });
 }
 
-// ================= STORAGE CONFIG =================
 const userStorage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, userDir);
-  },
-
+  destination: (req, file, cb) => cb(null, userDir),
   filename: (req, file, cb) => {
     const ext = path.extname(file.originalname);
-
-    // stable naming: user-<id>-timestamp.ext
     const userId = req.params.id || "temp";
     const timestamp = Date.now();
-
     cb(null, `user-${userId}-${timestamp}${ext}`);
   },
 });
 
-// ================= FILE FILTER (OPTIONAL BUT SAFE) =================
 const fileFilter = (req, file, cb) => {
   const allowed = ["image/jpeg", "image/png", "image/jpg"];
-
-  if (allowed.includes(file.mimetype)) {
-    cb(null, true);
-  } else {
-    cb(new Error("Only image files are allowed"), false);
-  }
+  cb(null, allowed.includes(file.mimetype));
 };
 
-// ================= MULTER INSTANCE =================
 const uploadUser = multer({
   storage: userStorage,
   fileFilter,
-  limits: {
-    fileSize: 2 * 1024 * 1024, // 2MB limit
-  },
+  limits: { fileSize: 2 * 1024 * 1024 },
 });
 
-// ================= ABOUTE PAGE =================
-
+// ================= ABOUT PAGE =================
 const aboutDir = path.join(__dirname, "../uploads/about_page");
 
-// create folder if not exists
 if (!fs.existsSync(aboutDir)) {
   fs.mkdirSync(aboutDir, { recursive: true });
 }
 
-const aboutStorage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, aboutDir);
-  },
-
-  filename: (req, file, cb) => {
-    const ext = path.extname(file.originalname);
-    const name = `about-${Date.now()}${ext}`;
-    cb(null, name);
-  },
-});
-
 const uploadAbout = multer({
-  storage: aboutStorage,
+  storage: multer.diskStorage({
+    destination: (req, file, cb) => cb(null, aboutDir),
+    filename: (req, file, cb) =>
+      cb(null, `about-${Date.now()}${path.extname(file.originalname)}`),
+  }),
   limits: { fileSize: 2 * 1024 * 1024 },
 });
 
@@ -80,164 +53,139 @@ if (!fs.existsSync(homeDir)) {
   fs.mkdirSync(homeDir, { recursive: true });
 }
 
-const homeStorage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, homeDir);
-  },
-
-  filename: (req, file, cb) => {
-    const ext = path.extname(file.originalname);
-    const name = `home-${Date.now()}${ext}`;
-    cb(null, name);
-  },
-});
-
 const uploadHome = multer({
-  storage: homeStorage,
+  storage: multer.diskStorage({
+    destination: (req, file, cb) => cb(null, homeDir),
+    filename: (req, file, cb) =>
+      cb(null, `home-${Date.now()}${path.extname(file.originalname)}`),
+  }),
   limits: { fileSize: 2 * 1024 * 1024 },
 });
 
-// ================= BLOG UPLOAD =================
+// ================= BLOGS MAIN IMAGE =================
 const blogDir = path.join(__dirname, "../uploads/blogs_page");
 
 if (!fs.existsSync(blogDir)) {
   fs.mkdirSync(blogDir, { recursive: true });
 }
 
-const blogStorage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, blogDir);
-  },
-  filename: (req, file, cb) => {
-    const ext = path.extname(file.originalname);
-    cb(null, `blog-${Date.now()}${ext}`);
-  },
-});
-
 const uploadBlog = multer({
-  storage: blogStorage,
-  limits: { fileSize: 2 * 1024 * 1024 },
+  storage: multer.diskStorage({
+    destination: (req, file, cb) => cb(null, blogDir),
+    filename: (req, file, cb) =>
+      cb(
+        null,
+        `blog-${req.body.blog_id || "new"}-${Date.now()}${path.extname(file.originalname)}`,
+      ),
+  }),
+  fileFilter,
+  limits: { fileSize: 5 * 1024 * 1024 },
 });
 
-// ================= BLOG COMMENTS DIR =================
+// ================= BLOG COMMENTS =================
 const commentDir = path.join(__dirname, "../uploads/blog_comments");
 
 if (!fs.existsSync(commentDir)) {
   fs.mkdirSync(commentDir, { recursive: true });
 }
 
-const commentStorage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, commentDir);
-  },
-
-  filename: (req, file, cb) => {
-    const ext = path.extname(file.originalname);
-    cb(null, `comment-${Date.now()}${ext}`);
-  },
-});
-
 const uploadComment = multer({
-  storage: commentStorage,
+  storage: multer.diskStorage({
+    destination: (req, file, cb) => cb(null, commentDir),
+    filename: (req, file, cb) =>
+      cb(null, `comment-${Date.now()}${path.extname(file.originalname)}`),
+  }),
   limits: { fileSize: 2 * 1024 * 1024 },
 });
 
+// ================= ⭐ NEW: BLOG IMAGES (MULTIPLE IMAGES) =================
+const blogImagesDir = path.join(__dirname, "../uploads/blog_images");
 
-// ================= TESTIMONIALS DIR =================
+if (!fs.existsSync(blogImagesDir)) {
+  fs.mkdirSync(blogImagesDir, { recursive: true });
+}
+
+const uploadBlogImages = multer({
+  storage: multer.diskStorage({
+    destination: (req, file, cb) => cb(null, blogImagesDir),
+
+    filename: (req, file, cb) => {
+      const blogId = req.body.blog_id || "new";
+      const imageId = Date.now() + "-" + Math.round(Math.random() * 1e9);
+
+      cb(
+        null,
+        `blog-${blogId}-img-${imageId}${path.extname(file.originalname)}`,
+      );
+    },
+  }),
+  fileFilter,
+  limits: { fileSize: 5 * 1024 * 1024 },
+});
+
+// ================= TESTIMONIALS =================
 const testimonialDir = path.join(__dirname, "../uploads/testimonials_page");
 
 if (!fs.existsSync(testimonialDir)) {
   fs.mkdirSync(testimonialDir, { recursive: true });
 }
 
-const testimonialStorage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, testimonialDir);
-  },
-
-  filename: (req, file, cb) => {
-    const ext = path.extname(file.originalname);
-    cb(null, `testimonial-${Date.now()}${ext}`);
-  },
-});
-
 const uploadTestimonials = multer({
-  storage: testimonialStorage,
+  storage: multer.diskStorage({
+    destination: (req, file, cb) => cb(null, testimonialDir),
+    filename: (req, file, cb) =>
+      cb(null, `testimonial-${Date.now()}${path.extname(file.originalname)}`),
+  }),
   limits: { fileSize: 2 * 1024 * 1024 },
 });
 
-
-
-// ================= OUR TEAM DIR =================
+// ================= OUR TEAM =================
 const teamDir = path.join(__dirname, "../uploads/our_team_page");
 
 if (!fs.existsSync(teamDir)) {
   fs.mkdirSync(teamDir, { recursive: true });
 }
 
-const teamStorage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, teamDir);
-  },
-
-  filename: (req, file, cb) => {
-    const ext = path.extname(file.originalname);
-    cb(null, `team-${Date.now()}${ext}`);
-  },
-});
-
 const uploadTeam = multer({
-  storage: teamStorage,
+  storage: multer.diskStorage({
+    destination: (req, file, cb) => cb(null, teamDir),
+    filename: (req, file, cb) =>
+      cb(null, `team-${Date.now()}${path.extname(file.originalname)}`),
+  }),
   limits: { fileSize: 2 * 1024 * 1024 },
 });
 
-// ================= OUR PROJECTS DIR =================
+// ================= PROJECTS =================
 const projectDir = path.join(__dirname, "../uploads/our_projects_page");
 
 if (!fs.existsSync(projectDir)) {
   fs.mkdirSync(projectDir, { recursive: true });
 }
 
-const projectStorage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, projectDir);
-  },
-
-  filename: (req, file, cb) => {
-    const ext = path.extname(file.originalname);
-    cb(null, `project-${Date.now()}${ext}`);
-  },
-});
-
 const uploadProject = multer({
-  storage: projectStorage,
+  storage: multer.diskStorage({
+    destination: (req, file, cb) => cb(null, projectDir),
+    filename: (req, file, cb) =>
+      cb(null, `project-${Date.now()}${path.extname(file.originalname)}`),
+  }),
   limits: { fileSize: 2 * 1024 * 1024 },
 });
 
-
-// ================= SERVICES DIR =================
+// ================= SERVICES =================
 const servicesDir = path.join(__dirname, "../uploads/services_page");
 
 if (!fs.existsSync(servicesDir)) {
   fs.mkdirSync(servicesDir, { recursive: true });
 }
 
-const servicesStorage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, servicesDir);
-  },
-
-  filename: (req, file, cb) => {
-    const ext = path.extname(file.originalname);
-    cb(null, `service-${Date.now()}${ext}`);
-  },
-});
-
 const uploadServices = multer({
-  storage: servicesStorage,
-  limits: { fileSize: 2 * 1024 * 1024 }, // 2MB
+  storage: multer.diskStorage({
+    destination: (req, file, cb) => cb(null, servicesDir),
+    filename: (req, file, cb) =>
+      cb(null, `service-${Date.now()}${path.extname(file.originalname)}`),
+  }),
+  limits: { fileSize: 2 * 1024 * 1024 },
 });
-
 
 // ================= EXPORT =================
 module.exports = {
@@ -246,6 +194,7 @@ module.exports = {
   uploadHome,
   uploadBlog,
   uploadComment,
+  uploadBlogImages, // ⭐ NEW ADDED ONLY
   uploadTestimonials,
   uploadTeam,
   uploadProject,

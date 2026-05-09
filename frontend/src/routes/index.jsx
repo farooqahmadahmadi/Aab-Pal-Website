@@ -21,6 +21,7 @@ import ServicesPage from "../pages/public/ourServices/ServicesPage";
 import ServiceDetailsPage from "../pages/public/ourServices/ServiceDetailsPage";
 import OurProjectsPage from "../pages/public/OurProjects/OurProjectsPage";
 import OurProjectsDetailsPage from "../pages/public/OurProjects/ProjectDetailsPage";
+import BlogsPage from "../pages/public/blogs/BlogsPage";
 
 // ADMIN
 import AdminDashboard from "../pages/admin/dashboards/AdminDashboard";
@@ -100,6 +101,15 @@ export default function AppRoutes() {
         element={
           <PublicLayout>
             <OurProjectsDetailsPage />
+          </PublicLayout>
+        }
+      />
+
+<Route
+        path="/blogs"
+        element={
+          <PublicLayout>
+            <BlogsPage />
           </PublicLayout>
         }
       />

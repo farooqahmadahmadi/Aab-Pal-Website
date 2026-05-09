@@ -3,6 +3,7 @@ const sequelize = require("../config/db");
 const WebsiteLanguage = require("./WebsiteLanguage");
 const HomePage = require("./HomePage");
 const BlogsPage = require("./BlogsPage");
+const BlogImages = require("./BlogImages");
 const BlogComments = require("./BlogComments");
 const FaqsPage = require("./FaqsPage");
 const PrivacyAndPolicyPage = require("./PrivacyAndPolicyPage");
@@ -30,6 +31,10 @@ WebsiteLanguage.hasMany(HomePage, { foreignKey: "language_id" });
 //Blogs Page → Website Languages
 BlogsPage.belongsTo(WebsiteLanguage, { foreignKey: "language_id" });
 WebsiteLanguage.hasMany(BlogsPage, { foreignKey: "language_id" });
+
+// Blogs Page → Blog Images
+BlogsPage.hasMany(BlogImages, { foreignKey: "blog_id" });
+BlogImages.belongsTo(BlogsPage, { foreignKey: "blog_id" });
 
 // Blogs Page → Blog Comments
 BlogsPage.hasMany(BlogComments, { foreignKey: "blog_id" });
@@ -93,6 +98,7 @@ module.exports = {
   WebsiteLanguage,
   HomePage,
   BlogsPage,
+  BlogImages,
   BlogComments,
   FaqsPage,
   ServicesPage,
