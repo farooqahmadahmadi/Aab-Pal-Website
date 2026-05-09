@@ -35,7 +35,7 @@ export default function BlogGallery({ blog, baseUrl }) {
 
           {/* ================= VIEW ALL BUTTON ================= */}
           {extraImages.length > 0 && (
-            <button
+            <div
               onClick={() => setExpanded(!expanded)}
               className="
                 absolute bottom-4 right-4
@@ -65,7 +65,7 @@ export default function BlogGallery({ blog, baseUrl }) {
                   <FiChevronDown />
                 </>
               )}
-            </button>
+            </div>
           )}
         </div>
       )}
@@ -91,7 +91,6 @@ export default function BlogGallery({ blog, baseUrl }) {
                     bg-white
                     border border-gray-100
                     shadow-sm
-                    // hover:shadow-xl
                     transition-all duration-500
                   "
             >
@@ -130,7 +129,7 @@ export default function BlogGallery({ blog, baseUrl }) {
 
           {/* ================= COLLAPSE BUTTON ================= */}
           <div className="flex justify-center pt-2">
-            <button
+            <div
               onClick={() => setExpanded(false)}
               className="
                   px-6 py-3
@@ -145,7 +144,7 @@ export default function BlogGallery({ blog, baseUrl }) {
             >
               Show Less
               <FiChevronUp />
-            </button>
+            </div>
           </div>
         </div>
       )}

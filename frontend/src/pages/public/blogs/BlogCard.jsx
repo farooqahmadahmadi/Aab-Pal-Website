@@ -58,7 +58,7 @@ export default function BlogCard({ blog, baseUrl }) {
           {blog.blog_text}
         </div>
 
-        <button
+        <div
           onClick={() => setOpen(!open)}
           className="
             mt-3
@@ -69,6 +69,7 @@ export default function BlogCard({ blog, baseUrl }) {
             hover:text-blue-700
             font-semibold
             transition
+             cursor-pointer
           "
         >
           {open ? (
@@ -82,7 +83,7 @@ export default function BlogCard({ blog, baseUrl }) {
               <FiChevronDown />
             </>
           )}
-        </button>
+        </div>
       </div>
 
       {/* ================= GALLERY ================= */}
