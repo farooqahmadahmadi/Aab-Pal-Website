@@ -1,96 +1,156 @@
 import { useState } from "react";
 
-export default function BlogGallery({ blog, baseUrl }) {
-  const [open, setOpen] = useState(false);
+import { FiChevronDown, FiChevronUp } from "react-icons/fi";
 
+export default function BlogGallery({ blog, baseUrl }) {
+  const [expanded, setExpanded] = useState(false);
+
+  // ================= MAIN IMAGE =================
   const mainImage = blog.blog_image;
+
+  // ================= EXTRA IMAGES =================
   const extraImages = blog.blog_images || [];
 
-  const allImages = mainImage
-    ? [
-        {
-          image_path: mainImage,
-          image_title: "Main Image",
-        },
-        ...extraImages,
-      ]
-    : extraImages;
-
-  const preview = allImages.slice(0, 4);
-  const remaining = allImages.length - 4;
-
-  if (!allImages.length) return null;
+  // ================= NO IMAGES =================
+  if (!mainImage && extraImages.length === 0) {
+    return null;
+  }
 
   return (
     <div className="w-full">
-
       {/* ================= MAIN IMAGE ================= */}
-      <div className="relative">
-        <img
-          src={baseUrl + mainImage}
-          alt="main"
-          className="w-full max-h-[520px] object-cover"
-        />
+      {mainImage && (
+        <div className="relative group overflow-hidden">
+          <img
+            src={baseUrl + mainImage}
+            alt={blog.blog_title}
+            className="
+              w-full
+              max-h-[520px]
+              object-cover
+              transition duration-700
+              group-hover:scale-[1.015]
+            "
+          />
 
-        {allImages.length > 1 && (
-          <button
-            onClick={() => setOpen(true)}
-            className="absolute bottom-3 right-3 bg-black/70 text-white px-3 py-1 rounded-full text-sm"
-          >
-            {remaining > 0 ? remaining + 1 + "+" : "View"}
-          </button>
-        )}
-      </div>
-
-      {/* ================= PREVIEW GRID ================= */}
-      <div className="grid grid-cols-2 gap-2 mt-2 px-2">
-
-        {preview.map((img, i) => (
-          <div key={i}>
-            <img
-              src={baseUrl + img.image_path}
-              className="w-full h-32 object-cover rounded-lg"
-            />
-
-            <div className="text-xs text-gray-600 mt-1 truncate">
-              {img.image_title}
-            </div>
-          </div>
-        ))}
-
-      </div>
-
-      {/* ================= FULL MODAL ================= */}
-      {open && (
-        <div
-          className="fixed inset-0 bg-black/80 flex justify-center items-center z-50 p-4"
-          onClick={() => setOpen(false)}
-        >
-          <div
-            className="bg-white w-full max-w-3xl max-h-[90vh] overflow-y-auto p-4 rounded-lg"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <h2 className="font-bold text-lg mb-4">All Images</h2>
-
-            <div className="space-y-4">
-              {allImages.map((img, i) => (
-                <div key={i}>
-                  <img
-                    src={baseUrl + img.image_path}
-                    className="w-full rounded-lg object-cover"
-                  />
-
-                  <p className="text-sm text-gray-600 mt-1">
-                    {img.image_title}
-                  </p>
-                </div>
-              ))}
-            </div>
-
-          </div>
+          {/* ================= VIEW ALL BUTTON ================= */}
+          {extraImages.length > 0 && (
+            <button
+              onClick={() => setExpanded(!expanded)}
+              className="
+                absolute bottom-4 right-4
+                bg-white/10
+                backdrop-blur-xl
+                border border-white/20
+                text-white
+                px-4 py-2
+                rounded-full
+                text-sm font-medium
+                flex items-center gap-2
+                shadow-lg
+                hover:bg-white/20
+                hover:scale-105
+                transition-all duration-300
+              "
+            >
+              {expanded ? (
+                <>
+                  Show Less
+                  <FiChevronUp />
+                </>
+              ) : (
+                <>
+                  View All ({extraImages.length}
+                  )
+                  <FiChevronDown />
+                </>
+              )}
+            </button>
+          )}
         </div>
       )}
 
+      {/* ================= EXPANDED GALLERY ================= */}
+      {expanded && extraImages.length > 0 && (
+        <div
+          className="
+              px-3 py-4
+              space-y-6
+              bg-gradient-to-b
+              from-gray-50
+              via-white
+              to-white
+            "
+        >
+          {extraImages.map((img, index) => (
+            <div
+              key={index}
+              className="
+                    overflow-hidden
+                    rounded-[28px]
+                    bg-white
+                    border border-gray-100
+                    shadow-sm
+                    hover:shadow-xl
+                    transition-all duration-500
+                  "
+            >
+              {/* ================= IMAGE ================= */}
+              <div className="overflow-hidden">
+                <img
+                  src={baseUrl + img.image_path}
+                  alt={img.image_alt}
+                  className="
+                        w-full
+                        max-h-[500px]
+                        object-cover
+                        hover:scale-[1.02]
+                        transition duration-700
+                      "
+                />
+              </div>
+
+              {/* ================= TITLE ================= */}
+              {img.image_title && (
+                <div className="px-5 py-4">
+                  <h3
+                    className="
+                          text-gray-800
+                          font-semibold
+                          text-lg
+                          leading-relaxed
+                        "
+                  >
+                    {img.image_title}
+                  </h3>
+                </div>
+              )}
+            </div>
+          ))}
+
+          {/* ================= COLLAPSE BUTTON ================= */}
+          <div className="flex justify-center pt-2">
+            <button
+              onClick={() => setExpanded(false)}
+              className="
+                  px-6 py-3
+                  rounded-full
+                  bg-gray-900
+                  text-white
+                  font-medium
+                  flex items-center gap-2
+                  hover:bg-black
+                  hover:scale-105
+                  transition-all duration-300
+                  shadow-lg
+                "
+            >
+              Show Less
+              <FiChevronUp />
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
