@@ -63,10 +63,6 @@ const BlogsPage = sequelize.define(
       type: DataTypes.BOOLEAN,
       defaultValue: false,
     },
-
-    published_at: {
-      type: DataTypes.DATE,
-    },
   },
   {
     tableName: "blogs_page",

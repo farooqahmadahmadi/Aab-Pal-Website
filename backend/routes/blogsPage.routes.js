@@ -12,15 +12,37 @@ const {
   create,
   update,
   remove,
+  likeBlog,
+  shareBlog,
+  viewBlog,
 } = require("../controllers/blogsPage.controller");
 
 // ================= ROUTES =================
 router.get("/", getAll);
+
 router.get("/:id", getOne);
 
-router.post("/", authMiddleware, uploadBlog.single("blog_image"), create);
+// ================= LIKE / SHARE / VIEW =================
+router.patch("/:id/like", likeBlog);
 
-router.put("/:id", authMiddleware, uploadBlog.single("blog_image"), update);
+router.patch("/:id/share", shareBlog);
+
+router.patch("/:id/view", viewBlog);
+
+// ================= CRUD =================
+router.post(
+  "/",
+  authMiddleware,
+  uploadBlog.single("blog_image"),
+  create,
+);
+
+router.put(
+  "/:id",
+  authMiddleware,
+  uploadBlog.single("blog_image"),
+  update,
+);
 
 router.delete("/:id", authMiddleware, remove);
 

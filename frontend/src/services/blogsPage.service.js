@@ -33,3 +33,30 @@ export const deleteBlog = async (id) => {
   const res = await API.delete(`/blogs-page/${id}`);
   return res.data;
 };
+
+// ================= LIKE BLOG =================
+export const likeBlog = async (id) => {
+  const res = await API.patch(
+    `/blogs-page/${id}/like`,
+  );
+
+  return res.data;
+};
+
+// ================= SHARE BLOG =================
+export const shareBlog = async (id) => {
+  const res = await API.patch(
+    `/blogs-page/${id}/share`,
+  );
+
+  return res.data;
+};
+
+// ================= VIEW BLOG =================
+export const viewBlog = async (id) => {
+  const res = await API.patch(
+    `/blogs-page/${id}/view`,
+  );
+
+  return res.data;
+};

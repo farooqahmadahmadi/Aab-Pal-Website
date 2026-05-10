@@ -98,3 +98,82 @@ exports.remove = async (req, res) => {
     res.status(400).json({ message: err.message });
   }
 };
+
+
+// ================= LIKE BLOG =================
+exports.likeBlog = async (req, res) => {
+  try {
+    const blog = await getOne(req.params.id);
+
+    if (!blog) {
+      return res.status(404).json({
+        message: "Blog not found",
+      });
+    }
+
+    await blog.update({
+      blog_likes: (blog.blog_likes || 0) + 1,
+    });
+
+    res.json({
+      success: true,
+      likes: blog.blog_likes,
+    });
+  } catch {
+    res.status(500).json({
+      message: "Failed to like blog",
+    });
+  }
+};
+
+// ================= SHARE BLOG =================
+exports.shareBlog = async (req, res) => {
+  try {
+    const blog = await getOne(req.params.id);
+
+    if (!blog) {
+      return res.status(404).json({
+        message: "Blog not found",
+      });
+    }
+
+    await blog.update({
+      blog_shares: (blog.blog_shares || 0) + 1,
+    });
+
+    res.json({
+      success: true,
+      shares: blog.blog_shares,
+    });
+  } catch {
+    res.status(500).json({
+      message: "Failed to share blog",
+    });
+  }
+};
+
+// ================= VIEW BLOG =================
+exports.viewBlog = async (req, res) => {
+  try {
+    const blog = await getOne(req.params.id);
+
+    if (!blog) {
+      return res.status(404).json({
+        message: "Blog not found",
+      });
+    }
+
+    await blog.update({
+      blog_views: (blog.blog_views || 0) + 1,
+    });
+
+    res.json({
+      success: true,
+      views: blog.blog_views,
+    });
+  } catch {
+    res.status(500).json({
+      message: "Failed to update views",
+    });
+  }
+};

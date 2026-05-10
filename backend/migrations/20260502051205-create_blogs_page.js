@@ -61,6 +61,11 @@ module.exports = {
         defaultValue: 0,
       },
 
+      blog_dislikes: {
+        type: Sequelize.INTEGER,
+        defaultValue: 0,
+      },
+
       blog_shares: {
         type: Sequelize.INTEGER,
         defaultValue: 0,
@@ -69,11 +74,6 @@ module.exports = {
       is_published: {
         type: Sequelize.BOOLEAN,
         defaultValue: false,
-      },
-
-      published_at: {
-        type: Sequelize.DATE,
-        allowNull: true,
       },
 
       created_at: {

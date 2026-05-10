@@ -1,3 +1,5 @@
+import { useEffect, useState } from "react";
+
 import userImg from "../../../assets/images/user-def-image.png";
 
 import {
@@ -83,6 +85,7 @@ export function BlogDate({ created_at }) {
   return (
     <div className="flex items-center gap-1 text-sm text-gray-500">
       <FiClock />
+
       {formatDate(created_at)}
     </div>
   );
@@ -93,6 +96,7 @@ export function BlogTypeBadge({ type }) {
   return (
     <div className="flex items-center gap-2">
       <FiTag />
+
       <span>{type || "General"}</span>
     </div>
   );
@@ -105,12 +109,59 @@ export function BlogStats({
   shares,
   views,
   onlyViews = false,
+  onLike,
+  onShare,
+  blogId,
 }) {
+  // ================= LIKE STATE =================
+  const [liked, setLiked] = useState(false);
+
+  const [animate, setAnimate] = useState(false);
+
+  // ================= CHECK LOCAL STORAGE =================
+  useEffect(() => {
+    const likedBlogs = JSON.parse(localStorage.getItem("likedBlogs") || "[]");
+
+    if (likedBlogs.includes(blogId)) {
+      setLiked(true);
+    }
+  }, [blogId]);
+
+  // ================= HANDLE LIKE =================
+  const handleLikeClick = async () => {
+    // already liked
+    if (liked) return;
+
+    try {
+      await onLike();
+
+      // UI UPDATE
+      setLiked(true);
+
+      // ANIMATION
+      setAnimate(true);
+
+      setTimeout(() => {
+        setAnimate(false);
+      }, 500);
+
+      // SAVE LOCAL
+      const likedBlogs = JSON.parse(localStorage.getItem("likedBlogs") || "[]");
+
+      likedBlogs.push(blogId);
+
+      localStorage.setItem("likedBlogs", JSON.stringify(likedBlogs));
+    } catch (err) {
+      console.error("LIKE UI ERROR:", err);
+    }
+  };
+
   // ONLY VIEWS
   if (onlyViews) {
     return (
       <div className="flex items-center gap-2 text-sm">
         <FiEye />
+
         <span>{views || 0}</span>
       </div>
     );
@@ -121,30 +172,38 @@ export function BlogStats({
       className="
         flex items-center
         border-t
-        px-6 py-3
+        px-6 py-4
         bg-gray-50
       "
     >
       {/* LIKE */}
       <div className="flex-1 flex justify-start">
-        <button
-          className="
+        <div
+          onClick={handleLikeClick}
+          className={`
             flex items-center gap-2
-            text-gray-600
-            hover:text-red-500
-            transition
+            transition-all duration-300
             font-medium
-          "
+            ${liked ? "text-red-500" : "text-gray-600 hover:text-red-500"}
+          `}
         >
-          <FiHeart className="text-lg" />
+          <FiHeart
+            className={`
+              text-lg
+              transition-all duration-300
+              ${liked ? "fill-current" : ""}
+              ${animate ? "scale-150" : "scale-100"}
+            `}
+            size={22}
+          />
 
           <span>{likes || 0}</span>
-        </button>
+        </div>
       </div>
 
       {/* COMMENT */}
       <div className="flex-1 flex justify-center">
-        <button
+        <div
           className="
             flex items-center gap-2
             text-gray-600
@@ -153,15 +212,16 @@ export function BlogStats({
             font-medium
           "
         >
-          <FiMessageCircle className="text-lg" />
+          <FiMessageCircle className="text-lg" size={22} />
 
           <span>{comments || 0}</span>
-        </button>
+        </div>
       </div>
 
       {/* SHARE */}
       <div className="flex-1 flex justify-end">
-        <button
+        <div
+          onClick={onShare}
           className="
             flex items-center gap-2
             text-gray-600
@@ -170,10 +230,10 @@ export function BlogStats({
             font-medium
           "
         >
-          <FiShare2 className="text-lg" />
+          <FiShare2 className="text-lg" size={22} />
 
           <span>{shares || 0}</span>
-        </button>
+        </div>
       </div>
     </div>
   );
