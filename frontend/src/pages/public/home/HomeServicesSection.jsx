@@ -164,7 +164,7 @@ export default function HomeServicesSection() {
         {/* LEFT */}
         <button
           onClick={prev}
-          className="absolute -left-2 md:-left-8 top-1/2 -translate-y-1/2 z-20 bg-white shadow-lg p-3 rounded-full hover:scale-110 transition"
+          className="absolute left-2 md:-left-5 top-1/2 -translate-y-1/2 z-20 bg-white shadow-xl p-3 rounded-full hover:scale-110 transition"
         >
           <FiChevronLeft />
         </button>
@@ -172,7 +172,7 @@ export default function HomeServicesSection() {
         {/* RIGHT */}
         <button
           onClick={next}
-          className="absolute -right-2 md:-right-8 top-1/2 -translate-y-1/2 z-20 bg-white shadow-lg p-3 rounded-full hover:scale-110 transition"
+           className="absolute right-2 md:-right-5 top-1/2 -translate-y-1/2 z-20 bg-white shadow-xl p-3 rounded-full hover:scale-110 transition"
         >
           <FiChevronRight />
         </button>

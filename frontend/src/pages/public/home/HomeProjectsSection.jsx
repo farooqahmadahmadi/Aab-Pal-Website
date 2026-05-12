@@ -59,7 +59,7 @@ export default function HomeProjectsSection() {
           (item) =>
             item.section_name?.toLowerCase().trim() === "projects" &&
             Number(item.language_id) === langId &&
-            item.is_active
+            item.is_active,
         );
 
         setSection(projectsSection || null);
@@ -67,13 +67,13 @@ export default function HomeProjectsSection() {
         const projectData = Array.isArray(projectRes?.data?.data)
           ? projectRes.data.data
           : Array.isArray(projectRes?.data)
-          ? projectRes.data
-          : Array.isArray(projectRes)
-          ? projectRes
-          : [];
+            ? projectRes.data
+            : Array.isArray(projectRes)
+              ? projectRes
+              : [];
 
         const filtered = projectData.filter(
-          (p) => Number(p.language_id) === langId
+          (p) => Number(p.language_id) === langId,
         );
 
         setProjects(filtered);
@@ -156,9 +156,7 @@ export default function HomeProjectsSection() {
           {section?.section_title || "Latest Projects"}
         </h2>
 
-        <p className="text-gray-600 text-lg">
-          {section?.section_description}
-        </p>
+        <p className="text-gray-600 text-lg">{section?.section_description}</p>
 
         <button
           onClick={() => navigate("/our-projects")}
@@ -179,7 +177,7 @@ export default function HomeProjectsSection() {
           onClick={prev}
           className="absolute left-2 md:-left-5 top-1/2 -translate-y-1/2 z-20 bg-white shadow-xl p-3 rounded-full hover:scale-110 transition"
         >
-          {isRTL ? <FiChevronRight /> : <FiChevronLeft />}
+          <FiChevronLeft />
         </button>
 
         {/* RIGHT */}
@@ -187,7 +185,7 @@ export default function HomeProjectsSection() {
           onClick={next}
           className="absolute right-2 md:-right-5 top-1/2 -translate-y-1/2 z-20 bg-white shadow-xl p-3 rounded-full hover:scale-110 transition"
         >
-          {isRTL ? <FiChevronLeft /> : <FiChevronRight />}
+          <FiChevronRight />
         </button>
 
         {/* TRACK */}
@@ -216,7 +214,7 @@ export default function HomeProjectsSection() {
 
                     <div
                       className={`absolute top-4 left-4 ${getStatusColor(
-                        project.project_status
+                        project.project_status,
                       )} text-white px-3 py-1 rounded-full text-xs font-semibold capitalize`}
                     >
                       {project.project_status || "ongoing"}
@@ -230,12 +228,13 @@ export default function HomeProjectsSection() {
                     </h3>
 
                     <p className="text-gray-600 line-clamp-2 mb-5">
-                      📍 {project.project_address || "No Address"}
+                      🪄 {project.project_address || "No Address"}
                     </p>
 
-                    <button className="inline-flex items-center gap-2 text-blue-600 font-semibold hover:gap-3 transition-all">
+                    {/* <button className="inline-flex items-center gap-2 text-blue-600 font-semibold hover:gap-3 transition-all">
                       View Details <FiArrowRight />
-                    </button>
+                    </button> */}
+                    
                   </div>
                 </div>
               </div>

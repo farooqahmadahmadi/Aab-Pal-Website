@@ -138,6 +138,15 @@ export default function HomeTestimonialsSection() {
                       {item.testimonial_name}
                     </h3>
 
+                    <p className="text-gray-500 text-sm">
+                      <a
+                        href={`mailto:${item.testimonial_email}`}
+                        className="hover:underline"
+                      >
+                        {item.testimonial_email}
+                      </a>
+                    </p>
+
                     <div className="flex gap-1 mt-1">
                       {renderStars(item.testimonial_rating || 5)}
                     </div>
@@ -145,7 +154,7 @@ export default function HomeTestimonialsSection() {
                 </div>
 
                 {/* MESSAGE (4 LINES ONLY) */}
-                <p className="text-gray-600 text-sm mt-4 line-clamp-4">
+                <p className="text-gray-600 text-sm mt-4 line-clamp-6">
                   {item.testimonial_message}
                 </p>
               </div>
