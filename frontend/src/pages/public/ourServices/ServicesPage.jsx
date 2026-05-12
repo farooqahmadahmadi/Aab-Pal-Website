@@ -170,7 +170,7 @@ export default function ServicesPage() {
                 </p>
 
                 {/* BOTTOM SECTION (FIXED) */}
-                <div className="mt-6 flex items-center justify-between mt-auto">
+                <div className="mt-5 flex items-center justify-between">
                   {/* STARS */}
                   <div className="flex items-center gap-1">
                     {renderStars(service.service_rating)}
