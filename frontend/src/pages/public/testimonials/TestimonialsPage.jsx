@@ -9,12 +9,13 @@ export default function TestimonialsPage() {
   const [hero, setHero] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // MODAL STATE
   const [openModal, setOpenModal] = useState(false);
+
+  // ⭐ SEE MORE STATE
+  const [expandedId, setExpandedId] = useState(null);
 
   const BASE_URL = import.meta.env.VITE_IMAGE_URL;
 
-  // LANGUAGE
   const getLanguageId = () => Number(localStorage.getItem("language_id")) || 1;
 
   const [languageId] = useState(getLanguageId());
@@ -45,7 +46,7 @@ export default function TestimonialsPage() {
         const approved = list.filter((t) => t.is_approved === true);
         setData(approved);
       } catch (err) {
-        console.error("TESTIMONIALS PAGE ERROR:", err);
+        console.error(err);
       } finally {
         setLoading(false);
       }
@@ -54,21 +55,19 @@ export default function TestimonialsPage() {
     fetchData();
   }, [languageId]);
 
-  // STARS (bigger + centered)
-  const renderStars = (rating = 5) => {
-    return (
-      <div className="flex justify-center gap-1 text-xl">
-        {Array.from({ length: 5 }).map((_, i) => (
-          <span
-            key={i}
-            className={i < rating ? "text-yellow-400" : "text-gray-300"}
-          >
-            ★
-          </span>
-        ))}
-      </div>
-    );
-  };
+  // STARS
+  const renderStars = (rating = 5) => (
+    <div className="flex justify-center gap-1 text-xl mt-auto pt-4">
+      {Array.from({ length: 5 }).map((_, i) => (
+        <span
+          key={i}
+          className={i < rating ? "text-yellow-400" : "text-gray-300"}
+        >
+          ★
+        </span>
+      ))}
+    </div>
+  );
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
@@ -91,11 +90,9 @@ export default function TestimonialsPage() {
           </h1>
 
           <p className="mt-3 text-sm md:text-base text-gray-200">
-            {hero?.section_description ||
-              "What our users say about our services."}
+            {hero?.section_description}
           </p>
 
-          {/* ✅ ADD BUTTON IN HERO */}
           <button
             onClick={() => setOpenModal(true)}
             className="mt-6 inline-flex items-center gap-2 bg-white text-blue-700 px-5 py-2 rounded-full font-semibold shadow hover:bg-gray-100 transition"
@@ -121,46 +118,69 @@ export default function TestimonialsPage() {
         )}
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {data.map((item) => (
-            <div
-              key={item.testimonial_id}
-              className="bg-white border rounded-2xl shadow-sm hover:shadow-md transition p-6 text-center"
-            >
-              {/* PHOTO */}
-              <div className="flex justify-center mb-3">
-                {item.testimonial_photo ? (
-                  <img
-                    src={BASE_URL + item.testimonial_photo}
-                    className="w-14 h-14 rounded-full object-cover border"
-                  />
-                ) : (
-                  <div className="w-14 h-14 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold">
-                    {item.testimonial_name?.charAt(0)}
-                  </div>
+          {data.map((item) => {
+            const isOpen = expandedId === item.testimonial_id;
+
+            return (
+              <div
+                key={item.testimonial_id}
+                className="bg-white border rounded-2xl shadow-sm hover:shadow-md transition p-6 text-center flex flex-col h-full"
+              >
+                {/* PHOTO */}
+                <div className="flex justify-center mb-3">
+                  {item.testimonial_photo ? (
+                    <img
+                      src={BASE_URL + item.testimonial_photo}
+                      className="w-20 h-20 rounded-full object-cover border"
+                    />
+                  ) : (
+                    <div className="w-20 h-20 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold">
+                      {item.testimonial_name?.charAt(0)}
+                    </div>
+                  )}
+                </div>
+
+                {/* NAME */}
+                <h3 className="font-semibold text-gray-800">
+                  {item.testimonial_name}
+                </h3>
+
+                {/* EMAIL */}
+                <p className="text-gray-500 text-sm">
+                  <a
+                    href={`mailto:${item.testimonial_email}`}
+                    className="hover:underline"
+                  >
+                    {item.testimonial_email}
+                  </a>
+                </p>
+
+                {/* MESSAGE (JUSTIFY + SEE MORE) */}
+                <p
+                  className={`text-gray-600 text-sm mt-2 text-justify transition-all ${
+                    isOpen ? "" : "line-clamp-5"
+                  }`}
+                >
+                  {item.testimonial_message}
+                </p>
+
+                {/* SEE MORE */}
+                {item.testimonial_message?.length > 120 && (
+                  <button
+                    onClick={() =>
+                      setExpandedId(isOpen ? null : item.testimonial_id)
+                    }
+                    className="text-blue-600 text-xs mt-2 hover:underline"
+                  >
+                    {isOpen ? "Show Less" : "See More"}
+                  </button>
                 )}
+
+                {/* STARS (FIXED BOTTOM POSITION) */}
+                {renderStars(item.testimonial_rating)}
               </div>
-
-              {/* NAME */}
-              <h3 className="font-semibold text-gray-800">
-                {item.testimonial_name}
-              </h3>
-
-              {/* Email */}
-              <p className="text-gray-500 text-sm">
-                <a href={`mailto:${item.testimonial_email}`} className="hover:underline">
-                  {item.testimonial_email}
-                </a>
-              </p>
-
-              {/* MESSAGE */}
-              <p className="text-gray-600 text-sm mt-2 mb-4">
-                {item.testimonial_message}
-              </p>
-
-              {/* STARS (center + bigger) */}
-              {renderStars(item.testimonial_rating)}
-            </div>
-          ))}
+            );
+          })}
         </div>
       </main>
 

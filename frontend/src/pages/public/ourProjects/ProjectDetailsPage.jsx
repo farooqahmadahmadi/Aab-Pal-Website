@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { getProject } from "../../../services/ourProjectsPage.service";
+import defaultImg from "../../../assets/images/default_image.png";
 
 export default function ProjectDetailsPage() {
   const [project, setProject] = useState(null);
@@ -37,7 +38,7 @@ export default function ProjectDetailsPage() {
           src={
             project.project_image
               ? BASE_URL + project.project_image
-              : "https://via.placeholder.com/1200"
+              : defaultImg
           }
           className="w-full h-full object-cover"
         />

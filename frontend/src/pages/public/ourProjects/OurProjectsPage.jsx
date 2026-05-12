@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { getProjects } from "../../../services/ourProjectsPage.service";
 import { getHomePages } from "../../../services/homePage.service";
+import defaultImg from "../../../assets/images/default_image.png";
 
 export default function OurProjectsPage() {
   const [projects, setProjects] = useState([]);
@@ -9,7 +10,6 @@ export default function OurProjectsPage() {
   const [loading, setLoading] = useState(true);
 
   const BASE_URL = import.meta.env.VITE_IMAGE_URL;
-
   const languageId = Number(localStorage.getItem("language_id")) || 1;
 
   useEffect(() => {
@@ -53,10 +53,10 @@ export default function OurProjectsPage() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
       {/* HERO */}
       <section
-        className="relative py-24 text-center text-white"
+        className="relative py-24 text-center text-white overflow-hidden"
         style={{
           backgroundImage: hero?.section_image
             ? `url(${BASE_URL + hero.section_image})`
@@ -77,37 +77,85 @@ export default function OurProjectsPage() {
       {/* GRID */}
       <section className="max-w-7xl mx-auto px-4 py-16">
         {loading ? (
-          <p className="text-center">Loading...</p>
+          <p className="text-center text-gray-500">Loading...</p>
         ) : (
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {projects.map((p) => (
               <div
                 key={p.project_id}
-                className="bg-white rounded-2xl shadow hover:shadow-xl transition overflow-hidden"
+                className="
+                  group
+                  bg-white/80
+                  backdrop-blur-xl
+                  border border-white/40
+                  rounded-3xl
+                  overflow-hidden
+                  shadow-md
+                  hover:shadow-2xl
+                  transition-all
+                  duration-500
+                  hover:-translate-y-2
+                "
               >
-                <img
-                  src={
-                    p.project_image
-                      ? BASE_URL + p.project_image
-                      : "https://via.placeholder.com/500"
-                  }
-                  className="h-56 w-full object-cover"
-                />
+                {/* IMAGE */}
+                <div className="relative h-56 overflow-hidden">
+                  <img
+                    src={
+                      p.project_image ? BASE_URL + p.project_image : defaultImg
+                    }
+                    className="
+    w-full
+    h-full
+    object-cover
+    group-hover:scale-110
+    transition duration-700
+  "
+                    onError={(e) => {
+                      e.target.src = defaultImg;
+                    }}
+                  />
 
-                <div className="p-5">
-                  <h2 className="text-xl font-bold">{p.project_name}</h2>
+                  {/* overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
 
-                  <p className="text-gray-500 text-sm mt-1">
-                    {p.project_address}
-                  </p>
-
-                  <span className="inline-block mt-3 text-xs px-3 py-1 bg-blue-100 text-blue-600 rounded-full">
+                  {/* status */}
+                  <span
+                    className="
+                    absolute top-4 left-4
+                    text-xs
+                    px-3 py-1
+                    bg-white/90
+                    text-blue-700
+                    rounded-full
+                    font-semibold
+                  "
+                  >
                     {p.project_status}
                   </span>
+                </div>
+
+                {/* CONTENT */}
+                <div className="p-6">
+                  <h2 className="text-xl font-bold text-gray-800">
+                    {p.project_name}
+                  </h2>
+
+                  <p className="text-gray-500 text-sm mt-2">
+                    📍 {p.project_address}
+                  </p>
 
                   <Link
                     to={`/our-projects/${p.project_id}`}
-                    className="block mt-4 text-blue-600 font-medium"
+                    className="
+                      inline-flex
+                      items-center
+                      gap-2
+                      mt-5
+                      text-blue-600
+                      font-semibold
+                      hover:gap-3
+                      transition-all
+                    "
                   >
                     See Details →
                   </Link>

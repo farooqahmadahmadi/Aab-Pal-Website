@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { getService } from "../../../services/servicesPage.service";
 import { FiArrowLeft } from "react-icons/fi";
+import defaultImg from "../../../assets/images/default_image.png";
 
 export default function ServiceDetailsPage() {
   // ================= STATES =================
@@ -72,7 +73,7 @@ export default function ServiceDetailsPage() {
               src={
                 service.service_image
                   ? BASE_URL + service.service_image
-                  : "https://via.placeholder.com/1200x600"
+                  : defaultImg
               }
               alt={service.service_title}
               className="w-full h-full object-cover"
