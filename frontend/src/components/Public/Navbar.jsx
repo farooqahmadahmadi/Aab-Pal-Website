@@ -58,7 +58,7 @@ export default function PublicNavbar() {
   const isActive = (path) => location.pathname === path;
 
   return (
-    <nav className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-200 shadow-sm w-full">
+    <nav className="fixed top-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-200 shadow-sm w-full">
       <div className="w-full max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 h-[72px] flex items-center justify-between">
         {/* LOGO */}
         <Link to="/" className="text-2xl font-extrabold text-blue-600 tracking-tight shrink-0">

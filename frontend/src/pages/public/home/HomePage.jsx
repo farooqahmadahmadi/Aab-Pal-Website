@@ -6,6 +6,7 @@ import HomeProjectsSection from "./HomeProjectsSection";
 import HomeFaqSection from "./HomeFaqSection";
 import HomeTestimonialsSection from "./HomeTestimonialsSection";
 import HomeContactSection from "./HomeContactSection";
+import HomeOurTeamSection from "./HomeOurTeamSection";
 
 import { getHomePages } from "../../../services/homePage.service";
 import { getServices } from "../../../services/servicesPage.service";
@@ -164,6 +165,9 @@ export default function HomePage() {
 
       {/* ================= FAQS ================= */}
       <HomeFaqSection sectionData={faqSection} />
+
+      {/* ================= OUR TEAM ================= */}
+      <HomeOurTeamSection />
 
       {/* ================= CONTACT ================= */}
       <HomeContactSection />
