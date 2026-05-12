@@ -9,7 +9,7 @@ import AdminLayout from "../layouts/AdminLayout";
 import PublicLayout from "../layouts/PublicLayout";
 
 // PUBLIC
-import HomePubPage from "../pages/public/HomePage";
+import HomePubPage from "../pages/public/home/HomePage";
 import FaqsPubPage from "../pages/public/faqs/FaqsPage";
 import PrivacyAndPolicyPage from "../pages/public/privacy-policy/PrivacyAndPolicyPage";
 import TermsAndConditionsPage from "../pages/public/terms/TermsAndConditionsPage";
@@ -87,7 +87,7 @@ export default function AppRoutes() {
           </PublicLayout>
         }
       />
-            <Route
+      <Route
         path="/our-projects"
         element={
           <PublicLayout>
@@ -96,7 +96,7 @@ export default function AppRoutes() {
         }
       />
 
-         <Route
+      <Route
         path="/our-projects/:projectId"
         element={
           <PublicLayout>
@@ -105,7 +105,7 @@ export default function AppRoutes() {
         }
       />
 
-<Route
+      <Route
         path="/blogs"
         element={
           <PublicLayout>

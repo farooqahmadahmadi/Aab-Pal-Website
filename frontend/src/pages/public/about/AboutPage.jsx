@@ -69,7 +69,7 @@ export default function AboutPage() {
   }, [languageId]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
+    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white ">
       {/* ================= HERO ================= */}
       <section
         className="relative w-full py-24 px-4 text-center text-white overflow-hidden"
