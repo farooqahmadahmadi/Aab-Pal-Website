@@ -156,7 +156,7 @@ export default function HomeServicesSection() {
 
         <button
           onClick={() => navigate("/our-services")}
-          className="mt-6 text-blue-600 font-semibold hover:underline"
+           className="mt-6 text-blue-600 font-semibold hover:underline hover:text-black bg-transparent border-none transition-all"
         >
           View All Services →
         </button>

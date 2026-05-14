@@ -103,16 +103,7 @@ export default function HomeTestimonialsSection() {
 
           <button
             onClick={() => navigate("/testimonials")}
-            className="
-            mt-6
-            inline-flex
-            items-center
-            gap-2
-            text-blue-600
-            font-semibold
-            hover:gap-3
-            transition-all
-          "
+            className="mt-6 text-blue-600 font-semibold hover:underline hover:text-black bg-transparent border-none transition-all"
           >
             See All →
           </button>

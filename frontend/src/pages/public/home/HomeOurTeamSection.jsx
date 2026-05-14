@@ -106,7 +106,7 @@ export default function HomeOurTeamSection() {
 
         <button
           onClick={() => navigate("/our-team")}
-          className="mt-6 text-blue-600 font-semibold hover:underline"
+           className="mt-6 text-blue-600 font-semibold hover:underline hover:text-black bg-transparent border-none transition-all"
         >
           See All →
         </button>

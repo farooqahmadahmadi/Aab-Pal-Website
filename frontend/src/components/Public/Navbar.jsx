@@ -61,7 +61,10 @@ export default function PublicNavbar() {
     <nav className="fixed top-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-200 shadow-sm w-full">
       <div className="w-full max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 h-[72px] flex items-center justify-between">
         {/* LOGO */}
-        <Link to="/" className="text-2xl font-extrabold text-blue-600 tracking-tight shrink-0">
+        <Link
+          to="/"
+          className="text-2xl font-extrabold text-blue-600 tracking-tight shrink-0"
+        >
           AabPal
         </Link>
 
@@ -70,10 +73,7 @@ export default function PublicNavbar() {
           {[
             { path: "/", label: t("home") },
             { path: "/our-services", label: t("services") },
-            { path: "/our-team", label: t("ourTeam") },
             { path: "/faqs", label: t("faqs") },
-            { path: "/privacy-policy", label: t("privacy") },
-            { path: "/terms-and-conditions", label: t("terms") },
             { path: "/testimonials", label: t("testimonials") },
             { path: "/our-projects", label: t("projects") },
             { path: "/blogs", label: t("blogs") },
@@ -84,7 +84,9 @@ export default function PublicNavbar() {
               key={item.path}
               to={item.path}
               className={`transition px-2 py-1 rounded ${
-                isActive(item.path) ? "bg-blue-50 text-blue-600" : "text-gray-700 hover:bg-gray-100"
+                isActive(item.path)
+                  ? "bg-blue-50 text-blue-600"
+                  : "text-gray-700 hover:bg-gray-100"
               }`}
             >
               {item.label}
@@ -115,13 +117,16 @@ export default function PublicNavbar() {
                     key={language.language_id}
                     onClick={() => changeLanguage(language)}
                     className={`px-4 py-3 cursor-pointer text-sm flex justify-between items-center transition hover:bg-gray-100 ${
-                      Number(currentLanguage?.language_id) === Number(language.language_id)
+                      Number(currentLanguage?.language_id) ===
+                      Number(language.language_id)
                         ? "bg-blue-50 text-blue-600 font-semibold"
                         : ""
                     }`}
                   >
                     <span>{language.language_name}</span>
-                    <span className="text-xs text-gray-400">{language.language_code?.toUpperCase()}</span>
+                    <span className="text-xs text-gray-400">
+                      {language.language_code?.toUpperCase()}
+                    </span>
                   </div>
                 ))}
               </div>
@@ -137,7 +142,10 @@ export default function PublicNavbar() {
           </Link>
 
           {/* MOBILE BUTTON */}
-          <button className="lg:hidden p-2 rounded-lg hover:bg-gray-100 transition" onClick={() => setMenuOpen(!menuOpen)}>
+          <button
+            className="lg:hidden p-2 rounded-lg hover:bg-gray-100 transition"
+            onClick={() => setMenuOpen(!menuOpen)}
+          >
             {menuOpen ? <FiX size={24} /> : <FiMenu size={24} />}
           </button>
         </div>
@@ -164,7 +172,9 @@ export default function PublicNavbar() {
               to={item.path}
               onClick={() => setMenuOpen(false)}
               className={`block px-4 py-3 rounded-xl transition text-sm font-medium ${
-                isActive(item.path) ? "bg-blue-50 text-blue-600" : "text-gray-700 hover:bg-gray-100"
+                isActive(item.path)
+                  ? "bg-blue-50 text-blue-600"
+                  : "text-gray-700 hover:bg-gray-100"
               }`}
             >
               {item.label}

@@ -113,9 +113,9 @@ export default function HomeContactSection() {
 
         <button
           onClick={() => navigate("/contact-us")}
-          className="mt-5 text-blue-600 font-semibold hover:underline"
+            className="mt-6 text-blue-600 font-semibold hover:underline hover:text-black bg-transparent border-none transition-all"
         >
-          See All →
+          See More... →
         </button>
       </div>
 
