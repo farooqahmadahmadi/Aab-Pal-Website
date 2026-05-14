@@ -7,6 +7,7 @@ import { getHomePages } from "../../../services/homePage.service";
 // ⭐ NEW MODAL IMPORT
 import ServiceRateModal from "../../../components/OurServices/ServiceRateModal";
 import defaultImg from "../../../assets/images/default_image.png";
+import Herobackground from "../../../assets/images/testimonials.jpg";
 
 export default function ServicesPage() {
   // ================= STATES =================
@@ -92,11 +93,11 @@ export default function ServicesPage() {
 
       {/* HERO */}
       <section
-        className="relative w-full py-28 px-4 text-center text-white overflow-hidden"
+        className="w-full min-h-screen flex items-center justify-center px-4 text-center text-white relative"
         style={{
           backgroundImage: hero?.section_image
             ? `url(${BASE_URL + hero.section_image})`
-            : "linear-gradient(135deg,#1e3a8a,#2563eb,#06b6d4)",
+            : `url(${Herobackground})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}

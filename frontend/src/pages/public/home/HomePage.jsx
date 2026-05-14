@@ -142,10 +142,6 @@ export default function HomePage() {
     (item) => item.section_name?.toLowerCase()?.trim() === "projects",
   );
 
-  const faqSection = homeSections.find(
-    (item) => item.section_name?.toLowerCase()?.trim() === "faqs",
-  );
-
   return (
     <div
       className="
@@ -179,7 +175,7 @@ export default function HomePage() {
       <HomeBlogSection />
 
       {/* ================= FAQS ================= */}
-      <HomeFaqSection sectionData={faqSection} />
+      <HomeFaqSection />
 
       {/* ================= CONTACT ================= */}
       <HomeContactSection />

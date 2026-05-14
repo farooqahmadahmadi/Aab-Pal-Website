@@ -3,6 +3,7 @@ import { getFaqs } from "../../../services/faqsPage.service";
 import { getHomePages } from "../../../services/homePage.service";
 
 import AskQuestionModal from "../../../components/Faqs/AskQuestionModal";
+import Herobackground from "../../../assets/images/faqs-hero.jpg";
 
 export default function FaqsPage() {
   const [faqs, setFaqs] = useState([]);
@@ -98,42 +99,36 @@ export default function FaqsPage() {
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
       {/* ================= HERO ================= */}
       <div
-        className="w-full py-20 px-4 text-center text-white relative"
+        className="w-full min-h-screen flex items-center justify-center px-4 text-center text-white relative"
         style={{
           backgroundImage: hero?.section_image
             ? `url(${BASE_URL + hero.section_image})`
-            : "linear-gradient(135deg, #1e3a8a, #1e40af, #0ea5e9)",
+            : `url(${Herobackground})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
       >
         {/* OVERLAY */}
-        <div className="absolute inset-0 bg-black/50"></div>
+        <div className="absolute inset-0 bg-black/60" />
 
-        {/* HERO CONTENT */}
-        <div className="relative z-10 max-w-4xl mx-auto">
+        {/* CONTENT */}
+        <div className="relative z-10 max-w-4xl mx-auto flex flex-col items-center justify-center">
           <h1 className="text-4xl font-bold mb-3">
             {hero?.section_title || "Frequently Asked Questions"}
           </h1>
 
-          <p className="text-sm md:text-base text-gray-200 max-w-2xl mx-auto">
+          <p className="text-sm md:text-base text-gray-200 max-w-2xl">
             {hero?.section_description ||
               "Find answers about our water management system and services."}
           </p>
 
-          {/* ================= ASK QUESTION BUTTON ================= */}
-          <div className="mt-8">
-            <button
-              onClick={() => setOpenAskModal(true)}
-              className="bg-white text-blue-700 hover:bg-blue-50 px-6 py-3 rounded-full font-semibold shadow-lg transition-all duration-300 hover:scale-105"
-            >
-              Ask Your Question
-            </button>
-
-            <p className="text-xs text-gray-200 mt-3">
-              Your question will appear after admin approval.
-            </p>
-          </div>
+          {/* ONLY ONE BUTTON */}
+          <button
+            onClick={() => setOpenAskModal(true)}
+            className="mt-8 bg-white text-blue-700 hover:bg-blue-50 px-6 py-3 rounded-full font-semibold shadow-lg transition hover:scale-105"
+          >
+            Ask Your Question
+          </button>
         </div>
       </div>
 

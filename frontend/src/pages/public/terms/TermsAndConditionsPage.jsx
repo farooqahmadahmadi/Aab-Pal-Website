@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { getTerms } from "../../../services/termsAndConditionsPage.service";
 import { getHomePages } from "../../../services/homePage.service";
+import Herobackground from "../../../assets/images/testimonials.jpg";
 
 export default function TermsAndConditionsPage() {
   const [data, setData] = useState([]);
@@ -71,11 +72,11 @@ export default function TermsAndConditionsPage() {
     <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
       {/* ================= HERO ================= */}
       <section
-        className="relative w-full py-20 px-4 text-center text-white"
+           className="w-full min-h-screen flex items-center justify-center px-4 text-center text-white relative"
         style={{
           backgroundImage: hero?.section_image
             ? `url(${BASE_URL + hero.section_image})`
-            : "linear-gradient(135deg, #1e3a8a, #1e40af, #0ea5e9)",
+            : `url(${Herobackground})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}

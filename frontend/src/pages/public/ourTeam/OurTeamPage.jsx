@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import { getTeamMembers } from "../../../services/ourTeamPage.service";
 import { getHomePages } from "../../../services/homePage.service";
+import Herobackground from "../../../assets/images/testimonials.jpg";
 
 export default function OurTeamPage() {
   // ================= STATES =================
@@ -75,11 +76,11 @@ export default function OurTeamPage() {
     <div className="min-h-screen bg-gradient-to-b from-slate-50 via-white to-slate-100">
       {/* HERO */}
       <section
-        className="relative w-full py-24 px-4 text-center text-white"
+        className="w-full min-h-screen flex items-center justify-center px-4 text-center text-white relative"
         style={{
           backgroundImage: hero?.section_image
             ? `url(${BASE_URL + hero.section_image})`
-            : "linear-gradient(135deg,#1e3a8a,#2563eb,#06b6d4)",
+            : `url(${Herobackground})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}

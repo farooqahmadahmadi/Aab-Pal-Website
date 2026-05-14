@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 import { getHomePages } from "../../../services/homePage.service";
 
 import defaultSectionImg from "../../../assets/images/Hero-Section.png";
+import { useNavigate } from "react-router-dom";
 
 // ================= HERO SECTION =================
 export default function HomeHeroSection() {
@@ -12,6 +13,8 @@ export default function HomeHeroSection() {
 
   const [heroData, setHeroData] = useState(null);
   const [loading, setLoading] = useState(true);
+
+  const navigate = useNavigate();
 
   // ================= RTL =================
   const isRTL = i18n.language === "fa" || i18n.language === "ps";
@@ -101,7 +104,6 @@ export default function HomeHeroSection() {
               isRTL ? "lg:text-right text-center" : "text-center lg:text-left"
             }
           >
-
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white leading-tight mb-6">
               {loading
                 ? "Loading..."
@@ -116,11 +118,17 @@ export default function HomeHeroSection() {
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 mt-8 justify-center lg:justify-start">
-              <button className="bg-blue-500 hover:bg-blue-600 text-white px-7 py-3.5 rounded-2xl font-semibold transition shadow-lg hover:scale-105">
+              <button
+                onClick={() => navigate("/our-services")}
+                className="bg-blue-500 hover:bg-blue-600 text-white px-7 py-3.5 rounded-2xl font-semibold transition shadow-lg hover:scale-105"
+              >
                 Get Started
               </button>
 
-              <button className="bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 text-white px-7 py-3.5 rounded-2xl font-semibold transition">
+              <button
+                onClick={() => navigate("/about")}
+                className="bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 text-white px-7 py-3.5 rounded-2xl font-semibold transition"
+              >
                 Learn More
               </button>
             </div>

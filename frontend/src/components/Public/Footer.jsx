@@ -3,7 +3,7 @@ import { FiFacebook, FiTwitter, FiInstagram, FiLinkedin } from "react-icons/fi";
 
 import { useTranslation } from "react-i18next";
 
-// ✅ LOCAL LOGO
+//  LOCAL LOGO
 import logo from "../../assets/images/logo.png";
 
 export default function Footer() {
@@ -15,11 +15,11 @@ export default function Footer() {
     <footer
       className="
         relative
-        mt-16
+       
         bg-gradient-to-b
-        from-white
-        to-slate-100
+        bg-cyan-200
         border-t
+        border-cyan-300
         overflow-hidden
       "
     >
@@ -92,7 +92,7 @@ export default function Footer() {
               <h2 className="text-2xl font-extrabold text-blue-700">AabPal</h2>
 
               <p className="text-xs text-gray-500 mt-1">
-                Smart Water Management
+                Smart Water Management Platform
               </p>
             </div>
 
@@ -342,16 +342,16 @@ export default function Footer() {
           relative
           z-10
           border-t
-          border-gray-200
+          border-cyan-300
           text-center
           py-5
           text-sm
-          text-gray-500
-          bg-white/60
+          text-gray-700
+          bg-cyan-200
           backdrop-blur-md
         "
       >
-        © {new Date().getFullYear()} AabPal.{" "}
+        © {new Date().getFullYear()} AabPal - <a>Developer</a>{" "}
         {t("all_rights_reserved") || "All rights reserved."}
       </div>
     </footer>

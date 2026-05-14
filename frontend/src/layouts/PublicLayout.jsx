@@ -36,11 +36,7 @@ export default function PublicLayout({ children }) {
       </header>
 
       {/* ================= MAIN ================= */}
-      <main className="flex-1 w-svw">
-      
-          {children}
-        
-      </main>
+      <main className="flex-1 w-svw">{children}</main>
 
       {/* ================= FOOTER ================= */}
       <footer className="w-full">

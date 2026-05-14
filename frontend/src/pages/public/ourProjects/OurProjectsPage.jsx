@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { getProjects } from "../../../services/ourProjectsPage.service";
 import { getHomePages } from "../../../services/homePage.service";
 import defaultImg from "../../../assets/images/default_image.png";
+import Herobackground from "../../../assets/images/our-projects.webp";
 
 export default function OurProjectsPage() {
   const [projects, setProjects] = useState([]);
@@ -56,21 +57,26 @@ export default function OurProjectsPage() {
     <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
       {/* HERO */}
       <section
-        className="relative py-24 text-center text-white overflow-hidden"
+        className="w-full min-h-screen flex items-center justify-center px-4 text-center text-white relative"
         style={{
           backgroundImage: hero?.section_image
             ? `url(${BASE_URL + hero.section_image})`
-            : "linear-gradient(135deg,#1e3a8a,#2563eb,#06b6d4)",
+            : `url(${Herobackground})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
       >
         <div className="absolute inset-0 bg-black/60" />
 
-        <div className="relative z-10">
-          <h1 className="text-4xl font-bold">
+        <div className="relative z-10 max-w-4xl mx-auto">
+          <h1 className="text-4xl md:text-5xl font-bold mb-4 leading-tight">
             {hero?.section_title || "Our Projects"}
           </h1>
+
+          <p className="text-sm md:text-base text-gray-200 leading-7">
+            {hero?.section_description ||
+              "Learn more about our projects, goals, and water management solutions."}
+          </p>
         </div>
       </section>
 

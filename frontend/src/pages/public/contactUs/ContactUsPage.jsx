@@ -3,6 +3,7 @@ import { FiMail, FiPhone, FiMapPin, FiSend } from "react-icons/fi";
 
 import { getHomePages } from "../../../services/homePage.service";
 import { createContactMessage } from "../../../services/contactUsPage.service";
+import Herobackground from "../../../assets/images/faqs-hero.jpg";
 
 export default function ContactUsPage() {
   const [hero, setHero] = useState(null);
@@ -108,12 +109,13 @@ export default function ContactUsPage() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
       {/* ================= HERO ================= */}
+
       <section
-        className="relative w-full py-24 px-4 text-white overflow-hidden"
+        className="w-full min-h-screen flex items-center justify-center px-4 text-center text-white relative"
         style={{
           backgroundImage: hero?.section_image
             ? `url(${BASE_URL + hero.section_image})`
-            : "linear-gradient(135deg, #1e3a8a, #2563eb, #06b6d4)",
+            : `url(${Herobackground})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
@@ -123,10 +125,6 @@ export default function ContactUsPage() {
 
         {/* CONTENT */}
         <div className="relative z-10 max-w-5xl mx-auto text-center">
-          <div className="inline-block px-4 py-1 rounded-full bg-white/10 border border-white/20 backdrop-blur mb-5 text-sm">
-            Contact Us
-          </div>
-
           <h1 className="text-4xl md:text-5xl font-bold leading-tight">
             {hero?.section_title || "Get In Touch With Us"}
           </h1>

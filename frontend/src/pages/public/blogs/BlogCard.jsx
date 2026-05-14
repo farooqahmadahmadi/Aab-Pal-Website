@@ -116,7 +116,7 @@ export default function BlogCard({ blog, baseUrl }) {
   return (
     <div
       ref={cardRef}
-      className="bg-white rounded-[28px] overflow-hidden border border-gray-200 shadow-sm hover:shadow-lg transition-all duration-500"
+      className="bg-white  rounded-2xl overflow-hidden border border-gray-200 shadow-sm hover:shadow-lg transition-all duration-500"
     >
       <div className="p-5">
         <BlogAuthor
