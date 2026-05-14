@@ -138,7 +138,14 @@ export default function HomeServicesSection() {
   }
 
   return (
-    <section className="w-full py-20 bg-gradient-to-b from-white to-blue-50">
+    <section
+      className="
+        py-20
+        bg-gradient-to-b
+        from-cyan-50
+         to-cyan-100
+      "
+    >
       {/* HEADER */}
       <div className="text-center max-w-3xl mx-auto mb-14 px-4">
         <h2 className="text-4xl font-bold text-gray-900 mb-3">
@@ -172,7 +179,7 @@ export default function HomeServicesSection() {
         {/* RIGHT */}
         <button
           onClick={next}
-           className="absolute right-2 md:-right-5 top-1/2 -translate-y-1/2 z-20 bg-white shadow-xl p-3 rounded-full hover:scale-110 transition"
+          className="absolute right-2 md:-right-5 top-1/2 -translate-y-1/2 z-20 bg-white shadow-xl p-3 rounded-full hover:scale-110 transition"
         >
           <FiChevronRight />
         </button>

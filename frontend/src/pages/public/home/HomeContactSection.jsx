@@ -92,7 +92,14 @@ export default function HomeContactSection() {
   };
 
   return (
-    <section className="py-20 bg-gradient-to-b from-white to-slate-50">
+    <section
+      className="
+        py-20
+        bg-gradient-to-b
+        from-cyan-50
+        to-cyan-100
+      "
+    >
       {/* ================= HEADER ================= */}
       <div className="text-center max-w-3xl mx-auto mb-14 px-4">
         <h2 className="text-4xl font-bold text-gray-900 mb-3">

@@ -8,13 +8,12 @@ import HomeTestimonialsSection from "./HomeTestimonialsSection";
 import HomeContactSection from "./HomeContactSection";
 import HomeOurTeamSection from "./HomeOurTeamSection";
 import HomeBlogSection from "./HomeBlogSection";
-import HomeActionBannerSection from "./HomeActionBannerSection"
+import HomeActionBannerSection from "./HomeActionBannerSection";
 import HomeAboutSection from "./HomeAboutSection";
 
 import { getHomePages } from "../../../services/homePage.service";
 import { getServices } from "../../../services/servicesPage.service";
 import { getProjects } from "../../../services/ourProjectsPage.service";
-
 
 import homeBg from "../../../assets/images/Hero-Section.png";
 
@@ -164,23 +163,23 @@ export default function HomePage() {
       {/* ================= PROJECTS ================= */}
       <HomeProjectsSection sectionData={projectsSection} projects={projects} />
 
-        {/* ================= ABOUT ================= */}
+      {/* ================= ABOUT ================= */}
       <HomeAboutSection />
 
-      {/* ================= BLOG ================= */}
-      <HomeBlogSection />
-      
-      {/* ================= ACTION BANNER ================= */}
-      <HomeActionBannerSection />
-      
       {/* ================= TESTIMONIALS ================= */}
       <HomeTestimonialsSection />
 
-      {/* ================= FAQS ================= */}
-      <HomeFaqSection sectionData={faqSection} />
+      {/* ================= ACTION BANNER ================= */}
+      <HomeActionBannerSection />
 
       {/* ================= OUR TEAM ================= */}
       <HomeOurTeamSection />
+
+      {/* ================= BLOG ================= */}
+      <HomeBlogSection />
+
+      {/* ================= FAQS ================= */}
+      <HomeFaqSection sectionData={faqSection} />
 
       {/* ================= CONTACT ================= */}
       <HomeContactSection />

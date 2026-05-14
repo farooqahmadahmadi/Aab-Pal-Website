@@ -66,7 +66,7 @@ export default function HomeOurTeamSection() {
     // AUTO REFRESH (RESHUFFLE ONLY)
     const interval = setInterval(() => {
       setTeam((prev) => shuffle(prev));
-    }, 15000);
+    }, 8000); // After 8 Second
 
     // LANGUAGE CHANGE
     const handleLang = () => fetchData();
@@ -88,7 +88,14 @@ export default function HomeOurTeamSection() {
   }
 
   return (
-    <section className="py-20 bg-gradient-to-b from-white to-slate-50">
+    <section
+      className="
+        py-20
+        bg-gradient-to-b
+        from-cyan-50
+        to-cyan-100
+      "
+    >
       {/* ================= HEADER ================= */}
       <div className="text-center max-w-3xl mx-auto mb-12 px-4">
         <h2 className="text-4xl font-bold text-gray-900">

@@ -74,7 +74,14 @@ export default function HomeAboutSection() {
   if (!about) return null;
 
   return (
-    <section className="py-20 bg-gradient-to-b from-white to-slate-50">
+    <section
+      className="
+        py-20
+        bg-gradient-to-b
+        from-cyan-50
+        to-cyan-100
+      "
+    >
       {/* ================= SECTION TITLE (NEW) ================= */}
       <div className="text-center mb-10 max-w-3xl mx-auto">
         <h2 className="text-4xl font-bold text-gray-900 mb-3">

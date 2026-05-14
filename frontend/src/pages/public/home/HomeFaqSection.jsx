@@ -86,14 +86,16 @@ export default function HomeFaqSection() {
   }
 
   return (
-    <section className="relative w-full py-20 bg-gradient-to-b from-white to-slate-50">
+    <section
+      className="
+        py-20
+        bg-gradient-to-b
+        from-cyan-50
+        to-cyan-100
+      "
+    >
       {/* ================= HEADER ================= */}
       <div className="text-center max-w-3xl mx-auto mb-12 px-4">
-        <div className="inline-flex items-center gap-2 bg-blue-100 text-blue-700 px-4 py-2 rounded-full text-sm font-semibold mb-5">
-          <FiHelpCircle />
-          FAQs
-        </div>
-
         <h2 className="text-4xl font-bold text-gray-900 mb-3">
           {section?.section_title || "Frequently Asked Questions"}
         </h2>

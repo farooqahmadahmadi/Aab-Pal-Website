@@ -78,7 +78,7 @@ export default function HomeHeroSection() {
         items-center
       "
       style={{
-        backgroundImage: `url(${defaultSectionImg})`, // ✅ ALWAYS LOCAL BACKGROUND
+        backgroundImage: `url(${defaultSectionImg})`,
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
@@ -101,9 +101,6 @@ export default function HomeHeroSection() {
               isRTL ? "lg:text-right text-center" : "text-center lg:text-left"
             }
           >
-            <div className="inline-flex items-center gap-2 bg-blue-500/20 border border-blue-400/30 text-blue-200 px-4 py-2 rounded-full text-sm backdrop-blur-sm mb-5">
-              💧 Smart Water Management System
-            </div>
 
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white leading-tight mb-6">
               {loading

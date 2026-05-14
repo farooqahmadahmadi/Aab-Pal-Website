@@ -145,13 +145,16 @@ export default function HomeProjectsSection() {
   }
 
   return (
-    <section className="relative w-full py-20 overflow-hidden bg-gradient-to-b from-slate-50 to-white">
+    <section
+      className="
+        py-20
+        bg-gradient-to-b
+        from-cyan-50
+        to-cyan-100
+      "
+    >
       {/* HEADER */}
       <div className="text-center max-w-3xl mx-auto mb-14 px-4">
-        <div className="inline-flex items-center gap-2 bg-blue-100 text-blue-700 px-4 py-2 rounded-full text-sm font-semibold mb-5">
-          🚀 Our Projects
-        </div>
-
         <h2 className="text-4xl lg:text-5xl font-extrabold text-gray-900 mb-4">
           {section?.section_title || "Latest Projects"}
         </h2>
@@ -234,7 +237,6 @@ export default function HomeProjectsSection() {
                     {/* <button className="inline-flex items-center gap-2 text-blue-600 font-semibold hover:gap-3 transition-all">
                       View Details <FiArrowRight />
                     </button> */}
-                    
                   </div>
                 </div>
               </div>

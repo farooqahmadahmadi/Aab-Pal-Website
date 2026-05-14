@@ -170,8 +170,8 @@ export default function HomeBlogSection() {
       className="
         py-20
         bg-gradient-to-b
-        from-white
-        to-slate-50
+        from-cyan-50
+        to-cyan-100
       "
     >
       <div className="max-w-7xl mx-auto px-4">
