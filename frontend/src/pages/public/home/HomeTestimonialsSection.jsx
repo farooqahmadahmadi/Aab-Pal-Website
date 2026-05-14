@@ -134,14 +134,14 @@ export default function HomeTestimonialsSection() {
                   />
 
                   <div>
-                    <h3 className="font-bold text-gray-800">
+                    <h3 className="font-bold text-gray-800 truncate max-w-[180px]">
                       {item.testimonial_name}
                     </h3>
 
-                    <p className="text-gray-500 text-sm">
+                    <p className="text-gray-500 text-sm truncate max-w-[250px]">
                       <a
                         href={`mailto:${item.testimonial_email}`}
-                        className="hover:underline"
+                        className="hover:underline block truncate"
                       >
                         {item.testimonial_email}
                       </a>
