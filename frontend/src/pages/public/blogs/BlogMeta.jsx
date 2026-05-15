@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import userImg from "../../../assets/images/user-def-image.png";
 
@@ -9,6 +9,9 @@ import {
   FiShare2,
   FiEye,
   FiTag,
+  FiPlusCircle,
+  FiChevronDown,
+  FiChevronUp,
 } from "react-icons/fi";
 
 // ================= AUTHOR =================
@@ -111,12 +114,35 @@ export function BlogStats({
   onlyViews = false,
   onLike,
   onShare,
+  onToggleComments,
+  onAddComment,
+  showComments,
   blogId,
 }) {
   // ================= LIKE STATE =================
   const [liked, setLiked] = useState(false);
 
   const [animate, setAnimate] = useState(false);
+
+  // ================= COMMENT MENU =================
+  const [openMenu, setOpenMenu] = useState(false);
+
+  const menuRef = useRef(null);
+
+  // ================= CLOSE ON OUTSIDE CLICK =================
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (menuRef.current && !menuRef.current.contains(e.target)) {
+        setOpenMenu(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   // ================= CHECK LOCAL STORAGE =================
   useEffect(() => {
@@ -183,7 +209,7 @@ export function BlogStats({
           className={`
             flex items-center gap-2
             transition-all duration-300
-            font-medium
+            font-medium cursor-pointer
             ${liked ? "text-red-500" : "text-gray-600 hover:text-red-500"}
           `}
         >
@@ -202,20 +228,79 @@ export function BlogStats({
       </div>
 
       {/* COMMENT */}
-      <div className="flex-1 flex justify-center">
+      <div ref={menuRef} className="flex-1 flex justify-center relative">
         <div
+          onClick={() => setOpenMenu(!openMenu)}
           className="
             flex items-center gap-2
             text-gray-600
             hover:text-blue-500
             transition
             font-medium
+            cursor-pointer
           "
         >
           <FiMessageCircle className="text-lg" size={22} />
 
           <span>{comments || 0}</span>
+
+          {openMenu ? <FiChevronUp /> : <FiChevronDown />}
         </div>
+
+        {/* DROPDOWN */}
+        {openMenu && (
+          <div
+            className="
+              absolute bottom-10 z-30
+              flex flex-col
+              min-w-[190px]
+              bg-white
+              border
+              rounded-xl
+              shadow-lg
+              overflow-hidden
+            "
+          >
+            {/* VIEW COMMENTS */}
+            <div
+              onClick={() => {
+                onToggleComments();
+                setOpenMenu(false);
+              }}
+              className="
+                flex items-center gap-2
+                px-3 py-2
+                text-sm
+                hover:bg-gray-100
+                    hover:scale-105
+                transition
+              "
+            >
+              <FiMessageCircle />
+
+              {showComments ? "Hide Comments" : "View Comments"}
+            </div>
+
+            {/* ADD COMMENT */}
+            <div
+              onClick={() => {
+                onAddComment();
+                setOpenMenu(false);
+              }}
+              className="
+                flex items-center gap-2
+                px-3 py-2
+                text-sm
+                hover:bg-gray-100
+                hover:scale-105
+                transition
+              "
+            >
+              <FiPlusCircle />
+              Add Comment
+            </div>
+          </div>
+        )}
       </div>
 
       {/* SHARE */}
@@ -228,6 +313,7 @@ export function BlogStats({
             hover:text-green-500
             transition
             font-medium
+            cursor-pointer
           "
         >
           <FiShare2 className="text-lg" size={22} />
