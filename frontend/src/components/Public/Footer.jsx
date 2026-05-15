@@ -16,11 +16,13 @@ export default function Footer() {
       className="
         relative
        
-        bg-gradient-to-b
-        bg-cyan-200
-        border-t
-        border-cyan-300
-        overflow-hidden
+       bg-gradient-to-r
+    from-sky-200
+    via-teal-200
+    via-cyan-100
+    to-blue-200
+    bg-[length:300%_300%]
+    animate-waterFlow
       "
     >
       {/* ================= BG EFFECT ================= */}
@@ -347,7 +349,14 @@ export default function Footer() {
           py-5
           text-sm
           text-gray-700
-          bg-cyan-200
+              bg-gradient-to-r
+               from-sky-200
+    via-teal-200
+    via-cyan-100
+    to-blue-200
+    bg-[length:300%_300%]
+    animate-waterFlow
+      
           backdrop-blur-md
         "
       >

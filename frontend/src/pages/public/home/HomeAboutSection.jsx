@@ -74,13 +74,17 @@ export default function HomeAboutSection() {
   if (!about) return null;
 
   return (
-    <section
+     <section
       className="
-        py-20
-        bg-gradient-to-b
-        from-cyan-50
-        to-cyan-100
-      "
+    py-20
+    bg-gradient-to-r
+    from-sky-200
+    via-teal-100
+    via-cyan-100
+    to-blue-200
+    bg-[length:300%_300%]
+    animate-waterFlow
+  "
     >
       {/* ================= SECTION TITLE (NEW) ================= */}
       <div className="text-center mb-10 max-w-3xl mx-auto">

@@ -88,13 +88,17 @@ export default function HomeOurTeamSection() {
   }
 
   return (
-    <section
+      <section
       className="
-        py-20
-        bg-gradient-to-b
-        from-cyan-50
-        to-cyan-100
-      "
+    py-20
+    bg-gradient-to-r
+    from-sky-200
+    via-teal-100
+    via-cyan-100
+    to-blue-200
+    bg-[length:300%_300%]
+    animate-waterFlow
+  "
     >
       {/* ================= HEADER ================= */}
       <div className="text-center max-w-3xl mx-auto mb-12 px-4">
