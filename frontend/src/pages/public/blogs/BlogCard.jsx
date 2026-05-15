@@ -23,7 +23,7 @@ export default function BlogCard({ blog, baseUrl }) {
 
   const [commentsCount, setCommentsCount] = useState(0);
   const [liked, setLiked] = useState(false);
-const [copied, setCopied] = useState(false);
+  const [copied, setCopied] = useState(false);
 
   const viewedRef = useRef(false);
   const cardRef = useRef(null);
@@ -88,30 +88,29 @@ const [copied, setCopied] = useState(false);
     }
   };
 
+  // ================= SHARE =================
+  const handleShare = async () => {
+    const blogUrl = `${window.location.origin}/blogs/${blog.blog_id}`;
 
-// ================= SHARE =================
-const handleShare = async () => {
-  const blogUrl = `${window.location.origin}/blogs/${blog.blog_id}`;
+    try {
+      await navigator.clipboard.writeText(blogUrl);
 
-  try {
-    await navigator.clipboard.writeText(blogUrl);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
 
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+      if (navigator.share) {
+        await navigator.share({
+          title: blog.blog_title,
+          url: blogUrl,
+        });
+      }
 
-    if (navigator.share) {
-      await navigator.share({
-        title: blog.blog_title,
-        url: blogUrl,
-      });
+      const res = await shareBlog(blog.blog_id);
+      setShares(res.shares);
+    } catch (err) {
+      console.error(err);
     }
-
-    const res = await shareBlog(blog.blog_id);
-    setShares(res.shares);
-  } catch (err) {
-    console.error(err);
-  }
-};
+  };
 
   // ================= COMMENTS TOGGLE =================
   const handleToggleComments = () => {
@@ -127,7 +126,7 @@ const handleShare = async () => {
   return (
     <div
       ref={cardRef}
-      className="bg-white rounded-2xl overflow-hidden border border-gray-200 shadow-sm hover:shadow-lg transition-all duration-500"
+      className="bg-white rounded-xl overflow-hidden border border-gray-200 shadow-sm hover:shadow-md transition-all duration-500"
     >
       {/* AUTHOR */}
       <div className="p-5">

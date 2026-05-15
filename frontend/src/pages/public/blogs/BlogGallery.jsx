@@ -74,8 +74,8 @@ export default function BlogGallery({ blog, baseUrl }) {
       {expanded && extraImages.length > 0 && (
         <div
           className="
-              px-3 py-4
-              space-y-6
+              px-0 py-0
+              space-y-1
               bg-gradient-to-b
               from-gray-50
               via-white
@@ -87,10 +87,7 @@ export default function BlogGallery({ blog, baseUrl }) {
               key={index}
               className="
                     overflow-hidden
-                    rounded-[28px]
                     bg-white
-                    border border-gray-100
-                    shadow-sm
                     transition-all duration-500
                   "
             >
@@ -111,12 +108,12 @@ export default function BlogGallery({ blog, baseUrl }) {
 
               {/* ================= TITLE ================= */}
               {img.image_title && (
-                <div className="px-5 py-4">
+                <div className="px-5 py-2">
                   <h3
                     className="
                             text-gray-800
                             font-semibold
-                            text-lg
+                            text-md
                             leading-relaxed
                         "
                   >
@@ -128,18 +125,18 @@ export default function BlogGallery({ blog, baseUrl }) {
           ))}
 
           {/* ================= COLLAPSE BUTTON ================= */}
-          <div className="flex justify-center pt-2">
+          <div className="flex justify-center pt-0 pb-1">
             <div
               onClick={() => setExpanded(false)}
               className="
-                  px-6 py-3
-                   rounded-full
-                text-sm font-medium
-                flex items-center gap-2
-                shadow-lg
-                hover:bg-white/20
-                hover:scale-105
-                transition-all duration-300
+              px-4 py-2
+              rounded-full
+              text-sm font-medium
+              flex items-center gap-2
+              shadow-md
+              hover:bg-white/20
+              hover:scale-105
+              transition-all duration-300
                 "
             >
               Show Less
