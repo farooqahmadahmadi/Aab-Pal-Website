@@ -180,11 +180,11 @@ export default function BlogComments({
     list.map((c) => (
       <div
         key={c.comment_id}
-        className={`p-4 mb-3 ${
-          level > 0 ? "ml-1 border-l-2 border-l-gray-100" : ""
+        className={`pl-3 pb-3 ${
+          level > 0 ? "ml-0.5 border-l-2 border-l-gray-100" : ""
         }`}
       >
-        <div className="flex items-center gap-2 mb-2">
+        <div className="flex items-center gap-2 mb-2 mt-2">
           <img
             src={getImage(c.visitor_photo)}
             onError={(e) => (e.target.src = defaultUserImg)}
@@ -210,7 +210,7 @@ export default function BlogComments({
         <div className="flex gap-4 mt-2 text-xs items-center">
           <div
             onClick={() => handleLikeComment(c.comment_id)}
-            className={`flex items-center gap-1  p-1 cursor-pointer  hover:scale-125 transition-transform duration-200${
+            className={`flex items-center gap-1 p-1 pl-8 cursor-pointer  hover:scale-125 transition-transform duration-200${
               c._liked ? "text-red-500" : "text-gray-500"
             }`}
           >
@@ -241,7 +241,7 @@ export default function BlogComments({
     ));
 
   return (
-    <div>
+    <div className="max-h-[500px] overflow-y-auto no-scrollbar">
       {/* <h2 className="text-lg font-bold mb-4 flex justify-between">
         <span>Comments</span>
         <span className="text-sm text-gray-500">{countAll(comments)}</span>

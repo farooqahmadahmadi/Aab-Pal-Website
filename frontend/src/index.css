@@ -87,3 +87,12 @@ button:focus-visible {
 .animate-waterFlow {
   animation: waterFlow 10s ease-in-out infinite;
 }
+/* Hide scrollbar but keep scroll working */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;     /* Firefox */
+}

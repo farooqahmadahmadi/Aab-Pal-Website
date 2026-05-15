@@ -132,7 +132,7 @@ export function BlogStats({
   return (
     <div className="flex items-center border-t px-6 py-4 bg-gray-50">
       {/* LIKE */}
-      <div className="flex-1 flex justify-start">
+      <div className="flex-1 flex justify-start hover:scale-105 transition-transform duration-500">
         <div
           onClick={handleLikeClick}
           className={`flex items-center gap-2 cursor-pointer transition-all duration-300 ${
@@ -150,7 +150,10 @@ export function BlogStats({
       </div>
 
       {/* COMMENTS */}
-      <div ref={menuRef} className="flex-1 flex justify-center relative">
+      <div
+        ref={menuRef}
+        className="flex-1 flex justify-center relative hover:scale-105 transition-transform duration-500"
+      >
         <div
           onClick={() => setOpenMenu(!openMenu)}
           className="flex items-center gap-2 text-gray-600 hover:text-blue-500 cursor-pointer"
@@ -191,7 +194,7 @@ export function BlogStats({
       <div className="flex-1 flex justify-end flex-col items-end">
         <div
           onClick={handleShareClick}
-          className="flex items-center gap-2 text-gray-600 hover:text-green-500 cursor-pointer"
+          className="flex items-center gap-2 text-gray-600 hover:text-green-500 cursor-pointer hover:scale-105 transition-transform duration-500"
         >
           <FiShare2 size={22} />
           <span>{shares || 0}</span>
