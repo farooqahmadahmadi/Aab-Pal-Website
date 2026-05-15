@@ -135,7 +135,7 @@ export default function BlogsPage() {
       </section>
 
       {/* ================= CONTENT ================= */}
-      <section ref={blogSectionRef} className="max-w-3xl mx-auto px-4 py-12">
+      <section ref={blogSectionRef} className="max-w-3xl mx-auto px-4 py-6">
         {loading && (
           <p className="text-center text-gray-500">Loading blogs...</p>
         )}
@@ -144,7 +144,7 @@ export default function BlogsPage() {
           <p className="text-center text-gray-500">No blogs found.</p>
         )}
 
-        <div className="space-y-8">
+        <div className="space-y-4">
           {randomBlogs.map((blog) => (
             <BlogCard key={blog.blog_id} blog={blog} baseUrl={BASE_URL} />
           ))}
