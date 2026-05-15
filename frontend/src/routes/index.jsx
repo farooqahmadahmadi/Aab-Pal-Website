@@ -113,6 +113,14 @@ export default function AppRoutes() {
           </PublicLayout>
         }
       />
+      <Route
+        path="/blogs/:blogId"
+        element={
+          <PublicLayout>
+            <BlogsPage />
+          </PublicLayout>
+        }
+      />
 
       <Route
         path="/faqs"

@@ -1,4 +1,5 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { useParams } from "react-router-dom";
 
 import { getBlogs } from "../../../services/blogsPage.service";
 import { getBlogImages } from "../../../services/blogImages.service";
@@ -11,6 +12,10 @@ export default function BlogsPage() {
   const [blogs, setBlogs] = useState([]);
   const [hero, setHero] = useState(null);
   const [loading, setLoading] = useState(true);
+
+  const { blogId } = useParams();
+
+  const blogSectionRef = useRef(null);
 
   const BASE_URL = import.meta.env.VITE_IMAGE_URL || "";
   const languageId = Number(localStorage.getItem("language_id")) || 1;
@@ -54,7 +59,24 @@ export default function BlogsPage() {
           ),
         }));
 
-        setBlogs(mergedBlogs.filter((b) => b.is_published));
+        // ================= FILTER PUBLISHED =================
+        let finalBlogs = mergedBlogs.filter((b) => b.is_published);
+
+        // ================= SINGLE BLOG PRIORITY =================
+        if (blogId) {
+          const targetBlog = finalBlogs.find(
+            (b) => Number(b.blog_id) === Number(blogId),
+          );
+
+          if (targetBlog) {
+            finalBlogs = [
+              targetBlog,
+              ...finalBlogs.filter((b) => Number(b.blog_id) !== Number(blogId)),
+            ];
+          }
+        }
+
+        setBlogs(finalBlogs);
       } catch (err) {
         console.error("BLOGS PAGE ERROR:", err);
       } finally {
@@ -63,19 +85,33 @@ export default function BlogsPage() {
     };
 
     fetchData();
-  }, []);
+  }, [blogId, languageId]);
+
+  // ================= AUTO SCROLL TO BLOGS =================
+  useEffect(() => {
+    if (blogId && blogSectionRef.current) {
+      setTimeout(() => {
+        blogSectionRef.current.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+      }, 310);
+    }
+  }, [blogId]);
 
   // ================= RANDOM =================
   const randomBlogs = useMemo(() => {
+    // when direct blog opened => no random
+    if (blogId) return blogs;
+
     return [...blogs].sort(() => Math.random() - 0.5);
-  }, [blogs]);
+  }, [blogs, blogId]);
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
       {/* ================= HERO (SAME PATTERN AS PROJECTS) ================= */}
       <section
-        className="w-full  min-h-screen flex items-center justify-center px-4 text-center text-white relative "
-        
+        className="w-full min-h-screen flex items-center justify-center px-4 text-center text-white relative"
         style={{
           backgroundImage: hero?.section_image
             ? `url(${BASE_URL + hero.section_image})`
@@ -99,7 +135,7 @@ export default function BlogsPage() {
       </section>
 
       {/* ================= CONTENT ================= */}
-      <section className="max-w-3xl mx-auto px-4 py-12">
+      <section ref={blogSectionRef} className="max-w-3xl mx-auto px-4 py-12">
         {loading && (
           <p className="text-center text-gray-500">Loading blogs...</p>
         )}

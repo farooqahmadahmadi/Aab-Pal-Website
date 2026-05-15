@@ -23,6 +23,7 @@ export default function BlogCard({ blog, baseUrl }) {
 
   const [commentsCount, setCommentsCount] = useState(0);
   const [liked, setLiked] = useState(false);
+const [copied, setCopied] = useState(false);
 
   const viewedRef = useRef(false);
   const cardRef = useRef(null);
@@ -87,16 +88,30 @@ export default function BlogCard({ blog, baseUrl }) {
     }
   };
 
-  // ================= SHARE =================
-  const handleShare = async () => {
-    try {
-      await navigator.clipboard.writeText(window.location.href);
-      const res = await shareBlog(blog.blog_id);
-      setShares(res.shares);
-    } catch (err) {
-      console.error("SHARE ERROR:", err);
+
+// ================= SHARE =================
+const handleShare = async () => {
+  const blogUrl = `${window.location.origin}/blogs/${blog.blog_id}`;
+
+  try {
+    await navigator.clipboard.writeText(blogUrl);
+
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+
+    if (navigator.share) {
+      await navigator.share({
+        title: blog.blog_title,
+        url: blogUrl,
+      });
     }
-  };
+
+    const res = await shareBlog(blog.blog_id);
+    setShares(res.shares);
+  } catch (err) {
+    console.error(err);
+  }
+};
 
   // ================= COMMENTS TOGGLE =================
   const handleToggleComments = () => {
