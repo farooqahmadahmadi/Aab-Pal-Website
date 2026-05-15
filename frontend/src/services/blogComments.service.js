@@ -6,6 +6,12 @@ export const getBlogComments = async () => {
   return res.data;
 };
 
+// GET BY BLOG (recommended if needed in future)
+export const getBlogCommentsByBlog = async (blogId) => {
+  const res = await API.get(`/blog-comments/blog/${blogId}`);
+  return res.data;
+};
+
 // CREATE
 export const createBlogComment = async (data) => {
   const res = await API.post("/blog-comments", data, {
@@ -31,5 +37,11 @@ export const approveBlogComment = async (id) => {
 // DELETE
 export const deleteBlogComment = async (id) => {
   const res = await API.delete(`/blog-comments/${id}`);
+  return res.data;
+};
+
+// ================= LIKE COMMENT (NEW - FINAL) =================
+export const likeBlogComment = async (id) => {
+  const res = await API.patch(`/blog-comments/${id}/like`);
   return res.data;
 };

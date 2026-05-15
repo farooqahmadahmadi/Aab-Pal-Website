@@ -14,6 +14,7 @@ const {
   remove,
   update,
 } = require("../controllers/blogComments.controller");
+const { likeComment } = require("../controllers/blogComments.controller");
 
 // ================= ROUTES =================
 
@@ -36,6 +37,9 @@ router.put(
 
 // APPROVE
 router.put("/approve/:id", authMiddleware, approve);
+
+// ================= LIKE COMMENT =================
+router.patch("/:id/like", likeComment);
 
 // DELETE
 router.delete("/:id", authMiddleware, remove);

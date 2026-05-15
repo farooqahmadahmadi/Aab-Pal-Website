@@ -42,6 +42,19 @@ exports.approve = async (id) => {
   return item;
 };
 
+// ================= LIKE COMMENT =================
+exports.likeComment = async (id) => {
+  const item = await BlogComments.findByPk(id);
+
+  if (!item) throw new Error("Comment not found");
+
+  await item.update({
+    comment_likes: (item.comment_likes || 0) + 1,
+  });
+
+  return item;
+};
+
 // ================= DELETE =================
 exports.remove = async (id) => {
   const item = await BlogComments.findByPk(id);

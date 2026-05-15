@@ -43,9 +43,9 @@ module.exports = {
         allowNull: true,
       },
 
-      visitor_rating: {
+      comment_likes: {
         type: Sequelize.INTEGER,
-        allowNull: true,
+        defaultValue: 0,
       },
 
       comment_text: {

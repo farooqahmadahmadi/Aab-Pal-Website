@@ -166,7 +166,7 @@ export default function BlogCommentsList() {
           <td className="p-2">{c.blog_id}</td>
           <td className="p-2">{c.visitor_email}</td>
           <td className="p-2">{c.visitor_ip}</td>
-          <td className="p-2">{c.visitor_rating}</td>
+          <td className="p-2">{c.comment_likes}</td>
           <td className="p-2 text-left">{c.comment_text}</td>
 
           <td className="p-2">
@@ -321,7 +321,7 @@ export default function BlogCommentsList() {
           <CardRow label="Blog ID" value={c.blog_id} />
           <CardRow label="Email" value={c.visitor_email} />
           <CardRow label="IP" value={c.visitor_ip} />
-          <CardRow label="Rating" value={c.visitor_rating} />
+          <CardRow label="Rating" value={c.comment_likes} />
           <CardRow label="Comment" value={c.comment_text} />
           <CardRow
             label="Status"

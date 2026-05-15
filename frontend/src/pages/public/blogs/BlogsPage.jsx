@@ -74,7 +74,8 @@ export default function BlogsPage() {
     <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
       {/* ================= HERO (SAME PATTERN AS PROJECTS) ================= */}
       <section
-        className="w-full min-h-screen flex items-center justify-center px-4 text-center text-white relative"
+        className="w-full  min-h-screen flex items-center justify-center px-4 text-center text-white relative "
+        
         style={{
           backgroundImage: hero?.section_image
             ? `url(${BASE_URL + hero.section_image})`

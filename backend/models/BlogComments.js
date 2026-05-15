@@ -32,8 +32,9 @@ const BlogComments = sequelize.define(
       type: DataTypes.STRING(150),
     },
 
-    visitor_rating: {
+    comment_likes: {
       type: DataTypes.INTEGER,
+      defaultValue: 0,
     },
 
     comment_text: {

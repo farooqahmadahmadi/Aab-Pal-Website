@@ -2,6 +2,7 @@ const fs = require("fs");
 const path = require("path");
 
 const BlogComments = require("../models/BlogComments");
+const { likeComment } = require("../services/blogComments.service");
 
 const {
   getAll,
@@ -96,6 +97,26 @@ exports.approve = async (req, res) => {
     res.status(400).json({ message: err.message });
   }
 };
+
+
+
+// ================= LIKE COMMENT =================
+exports.likeComment = async (req, res) => {
+  try {
+    const item = await likeComment(req.params.id);
+
+    res.json({
+      success: true,
+      likes: item.comment_likes,
+      comment_id: item.comment_id,
+    });
+  } catch (err) {
+    res.status(400).json({
+      message: err.message,
+    });
+  }
+};
+
 
 // ================= DELETE =================
 exports.remove = async (req, res) => {
