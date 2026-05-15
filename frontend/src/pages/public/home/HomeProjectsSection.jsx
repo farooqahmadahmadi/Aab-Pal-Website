@@ -57,7 +57,7 @@ export default function HomeProjectsSection() {
 
         const projectsSection = homeData.find(
           (item) =>
-            item.section_name?.toLowerCase().trim() === "projects" &&
+            item.section_name?.toLowerCase().trim() === "project" &&
             Number(item.language_id) === langId &&
             item.is_active,
         );
@@ -147,11 +147,15 @@ export default function HomeProjectsSection() {
   return (
     <section
       className="
-        py-20
-        bg-gradient-to-b
-        from-cyan-50
-        to-cyan-100
-      "
+    py-20
+    bg-gradient-to-r
+    from-sky-200
+    via-teal-100
+    via-cyan-100
+    to-blue-200
+    bg-[length:300%_300%]
+    animate-waterFlow
+  "
     >
       {/* HEADER */}
       <div className="text-center max-w-3xl mx-auto mb-14 px-4">
