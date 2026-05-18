@@ -20,7 +20,11 @@ const OurProjectsPage = sequelize.define(
       type: DataTypes.STRING(255),
       allowNull: false,
     },
-
+    project_description: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+    },
+    
     project_address: {
       type: DataTypes.STRING(255),
     },

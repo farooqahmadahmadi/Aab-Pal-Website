@@ -103,9 +103,16 @@ export default function ProjectDetailsPage() {
           </h2>
 
           {/* ADDRESS */}
-          <p className="text-gray-600 leading-8">
+          <p className="text-gray-600 leading-8 mb-6">
             {project.project_address}
           </p>
+
+          {/* ⭐ NEW DESCRIPTION FIELD */}
+          {project.project_description && (
+            <p className="text-gray-700 leading-8 whitespace-pre-line">
+              {project.project_description}
+            </p>
+          )}
 
           {/* FOOTER */}
           <div className="mt-10 pt-6 border-t flex items-center justify-between flex-wrap gap-4">

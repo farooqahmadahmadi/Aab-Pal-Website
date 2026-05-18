@@ -25,6 +25,11 @@ module.exports = {
         allowNull: false,
       },
 
+      project_description: {
+        type: Sequelize.TEXT,
+        allowNull: false,
+      },
+      
       project_address: {
         type: Sequelize.STRING(255),
         allowNull: true,

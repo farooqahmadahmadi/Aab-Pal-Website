@@ -20,6 +20,7 @@ export default function OurProjectsModal({ open, onClose, edit, onRefresh }) {
     language_id: "",
     project_name: "",
     project_address: "",
+    project_description: "",   // ⭐ ADDED ONLY THIS FIELD
     project_image: null,
     project_status: "ongoing",
   });
@@ -44,6 +45,7 @@ export default function OurProjectsModal({ open, onClose, edit, onRefresh }) {
         language_id: edit.language_id || "",
         project_name: edit.project_name || "",
         project_address: edit.project_address || "",
+        project_description: edit.project_description || "", // ⭐ ADDED
         project_image: null,
         project_status: edit.project_status || "ongoing",
       });
@@ -99,6 +101,7 @@ export default function OurProjectsModal({ open, onClose, edit, onRefresh }) {
   return (
     <div className="fixed inset-0 bg-black/40 flex justify-center items-center p-4">
       <div className="bg-white w-full max-w-2xl p-5 rounded-lg overflow-y-auto max-h-[90vh]">
+
         <h2 className="text-lg font-bold mb-4">
           {isEdit ? "Edit Project" : "Add Project"}
         </h2>
@@ -135,6 +138,17 @@ export default function OurProjectsModal({ open, onClose, edit, onRefresh }) {
           value={form.project_address}
           onChange={handleChange}
           className="border p-2 w-full mb-3 rounded"
+        />
+
+        {/* ⭐ DESCRIPTION (ADDED UI FIELD) */}
+        <label className="text-sm">Description</label>
+        <textarea
+          name="project_description"
+          value={form.project_description}
+          onChange={handleChange}
+          rows={4}
+          className="border p-2 w-full mb-3 rounded"
+          placeholder="Write project description..."
         />
 
         {/* STATUS */}
