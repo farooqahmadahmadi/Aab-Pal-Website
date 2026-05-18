@@ -2,16 +2,24 @@ import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { getService } from "../../../services/servicesPage.service";
 import { FiArrowLeft } from "react-icons/fi";
+
+import { formatNumber } from "../../../utils/formatNumber";
 import defaultImg from "../../../assets/images/default_image.png";
+
+// ⭐ MODAL
+import ServiceRateModal from "../../../components/OurServices/ServiceRateModal";
 
 export default function ServiceDetailsPage() {
   // ================= STATES =================
   const [service, setService] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // ================= PARAMS =================
-  const { serviceId } = useParams(); // ✅ FIXED (must match route)
+  // ⭐ MODAL
+  const [openRate, setOpenRate] = useState(false);
+  const [selectedService, setSelectedService] = useState(null);
 
+  // ================= PARAMS =================
+  const { serviceId } = useParams();
   const BASE_URL = import.meta.env.VITE_IMAGE_URL;
 
   // ================= FETCH =================
@@ -19,9 +27,7 @@ export default function ServiceDetailsPage() {
     const fetchData = async () => {
       try {
         setLoading(true);
-
-        const data = await getService(serviceId); // ✅ already normalized in service file
-
+        const data = await getService(serviceId);
         setService(data);
       } catch (err) {
         console.error("SERVICE DETAILS ERROR:", err);
@@ -33,22 +39,33 @@ export default function ServiceDetailsPage() {
     fetchData();
   }, [serviceId]);
 
-  // ================= STARS =================
-  const renderStars = (rating = 5) => {
+  // ================= TOTAL =================
+  const total = Number(service?.service_rating || 0);
+
+  // ================= STARS (STATIC UI ONLY) =================
+  const renderStars = () => {
     return Array.from({ length: 5 }).map((_, i) => (
-      <span
-        key={i}
-        className={`text-xl ${
-          i < Math.round(rating) ? "text-yellow-400" : "text-gray-300"
-        }`}
-      >
+      <span key={i} className="text-2xl text-yellow-400">
         ★
       </span>
     ));
   };
 
+  // ================= OPEN MODAL =================
+  const handleOpenRate = () => {
+    setSelectedService(service.service_id);
+    setOpenRate(true);
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-50 via-white to-slate-100">
+
+      {/* ⭐ MODAL */}
+      <ServiceRateModal
+        isOpen={openRate}
+        onClose={() => setOpenRate(false)}
+        serviceId={selectedService}
+      />
 
       {/* ================= LOADING ================= */}
       {loading && (
@@ -67,7 +84,7 @@ export default function ServiceDetailsPage() {
       {/* ================= CONTENT ================= */}
       {!loading && service && (
         <>
-          {/* HERO IMAGE */}
+          {/* HERO */}
           <section className="relative h-[450px] overflow-hidden">
             <img
               src={
@@ -75,38 +92,51 @@ export default function ServiceDetailsPage() {
                   ? BASE_URL + service.service_image
                   : defaultImg
               }
-              alt={service.service_title}
               className="w-full h-full object-cover"
+              alt="service"
             />
 
-            {/* overlay */}
             <div className="absolute inset-0 bg-black/60" />
 
-            {/* back button */}
+            {/* BACK */}
             <Link
               to="/our-services"
-              className="absolute top-6 left-6 z-20 flex items-center gap-2 bg-white/20 backdrop-blur-md border border-white/30 text-white px-4 py-2 rounded-xl hover:bg-white/30 transition"
+              className="absolute top-6 left-6 z-20 flex items-center gap-2 bg-white/20 backdrop-blur-md border border-white/30 text-white px-4 py-2 rounded-xl"
             >
               <FiArrowLeft />
               Back
             </Link>
 
-            {/* content */}
-            <div className="absolute inset-0 z-10 flex items-center">
+            {/* TITLE */}
+            <div className="absolute inset-0 flex items-center z-10">
               <div className="max-w-5xl mx-auto px-4 w-full">
-                <div className="max-w-3xl">
-                  <span className="inline-block bg-blue-500/20 backdrop-blur-md border border-blue-300/20 text-white text-sm px-4 py-2 rounded-full mb-5">
-                    Premium Service
+
+                <h1 className="text-4xl md:text-6xl font-bold text-white">
+                  {service.service_title}
+                </h1>
+
+                {/* ⭐ RATING SECTION (NO CALCULATION) */}
+                <div className="flex items-center gap-4 mt-6 flex-wrap">
+
+                  <div
+                    onClick={handleOpenRate}
+                    className="flex items-center gap-1 cursor-pointer"
+                  >
+                    {renderStars()}
+                  </div>
+
+                  {/* TOTAL ONLY */}
+                  <span className="text-white text-sm">
+                    {formatNumber(total)} Ratings
                   </span>
 
-                  <h1 className="text-4xl md:text-6xl font-extrabold text-white leading-tight">
-                    {service.service_title}
-                  </h1>
+                  <button
+                    onClick={handleOpenRate}
+                    className="bg-yellow-500 px-5 py-2 rounded-full text-white text-sm"
+                  >
+                    Rate Service
+                  </button>
 
-                  {/* stars */}
-                  <div className="flex items-center gap-1 mt-6">
-                    {renderStars(service.service_rating)}
-                  </div>
                 </div>
               </div>
             </div>
@@ -114,32 +144,29 @@ export default function ServiceDetailsPage() {
 
           {/* DETAILS */}
           <section className="max-w-5xl mx-auto px-4 py-20">
-            <div className="bg-white/80 backdrop-blur-xl rounded-3xl shadow-xl border border-white/40 p-8 md:p-12">
+            <div className="bg-white/80 backdrop-blur-xl rounded-3xl shadow-xl p-8">
 
-              {/* heading */}
-              <div className="mb-10">
-                <h2 className="text-3xl font-bold text-gray-800">
-                  Service Details
-                </h2>
-                <div className="w-24 h-1 bg-blue-600 rounded-full mt-4" />
-              </div>
+              <h2 className="text-3xl font-bold mb-6">
+                Service Details
+              </h2>
 
-              {/* description */}
-              <div className="text-gray-600 leading-8 text-base whitespace-pre-line">
+              <p className="text-gray-600 leading-8 whitespace-pre-line">
                 {service.service_description}
-              </div>
+              </p>
 
-              {/* footer */}
-              <div className="mt-12 pt-8 border-t flex flex-wrap items-center justify-between gap-4">
+              {/* FOOTER */}
+              <div className="mt-10 pt-6 border-t flex justify-between items-center flex-wrap gap-4">
 
-                <div>
-                  <p className="text-sm text-gray-500 mb-2">Service Rating</p>
-                  <div className="flex items-center gap-1">
-                    {renderStars(service.service_rating)}
-                  </div>
+                {/* TOTAL */}
+                <div className="flex items-center gap-3">
+                  {renderStars()}
+
+                  <span className="text-sm text-gray-600">
+                    {formatNumber(total)} Ratings
+                  </span>
                 </div>
-
-                <span className="bg-green-100 text-green-700 text-sm px-5 py-2 rounded-full font-semibold">
+                
+                <span className="bg-green-100 text-green-700 px-4 py-2 rounded-full text-sm">
                   Active Service
                 </span>
 
