@@ -101,6 +101,8 @@ export default function OurProjectsPage() {
                   transition-all
                   duration-500
                   hover:-translate-y-2
+                  flex flex-col
+                  h-full
                 "
               >
                 {/* IMAGE */}
@@ -109,39 +111,21 @@ export default function OurProjectsPage() {
                     src={
                       p.project_image ? BASE_URL + p.project_image : defaultImg
                     }
-                    className="
-    w-full
-    h-full
-    object-cover
-    group-hover:scale-110
-    transition duration-700
-  "
+                    className="w-full h-full object-cover group-hover:scale-110 transition duration-700"
                     onError={(e) => {
                       e.target.src = defaultImg;
                     }}
                   />
 
-                  {/* overlay */}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
 
-                  {/* status */}
-                  <span
-                    className="
-                    absolute top-4 left-4
-                    text-xs
-                    px-3 py-1
-                    bg-white/90
-                    text-blue-700
-                    rounded-full
-                    font-semibold
-                  "
-                  >
+                  <span className="absolute top-4 left-4 text-xs px-3 py-1 bg-white/90 text-blue-700 rounded-full font-semibold">
                     {p.project_status}
                   </span>
                 </div>
 
                 {/* CONTENT */}
-                <div className="p-6">
+                <div className="p-6 flex flex-col flex-grow">
                   <h2 className="text-xl font-bold text-gray-800">
                     {p.project_name}
                   </h2>
@@ -150,21 +134,20 @@ export default function OurProjectsPage() {
                     📍 {p.project_address}
                   </p>
 
-                  <Link
-                    to={`/our-projects/${p.project_id}`}
-                    className="
-                      inline-flex
-                      items-center
-                      gap-2
-                      mt-5
-                      text-blue-600
-                      font-semibold
-                      hover:gap-3
-                      transition-all
-                    "
-                  >
-                    See Details →
-                  </Link>
+                  {/* DESCRIPTION */}
+                  <p className="text-gray-600 text-sm mt-3 line-clamp-3">
+                    {p.project_description}
+                  </p>
+
+                  {/* LINK ALWAYS AT BOTTOM RIGHT */}
+                  <div className="mt-auto pt-5 flex justify-end">
+                    <Link
+                      to={`/our-projects/${p.project_id}`}
+                       className="bg-blue-600 text-white text-xs px-4 py-2 rounded-full hover:bg-blue-700 transition"
+                    >
+                      See More
+                    </Link>
+                  </div>
                 </div>
               </div>
             ))}

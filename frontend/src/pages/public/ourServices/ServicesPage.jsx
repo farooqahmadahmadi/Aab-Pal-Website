@@ -4,28 +4,25 @@ import { Link } from "react-router-dom";
 import { getServices } from "../../../services/servicesPage.service";
 import { getHomePages } from "../../../services/homePage.service";
 
+import { formatNumber } from "../../../utils/formatNumber";
+
 // ⭐ NEW MODAL IMPORT
 import ServiceRateModal from "../../../components/OurServices/ServiceRateModal";
 import defaultImg from "../../../assets/images/default_image.png";
 import Herobackground from "../../../assets/images/testimonials.jpg";
 
 export default function ServicesPage() {
-  // ================= STATES =================
   const [services, setServices] = useState([]);
   const [hero, setHero] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // ⭐ MODAL STATES
   const [openRate, setOpenRate] = useState(false);
   const [selectedService, setSelectedService] = useState(null);
 
   const BASE_URL = import.meta.env.VITE_IMAGE_URL;
-
   const getLanguageId = () => Number(localStorage.getItem("language_id")) || 1;
-
   const [languageId] = useState(getLanguageId());
 
-  // ================= FETCH DATA =================
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -40,20 +37,24 @@ export default function ServicesPage() {
           ? servicesRes
           : servicesRes?.data || [];
 
-        const homeList = Array.isArray(homeRes) ? homeRes : homeRes?.data || [];
+        const homeList = Array.isArray(homeRes)
+          ? homeRes
+          : homeRes?.data || [];
 
         const heroSection = homeList.find(
           (h) =>
             h.is_active &&
             Number(h.language_id) === Number(languageId) &&
-            h.section_name?.toLowerCase().includes("service"),
+            h.section_name?.toLowerCase().includes("service")
         );
 
         setHero(heroSection || null);
 
         const filtered = servicesList
           .filter(
-            (s) => s.is_active && Number(s.language_id) === Number(languageId),
+            (s) =>
+              s.is_active &&
+              Number(s.language_id) === Number(languageId)
           )
           .sort((a, b) => a.display_order - b.display_order);
 
@@ -68,7 +69,7 @@ export default function ServicesPage() {
     fetchData();
   }, [languageId]);
 
-  // ================= STARS =================
+  // ⭐ STARS (STATIC UI ONLY - SAME PATTERN)
   const renderStars = (rating = 5) => {
     return Array.from({ length: 5 }).map((_, i) => (
       <span
@@ -84,7 +85,7 @@ export default function ServicesPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-50 via-white to-slate-100">
-      {/* ⭐ MODAL */}
+
       <ServiceRateModal
         isOpen={openRate}
         onClose={() => setOpenRate(false)}
@@ -125,17 +126,11 @@ export default function ServicesPage() {
           <p className="text-center text-gray-500">No services found.</p>
         )}
 
-        {/* GRID */}
         <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-10">
           {services.map((service, index) => (
             <div
               key={service.service_id}
-              className="
-                group relative bg-white/80 backdrop-blur-xl border border-white/50
-                rounded-[30px] overflow-hidden shadow-lg hover:shadow-2xl
-                transition-all duration-500 hover:-translate-y-2
-                flex flex-col h-full
-              "
+              className="group relative bg-white/80 backdrop-blur-xl border border-white/50 rounded-[30px] overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 flex flex-col h-full"
             >
               {/* IMAGE */}
               <div className="relative overflow-hidden h-64">
@@ -145,7 +140,6 @@ export default function ServicesPage() {
                       ? BASE_URL + service.service_image
                       : defaultImg
                   }
-                  alt={service.service_title}
                   className="w-full h-full object-cover group-hover:scale-110 transition duration-700"
                 />
 
@@ -170,15 +164,21 @@ export default function ServicesPage() {
                   {service.service_description}
                 </p>
 
-                {/* BOTTOM SECTION (FIXED) */}
+                {/* BOTTOM */}
                 <div className="mt-5 flex items-center justify-between">
-                  {/* STARS */}
+
+                  {/* ⭐ STARS (STATIC) */}
                   <div className="flex items-center gap-1">
-                    {renderStars(service.service_rating)}
+                    {renderStars(5)}
                   </div>
 
+                  {/* ⭐ FORMAT NUMBER */}
+                  <span className="text-xs text-gray-500">
+                    {formatNumber(service.service_rating)} Ratings
+                  </span>
+
                   <div className="flex gap-2">
-                    {/* RATE BUTTON */}
+
                     <button
                       onClick={() => {
                         setSelectedService(service.service_id);
@@ -189,7 +189,6 @@ export default function ServicesPage() {
                       Rate
                     </button>
 
-                    {/* SEE MORE */}
                     <Link
                       to={`/services/${service.service_id}`}
                       className="bg-blue-600 text-white text-xs px-4 py-2 rounded-full hover:bg-blue-700 transition"
@@ -197,6 +196,7 @@ export default function ServicesPage() {
                       See More
                     </Link>
                   </div>
+
                 </div>
               </div>
             </div>
