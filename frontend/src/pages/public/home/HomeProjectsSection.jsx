@@ -197,56 +197,62 @@ export default function HomeProjectsSection() {
 
         {/* TRACK */}
         <div className="overflow-hidden">
-          <div
-            className="flex transition-transform duration-700 ease-in-out"
-            style={{
-              transform: `translateX(-${index * (100 / cardsPerView)}%)`,
-            }}
-          >
-            {projects.map((project, idx) => (
-              <div
-                key={`${project.project_id}-${idx}`}
-                className="w-full sm:w-1/2 lg:w-1/3 p-4 flex-shrink-0"
-              >
-                <div className="group relative h-full bg-white rounded-3xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 border border-gray-100">
-                  {/* IMAGE */}
-                  <div className="relative h-64 overflow-hidden">
-                    <img
-                      src={getImage(project.project_image)}
-                      onError={(e) => (e.target.src = defaultImg)}
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                    />
+  <div
+    className="flex transition-transform duration-700 ease-in-out"
+    style={{
+      transform: `translateX(-${index * (100 / cardsPerView)}%)`,
+    }}
+  >
+    {projects.map((project, idx) => (
+      <div
+        key={`${project.project_id}-${idx}`}
+        className="w-full sm:w-1/2 lg:w-1/3 p-4 flex-shrink-0"
+      >
+        <div className="group relative h-full bg-white rounded-3xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 border border-gray-100">
+          
+          {/* IMAGE */}
+          <div className="relative h-64 overflow-hidden">
+            <img
+              src={getImage(project.project_image)}
+              onError={(e) => (e.target.src = defaultImg)}
+              className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+            />
 
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
 
-                    <div
-                      className={`absolute top-4 left-4 ${getStatusColor(
-                        project.project_status,
-                      )} text-white px-3 py-1 rounded-full text-xs font-semibold capitalize`}
-                    >
-                      {project.project_status || "ongoing"}
-                    </div>
-                  </div>
+            <div
+              className={`absolute top-4 left-4 ${getStatusColor(
+                project.project_status,
+              )} text-white px-3 py-1 rounded-full text-xs font-semibold capitalize`}
+            >
+              {project.project_status || "ongoing"}
+            </div>
+          </div>
 
-                  {/* CONTENT */}
-                  <div className="p-6">
-                    <h3 className="text-xl font-bold text-gray-900 mb-3 line-clamp-1">
-                      {project.project_name}
-                    </h3>
+          {/* CONTENT */}
+          <div className="p-6">
+            <h3 className="text-xl font-bold text-gray-900 mb-3 line-clamp-1">
+              {project.project_name}
+            </h3>
 
-                    <p className="text-gray-600 line-clamp-2 mb-5">
-                      🪄 {project.project_address || "No Address"}
-                    </p>
+            <p className="text-gray-600 line-clamp-2 mb-2">
+              🪄 {project.project_address || "No Address"}
+            </p>
 
-                    {/* <button className="inline-flex items-center gap-2 text-blue-600 font-semibold hover:gap-3 transition-all">
-                      View Details <FiArrowRight />
-                    </button> */}
-                  </div>
-                </div>
-              </div>
-            ))}
+            {/* ✅ DESCRIPTION (ONLY ADDED) */}
+            <p className="text-gray-500 text-sm line-clamp-3 mb-5">
+              {project.project_description || ""}
+            </p>
+
+            {/* <button className="inline-flex items-center gap-2 text-blue-600 font-semibold hover:gap-3 transition-all">
+              View Details <FiArrowRight />
+            </button> */}
           </div>
         </div>
+      </div>
+    ))}
+  </div>
+</div>
       </div>
     </section>
   );
